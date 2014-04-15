@@ -1,0 +1,618 @@
+<html>
+<head>
+<title>AYUDA ZAFIRO SERVER</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+
+<STYLE type=text/css>
+
+BODY {SCROLLBAR-FACE-COLOR:#333333;
+      SCROLLBAR-HIGHLIGHT-COLOR:#808080;
+      SCROLLBAR-SHADOW-COLOR:#FFFFFF;
+      SCROLLBAR-3DLIGHT-COLOR:#808080;
+      SCROLLBAR-ARROW-COLOR:#808080;
+      SCROLLBAR-TRACK-COLOR:#808080;
+      SCROLLBAR-DARKSHADOW-COLOR:black
+}
+</STYLE>
+
+<SCRIPT LANGUAGE='JavaScript'>
+
+var default1 = "ZAFRIO SERVER 1.0"; // only shown once at page load
+var text1 = "ZAFRIO SERVER 1.0";
+var text2 = "AYUDA ZAFIRO SERVER";
+<!--var text3 = "WWW.I3.COM.AR";-->
+var changeRate = 5000; // 1000 = 1 second
+var messageNumber = 0;
+
+function changeStatus() {
+  if (messageNumber == 0) {
+     window.status=default1;
+     document.title=default1;
+    }
+  else if (messageNumber == 1) {
+     window.status=text1;
+     document.title=text1;
+    }
+  else if (messageNumber == 2) {
+     window.status=text2;
+     document.title=text2;
+     }
+  else if (messageNumber == 3) {
+     window.status=text3;
+     document.title=text3;
+     messageNumber = 0;
+     }
+
+  messageNumber++;
+  setTimeout("changeStatus();",changeRate);
+
+}
+
+changeStatus(); // leave here to run right away
+
+// -->
+</SCRIPT>
+</head>
+
+<body bgcolor="#333333" text="#CCCCCC">
+<table width="100%" border="0">
+  <tr> 
+    <td><div align="center"> 
+<!--        <p align="right"><img src="Imagenes/logoi3.gif" width="156" height="56"></p>-->
+        <p align="center"><img src="Imagenes/logo.gif" width="136" height="144"></p>
+        <p align="center">&nbsp;</p>
+        <p><font size="4" face="Verdana">Manual de ayuda de Servidores L&iacute;nea 
+          <br>
+          <em><strong>ZAFIRO</strong></em> Servers </font> </p>
+      </div>
+      <p align="center"></p>
+      <p align="center"><font size="3" face="Verdana">L&iacute;nea de servidores 
+        de administraci&oacute;n de ISP <em><strong>ZAFIRO</strong></em>.</font></p>
+      <p align="center"><font size="2" face="Verdana"><br>
+        <strong>Modelos</strong></font></p>
+      <p align="center"><font size="2" face="Verdana">&#8226; <strong><em>ZAFIRO</em></strong> 
+        series-600 (Capacidad m&aacute;xima 60 usuarios).<br>
+        &#8226; <strong><em>ZAFIRO</em></strong> series-1200 (Capacidad m&aacute;xima 
+        120 usuarios).<br>
+        &#8226; <em><strong>ZAFIRO</strong></em> series-2400 (Capacidad m&aacute;xima 
+        240 usuarios).</font></p>
+      <p align="justify"></p>
+      <p align="justify"><strong><font size="2" face="Verdana">INTRODUCCION<br>
+        </font></strong><font size="2" face="Verdana"><br>
+        En Negocio cr&iacute;ticos y para aplicaciones de ISP adem&aacute;s de 
+        servicios sensibles tales como VoIP o la necesidad del tratamiento transaccional 
+        garantizaron ancho de banda. La administraci&oacute;n de ancho de banda 
+        ofrece medios f&aacute;ciles y gran alcance de asignar los recursos de 
+        la red basados en prioridades del negocio, y de analizar y controlar su 
+        uso. Los recursos WAN costosos se utilizan m&aacute;s con eficacia, evitando 
+        la necesidad de mejoras costosas para ello se encuentra la l&iacute;nea 
+        de servidores <strong><em>ZAFIRO</em></strong> Series.<br>
+        El ZAFIRO tambi&eacute;n permite a administradores medir con eficacia 
+        tr&aacute;fico en tu red y proporciona informes gr&aacute;ficos comprensivos 
+        sobre c&oacute;mo se est&aacute; utilizando el ancho de banda, as&iacute; 
+        como el hardware del servidor. El administrador puede ver cada tr&aacute;fico 
+        de entrada y de salida interno del servidor o el tr&aacute;fico de entrada 
+        y de salida de cada uno de los servicios mas conocidos de red. El <strong><em>ZAFIRO</em></strong> 
+        tambi&eacute;n proporciona un informe gr&aacute;fico para los servicios 
+        que generan tr&aacute;fico como ser FTP, mail, VoIP, etc... Los administradores 
+        de este sistema del informe entienden y reasignan uso de ancho de banda 
+        a un nivel optimizado y hacen r&aacute;pidamente el mejor uso del mismo.<br>
+        El servidor cuenta con dos placas de red 10/100 Mbps de simple instalaci&oacute;n, 
+        una para la red a controlar. (Red interna o LAN) y la segunda para el 
+        puerto de acceso al router de Internet WAN.</font></p>
+      <p align="justify"><br>
+      </p></td>
+  </tr>
+  <tr> 
+    <td><p><strong><font size="2" face="Verdana">INTRODUCCION<br>
+        INDICE<br>
+        CARACTERISTICAS<br>
+        INSTALACION Y PUESTA EN MARCHA<br>
+        INGRESO A LA CONFIGURACION DEL SERVIDOR<br>
+        CONEXION SSL<br>
+        INGRESO A LA CONFIGURACION DEL SERVIDOR<br>
+        ESTADISTICAS <br>
+        INFORMACION DE ESTADISTICAS <br>
+        ANALISIS DE TRAFICO POR PUERTO <br>
+        ANALISIS DE TRAFICO <br>
+        ESTADO DE PLACAS <br>
+        LOGUEOS DEL SISTEMA <br>
+        INFORMACION DE ARRANQUE <br>
+        ULTIMOS LOGUEOS <br>
+        PROCESOS EN EJECUCION <br>
+        RESUMEN DE RECURSOS <br>
+        ESTADISTICAS POR IP <br>
+        ESTADISTICAS ON-LINE<br>
+        </font></strong><strong><font size="2" face="Verdana">ANCHO DE BANDA ASIGNADO<br>
+        TABLA ARP <br>
+        GESTION DE USUARIOS <br>
+        ADMINISTRACION <br>
+        OPCIONES DE GESTION DE USUARIOS <br>
+        CANALES <br>
+        PLANES <br>
+        CLIENTES <br>
+        IP PUBLICAS <br>
+        BLOQUEO DE PUERTOS <br>
+        CONFIGURACION DEL SERVIDOR <br>
+        ACCIONES DEL SERVIDOR </font></strong><br>
+        <strong><font size="2" face="Verdana">OPCIONES DE ACCIONES DEL SERVIDOR</font></strong> 
+        <br>
+        <strong><font size="2" face="Verdana">REINICIAR Y APAGAR SERVIDOR</font></strong> 
+        <br>
+        <strong><font size="2" face="Verdana">LIBERAR ANCHO DE BANDA</font></strong> 
+        <br>
+        <strong><font size="2" face="Verdana">CORTAR INTERNET</font></strong> 
+        <br>
+        <strong><font size="2" face="Verdana">REINICIAR SERVIDOR DHCP</font></strong> 
+        <br>
+        <strong><font size="2" face="Verdana">REINICIAR SERVIDOR DE RED</font></strong> 
+        <br>
+        <strong><font size="2" face="Verdana">SOLUCION DE PROBLEMAS<br>
+        EL EQUIPO NO ENCIENDE <br>
+        EL EQUIPO NO ASIGNA IP EN EL INICIO </font></strong></p>
+      <p>&nbsp;</p></td>
+  </tr>
+  <tr> 
+    <td><div align="justify"><font size="2" face="Verdana"><strong>Caracter&iacute;sticas 
+        </strong> </font> </div>
+      <p align="justify"><font size="2" face="Verdana">&#8226; <strong>Conexi&oacute;n 
+        SSL:</strong> Ingreso remoto del servidor.</font></p>
+      <p align="justify"><font size="2" face="Verdana">&#8226; <strong>Bloqueo 
+        de Direcciones IP:</strong> Manejo NAT.</font></p>
+      <p align="justify"><font size="2" face="Verdana">&#8226; <strong>Autenticaci&oacute;n 
+        por MAC Address:</strong> Control de acceso por MAC Address.</font></p>
+      <p align="justify"><font size="2" face="Verdana">&#8226; <strong>IP P&uacute;blicas:</strong> 
+        Administraci&oacute;n de IP publicas.</font></p>
+      <p align="justify"><font size="2" face="Verdana">&#8226; <strong>Limitaci&oacute;n 
+        de Ancho de Banda:</strong> Manejo del ancho de banda.</font></p>
+      <p align="justify"><font size="2" face="Verdana">&#8226; <strong>Estad&iacute;sticas:</strong> 
+        Estad&iacute;sticas del sistema.</font></p>
+      <p align="justify"><font size="2" face="Verdana">&#8226; <strong>Configuraci&oacute;n 
+        del Servidor:</strong> Conexiones WAN y opciones LAN.</font></p>
+      <p align="justify"><font size="2" face="Verdana">&#8226; <strong>Gesti&oacute;n 
+        de Usuarios:</strong> Ingreso de usuarios al sistema.</font></p>
+      <p align="justify">&nbsp;</p></td>
+  </tr>
+  <tr> 
+    <td><p align="justify"><font color="#CCCCCC" size="2" face="Verdana"><strong>Instalaci&oacute;n 
+        y Puesta en Marcha </strong> </font></p>
+      <p align="justify"><font color="#CCCCCC" size="2" face="Verdana"><br>
+        El equipamiento se entrega en su embalaje original con el correspondiente 
+        manual para su instalaci&oacute;n.</font></p>
+      <div align="justify"><font color="#CCCCCC" size="2" face="Verdana">Para 
+        su mejor funcionamiento el servidor debe funcionar en temperaturas menores 
+        a 25&ordm;C. Con ello se diminuye el riesgo de que alguna de las partes 
+        del servidor tenga problemas as&iacute; mismo se debe encontrar libre 
+        de polvo y f&iacute;sicamente seguro.<br>
+        <br>
+        En primera instancia se debe abrir el embalaje, retirar los seguros de 
+        anti-choque y colocar el servidor de forma vertical en un ambiente como 
+        en el anteriormente mencionado. </font> </div>
+      <p align="justify"><font color="#CCCCCC" size="2" face="Verdana">El servidor 
+        cuenta en su pare trasera dos placas de red, las cuales se encuentras 
+        identificadas en WAN y LAN, ambas deben conectarse a trav&eacute;s de 
+        cables UTP- Cat.5 (los mismos no se encuentran incluidos en el servidor), 
+        a un switch o HUB en forma directa, luego conectar el servidor a la l&iacute;nea 
+        el&eacute;ctrica correspondiente, la misma debe tener puesta a tierra 
+        para evitar inconvenientes.</font></p>
+      <p align="justify"><font color="#CCCCCC" size="2" face="Verdana">En la parte 
+        frontal del servidor, se encuentra una puerta, la cual debe ser abierta 
+        para presionar el bot&oacute;n de encendido.<br>
+        <br>
+        Una vez encendido el servidor tardara entre 1 y dos minutos en iniciar 
+        los servicios necesarios para poder ingresar a trav&eacute;s de una PC 
+        en la zona LAN del mismo.</font></p>
+      <p align="justify"><font color="#CCCCCC" size="2" face="Verdana">La PC de 
+        configuraci&oacute;n debe encontrarse configurada con el cliente DHCP 
+        encendido, y el servidor le asignara una IP dentro del rango 10.10.0.x</font></p>
+      <p align="justify"><font color="#CCCCCC" size="2" face="Verdana"><br>
+        </font></p></td>
+  </tr>
+  <tr> 
+    <td><p align="justify"><font size="2" face="Verdana"><strong>Ingreso a la 
+        configuraci&oacute;n del servidor</strong> </font><font face="Verdana"> 
+        </font></p>
+      <p align="justify"><font size="2" face="Verdana"><strong>Conexi&oacute;n 
+        SSL</strong></font></p>
+      <p align="justify"><font size="2" face="Verdana"> Permite el acceso seguro 
+        a la administraci&oacute;n del servidor de forma local o remota, brinda 
+        seguridad a la red y permite la localizaci&oacute;n remota del servidor. 
+        Teniendo las mismas opciones de administraci&oacute;n en cada caso. La 
+        ruta de acceso para el servidor es https://10.10.0.1 , el <em><strong>usuario 
+        &#8220;admin&#8221; Password &#8220;admin&#8221;</strong></em>. </font></p></td>
+  </tr>
+</table>
+<br>
+<table width="100%" border="0">
+  <tr> 
+    <td height="312"> 
+      <div align="center"><img src="Ayuda/01.gif" width="510" height="290"><br>
+        <font size="2" face="Verdana">Figura 1.0 &#8220;Ingreso al sitio&#8220;</font></div></td>
+  </tr>
+</table>
+<br>
+<table width="100%" border="0">
+  <tr>
+    <td><div align="center"><img src="Ayuda/02.gif" width="510" height="53"><br>
+        <font size="2" face="Verdana">Figura 1.1&#8221; Acceso Https de SSL&#8221; </font></div></td>
+  </tr>
+</table>
+<br>
+<table width="100%" border="0">
+  <tr>
+    <td height="347"> 
+      <p><font size="2" face="Verdana"><strong>Ingreso a la configuraci&oacute;n 
+        del servidor</strong></font></p>
+      <p align="center"><img src="Ayuda/03.gif" width="510" height="290"><br>
+        <font size="2" face="Verdana">Figura 1.2&#8221; Pagina Principal ZAFIRO 
+        Series&#8221;</font></p></td>
+  </tr>
+</table>
+<br>
+<table width="100%" border="0">
+  <tr> 
+    <td><font size="2" face="Verdana">Una vez ingresado al Servidor, se mostrara 
+      una barra de navegaci&oacute;n sobre la izquierda de la pantalla, y sobre 
+      la derecha un resumen de los recursos, el mismo tambi&eacute;n puede acceder 
+      desde &#8220;Servidor&#8212;Resumen de Recursos&#8221; en la barra de navegaci&oacute;n.</font></td>
+  </tr>
+</table>
+<br>
+<table width="100%" border="0">
+  <tr>
+    <td height="312"> 
+      <div align="center"><img src="Ayuda/04.gif" width="510" height="290"><br>
+        <font size="2" face="Verdana">Figura 1.3&#8221; Servidor Estado de placas ZAFIRO 
+        Series&#8221; </font></div></td>
+  </tr>
+</table>
+<br>
+<table width="100%" height="118" border="0">
+  <tr>
+    <td><div align="justify">
+        <p><font size="2" face="Verdana">Pantalla de Estado de placas donde se 
+          encuentra la informaci&oacute;n de las placas de red. &#8220;Servidor&#8212;Estado 
+          de placas&#8221; en la barra de navegaci&oacute;n.<br>
+          <br>
+          </font></p>
+        <p><font size="2" face="Verdana"><strong>Estad&iacute;sticas</strong><br>
+          <br>
+          La L&iacute;nea ZAFIRO contempla un sistema de estad&iacute;sticas 
+          muy completo para controlar el estado de la red as&iacute; como el uso 
+          del sistema del mismo servidor, con ello se puede estar siempre un paso 
+          adelantado a las necesidades de los clientes y del ISP de forma simple.<br>
+          Accediendo desde la barra del navegador a la izquierda de la pantalla, 
+          en la Opci&oacute;n &#8220;Servidor&#8221; se desplegaran un men&uacute; 
+          seg&uacute;n la &#8220;Figura 2.0&#8221; con las opciones explicadas.</font></p>
+      </div></td>
+  </tr>
+</table>
+<br>
+<table width="100%" border="0">
+  <tr>
+    <td height="312"> 
+      <div align="center"><img src="Ayuda/05.gif" width="510" height="290"><br>
+        <font size="2" face="Verdana">Figura 2.0 &#8220;Estad&iacute;sticas&#8221; </font></div></td>
+  </tr>
+</table>
+<br>
+<table width="100%" border="0">
+  <tr>
+    <td height="312"> 
+      <div align="center"><img src="Ayuda/06.gif" width="510" height="290"><br>
+        <font size="2" face="Verdana">Figura 2.1&#8220;Estad&iacute;sticas Consumo de MSN&#8221; 
+        </font></div></td>
+  </tr>
+</table>
+<br>
+<table width="100%" height="265" border="0">
+  <tr>
+    <td height="261"> 
+      <div align="justify"><font size="2" face="Verdana"><strong>Informaci&oacute;n 
+        de Estad&iacute;sticas </strong></font> </div>
+      <p align="justify"><font size="2" face="Verdana"><strong>An&aacute;lisis 
+        de tr&aacute;fico por puerto:</strong> An&aacute;lisis del consumo de 
+        ancho de banda de los puertos mas utilizados, FTP, MSN, POP, SMTP, WWW, 
+        P2P. (Se muestra en la figura 2.0).<br>
+        <strong>An&aacute;lisis de tr&aacute;ficos:</strong> An&aacute;lisis de 
+        las placas de red internas y externas sobre el ancho de banda total consumido 
+        por los usuarios.<br>
+        <strong>Estado de Placas:</strong> Estado de las placas de red del servidor, 
+        perdida de paquetes, velocidad de la placa de red.<br>
+        <strong>Logueos del Sistema:</strong> Estado del servidor, informaci&oacute;n 
+        de los logueos al servidor.<br>
+        <strong>Informaci&oacute;n de Arranque:</strong> Informaci&oacute;n del 
+        hardware y los servicios en el inicio del servidor.<br>
+        <strong>&Uacute;ltimos Logueos:</strong> Informaci&oacute;n de Usuarios 
+        que se han logueado al servidor.<br>
+        <strong>Procesos en ejecuci&oacute;n:</strong> Informaci&oacute;n de de 
+        los servicios que se encuentran activos en el servidor<br>
+        <strong>Resumen de Recursos:</strong> Resumen de los recursos f&iacute;sicos 
+        del servidor, como ser uso de disco r&iacute;gido, uso de memoria y de 
+        procesador del servidor.<br>
+        <strong>Estad&iacute;sticas por IP:</strong> Muestra el consumo de los 
+        usuarios por d&iacute;a, mes, a&ntilde;o, para el seguimiento de los mismos, 
+        a su vez se pueden identificar cuales se encuentran on-line n en el momento 
+        de visualizar la estad&iacute;stica.<br>
+        <strong>Estad&iacute;sticas On-line:</strong> Permite ver el consumo on-line 
+        de los usuarios.<br>
+        <strong>Ancho de banda asignado:</strong> Muestra el consumo total seg&uacute;n 
+        el ancho de banda asignado por el prestador de servicios. Permite saber 
+        si el ancho de banda utilizado es suficiente para brindar servicio de 
+        forma eficiente.<br>
+        </font><font size="2" face="Verdana"><strong>Tabla ARP:</strong> Permite 
+        ver la informaci&oacute;n ARP de los usuarios conectados a la red interna.</font></p>
+      </td>
+  </tr>
+</table>
+<br>
+<table width="100%" border="0">
+  <tr>
+    <td><div align="center"><img src="Ayuda/07.gif" width="510" height="290"><br>
+        <font size="2" face="Verdana">Figura 2.1 &#8220;Estad&iacute;sticas&#8221; </font></div></td>
+  </tr>
+</table>
+<br>
+<table width="100%" height="168" border="0">
+  <tr>
+    <td><p align="justify"><font size="2" face="Verdana">Dentro de estas opciones 
+        se pueden visualizar las estad&iacute;sticas por Usuario, ver el consumo 
+        total por ancho de banda asignado y el estado de los clientes adem&aacute;s 
+        de la tabla ARP del servidor para opciones de detecci&oacute;n de intrusos 
+        y consumo por cliente.</font></p>
+      <p align="justify"><font size="2" face="Verdana">Gesti&oacute;n de Usuarios<br>
+        Administraci&oacute;n</font></p>
+      <p align="justify"><font size="2" face="Verdana">La gesti&oacute;n de usuarios 
+        se realiza de forma r&aacute;pida y sencilla, la misma se realiza a trav&eacute;s 
+        de la siguiente forma.<br>
+        Accediendo desde la barra del navegador a la izquierda de la pantalla, 
+        en la Opci&oacute;n &#8220;Administraci&oacute;n&#8221; se desplegaran 
+        un men&uacute; seg&uacute;n la &#8220;Figura 3.0&#8221; con las opciones 
+        explicadas.</font></p>
+      <p align="justify"><font size="2" face="Verdana"><strong>Opciones de Gesti&oacute;n 
+        de Usuarios</strong></font></p>
+      <p align="justify">&nbsp;</p>
+      <p align="justify"><font size="2" face="Verdana"><strong>Canales:</strong> 
+        Se asigna ancho de banda de bajada y de subida al canal, esto permite 
+        crear canales de acuerdo con el ancho de banda que se desee.</font></p></td>
+  </tr>
+</table>
+<br>
+<table width="100%" border="0">
+  <tr>
+    <td height="644">
+<p align="center"><img src="Ayuda/08.gif" width="510" height="290"><br>
+        <font size="2" face="Verdana">Figura 3.0 (Lista de canales) </font></p>
+      <p align="center"><img src="Ayuda/09.gif" width="510" height="290"><br>
+        <font size="2" face="Verdana">Figura 3.1 (Nuevo canal o Editar canal)</font><br>
+      </p></td>
+  </tr>
+</table>
+<br>
+<table width="100%" border="0">
+  <tr>
+    <td height="21"><font size="2" face="Verdana"><strong>Planes:</strong> Se 
+      asigna un canal y se maneja el uso de forma diaria, con el fin de poder 
+      brindar anchos de bandas espec&iacute;ficos por d&iacute;a y por marcos 
+      horarios.</font></td>
+  </tr>
+</table>
+<br>
+<table width="100%" height="378" border="0">
+  <tr>
+    <td><div align="center"> 
+        <p><img src="Ayuda/10.gif" width="510" height="290"><br>
+          <font size="2" face="Verdana">Figura 3.2 (Lista de Planes) </font></p>
+        <p><font size="2" face="Verdana"><img src="Ayuda/11.gif" width="510" height="290"><br>
+          Figura 3.3 (Crear o Editar Planes) </font></p>
+      </div></td>
+  </tr>
+</table>
+<br>
+<table width="100%" border="0">
+  <tr>
+    <td><div align="justify"><font size="2" face="Verdana">En esta pantalla se 
+        puede asignar control horario y diario seg&uacute;n las preferencias del 
+        se asigna un nombre especifico, un estado que puede ser Activo, Inactivo 
+        o Borrar, se pueden editar los d&iacute;as o marcar todos, as&iacute; 
+        tambi&eacute;n como el horario especifico en el que se desee manejar el 
+        ancho de banda del canal, el cual fue creado previamente. Para ello hay 
+        un combo denominado canal. Una vez realizado esto se podr&aacute;n cargar 
+        los clientes. </font></div></td>
+  </tr>
+</table>
+<br>
+<table width="100%" border="0">
+  <tr>
+    <td><p><font size="2" face="Verdana"><strong>Clientes:</strong> Se asigna 
+        a cada cliente el plan determinado.</font></p>
+      <p align="center"><font size="2" face="Verdana"><img src="Ayuda/12.gif" width="510" height="290"><br>
+        Figura 3.4 (Crear o Editar Clientes) </font></p></td>
+  </tr>
+</table>
+<br>
+<table width="100%" height="100" border="0">
+  <tr>
+    <td><div align="justify"><font size="2" face="Verdana">En la pantalla de creaci&oacute;n 
+        o edici&oacute;n de clientes, se cargan las opciones y datos comerciales 
+        de los mismos, con opciones de asignaci&oacute;n de IP, Plan, y Estado, 
+        adem&aacute;s de realizar la autenticaci&oacute;n de los clientes por 
+        la direcci&oacute;n MAC.<br>
+        Dicha informaci&oacute;n puede ser vista en siempre en la opci&oacute;n 
+        del navegador en clientes. </font> </div>
+      <p align="justify"><font size="2" face="Verdana"><strong>IP P&uacute;blicas: 
+        </strong><br>
+        El manejo de asignaci&oacute;n de IP publicas limitadas es por medio de 
+        VPNs. Por lo cual se realiza una llamada PPP para brindar dicho servicio.</font><br>
+      </p></td>
+  </tr>
+</table>
+<br>
+<table width="100%" border="0">
+  <tr>
+    <td><div align="center"><img src="Ayuda/13.gif" width="510" height="290"><br>
+        <font size="2" face="Verdana">Figura 3.5 (Crear o Editar IPFijas) </font></div></td>
+  </tr>
+</table>
+<br>
+<table width="100%" border="0">
+  <tr>
+    <td><div align="justify"><font size="2" face="Verdana">Se creara una VPN interna 
+        contra el servidor, dicha VPN crea informaci&oacute;n de Usuario, Password, 
+        y puede asignarse a un cliente ya existente. La misma se accede creando 
+        en los sistemas operativos una llamada PPP.</font></div></td>
+  </tr>
+</table>
+<br>
+<table width="100%" border="0">
+  <tr>
+    <td><div align="center"><img src="Ayuda/14.gif" width="510" height="290"><br>
+        <font size="2" face="Verdana">Figura 3.5 (Crear o Editar Reglas NAT) </font></div></td>
+  </tr>
+</table>
+<br>
+<table width="100%" height="244" border="0">
+  <tr>
+    <td height="240"><font size="2" face="Verdana"><strong>Bloqueo de Puertos 
+      </strong></font><font face="Verdana"> 
+      <p><font size="2"> Permite a trav&eacute;s de Funciones de NAT, la apertura 
+        o cierre de puertos especiales a cada usuario o al servicio por completo, 
+        los mismos se cargan de la siguiente forma.<br>
+        <strong>Puerto del servidor:</strong> Corresponde al puerto en la placa 
+        WAN de l servidor.<br>
+        </font><font size="2"><strong>Puerto del Cliente:</strong> Corresponde 
+        al puerto del cliente en la placa LAN del servidor.<br>
+        </font><font size="2">IP de Origen y de destino. Se debe agregar la informaci&oacute;n 
+        de IP de Origen a la WAN y la IP de Destino a LAN.<br>
+        </font><font size="2">Ambas configuraciones se pueden mantener activadas 
+        o desactivarlas seg&uacute;n se requiera. <br>
+        </font></p>
+      </font> 
+      <p></p>
+      <p><strong><font size="2" face="Verdana">Configuraci&oacute;n del Servidor 
+        </font></strong></p>
+      <p><font size="2" face="Verdana">Accediendo desde la barra del navegador 
+        en la barra de ubicada en la parte inferior de la pantalla, en la opci&oacute;n 
+        &#8220;Configuraci&oacute;n&#8221; se desplegaran un men&uacute; seg&uacute;n 
+        la &#8220;Figura 4.0&#8221; con las opciones explicadas.</font></p>
+      </td>
+  </tr>
+</table>
+<br>
+<table width="100%" border="0">
+  <tr>
+    <td><div align="center"><img src="Ayuda/15.gif" width="510" height="290"><br>
+        <font size="2" face="Verdana">Figura 4.0 (Crear o Editar Configuraci&oacute;n) </font></div></td>
+  </tr>
+</table>
+<br>
+<table width="100%" height="255" border="0">
+  <tr>
+    <td><font size="2" face="Verdana">La l&iacute;nea <em><strong>ZAFIRO</strong></em> 
+      contiene un servidor DHCP habilitado por defecto las IPs asignadas a los 
+      clientes puedes ser prefijadas por el instalador, configuradas en el servidor, 
+      lo que facilita el uso para los clientes del servicio de Internet. La opci&oacute;n 
+      de DHCP se puede desactivar desde la configuraci&oacute;n WEB. </font><font face="Verdana"> 
+      <p><font size="2"> La direcci&oacute;n de la red WAN o la conexi&oacute;n del servidor 
+        a Internet pueden ser configuradas desde la WEB del servidor. Las conexiones 
+        permitidas son:</font></p>
+      <p><font size="2">&#8226; IP Fija.</font></p>
+      <p><font size="2">&#8226; IP Din&aacute;mica.</font></p>
+      <p><font size="2">&#8226; PPPoE. (Se piden datos de ingreso &#8220;Usuario ADSL&#8221;, 
+        &#8220;Password ADSL&#8221;.) </font></p>
+      </font>
+      <p></p>
+      <p> </p>
+      <p><strong><font size="2" face="Verdana">Acciones del Servidor</font></strong></p>
+      <p><font size="2" face="Verdana">En las opciones bases del servidor se puede realizar 
+        los siguientes servicios.</font></p>
+      <p><font size="2" face="Verdana">Accediendo desde la barra del navegador a la izquierda 
+        de la pantalla, en la Opci&oacute;n &#8220;Acciones&#8221; se desplegaran 
+        un men&uacute; seg&uacute;n la &#8220;Figura 5.0&#8221; con las opciones 
+        explicadas.</font><br>
+      </p></td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+<table width="100%" border="0">
+  <tr>
+    <td><div align="center"><img src="Ayuda/16.gif" width="510" height="290"><br>
+        <font size="2" face="Verdana">Figura 5.0 (Apagar Sistema) </font></div></td>
+  </tr>
+</table>
+<br>
+<table width="100%" height="36" border="0">
+  <tr>
+    <td><font size="2" face="Verdana"><strong>Opciones de Acciones del Servidor</strong> 
+      </font> 
+      <p><font size="2" face="Verdana"><strong>Reiniciar y Apagar Servidor:</strong> 
+        Opciones para apagar y reiniciar el servidor de forma remota.<br>
+        <strong>Liberar Ancho de Banda:</strong> Libera a todos los usuarios de 
+        su limitaci&oacute;n de ancho de banda de forma deliberada. La misma opci&oacute;n 
+        permite reanudar el servicio de limitaci&oacute;n.</font><br>
+      </p></td>
+  </tr>
+</table>
+<br>
+<table width="100%" height="316" border="0">
+  <tr>
+    <td height="312">
+<div align="center"> 
+        <p><img src="Ayuda/17.gif" width="510" height="290"><br>
+          <font size="2" face="Verdana">Figura 5.1 (Acceso a Internet) </font></p>
+      </div></td>
+  </tr>
+</table>
+<br>
+<table width="100%" border="0">
+  <tr>
+    <td height="608"><font size="2" face="Verdana"><strong>Cortar Internet:</strong> 
+      Permite cortar el servicio de Internet a todos los usuarios. La misma opci&oacute;n 
+      permite reanudar el servicio del mismo. </font> 
+      <p> <font size="2" face="Verdana"> <strong>Reiniciar Servidor DHCP:</strong> 
+        Permite reiniciar el servicio de DHCP (entrega de IPs din&aacute;micas).</font></p>
+      <p><font size="2" face="Verdana"> <strong>Reiniciar Servicio de Red:</strong> 
+        Permite reiniciar los servicios de red, desconectando a todos los usuarios 
+        de la red, esto permite limpiar y renovar las tablas ARP.</font></p>
+      <p></p>
+      <p></p>
+      <p> <font size="2" face="Verdana"><br>
+        <strong>Soluci&oacute;n de Problemas</strong></font></p>
+      <p><font size="2" face="Verdana"><br>
+        Para su mejor funcionamiento el servidor debe funcionar en temperaturas 
+        menores a 25&ordm;C. Con ello se diminuye el riesgo de que alguna de las 
+        partes del servidor tenga problemas as&iacute; mismo se debe encontrar 
+        libre de polvo y f&iacute;sicamente seguro, adem&aacute;s la toma de alimentaci&oacute;n 
+        del servidor y los equipamientos contiguos deben encontrarse con puesta 
+        a tierra. Con ello se evitaran problemas inherentes a problemas el&eacute;ctricos.</font></p>
+      <p><font size="2" face="Verdana"><br>
+        Identifique todos los pulsadores y teclas que tenga el servidor. Recuerde 
+        que una vez que se haya ubicado el equipo en su puesto final. Los cables 
+        no queden tirantes y bien conectados.</font></p>
+      <p><font size="2" face="Verdana">El equipo no enciende.</font></p>
+      <p><font size="2" face="Verdana">&#8226; Verifique que el equipo se encuentre 
+        conectado a la red el&eacute;ctrica.<br>
+        &#8226; Verifique en la parte trasera del equipo que la tecla de la fuente 
+        se encuentre en 1 (encendido).<br>
+        &#8226; Verifique que pulse el bot&oacute;n de encendido, y no lo mantenga 
+        presionado por m&aacute;s de 5 seg.</font></p>
+      <p><font size="2" face="Verdana">El equipo no asigna IP en el Inicio</font></p>
+      <p><font size="2" face="Verdana">&#8226; Verifique el cableado correspondiente, 
+        que las fichas se encuentren firmes y el cable en funcionamiento.<br>
+        &#8226; Verifique la configuraci&oacute;n de la PC de configuraci&oacute;n.</font></p>
+      <p></p>
+      <p></p>
+      <p><font size="2" face="Verdana"><br>
+        Ante cualquier duda o consulta t&eacute;cnica comunicarse con su distribuidor 
+        o con info@pmssa.com.ar.</font></p>
+      <p>&nbsp;</p>
+      <p><font size="2" face="Verdana"><br>
+        </font><font face="Verdana"> </font> </p></td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+</body>
+</html>

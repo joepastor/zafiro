@@ -1,0 +1,440 @@
+.tablatitulo
+{
+        font-family:Verdana;
+        font-size:10px;
+        font-weight:bold;
+        color:#FFFFFF;
+        background: #666666;
+        text-align:center;
+        height:21px;
+}
+.tablaregistro
+{
+        font-family:Verdana;
+        font-size:10px;
+        font-weight:bold;
+        color:#000000;
+        background: #CCCCCC;
+        text-align:center;
+        height:21px;
+}
+.tablaregistrovencido
+{
+        font-family:Verdana;
+        font-size:10px;
+        font-weight:bold;
+        color:#000000;
+        background: #FF2222;
+        text-align:center;
+        height:21px;
+}
+.table
+{
+    FONT-WEIGHT: normal;
+    FONT-SIZE: 11px;
+    COLOR: #cccccc;
+    FONT-FAMILY: Tahoma, Sans-serif, Verdana, Arial;
+}
+.menu
+{
+    FONT-WEIGHT: normal;
+    FONT-SIZE: 11px;
+    COLOR: #cccccc;
+    FONT-FAMILY: Tahoma, Sans-serif, Verdana, Arial;
+    BACKGROUND-COLOR: #444488;
+}
+
+.textbox
+{
+    BORDER-RIGHT: #8393a1 1px solid;
+    BORDER-TOP: #8393a1 1px solid;
+    FONT-WEIGHT: normal;
+    FONT-SIZE: 11px;
+    BORDER-LEFT: #8393a1 1px solid;
+    COLOR: #334454;
+    BORDER-BOTTOM: #8393a1 1px solid;
+    FONT-FAMILY: Tahoma, Sans-serif, Verdana, Arial;
+    BACKGROUND-COLOR: #e3ecf5;
+    BACKGROUND-COLOR: #cccccc;
+}
+
+.textarea
+{
+    BORDER-RIGHT: #8393a1 1px solid;
+    BORDER-TOP: #8393a1 1px solid;
+    FONT-WEIGHT: normal;
+    FONT-SIZE: 11px;
+    BORDER-LEFT: #8393a1 1px solid;
+    COLOR: #334454;
+    BORDER-BOTTOM: #8393a1 1px solid;
+    FONT-FAMILY: Tahoma, Sans-serif, Verdana, Arial;
+    BACKGROUND-COLOR: #e3ecf5
+}
+
+
+.datebox
+{
+    CURSOR: Hand;
+    BORDER-RIGHT: #8393a1 1px solid;
+    BORDER-TOP: #8393a1 1px solid;
+    FONT-WEIGHT: normal;
+    FONT-SIZE: 11px;
+    BORDER-LEFT: #8393a1 1px solid;
+    WIDTH: 65px;
+    COLOR: #334454;
+    BORDER-BOTTOM: #8393a1 1px solid;
+    FONT-FAMILY: Tahoma, Sans-serif, Verdana, Arial;
+    BACKGROUND-COLOR: #e3ecf5
+}
+
+.numbox
+{
+    BORDER-RIGHT: #8393a1 1px solid;
+    BORDER-TOP: #8393a1 1px solid;
+    FONT-WEIGHT: normal;
+    FONT-SIZE: 11px;
+    BORDER-LEFT: #8393a1 1px solid;
+    WIDTH: 65px;
+    COLOR: #334454;
+    BORDER-BOTTOM: #8393a1 1px solid;
+    FONT-FAMILY: Tahoma, Sans-serif, Verdana, Arial;
+    BACKGROUND-COLOR: #e3ecf5;
+    TEXT-ALIGN: Right;
+}
+
+.calendario
+{
+    BORDER-RIGHT: #8393a1 1px solid;
+    BORDER-TOP: #8393a1 1px solid;
+    FONT-WEIGHT: normal;
+    FONT-SIZE: 9px;
+    COLOR: #4070ad;
+    BORDER-LEFT: #8393a1 1px solid;
+    BORDER-BOTTOM: #8393a1 1px solid;
+    FONT-FAMILY: Tahoma, Sans-serif, Verdana, Arial;
+    BACKGROUND-COLOR: #f0f0f0;
+    CURSOR: Hand;
+}
+
+.combo
+{
+    BORDER-RIGHT: #8393a1 1px solid;
+    BORDER-TOP: #8393a1 1px solid;
+    FONT-WEIGHT: normal;
+    FONT-SIZE: 11px;
+    BORDER-LEFT: #8393a1 1px solid;
+    COLOR: #334454;
+    BORDER-BOTTOM: #8393a1 1px solid;
+    FONT-FAMILY: Tahoma, Sans-serif, Verdana, Arial;
+    BACKGROUND-COLOR: #e3ecf5;
+    
+}
+
+.boton
+{
+    CURSOR: Hand;
+    BORDER-RIGHT: 1px solid;
+    BORDER-BOTTOM: 1px solid;
+    BORDER-LEFT: 1px solid;
+    BORDER-TOP: 1px solid;
+    FONT-WEIGHT: bold;
+    FONT-SIZE: 11px;
+    BACKGROUND: #c4ccd2;
+    WIDTH: 70px;
+    COLOR: #536e88;
+    FONT-FAMILY: Tahoma, Verdana, Arial, Sans-serif
+}
+
+.botons
+{
+    CURSOR: Hand;
+    PADDING-RIGHT: 0px;
+    PADDING-LEFT: 0px;
+    PADDING-BOTTOM: 0px;
+    PADDING-TOP: 0px;
+    BORDER-RIGHT: 1px solid;
+    BORDER-BOTTOM: 1px solid;
+    BORDER-LEFT: 1px solid;
+    BORDER-TOP: 1px solid;
+    FONT-WEIGHT: bold;
+    FONT-SIZE: 10px;
+    BACKGROUND: #c4ccd2;
+    BACKGROUND-IMAGE: url(images/bot_s_back.jpg);
+    COLOR: #536e88;
+    FONT-FAMILY: Tahoma, Verdana, Arial, Sans-serif
+}
+.botonsna
+{
+    CURSOR: Hand;
+    PADDING-RIGHT: 0px;
+    PADDING-LEFT: 0px;
+    PADDING-BOTTOM: 0px;
+    PADDING-TOP: 0px;
+    BORDER-RIGHT: 1px solid;
+    BORDER-BOTTOM: 1px solid;
+    BORDER-LEFT: 1px solid;
+    BORDER-TOP: 1px solid;
+    FONT-WEIGHT: bold;
+    FONT-SIZE: 10px;
+    BACKGROUND: #c4ccd2;
+    BACKGROUND-IMAGE: url(images/botna_s_back.jpg);
+    COLOR: #536e88;
+    FONT-FAMILY: Tahoma, Verdana, Arial, Sans-serif
+}
+
+.botontacho
+{
+    CURSOR: Hand;
+    PADDING-RIGHT: 0px;
+    PADDING-LEFT: 0px;
+    PADDING-BOTTOM: 0px;
+    PADDING-TOP: 0px;
+    BORDER-RIGHT: 0px solid;
+    BORDER-BOTTOM: 0px solid;
+    BORDER-LEFT: 0px solid;
+    BORDER-TOP: 0px solid;
+    FONT-WEIGHT: bold;
+    FONT-SIZE: 10px;
+    WIDTH: 21px;
+    HEIGHT: 23px;
+    BACKGROUND: #c4ccd2;
+    BACKGROUND-IMAGE: url(images/altacho.gif);
+    COLOR: #536e88;
+    FONT-FAMILY: Tahoma, Verdana, Arial, Sans-serif
+}
+
+.botoneditar
+{
+    CURSOR: Hand;
+    PADDING-RIGHT: 0px;
+    PADDING-LEFT: 0px;
+    PADDING-BOTTOM: 0px;
+    PADDING-TOP: 0px;
+    BORDER-RIGHT: 0px solid;
+    BORDER-BOTTOM: 0px solid;
+    BORDER-LEFT: 0px solid;
+    BORDER-TOP: 0px solid;
+    FONT-WEIGHT: bold;
+    FONT-SIZE: 10px;
+    WIDTH: 21px;
+    HEIGHT: 23px;
+    BACKGROUND: #c4ccd2;
+    BACKGROUND-IMAGE: url(images/modif.gif);
+    COLOR: #536e88;
+    FONT-FAMILY: Tahoma, Verdana, Arial, Sans-serif
+}
+
+.texto
+{
+    FONT-SIZE: 14px;
+    COLOR: #CCCCCC;
+    FONT-FAMILY: Tahoma, Sans-serif, Arial;
+    TEXT-DECORATION: none;
+}
+
+.textotitulos
+{
+    FONT-SIZE: 20px;
+    FONT-WEIGHT: bold;
+    COLOR: #cccccc;
+    FONT-FAMILY: Tahoma, Sans-serif, Arial;
+    TEXT-DECORATION: none;
+    FONT-ALIGN: center;
+}
+
+
+.textos
+{
+    FONT-SIZE: 12px;
+    COLOR: #CCCCCC;
+    FONT-FAMILY: Tahoma, Sans-serif, Arial;
+    TEXT-DECORATION: none
+}
+
+.textdisabled
+{
+    PADDING-TOP: 2px;
+    PADDING-BOTTOM: 0px;
+    FONT-SIZE: 10px;
+    FONT-WEIGHT: bold;
+    COLOR: #aaaaaa;
+    FONT-FAMILY: Tahoma, Sans-serif, Arial;
+    TEXT-DECORATION: none
+}
+
+.textcampos
+{
+    PADDING-TOP: 2px;
+    PADDING-BOTTOM: 0px;
+    FONT-SIZE: 10px;
+    FONT-WEIGHT: bold;
+    COLOR: #334454;
+    FONT-FAMILY: Tahoma, Sans-serif, Arial;
+    TEXT-DECORATION: none
+}
+
+.linkw
+{
+	CURSOR: hand;
+    FONT-SIZE: 10px;
+    COLOR: #334454;
+    FONT-FAMILY: Tahoma, Sans-serif, Arial;
+    TEXT-DECORATION: none;
+}
+.linkw:hover
+{
+    COLOR: #ffffff
+}
+
+.linkb
+{
+    FONT-SIZE: 11px;
+    COLOR: #536e88;
+    FONT-FAMILY: Tahoma, Sans-serif, Arial;
+    TEXT-DECORATION: none
+}
+.linkb:hover
+{
+    COLOR: #334454
+}
+
+.catlink
+{
+    FONT-SIZE: 11px;
+    COLOR: #404040;
+    FONT-FAMILY: Verdana, Tahoma, Arial;
+    TEXT-DECORATION: none
+}
+.catlink:hover
+{
+    COLOR: #a0a0a0;
+}
+
+
+.BODY{
+    SCROLLBAR-HIGHLIGHT-COLOR: #ebeef0;
+    SCROLLBAR-SHADOW-COLOR: #b2c0cb;
+    SCROLLBAR-3DLIGHT-COLOR: #b2c0cb;
+    SCROLLBAR-ARROW-COLOR: #b2c0cb;
+    SCROLLBAR-TRACK-COLOR: #ebeef0;
+    SCROLLBAR-DARKSHADOW-COLOR: #ebeef0;
+    BACKGROUND-COLOR: #5b75b0;
+    MARGIN-LEFT: 0;
+    MARGIN-RIGHT: 0;
+    MARGIN-TOP: 0;
+    MARGIN-BOTTOM: 0;
+    a:link {color: red };
+    a:visited {color: red };
+}
+
+.wndcarga{
+    BORDER-RIGHT: 1px solid;
+    BORDER-BOTTOM: 1px solid;
+    BORDER-LEFT: 1px solid;
+    BORDER-TOP: 1px solid;
+    BORDER-COLOR: gray;
+}
+
+.btnmenu
+{
+    CURSOR: Hand;
+    WIDTH: 80 px;
+    PADDING-RIGHT: 0px;
+    PADDING-LEFT: 0px;
+    PADDING-BOTTOM: 0px;
+    PADDING-TOP: 0px;
+    BORDER-RIGHT: 1px solid;
+    BORDER-BOTTOM: 1px solid;
+    BORDER-LEFT: 1px solid;
+    BORDER-TOP: 1px solid;
+    FONT-WEIGHT: bold;
+    FONT-SIZE: 10px;
+    BACKGROUND: #555555;
+    #BACKGROUND-IMAGE: url(images/bot_s_back.jpg);
+    #COLOR: #536e88;
+    COLOR: #000000;
+    FONT-FAMILY: Tahoma, Verdana, Arial, Sans-serif;
+    text-align: center;
+}
+
+.btnmenusalir
+{
+    CURSOR: Hand;
+    WIDTH: 80 px;
+    PADDING-RIGHT: 0px;
+    PADDING-LEFT: 0px;
+    PADDING-BOTTOM: 0px;
+    PADDING-TOP: 0px;
+    BORDER-RIGHT: 1px solid;
+    BORDER-BOTTOM: 1px solid;
+    BORDER-LEFT: 1px solid;
+    BORDER-TOP: 1px solid;
+    FONT-WEIGHT: bold;
+    FONT-SIZE: 10px;
+    BACKGROUND: #ff0000;
+    #BACKGROUND-IMAGE: url(images/bot_s_back.jpg);
+    #COLOR: #536e88;
+    COLOR: #000000;
+    FONT-FAMILY: Tahoma, Verdana, Arial, Sans-serif;
+    text-align: center;
+}
+
+.menutitulo
+{
+    CURSOR: Hand;
+    WIDTH: 80 px;
+    PADDING-RIGHT: 0px;
+    PADDING-LEFT: 0px;
+    PADDING-BOTTOM: 0px;
+    PADDING-TOP: 0px;
+    BORDER-RIGHT: 1px solid;
+    BORDER-BOTTOM: 1px solid;
+    BORDER-LEFT: 1px solid;
+    BORDER-TOP: 1px solid;
+    FONT-WEIGHT: bold;
+    FONT-SIZE: 10px;
+    BACKGROUND: #00478a;
+    COLOR: #cccccc;
+    FONT-FAMILY: Tahoma, Verdana, Arial, Sans-serif;
+    text-align: center;
+}
+
+.grillatitulo
+{
+    CURSOR: Hand;
+    WIDTH: 80 px;
+    PADDING-RIGHT: 0px;
+    PADDING-LEFT: 0px;
+    PADDING-BOTTOM: 0px;
+    PADDING-TOP: 0px;
+    BORDER-RIGHT: 1px solid;
+    BORDER-BOTTOM: 1px solid;
+    BORDER-LEFT: 1px solid;
+    BORDER-TOP: 1px solid;
+    FONT-WEIGHT: bold;
+    FONT-SIZE: 10px;
+    BACKGROUND: #666666;
+    COLOR: #000000;
+    FONT-FAMILY: Tahoma, Verdana, Arial, Sans-serif;
+    text-align: center;
+}
+
+.grillaregistro
+{
+    CURSOR: Hand;
+    WIDTH: 80 px;
+    PADDING-RIGHT: 0px;
+    PADDING-LEFT: 0px;
+    PADDING-BOTTOM: 0px;
+    PADDING-TOP: 0px;
+    BORDER-RIGHT: 1px solid;
+    BORDER-BOTTOM: 1px solid;
+    BORDER-LEFT: 1px solid;
+    BORDER-TOP: 1px solid;
+    #FONT-WEIGHT: bold;
+    FONT-SIZE: 10px;
+    BACKGROUND: #444444;
+    COLOR: #cccccc;
+    FONT-FAMILY: Tahoma, Verdana, Arial, Sans-serif;
+    text-align: center;
+}

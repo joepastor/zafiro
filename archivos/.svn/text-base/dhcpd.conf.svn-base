@@ -1,0 +1,41 @@
+default-lease-time 86400;
+max-lease-time 86400;
+option domain-name-servers 200.69.193.1,200.69.193.2;
+option domain-name "zafiro";
+subnet 172.16.40.0 netmask 255.255.255.0 {
+	range 172.16.40.251 172.16.40.254;
+}
+host 2 {
+	hardware ethernet 00:11:d8:f9:fd:73;
+	fixed-address 172.16.40.1;
+	option routers 172.16.40.28;
+	option subnet-mask 255.255.255.0;
+}
+
+host 4 {
+	hardware ethernet 00:19:21:19:4d:2f;
+	fixed-address 172.16.40.2;
+	option routers 172.16.40.28;
+	option subnet-mask 255.255.255.0;
+}
+
+host 5 {
+	hardware ethernet 00:1f:c6:b5:54:af;
+	fixed-address 172.16.40.5;
+	option routers 172.16.40.28;
+	option subnet-mask 255.255.255.0;
+}
+
+host 7 {
+	hardware ethernet 70:71:bc:72:72:c6;
+	fixed-address 172.16.40.4;
+	option routers 172.16.40.28;
+	option subnet-mask 255.255.255.0;
+}
+
+host 8 {
+	hardware ethernet 00:0b:6a:bf:79:6d;
+	fixed-address 172.16.40.3;
+	option routers 172.16.40.28;
+	option subnet-mask 255.255.255.0;
+}

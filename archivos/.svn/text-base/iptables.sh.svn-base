@@ -1,0 +1,486 @@
+date
+echo 1 > /proc/sys/net/ipv4/ip_forward
+iptables -F
+iptables -t nat -F
+iptables -t mangle -F
+
+# COMIENZO DEL FIREWALL PERSONALIZADO
+iptables -t nat -A POSTROUTING -o tun+ -j MASQUERADE
+iptables -t nat -A PREROUTING -i eth1 -p tcp --dport 25 -j DNAT --to 172.16.40.1
+iptables -t nat -A PREROUTING -i eth1 -p tcp --dport 80 -j DNAT --to 172.16.40.2
+iptables -t nat -A PREROUTING -i eth1 -p tcp --dport 143 -j DNAT --to 172.16.40.1
+
+# FIN DEL FIREWALL PERSONALIZADO
+
+# COMIENZO DE FILTROS PERSONALIZADOS
+
+# FIN DE FILTROS PERSONALIZADO
+
+# COMIENZO DE FIREWALL ESTANDAR
+iptables -P INPUT ACCEPT
+iptables -P OUTPUT ACCEPT
+iptables -P FORWARD ACCEPT
+iptables -A FORWARD -o tun+ -j ACCEPT
+iptables -A FORWARD -i tun+ -j ACCEPT
+iptables -A OUTPUT -o tun+ -j ACCEPT
+iptables -A INPUT -i tun+ -j ACCEPT
+iptables -t nat -A POSTROUTING -o tun+ -j MASQUERADE
+iptables -A INPUT -p 50 -j ACCEPT
+iptables -A OUTPUT -p 51 -j ACCEPT
+iptables -A INPUT -p 51 -j ACCEPT
+iptables -A OUTPUT -p 50 -j ACCEPT
+iptables -A INPUT -p tcp --dport 22 -j ACCEPT
+iptables -A OUTPUT -p tcp --sport 22 -j ACCEPT
+iptables -A INPUT -p tcp --sport 22 -j ACCEPT
+iptables -A OUTPUT -p tcp --dport 22 -j ACCEPT
+iptables -X 80in
+iptables -N 80in
+iptables -A 80in
+iptables -X 80out
+iptables -N 80out
+iptables -A 80out
+iptables -A FORWARD -s 172.16.40.0/24 -p tcp --dport 80 -j 80out
+iptables -A FORWARD -d 172.16.40.0/24 -p tcp --sport 80 -j 80in
+iptables -X 110in
+iptables -N 110in
+iptables -A 110in
+iptables -X 110out
+iptables -N 110out
+iptables -A 110out
+iptables -A FORWARD -s 172.16.40.0/24 -p tcp --dport 110 -j 110out
+iptables -A FORWARD -d 172.16.40.0/24 -p tcp --sport 110 -j 110in
+iptables -X 21in
+iptables -N 21in
+iptables -A 21in
+iptables -X 21out
+iptables -N 21out
+iptables -A 21out
+iptables -A FORWARD -s 172.16.40.0/24 -p tcp --dport 21 -j 21out
+iptables -A FORWARD -d 172.16.40.0/24 -p tcp --sport 21 -j 21in
+iptables -X 25in
+iptables -N 25in
+iptables -A 25in
+iptables -X 25out
+iptables -N 25out
+iptables -A 25out
+iptables -A FORWARD -s 172.16.40.0/24 -p tcp --dport 25 -j 25out
+iptables -A FORWARD -d 172.16.40.0/24 -p tcp --sport 25 -j 25in
+iptables -A INPUT -i lo -j ACCEPT
+iptables -A OUTPUT -o lo -j ACCEPT
+iptables -A INPUT -p ICMP -j ACCEPT
+iptables -A OUTPUT -p ICMP -j ACCEPT
+iptables -A INPUT -p tcp --dport 2801 -j ACCEPT
+iptables -A OUTPUT -p tcp --sport 2801 -j ACCEPT
+iptables -A INPUT -p tcp --sport 43 -j ACCEPT
+iptables -A OUTPUT -p tcp --dport 43 -j ACCEPT
+iptables -A INPUT -p tcp --dport 2801 -j ACCEPT
+iptables -A OUTPUT -p tcp --sport 2801 -j ACCEPT
+iptables -A INPUT -p udp --sport 53 -j ACCEPT
+iptables -A OUTPUT -p udp --dport 53 -j ACCEPT
+iptables -A INPUT -p udp --dport 500 -j ACCEPT
+iptables -A OUTPUT -p udp --dport 500 -j ACCEPT
+iptables -A INPUT -p tcp --sport 80 -j ACCEPT
+iptables -A OUTPUT -p tcp --dport 80 -j ACCEPT
+iptables -A INPUT -p tcp --dport 80 -j ACCEPT
+iptables -A OUTPUT -p tcp --sport 80 -j ACCEPT
+iptables -A INPUT -p tcp --dport 1723 -j ACCEPT
+iptables -A OUTPUT -p tcp --sport 1723 -j ACCEPT
+iptables -A INPUT -p 47 -j ACCEPT
+iptables -A OUTPUT -p 47 -j ACCEPT
+iptables -A INPUT -p udp --sport 67:68 --dport 67:68 -j ACCEPT
+iptables -A OUTPUT -p udp --dport 67:68 --sport 67:68 -j ACCEPT
+iptables -A INPUT -i eth0 -p tcp --dport 3128 -j ACCEPT
+iptables -A OUTPUT -o eth0 -p tcp --sport 3128 -j ACCEPT
+iptables -A FORWARD -p tcp --tcp-flags SYN,RST SYN -j TCPMSS --clamp-mss-to-pmtu
+iptables -X syn-flood
+iptables -N syn-flood
+iptables -A INPUT -i eth1 -p tcp --syn -j syn-flood
+iptables -A INPUT -i eth0 -p tcp --syn -j syn-flood
+iptables -A syn-flood -m limit --limit 1/s --limit-burst 4 -j RETURN
+iptables -A syn-flood -j DROP
+iptables -A INPUT -i eth1 -f -j LOG --log-prefix 'Fragmento! '
+iptables -A INPUT -i eth1 -f -j DROP
+iptables -A INPUT -i eth0 -f -j LOG --log-prefix 'Fragmento! '
+iptables -A INPUT -i eth0 -f -j DROP
+iptables -t mangle -A PREROUTING -p icmp -j TOS --set-tos Minimize-Delay
+echo 1 > /proc/sys/net/ipv4/icmp_echo_ignore_broadcasts
+echo 0 > /proc/sys/net/ipv4/conf/all/accept_redirects
+echo 0 > /proc/sys/net/ipv4/conf/all/log_martians
+iptables -X ICMP
+iptables -N ICMP
+iptables -A ICMP -i eth1 -s 0.0.0.0/0 -p icmp -j LOG --log-level info --log-prefix 'ICMP FILTRADOS INTERNET:   '
+iptables -A ICMP -i eth0 -s 0.0.0.0/0 -p icmp -j LOG --log-level info --log-prefix 'ICMP FILTRADOS LAN:   '
+
+# FIN DE FIREWALL ESTANDAR
+
+#Definicion de las colas basicas
+#===========================================================================
+
+
+tc qdisc del dev eth0 root
+tc qdisc add dev eth0 root handle 1: htb
+tc qdisc del dev eth1 root
+tc qdisc add dev eth1 root handle 1: htb
+
+
+#------------------------------------------------------------------------------
+#Cliente - MrPostman	IP:1
+#------------------------------------------------------------------------------
+iptables -X 172.16.40.1_i
+iptables -X 172.16.40.1_o
+iptables -N 172.16.40.1_i
+iptables -N 172.16.40.1_o
+iptables -F 172.16.40.1_i
+iptables -F 172.16.40.1_o
+iptables -A FORWARD -s 172.16.40.1 -j 172.16.40.1_o
+iptables -A FORWARD -d 172.16.40.1 -j 172.16.40.1_i
+iptables -A FORWARD -s 172.16.40.1 -m mac --mac-source 00:11:d8:f9:fd:73 -j ACCEPT
+iptables -A FORWARD -d 172.16.40.1 -j ACCEPT
+
+# CLASES DE BAJADA
+tc class add dev eth0 parent 1: classid 1:21 htb rate 2048kbit ceil 2048kbit burst 15k
+tc class add dev eth0 parent 1:21 classid 1:2a htb rate 819kbit ceil 2048kbit burst 15k
+tc class add dev eth0 parent 1:21 classid 1:2b htb rate 819kbit ceil 2048kbit burst 15k prio 1
+tc class add dev eth0 parent 1:21 classid 1:2c htb rate 409kbit ceil 1024kbit burst 15k prio 2
+tc filter add dev eth0 protocol ip parent 1: handle 201 fw classid 1:2a
+tc filter add dev eth0 protocol ip parent 1: handle 202 fw classid 1:2b
+tc filter add dev eth0 protocol ip parent 1: handle 203 fw classid 1:2c
+
+
+# CLASES DE SUBIDA
+tc class add dev eth1 parent 1: classid 1:20 htb rate 2048kbit ceil 2048kbit burst 15k
+tc class add dev eth1 parent 1:20 classid 1:2d htb rate 819kbit ceil 2048kbit burst 15k
+tc class add dev eth1 parent 1:20 classid 1:2e htb rate 819kbit ceil 2048kbit burst 15k prio 1
+tc class add dev eth1 parent 1:20 classid 1:2f htb rate 409kbit ceil 1024kbit burst 15k prio 2
+tc filter add dev eth1 protocol ip parent 1: handle 204 fw classid 1:2d
+tc filter add dev eth1 protocol ip parent 1: handle 205 fw classid 1:2e
+tc filter add dev eth1 protocol ip parent 1: handle 206 fw classid 1:2f
+
+
+# MARCAJE DE PAQUETES
+
+iptables -t mangle -A FORWARD -j MARK -i eth1 -d 172.16.40.1 --set-mark 203
+iptables -t mangle -A FORWARD -j MARK -i eth0 -s 172.16.40.1 --set-mark 206
+
+iptables -t mangle -A FORWARD -j MARK -i eth0 -s 172.16.40.1 -p ICMP --set-mark 204
+iptables -t mangle -A FORWARD -j MARK -i eth1 -d 172.16.40.1 -p ICMP --set-mark 201
+iptables -t mangle -A FORWARD -j MARK -i eth0 -s 172.16.40.1 -p tcp --dport 22 --set-mark 204
+iptables -t mangle -A FORWARD -j MARK -i eth1 -d 172.16.40.1 -p tcp --sport 22 --set-mark 201
+iptables -t mangle -A FORWARD -j MARK -i eth0 -s 172.16.40.1 -p udp --dport 53 --set-mark 204
+iptables -t mangle -A FORWARD -j MARK -i eth1 -d 172.16.40.1 -p udp --sport 53 --set-mark 201
+iptables -t mangle -A FORWARD -j MARK -i eth0 -s 172.16.40.1 -p tcp --dport 25 --set-mark 204
+iptables -t mangle -A FORWARD -j MARK -i eth1 -d 172.16.40.1 -p tcp --sport 25 --set-mark 201
+iptables -t mangle -A FORWARD -j MARK -i eth0 -s 172.16.40.1 -p tcp --dport 143 --set-mark 204
+iptables -t mangle -A FORWARD -j MARK -i eth1 -d 172.16.40.1 -p tcp --sport 143 --set-mark 201
+
+iptables -t mangle -A FORWARD -j MARK -i eth0 -s 172.16.40.1 -p tcp --dport 80 --set-mark 205
+iptables -t mangle -A FORWARD -j MARK -i eth1 -d 172.16.40.1 -p tcp --sport 80 --set-mark 202
+iptables -t mangle -A FORWARD -j MARK -i eth0 -s 172.16.40.1 -p tcp --dport 1863 --set-mark 205
+iptables -t mangle -A FORWARD -j MARK -i eth1 -d 172.16.40.1 -p tcp --sport 1863 --set-mark 202
+iptables -t mangle -A FORWARD -j MARK -i eth0 -s 172.16.40.1 -p tcp --dport 2801 --set-mark 204
+iptables -t mangle -A FORWARD -j MARK -i eth1 -d 172.16.40.1 -p tcp --sport 2801 --set-mark 201
+iptables -t nat -A POSTROUTING -s 172.16.40.1 -o eth1 -j MASQUERADE
+
+
+#------------------------------------------------------------------------------
+#Cliente - Homero	IP:2
+#------------------------------------------------------------------------------
+iptables -X 172.16.40.2_i
+iptables -X 172.16.40.2_o
+iptables -N 172.16.40.2_i
+iptables -N 172.16.40.2_o
+iptables -F 172.16.40.2_i
+iptables -F 172.16.40.2_o
+iptables -A FORWARD -s 172.16.40.2 -j 172.16.40.2_o
+iptables -A FORWARD -d 172.16.40.2 -j 172.16.40.2_i
+iptables -A FORWARD -s 172.16.40.2 -m mac --mac-source 00:19:21:19:4d:2f -j ACCEPT
+iptables -A FORWARD -d 172.16.40.2 -j ACCEPT
+
+# CLASES DE BAJADA
+tc class add dev eth0 parent 1: classid 1:41 htb rate 2048kbit ceil 2048kbit burst 15k
+tc class add dev eth0 parent 1:41 classid 1:4a htb rate 819kbit ceil 2048kbit burst 15k
+tc class add dev eth0 parent 1:41 classid 1:4b htb rate 819kbit ceil 2048kbit burst 15k prio 1
+tc class add dev eth0 parent 1:41 classid 1:4c htb rate 409kbit ceil 1024kbit burst 15k prio 2
+tc filter add dev eth0 protocol ip parent 1: handle 401 fw classid 1:4a
+tc filter add dev eth0 protocol ip parent 1: handle 402 fw classid 1:4b
+tc filter add dev eth0 protocol ip parent 1: handle 403 fw classid 1:4c
+
+
+# CLASES DE SUBIDA
+tc class add dev eth1 parent 1: classid 1:40 htb rate 2048kbit ceil 2048kbit burst 15k
+tc class add dev eth1 parent 1:40 classid 1:4d htb rate 819kbit ceil 2048kbit burst 15k
+tc class add dev eth1 parent 1:40 classid 1:4e htb rate 819kbit ceil 2048kbit burst 15k prio 1
+tc class add dev eth1 parent 1:40 classid 1:4f htb rate 409kbit ceil 1024kbit burst 15k prio 2
+tc filter add dev eth1 protocol ip parent 1: handle 404 fw classid 1:4d
+tc filter add dev eth1 protocol ip parent 1: handle 405 fw classid 1:4e
+tc filter add dev eth1 protocol ip parent 1: handle 406 fw classid 1:4f
+
+
+# MARCAJE DE PAQUETES
+
+iptables -t mangle -A FORWARD -j MARK -i eth1 -d 172.16.40.2 --set-mark 403
+iptables -t mangle -A FORWARD -j MARK -i eth0 -s 172.16.40.2 --set-mark 406
+
+iptables -t mangle -A FORWARD -j MARK -i eth0 -s 172.16.40.2 -p ICMP --set-mark 404
+iptables -t mangle -A FORWARD -j MARK -i eth1 -d 172.16.40.2 -p ICMP --set-mark 401
+iptables -t mangle -A FORWARD -j MARK -i eth0 -s 172.16.40.2 -p tcp --dport 22 --set-mark 404
+iptables -t mangle -A FORWARD -j MARK -i eth1 -d 172.16.40.2 -p tcp --sport 22 --set-mark 401
+iptables -t mangle -A FORWARD -j MARK -i eth0 -s 172.16.40.2 -p udp --dport 53 --set-mark 404
+iptables -t mangle -A FORWARD -j MARK -i eth1 -d 172.16.40.2 -p udp --sport 53 --set-mark 401
+iptables -t mangle -A FORWARD -j MARK -i eth0 -s 172.16.40.2 -p tcp --dport 25 --set-mark 404
+iptables -t mangle -A FORWARD -j MARK -i eth1 -d 172.16.40.2 -p tcp --sport 25 --set-mark 401
+iptables -t mangle -A FORWARD -j MARK -i eth0 -s 172.16.40.2 -p tcp --dport 143 --set-mark 404
+iptables -t mangle -A FORWARD -j MARK -i eth1 -d 172.16.40.2 -p tcp --sport 143 --set-mark 401
+
+iptables -t mangle -A FORWARD -j MARK -i eth0 -s 172.16.40.2 -p tcp --dport 80 --set-mark 405
+iptables -t mangle -A FORWARD -j MARK -i eth1 -d 172.16.40.2 -p tcp --sport 80 --set-mark 402
+iptables -t mangle -A FORWARD -j MARK -i eth0 -s 172.16.40.2 -p tcp --dport 1863 --set-mark 405
+iptables -t mangle -A FORWARD -j MARK -i eth1 -d 172.16.40.2 -p tcp --sport 1863 --set-mark 402
+iptables -t mangle -A FORWARD -j MARK -i eth0 -s 172.16.40.2 -p tcp --dport 2801 --set-mark 404
+iptables -t mangle -A FORWARD -j MARK -i eth1 -d 172.16.40.2 -p tcp --sport 2801 --set-mark 401
+iptables -t nat -A POSTROUTING -s 172.16.40.2 -o eth1 -j MASQUERADE
+
+
+#------------------------------------------------------------------------------
+#Cliente - Jacob	IP:5
+#------------------------------------------------------------------------------
+iptables -X 172.16.40.5_i
+iptables -X 172.16.40.5_o
+iptables -N 172.16.40.5_i
+iptables -N 172.16.40.5_o
+iptables -F 172.16.40.5_i
+iptables -F 172.16.40.5_o
+iptables -A FORWARD -s 172.16.40.5 -j 172.16.40.5_o
+iptables -A FORWARD -d 172.16.40.5 -j 172.16.40.5_i
+iptables -A FORWARD -s 172.16.40.5 -m mac --mac-source 00:1f:c6:b5:54:af -j ACCEPT
+iptables -A FORWARD -d 172.16.40.5 -j ACCEPT
+
+# CLASES DE BAJADA
+tc class add dev eth0 parent 1: classid 1:51 htb rate 2048kbit ceil 2048kbit burst 15k
+tc class add dev eth0 parent 1:51 classid 1:5a htb rate 819kbit ceil 2048kbit burst 15k
+tc class add dev eth0 parent 1:51 classid 1:5b htb rate 819kbit ceil 2048kbit burst 15k prio 1
+tc class add dev eth0 parent 1:51 classid 1:5c htb rate 409kbit ceil 1024kbit burst 15k prio 2
+tc filter add dev eth0 protocol ip parent 1: handle 501 fw classid 1:5a
+tc filter add dev eth0 protocol ip parent 1: handle 502 fw classid 1:5b
+tc filter add dev eth0 protocol ip parent 1: handle 503 fw classid 1:5c
+
+
+# CLASES DE SUBIDA
+tc class add dev eth1 parent 1: classid 1:50 htb rate 2048kbit ceil 2048kbit burst 15k
+tc class add dev eth1 parent 1:50 classid 1:5d htb rate 819kbit ceil 2048kbit burst 15k
+tc class add dev eth1 parent 1:50 classid 1:5e htb rate 819kbit ceil 2048kbit burst 15k prio 1
+tc class add dev eth1 parent 1:50 classid 1:5f htb rate 409kbit ceil 1024kbit burst 15k prio 2
+tc filter add dev eth1 protocol ip parent 1: handle 504 fw classid 1:5d
+tc filter add dev eth1 protocol ip parent 1: handle 505 fw classid 1:5e
+tc filter add dev eth1 protocol ip parent 1: handle 506 fw classid 1:5f
+
+
+# MARCAJE DE PAQUETES
+
+iptables -t mangle -A FORWARD -j MARK -i eth1 -d 172.16.40.5 --set-mark 503
+iptables -t mangle -A FORWARD -j MARK -i eth0 -s 172.16.40.5 --set-mark 506
+
+iptables -t mangle -A FORWARD -j MARK -i eth0 -s 172.16.40.5 -p ICMP --set-mark 504
+iptables -t mangle -A FORWARD -j MARK -i eth1 -d 172.16.40.5 -p ICMP --set-mark 501
+iptables -t mangle -A FORWARD -j MARK -i eth0 -s 172.16.40.5 -p tcp --dport 22 --set-mark 504
+iptables -t mangle -A FORWARD -j MARK -i eth1 -d 172.16.40.5 -p tcp --sport 22 --set-mark 501
+iptables -t mangle -A FORWARD -j MARK -i eth0 -s 172.16.40.5 -p udp --dport 53 --set-mark 504
+iptables -t mangle -A FORWARD -j MARK -i eth1 -d 172.16.40.5 -p udp --sport 53 --set-mark 501
+iptables -t mangle -A FORWARD -j MARK -i eth0 -s 172.16.40.5 -p tcp --dport 25 --set-mark 504
+iptables -t mangle -A FORWARD -j MARK -i eth1 -d 172.16.40.5 -p tcp --sport 25 --set-mark 501
+iptables -t mangle -A FORWARD -j MARK -i eth0 -s 172.16.40.5 -p tcp --dport 143 --set-mark 504
+iptables -t mangle -A FORWARD -j MARK -i eth1 -d 172.16.40.5 -p tcp --sport 143 --set-mark 501
+
+iptables -t mangle -A FORWARD -j MARK -i eth0 -s 172.16.40.5 -p tcp --dport 80 --set-mark 505
+iptables -t mangle -A FORWARD -j MARK -i eth1 -d 172.16.40.5 -p tcp --sport 80 --set-mark 502
+iptables -t mangle -A FORWARD -j MARK -i eth0 -s 172.16.40.5 -p tcp --dport 1863 --set-mark 505
+iptables -t mangle -A FORWARD -j MARK -i eth1 -d 172.16.40.5 -p tcp --sport 1863 --set-mark 502
+iptables -t mangle -A FORWARD -j MARK -i eth0 -s 172.16.40.5 -p tcp --dport 2801 --set-mark 504
+iptables -t mangle -A FORWARD -j MARK -i eth1 -d 172.16.40.5 -p tcp --sport 2801 --set-mark 501
+iptables -t nat -A POSTROUTING -s 172.16.40.5 -o eth1 -j MASQUERADE
+
+
+#------------------------------------------------------------------------------
+#Cliente - Anakin	IP:4
+#------------------------------------------------------------------------------
+iptables -X 172.16.40.4_i
+iptables -X 172.16.40.4_o
+iptables -N 172.16.40.4_i
+iptables -N 172.16.40.4_o
+iptables -F 172.16.40.4_i
+iptables -F 172.16.40.4_o
+iptables -A FORWARD -s 172.16.40.4 -j 172.16.40.4_o
+iptables -A FORWARD -d 172.16.40.4 -j 172.16.40.4_i
+iptables -A FORWARD -s 172.16.40.4 -m mac --mac-source 70:71:bc:72:72:c6 -j ACCEPT
+iptables -A FORWARD -d 172.16.40.4 -j ACCEPT
+
+# CLASES DE BAJADA
+tc class add dev eth0 parent 1: classid 1:71 htb rate 2048kbit ceil 2048kbit burst 15k
+tc class add dev eth0 parent 1:71 classid 1:7a htb rate 819kbit ceil 2048kbit burst 15k
+tc class add dev eth0 parent 1:71 classid 1:7b htb rate 819kbit ceil 2048kbit burst 15k prio 1
+tc class add dev eth0 parent 1:71 classid 1:7c htb rate 409kbit ceil 1024kbit burst 15k prio 2
+tc filter add dev eth0 protocol ip parent 1: handle 701 fw classid 1:7a
+tc filter add dev eth0 protocol ip parent 1: handle 702 fw classid 1:7b
+tc filter add dev eth0 protocol ip parent 1: handle 703 fw classid 1:7c
+
+
+# CLASES DE SUBIDA
+tc class add dev eth1 parent 1: classid 1:70 htb rate 2048kbit ceil 2048kbit burst 15k
+tc class add dev eth1 parent 1:70 classid 1:7d htb rate 819kbit ceil 2048kbit burst 15k
+tc class add dev eth1 parent 1:70 classid 1:7e htb rate 819kbit ceil 2048kbit burst 15k prio 1
+tc class add dev eth1 parent 1:70 classid 1:7f htb rate 409kbit ceil 1024kbit burst 15k prio 2
+tc filter add dev eth1 protocol ip parent 1: handle 704 fw classid 1:7d
+tc filter add dev eth1 protocol ip parent 1: handle 705 fw classid 1:7e
+tc filter add dev eth1 protocol ip parent 1: handle 706 fw classid 1:7f
+
+
+# MARCAJE DE PAQUETES
+
+iptables -t mangle -A FORWARD -j MARK -i eth1 -d 172.16.40.4 --set-mark 703
+iptables -t mangle -A FORWARD -j MARK -i eth0 -s 172.16.40.4 --set-mark 706
+
+iptables -t mangle -A FORWARD -j MARK -i eth0 -s 172.16.40.4 -p ICMP --set-mark 704
+iptables -t mangle -A FORWARD -j MARK -i eth1 -d 172.16.40.4 -p ICMP --set-mark 701
+iptables -t mangle -A FORWARD -j MARK -i eth0 -s 172.16.40.4 -p tcp --dport 22 --set-mark 704
+iptables -t mangle -A FORWARD -j MARK -i eth1 -d 172.16.40.4 -p tcp --sport 22 --set-mark 701
+iptables -t mangle -A FORWARD -j MARK -i eth0 -s 172.16.40.4 -p udp --dport 53 --set-mark 704
+iptables -t mangle -A FORWARD -j MARK -i eth1 -d 172.16.40.4 -p udp --sport 53 --set-mark 701
+iptables -t mangle -A FORWARD -j MARK -i eth0 -s 172.16.40.4 -p tcp --dport 25 --set-mark 704
+iptables -t mangle -A FORWARD -j MARK -i eth1 -d 172.16.40.4 -p tcp --sport 25 --set-mark 701
+iptables -t mangle -A FORWARD -j MARK -i eth0 -s 172.16.40.4 -p tcp --dport 143 --set-mark 704
+iptables -t mangle -A FORWARD -j MARK -i eth1 -d 172.16.40.4 -p tcp --sport 143 --set-mark 701
+
+iptables -t mangle -A FORWARD -j MARK -i eth0 -s 172.16.40.4 -p tcp --dport 80 --set-mark 705
+iptables -t mangle -A FORWARD -j MARK -i eth1 -d 172.16.40.4 -p tcp --sport 80 --set-mark 702
+iptables -t mangle -A FORWARD -j MARK -i eth0 -s 172.16.40.4 -p tcp --dport 1863 --set-mark 705
+iptables -t mangle -A FORWARD -j MARK -i eth1 -d 172.16.40.4 -p tcp --sport 1863 --set-mark 702
+iptables -t mangle -A FORWARD -j MARK -i eth0 -s 172.16.40.4 -p tcp --dport 2801 --set-mark 704
+iptables -t mangle -A FORWARD -j MARK -i eth1 -d 172.16.40.4 -p tcp --sport 2801 --set-mark 701
+iptables -t nat -A POSTROUTING -s 172.16.40.4 -o eth1 -j MASQUERADE
+
+
+#------------------------------------------------------------------------------
+#Cliente - Traxes	IP:3
+#------------------------------------------------------------------------------
+iptables -X 172.16.40.3_i
+iptables -X 172.16.40.3_o
+iptables -N 172.16.40.3_i
+iptables -N 172.16.40.3_o
+iptables -F 172.16.40.3_i
+iptables -F 172.16.40.3_o
+iptables -A FORWARD -s 172.16.40.3 -j 172.16.40.3_o
+iptables -A FORWARD -d 172.16.40.3 -j 172.16.40.3_i
+
+# CLASES DE BAJADA
+tc class add dev eth0 parent 1: classid 1:81 htb rate 2048kbit ceil 2048kbit burst 15k
+tc class add dev eth0 parent 1:81 classid 1:8a htb rate 819kbit ceil 2048kbit burst 15k
+tc class add dev eth0 parent 1:81 classid 1:8b htb rate 819kbit ceil 2048kbit burst 15k prio 1
+tc class add dev eth0 parent 1:81 classid 1:8c htb rate 409kbit ceil 1024kbit burst 15k prio 2
+tc filter add dev eth0 protocol ip parent 1: handle 801 fw classid 1:8a
+tc filter add dev eth0 protocol ip parent 1: handle 802 fw classid 1:8b
+tc filter add dev eth0 protocol ip parent 1: handle 803 fw classid 1:8c
+
+
+# CLASES DE SUBIDA
+tc class add dev eth1 parent 1: classid 1:80 htb rate 2048kbit ceil 2048kbit burst 15k
+tc class add dev eth1 parent 1:80 classid 1:8d htb rate 819kbit ceil 2048kbit burst 15k
+tc class add dev eth1 parent 1:80 classid 1:8e htb rate 819kbit ceil 2048kbit burst 15k prio 1
+tc class add dev eth1 parent 1:80 classid 1:8f htb rate 409kbit ceil 1024kbit burst 15k prio 2
+tc filter add dev eth1 protocol ip parent 1: handle 804 fw classid 1:8d
+tc filter add dev eth1 protocol ip parent 1: handle 805 fw classid 1:8e
+tc filter add dev eth1 protocol ip parent 1: handle 806 fw classid 1:8f
+
+
+# MARCAJE DE PAQUETES
+
+iptables -t mangle -A FORWARD -j MARK -i eth1 -d 172.16.40.3 --set-mark 803
+iptables -t mangle -A FORWARD -j MARK -i eth0 -s 172.16.40.3 --set-mark 806
+
+iptables -t mangle -A FORWARD -j MARK -i eth0 -s 172.16.40.3 -p ICMP --set-mark 804
+iptables -t mangle -A FORWARD -j MARK -i eth1 -d 172.16.40.3 -p ICMP --set-mark 801
+iptables -t mangle -A FORWARD -j MARK -i eth0 -s 172.16.40.3 -p tcp --dport 22 --set-mark 804
+iptables -t mangle -A FORWARD -j MARK -i eth1 -d 172.16.40.3 -p tcp --sport 22 --set-mark 801
+iptables -t mangle -A FORWARD -j MARK -i eth0 -s 172.16.40.3 -p udp --dport 53 --set-mark 804
+iptables -t mangle -A FORWARD -j MARK -i eth1 -d 172.16.40.3 -p udp --sport 53 --set-mark 801
+iptables -t mangle -A FORWARD -j MARK -i eth0 -s 172.16.40.3 -p tcp --dport 25 --set-mark 804
+iptables -t mangle -A FORWARD -j MARK -i eth1 -d 172.16.40.3 -p tcp --sport 25 --set-mark 801
+iptables -t mangle -A FORWARD -j MARK -i eth0 -s 172.16.40.3 -p tcp --dport 143 --set-mark 804
+iptables -t mangle -A FORWARD -j MARK -i eth1 -d 172.16.40.3 -p tcp --sport 143 --set-mark 801
+
+iptables -t mangle -A FORWARD -j MARK -i eth0 -s 172.16.40.3 -p tcp --dport 80 --set-mark 805
+iptables -t mangle -A FORWARD -j MARK -i eth1 -d 172.16.40.3 -p tcp --sport 80 --set-mark 802
+iptables -t mangle -A FORWARD -j MARK -i eth0 -s 172.16.40.3 -p tcp --dport 1863 --set-mark 805
+iptables -t mangle -A FORWARD -j MARK -i eth1 -d 172.16.40.3 -p tcp --sport 1863 --set-mark 802
+iptables -t mangle -A FORWARD -j MARK -i eth0 -s 172.16.40.3 -p tcp --dport 2801 --set-mark 804
+iptables -t mangle -A FORWARD -j MARK -i eth1 -d 172.16.40.3 -p tcp --sport 2801 --set-mark 801
+iptables -t nat -A POSTROUTING -s 172.16.40.3 -o eth1 -j MASQUERADE
+iptables -A INPUT -p udp --dport 9005 -j ACCEPT
+iptables -A OUTPUT -p udp --sport 9005 -j ACCEPT
+iptables -A INPUT -p udp --dport 2002 -j ACCEPT
+iptables -A OUTPUT -p udp --sport 2002 -j ACCEPT
+iptables -A INPUT -p udp --dport 9034 -j ACCEPT
+iptables -A OUTPUT -p udp --sport 9034 -j ACCEPT
+iptables -A INPUT -p udp --dport 9009 -j ACCEPT
+iptables -A OUTPUT -p udp --sport 9009 -j ACCEPT
+iptables -A INPUT -p udp --dport 9000 -j ACCEPT
+iptables -A OUTPUT -p udp --sport 9000 -j ACCEPT
+iptables -A INPUT -p udp --dport 9006 -j ACCEPT
+iptables -A OUTPUT -p udp --sport 9006 -j ACCEPT
+iptables -A INPUT -p udp --dport 5010 -j ACCEPT
+iptables -A OUTPUT -p udp --sport 5010 -j ACCEPT
+iptables -A INPUT -p udp --dport 9034 -j ACCEPT
+iptables -A OUTPUT -p udp --sport 9034 -j ACCEPT
+iptables -A INPUT -p udp --dport 9006 -j ACCEPT
+iptables -A OUTPUT -p udp --sport 9006 -j ACCEPT
+iptables -A INPUT -p udp --dport 2001 -j ACCEPT
+iptables -A OUTPUT -p udp --sport 2001 -j ACCEPT
+iptables -A INPUT -p udp --dport 7000 -j ACCEPT
+iptables -A OUTPUT -p udp --sport 7000 -j ACCEPT
+iptables -A INPUT -p udp --dport 7000 -j ACCEPT
+iptables -A OUTPUT -p udp --sport 7000 -j ACCEPT
+iptables -A INPUT -p udp --dport 9001 -j ACCEPT
+iptables -A OUTPUT -p udp --sport 9001 -j ACCEPT
+iptables -A INPUT -p udp --dport 2000 -j ACCEPT
+iptables -A OUTPUT -p udp --sport 2000 -j ACCEPT
+iptables -A INPUT -p udp --dport 2001 -j ACCEPT
+iptables -A OUTPUT -p udp --sport 2001 -j ACCEPT
+iptables -A INPUT -p udp --dport 9000 -j ACCEPT
+iptables -A OUTPUT -p udp --sport 9000 -j ACCEPT
+iptables -A INPUT -p udp --dport 9001 -j ACCEPT
+iptables -A OUTPUT -p udp --sport 9001 -j ACCEPT
+iptables -A INPUT -p udp --dport 5010 -j ACCEPT
+iptables -A OUTPUT -p udp --sport 5010 -j ACCEPT
+iptables -A INPUT -p udp --dport 9004 -j ACCEPT
+iptables -A OUTPUT -p udp --sport 9004 -j ACCEPT
+iptables -A INPUT -p udp --dport 5002 -j ACCEPT
+iptables -A OUTPUT -p udp --sport 5002 -j ACCEPT
+iptables -A INPUT -p udp --dport 9004 -j ACCEPT
+iptables -A OUTPUT -p udp --sport 9004 -j ACCEPT
+iptables -A INPUT -p udp --dport 9003 -j ACCEPT
+iptables -A OUTPUT -p udp --sport 9003 -j ACCEPT
+iptables -A INPUT -p udp --dport 2002 -j ACCEPT
+iptables -A OUTPUT -p udp --sport 2002 -j ACCEPT
+iptables -A INPUT -p udp --dport 9009 -j ACCEPT
+iptables -A OUTPUT -p udp --sport 9009 -j ACCEPT
+iptables -A INPUT -p udp --dport 5013 -j ACCEPT
+iptables -A OUTPUT -p udp --sport 5013 -j ACCEPT
+iptables -A INPUT -p udp --dport 9007 -j ACCEPT
+iptables -A OUTPUT -p udp --sport 9007 -j ACCEPT
+iptables -A INPUT -p udp --dport 5002 -j ACCEPT
+iptables -A OUTPUT -p udp --sport 5002 -j ACCEPT
+iptables -A INPUT -p udp --dport 9005 -j ACCEPT
+iptables -A OUTPUT -p udp --sport 9005 -j ACCEPT
+iptables -A INPUT -p udp --dport 5013 -j ACCEPT
+iptables -A OUTPUT -p udp --sport 5013 -j ACCEPT
+iptables -A INPUT -p udp --dport 9007 -j ACCEPT
+iptables -A OUTPUT -p udp --sport 9007 -j ACCEPT
+iptables -A INPUT -p udp --dport 9003 -j ACCEPT
+iptables -A OUTPUT -p udp --sport 9003 -j ACCEPT
+iptables -A INPUT -p udp --dport 2000 -j ACCEPT
+iptables -A OUTPUT -p udp --sport 2000 -j ACCEPT
+iptables -t mangle -A PREROUTING -p tcp -j RETURN
+iptables -P INPUT DROP
+iptables -P OUTPUT DROP
+iptables -P FORWARD DROP
+date
+iptables -t nat -A PREROUTING -i eth1 -p tcp -s 0.0.0.0/0 --dport 5678 -j DNAT --to 172.16.41.250:2801

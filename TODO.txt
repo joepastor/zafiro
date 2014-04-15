@@ -1,0 +1,13 @@
+HECHO * Cuando ejecuta el zafiro, hay IPs que las repite en la configuracion del mrtg.cfg. Habría que verificar que escriba una sola vez.
+HECHO * Agregar auto increment a la tabla firewall
+HECHO * Cuando agregás nodos vpn no se habilitan los puertos autmoáticamente en el firewall. Hay que agregarlos a mano.
+HECHO * Cuando reinicias VPN no AutoGuarda
+HECHO * NO anda dar de alta nuevos equipos desde la mac address. Siempre trae uno. -> Modificar el auto_increment de la tabla!!!
+* Cuando bajo la configuracion de las vpns, pone arriba la linea del css.
+* Controlar que los cambios que se llenan en la VPN son correctos
+* Separar en el concepto de VPN cuando el zafiro es cliente de una VPN y cuando es servidor.
+   Por ejemplo, un nodo de sucursal, es cliente, pero también podría hacer de servidor para otros clientes mas chicos.
+   Mirar el concepto de directorio vpnclientes y /etc/openvpn
+* Arreglar grafico de ancho de banda asignado
+* Version stable y testing
+* Checkbox de "auto update" en el servidor

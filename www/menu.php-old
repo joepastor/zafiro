@@ -1,0 +1,52 @@
+<?
+include "inclusiones.php";
+include "barra.html";
+?>
+<html>
+    <title>Zafiro - <? echo $servidor->hostname; ?></title>
+    <body>
+        <div id="contenedor">
+            <div id="menu">
+                <html>
+                    <center><a href="resumen.php" target="body"><img src="Imagenes/ZAFIRO-LOGO.png" width="150px"/></a><hr/></center>
+                    <table id="menu" align=center width=100%>
+                        <tr><th>Informaci&oacute;n</th></tr>
+<!--                        <tr><td><a href="listar.php?list=puertos" target=body>Analisis de puertos</a></td></tr>-->
+                        <tr><td><a href="controlador.php?view=anchodebanda" target=body>Ancho de Banda</a></td></tr>
+                        <tr><td><a href="listar.php?list=estadisticas" target=body>Estadisticas por ip</a></td></tr>
+                        <tr><td><a href="controlador.php?view=estadoclientes" target=body>Estado de Clientes</a></td></tr>
+                        <tr><td><a href="controlador.php?view=estadonodos" target=body>Estado de Nodos VPN</a></td></tr>
+                        <tr><td><a href="controlador.php?view=placas" target=body>Estado de Placas</a></td></tr>
+                        <tr><td><a href="controlador.php?view=logsys" target=body>Log del sistema</a></td></tr>
+                        <tr><td><a href="controlador.php?view=dmesg" target=body>Mensajes de Inicio</a></td></tr>
+                        <tr><td><a href="controlador.php?view=rutas" target=body>Rutas del servidor</a></td></tr>
+                        <tr><td><a href="controlador.php?view=arp" target=body>Tabla ARP</a></td></tr>
+                        <tr><td><a href="controlador.php?view=uso_proxy" target=body>Uso de Proxy</a></td></tr>
+                        <tr><th>Acciones</th></tr>
+                        <tr><td><a href="controlador.php?view=detectar" target=body>Detectar equipos</a></td></tr>
+                        <tr><td><a href="controlador.php?view=exe&comando=nslookup" target=body>DNS Lookup</a></td></tr>
+                        <tr><td><a href="controlador.php?view=exe&comando=ping" target=body>Ping</a></td></tr>
+                        <tr><td><a href="controlador.php?view=exe&comando=tracepath" target=body>Trazar Ruta</a></td></tr>
+                        <tr><td><a href="controlador.php?view=exe&comando=whois" target=body>Whois</a></td></tr>
+                        <tr><td><a href="controlador.php?view=exe&comando=dig" target=body>Info de dominio</a></td></tr>
+                        <tr><th>Configuracion</th></tr>
+                        <tr><td><a href="listar.php?list=filtros" target=body>Filtros</a></td></tr>
+                        <tr><td><a href="listar.php?list=firewall" target=body>Firewall Manual</a></td></tr>
+                        <tr><td><a href="abmconfiguracion.php" target=body>General</a></td></tr>
+                        <tr><td><a href="listar.php?list=canales" target=body>Canales</a></td></tr>
+                        <tr><td><a href="listar.php?list=planes" target=body>Planes</a></td></tr>
+                        <tr><td><a href="listar.php?list=clientes" target=body>Clientes</a></td></tr>
+                        <tr><td><a href="listar.php?list=ipspublicas" target=body>IPs Publicas</a></td></tr>
+                        <tr><td><a href="listar.php?list=nat" target=body>Opciones NAT</a></td></tr>
+                        <tr><td><a href="listar.php?list=nodos" target=body>Nodos VPN</a></td></tr>
+<!--                        <tr><td><a href="abmdyndns.php" target=body>DynDNS</a></td></tr>-->
+                    </table>
+                    </body>
+                </html>
+            </div>
+            <div id="cuerpo">
+                <iframe id="body" name="body" src="resumen.php" height=100% width=100% frameborder=0></iframe>
+            </div>        
+        </div>
+    </body>
+</html>

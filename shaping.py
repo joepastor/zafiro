@@ -1,0 +1,43 @@
+function shape(ip,idcliente,salida,subida,bajada,devpri,devpub,prioriza):
+	
+	iptables+="\n# CLASES DE BAJADA\n"
+	iptables+="tc class add dev %s parent 1: classid 1:%s htb rate %skbit ceil %skbit burst 15k\n" % (devpri,clasebajada,bkbits,bkbits)
+	iptables+="tc class add dev %s parent 1:%s classid 1:%s htb rate %skbit ceil %skbit burst 15k\n" % (devpri,clasebajada,mark1,pb1,bkbits)
+	iptables+="tc class add dev %s parent 1:%s classid 1:%s htb rate %skbit ceil %skbit burst 15k prio 1\n" % (devpri,clasebajada,mark2,pb2,bkbits)
+	iptables+="tc class add dev %s parent 1:%s classid 1:%s htb rate %skbit ceil %skbit burst 15k prio 2\n" % (devpri,clasebajada,mark3,pb3,bkbits/2)
+	iptables+="tc filter add dev %s protocol ip parent 1: handle %s fw classid 1:%s\n" % (devpri,markh1,mark1)
+	iptables+="tc filter add dev %s protocol ip parent 1: handle %s fw classid 1:%s\n" % (devpri,markh2,mark2)
+	iptables+="tc filter add dev %s protocol ip parent 1: handle %s fw classid 1:%s\n" % (devpri,markh3,mark3)
+	iptables+="\n"
+	iptables+="\n# CLASES DE SUBIDA\n"
+	iptables+="tc class add dev %s parent 1: classid 1:%s htb rate %skbit ceil %skbit burst 15k\n" % (devenm,clasesubida,skbits,skbits)
+	iptables+="tc class add dev %s parent 1:%s classid 1:%s htb rate %skbit ceil %skbit burst 15k\n" % (devenm,clasesubida,mark4,ps1,skbits)
+	iptables+="tc class add dev %s parent 1:%s classid 1:%s htb rate %skbit ceil %skbit burst 15k prio 1\n" % (devenm,clasesubida,mark5,ps2,skbits)
+	iptables+="tc class add dev %s parent 1:%s classid 1:%s htb rate %skbit ceil %skbit burst 15k prio 2\n" % (devenm,clasesubida,mark6,ps3,skbits/2)
+	iptables+="tc filter add dev %s protocol ip parent 1: handle %s fw classid 1:%s\n" % (devenm,markh4,mark4)
+	iptables+="tc filter add dev %s protocol ip parent 1: handle %s fw classid 1:%s\n" % (devenm,markh5,mark5)
+	iptables+="tc filter add dev %s protocol ip parent 1: handle %s fw classid 1:%s\n" % (devenm,markh6,mark6)
+	iptables+="\n"
+	iptables+="\n# MARCAJE DE PAQUETES\n"
+	iptables+="\n"
+	iptables+="iptables -t mangle -A FORWARD -j MARK -i %s -d %s --set-mark %s\n" % (devenm,ip,markh3)
+	iptables+="iptables -t mangle -A FORWARD -j MARK -i %s -s %s --set-mark %s\n" % (devpri,ip,markh6)
+	iptables+="\n"
+	iptables+="iptables -t mangle -A FORWARD -j MARK -i %s -s %s -p ICMP --set-mark %s\n" % (devpri,ip,markh4)
+	iptables+="iptables -t mangle -A FORWARD -j MARK -i %s -d %s -p ICMP --set-mark %s\n" % (devenm,ip,markh1)
+	iptables+="iptables -t mangle -A FORWARD -j MARK -i %s -s %s -p tcp --dport 22 --set-mark %s\n" % (devpri,ip,markh4)
+	iptables+="iptables -t mangle -A FORWARD -j MARK -i %s -d %s -p tcp --sport 22 --set-mark %s\n" % (devenm,ip,markh1)
+	iptables+="iptables -t mangle -A FORWARD -j MARK -i %s -s %s -p udp --dport 53 --set-mark %s\n" % (devpri,ip,markh4)
+	iptables+="iptables -t mangle -A FORWARD -j MARK -i %s -d %s -p udp --sport 53 --set-mark %s\n" % (devenm,ip,markh1)
+	iptables+="iptables -t mangle -A FORWARD -j MARK -i %s -s %s -p tcp --dport 25 --set-mark %s\n" % (devpri,ip,markh4)
+	iptables+="iptables -t mangle -A FORWARD -j MARK -i %s -d %s -p tcp --sport 25 --set-mark %s\n" % (devenm,ip,markh1)
+	iptables+="iptables -t mangle -A FORWARD -j MARK -i %s -s %s -p tcp --dport 143 --set-mark %s\n" % (devpri,ip,markh4)
+	iptables+="iptables -t mangle -A FORWARD -j MARK -i %s -d %s -p tcp --sport 143 --set-mark %s\n" % (devenm,ip,markh1)
+	iptables+="\n"
+	iptables+="iptables -t mangle -A FORWARD -j MARK -i %s -s %s -p tcp --dport 80 --set-mark %s\n" % (devpri,ip,markh5)
+	iptables+="iptables -t mangle -A FORWARD -j MARK -i %s -d %s -p tcp --sport 80 --set-mark %s\n" % (devenm,ip,markh2)
+	iptables+="iptables -t mangle -A FORWARD -j MARK -i %s -s %s -p tcp --dport 1863 --set-mark %s\n" % (devpri,ip,markh5)
+	iptables+="iptables -t mangle -A FORWARD -j MARK -i %s -d %s -p tcp --sport 1863 --set-mark %s\n" % (devenm,ip,markh2)
+	iptables+="iptables -t mangle -A FORWARD -j MARK -i %s -s %s -p tcp --dport 2801 --set-mark %s\n" % (devpri,ip,markh4)
+	iptables+="iptables -t mangle -A FORWARD -j MARK -i %s -d %s -p tcp --sport 2801 --set-mark %s\n" % (devenm,ip,markh1)
+

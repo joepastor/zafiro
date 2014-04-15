@@ -1,0 +1,1 @@
+insert into clientes2 select id_cliente, detalle, mac_address, 0, 0, ip,concat(left(fecha_de_alta,4),right(left(fecha_de_alta,7),2),right(fecha_de_alta,2)), 0, 1, nombre, direccion, telefono, CUIT_CUIL_DNI, email from clientes;
