@@ -1,3 +1,5 @@
+# Archivo de configuracion
+
 zafirodir="/zafiro"
 #scriptsdir="%s/scripts" % zafirodir
 #directorio="%s/archivos" % zafirodir
