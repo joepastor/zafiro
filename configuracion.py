@@ -1,52 +1,11 @@
 # Archivo de configuracion
 
-zafirodir="/zafiro"
-#scriptsdir="%s/scripts" % zafirodir
-#directorio="%s/archivos" % zafirodir
-#openvpndir="%s/openvpn" % zafirodir
-#interfacesfile="/etc/network/interfaces"
-#resolvfile="/etc/resolv.conf"
-
-#devpri="eth1"
-#devpub="eth0"
-#devenm="eth0"
-
-inp=open("%s/configuracion/zafiro.conf" % zafirodir,"r")
-for linea in inp.readlines():
-	if linea[1:] != "#":
-		variable=linea.split("=")
-		if variable[0]=="iwan":
-			devpub=variable[1][:-1]
-		if variable[0]=="ilan":
-			devpri=variable[1][:-1]
-		if variable[0]=="enm":
-			devenm=variable[1][:-1]
-		if variable[0]=="resolvfile":
-			resolvfile=variable[1][:-1]
-		if variable[0]=="zafirodir":
-			zafirodir=variable[1][:-1]
-		if variable[0]=="scriptsdir":
-			scriptsdir=variable[1][:-1]
-		if variable[0]=="archivosdir":
-			directorio=variable[1][:-1]
-		if variable[0]=="openvpndir":
-			openvpndir=variable[1][:-1]
-		if variable[0]=="interfacesfile":
-			interfacesfile=variable[1][:-1]
-		if variable[0]=="dns1_force":
-			dns1_force=variable[1][:-1]
-		if variable[0]=="dns2_force":
-			dns2_force=variable[1][:-1]
-		if variable[0]=="dns3_force":
-			dns3_force=variable[1][:-1]
-
-inp.close()
-
 accesointerno=0
 ocultamiento=0
 ocultamientooct=0
 dummy=0
 mascara="0/24"
+maxusers=250
 
 # Estas son las DNS forzadas para que tomen LOS CLIENTES, no el servidor
 # Se cargaran en el archivo dhcpd.conf para que cuando renueven IP
@@ -55,3 +14,36 @@ mascara="0/24"
 dns1_force="172.16.0.1"
 dns2_force="-"
 dns3_force="-"
+
+
+#Archivo de configuracion
+#No dejar lineas entre el nombre de la variable y el valor
+#Ej: ilan = eth0 esta mal
+#Ej: ilan=eth0 esta bien
+
+# Interfaces
+# WAN
+devpub="eth0"
+# LAN
+devpri="br2"
+# Enmascaramiento (salida)
+devenm="eth0"
+
+# Directorios
+zafirodir="/Users/Joe/git/zafiro"
+openvpndir="/etc/openvpn"
+archivosdir="%s/archivos" % zafirodir 
+vpnclidir="/zafiro/vpnclientes"
+scriptsdir="%s/scripts" % zafirodir
+
+# Archivos de lectura
+interfacesfile="/etc/network/interfaces"
+
+# Archivos de lectura/escritura
+dyndnsfile="/etc/ddclient.conf"
+hostnamefile="/etc/hostname"
+resolvfile="/etc/resolv.conf"
+placasinfo="/zafiro/archivos/placas.txt"
+syslogfile="/var/log/syslog"
+ip_forward="/zafiro/archivos/ip_forward"
+pingignore="/zafiro/archivos/icmp_echo_ignore_all"

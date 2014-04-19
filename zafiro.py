@@ -5,135 +5,58 @@ from funciones import *
 import string
 import os
 import time
-from time import strftime,localtime
+
 
 print "###################################################"
 print "#		COMIENZO DEL ZAFIRO		 #"
 print "###################################################"
 
 ejecutar=1
-hora=strftime("%H",localtime())
 
 # idtmp - Este es el ID de clase que asignara a cada clase de los clientes.
 # Cada clase y handler que se genere para el cliente comenzara con este codigo
 # Arranca en 0 porque las clases eran 93434 y al ser tan largas no las permite
 # Por lo tanto decidimos arrancar con un contador en 0
 idtmp=0
+# Esta linea sirve para dividir visualmente lineas en el archivoiptables
+divisor="#"+"="*90+"\n"
 
 
 while True:
 	try:
-
-                os.system("bash %s/instalador/configurar.sh\n" % (zafirodir))
-                # SI LA HORA ES DISTINTA EJECUTAR ####################################################################################
-                if hora!=strftime("%H",localtime()):
-                        ejecutar=1
-
-	        hora=strftime("%H",localtime())
-	        minutos=strftime("%M",localtime())
-	        dia=time.localtime()[6]+1
-
-	        #Configuracion de ancho de banda asignado para graficos ##############################################################
-		#curs.execute("""select sum(canalessub) as subida, sum(canalesbaj) as bajada from canales inner join planes on canalesid=planescan inner join clientes on clientespla=planesid where canalesest=0 and planeshor=%s and planesdia=%s"""%(hora,dia))
-		#bwasignado=curs.fetchall()
-	        #for subida,bajada in bwasignado:
-	        #        f=open("%sbwasignado.txt"%directorio,"w")
-	        #        bajada=str(bajada)
-	        #        f.write(bajada)
-	        #        f.close()
-
-                # APAGAR SERVIDOR ####################################################################################################
-		reiniciarservidor=0
-	        inp=open("%s/apagarservidor" % directorio,"r")
-		for linea in inp.readlines():
-			apagarservidor=int(linea)
-		inp.close()
-		if apagarservidor==1:
-			os.system("echo 0 > %s/apagarservidor\n" % directorio)
-			os.system("halt\n")
-
-                # REINICIAR SERVIDOR #################################################################################################
-		reiniciarservidor=0
-	        inp=open("%s/reiniciarservidor" % directorio,"r")
-		for linea in inp.readlines():
-			reiniciarservidor=int(linea)
-		inp.close()
-		if reiniciarservidor==1:
-			os.system("echo 0 > %s/reiniciarservidor\n" % directorio)
-			os.system("reboot\n")
-
-                # EJECUTAR ##########################################################################################################
-		if ejecutar==0:
-		        inp=open("%s/ejecutar" % directorio,"r")
-			for linea in inp.readlines():
-				ejecutar=int(linea)
-			inp.close()
-
-		inp=open("%s/liberado" % directorio,"r")
-	        for linea in inp.readlines():
-			liberado=int(linea)
-	        inp.close()
-
-	        ####################### SI SE EJECUTA EL SERVIDOR #########################
-	        if ejecutar==1:
-                        os.system("echo 0 > %s/ejecutar\n" % directorio)
-			print "Ejecutando el dia %s - Hora %s Minutos %s" % (dia,hora,minutos)
-			ejecutar=0
+	
+		# Ejecuta todas las acciones pertinentes
+		getAcciones()
+                
+		# EJECUTAR ##########################################################################################################
+		
+		if getEjecutar():
+			print "Ejecutando"
 
 			idtmp=2 # Seteamos nuevamente el valor del ID temporal en 0
 
-	                sasa=""
-	                # Firewall basico
-	                iptables=""
-	                iptables+="iptables -F\n"
-	                iptables+="iptables -t nat -F\n"
-	                iptables+="iptables -t mangle -F\n"
-			iptables+=fncfwpersonalizado()
-			iptables+=fncfiltros()
-			iptables+=fncfirewall()
+			sasa=""
+			# Firewall basico
+			iptables=""
+			iptables+="iptables -F\n"
+			iptables+="iptables -t nat -F\n"
+			iptables+="iptables -t mangle -F\n"
+			iptables+=getFwPersonalizado()
+			iptables+=getFiltros()
+			iptables+=getFirewall()
+			print iptables
+			
+			
+		    # ARMADO DEL ARCHIVO MRTG.CONF
+			mrtg=""
+			mrtg+="BodyTag[_]:<BODY bgcolor=#333333 text=#cccccc>\n"
+			mrtg+="Background[_]:#333333\n"
+			mrtg+="WorkDir: %s/www/mrtg\nWriteExpires: Yes\nTitle[^]: Traffic Analysis for\nOptions[_]: growright\n\n" % (zafirodir)
 
-                        # ARMADO DEL ARCHIVO MRTG.CONF
-	                mrtg=""
-	                mrtg+="BodyTag[_]:<BODY bgcolor=#333333 text=#cccccc>\n"
-	                mrtg+="Background[_]:#333333\n"
-	                mrtg+="WorkDir: %s/www/mrtg\nWriteExpires: Yes\nTitle[^]: Traffic Analysis for\nOptions[_]: growright\n\n" % (zafirodir)
-
-	                mrtg+="Target[eth0]: `/usr/bin/mrtg-ip-acct eth0`\n"
-	                mrtg+="MaxBytes1[eth0]: 1024000\n"
-	                mrtg+="MaxBytes2[eth0]: 512000\n"
-	                mrtg+="Title[eth0]: Analisis del trafico total en eth0\n"
-	                mrtg+="YLegend[eth0]: Trafico\n"
-	                mrtg+="PageTop[eth0]: <H1>Analisis del trafico total de la interface eth0</H1>\n"
-	                mrtg+="XSize[eth0]:580\n"
-	                mrtg+="YSize[eth0]:100\n"
-	                mrtg+="Language: spanish\n"
-	                mrtg+="Options[_]: growright, bits\n"
-
-	                #$mrtg+="Colours[eth0]: GREEN#00ff00,RED#ff0000,BLACK#000000,WHITE#ffffff\n";
-	                mrtg+="\n"
-	                mrtg+="Target[eth1]: `/usr/bin/mrtg-ip-acct eth1`\n"
-	                mrtg+="MaxBytes1[eth1]: 1024000\n"
-	                mrtg+="MaxBytes2[eth1]: 512000\n"
-	                mrtg+="Title[eth1]: Analisis del trafico total en eth1\n"
-	                mrtg+="YLegend[eth1]: Trafico\n"
-	                mrtg+="PageTop[eth1]: <H1>Analisis del trafico total de la interface eth1</H1>\n"
-	                mrtg+="XSize[eth1]:580\n"
-	                mrtg+="YSize[eth1]:100\n"
-	                mrtg+="Language: spanish\n\n"
-	                mrtg+="Options[_]: growright, bits\n\n"
-
-	                mrtg+="\n"
-	                mrtg+="Target[tun0]: `/usr/bin/mrtg-ip-acct tun0`\n"
-	                mrtg+="MaxBytes1[tun0]: 1024000\n"
-	                mrtg+="MaxBytes2[tun0]: 512000\n"
-	                mrtg+="Title[tun0]: Analisis del trafico total en tun0\n"
-	                mrtg+="YLegend[tun0]: Trafico\n"
-	                mrtg+="PageTop[tun0]: <H1>Analisis del trafico total de la interface tun0</H1>\n"
-	                mrtg+="XSize[tun0]:580\n"
-	                mrtg+="YSize[tun0]:100\n"
-	                mrtg+="Language: spanish\n\n"
-	                mrtg+="Options[_]: growright, bits\n\n"
-
+			mrtg+=getMRTG("eth0")
+			mrtg+=getMRTG("eth1")
+			mrtg+=getMRTG("tun0")
+			
 			mrtg+="\n"
 			mrtg+="Target[www]: `%s/www.sh`\n" % scriptsdir
 			mrtg+="MaxBytes1[www]: 1024000\n"
@@ -164,16 +87,11 @@ while True:
 			mrtg+="MaxBytes2[ftp]: 512000\n"
 			mrtg+="Title[ftp]: Analisis del trafico ftp\n"
 			mrtg+="YLegend[ftp]: Trafico\n"
-			#mrtg+="PageTop[ftp]: ZAFIRO<br><hr><br>\n"
 
-	                # Armado del archivo dhcpd.conf
-	                dhcpd=""
-	                dhcpd+="default-lease-time 86400;\n"
-	                dhcpd+="max-lease-time 86400;\n"
-
+			
+			iptables+="# FIREWALL PARA DNSS\n"
+			iptables+=divisor
 			dnss=""
-	                iptables+="# FIREWALL PARA DNSS\n"
-	                iptables+="#===========================================================================\n"
 			if dns1:
 				dnss=dns1
 				iptables+="iptables -t nat -A POSTROUTING -o %s -d %s -p udp --dport 53 -j MASQUERADE\n" % (devpub,dns1)
@@ -187,109 +105,100 @@ while True:
 				iptables+="iptables -t nat -A POSTROUTING -o %s -d %s -p udp --dport 53 -j MASQUERADE\n" % (devpub,dns3)
 				iptables+="iptables -A FORWARD -i %s -d %s -p udp --dport 53 -j ACCEPT\n" % (devpri,dns3)
 			print dnss
-	                iptables+="# FIN de FIREWALL PARA DNSS\n"
-	                iptables+="#===========================================================================\n"
+			iptables+=divisor
 
-	                #dhcpd+="option domain-name-servers %s,%s,%s;\n"  % (dns1,dns2,dns3)
-	                dhcpd+="option domain-name-servers %s;\n"  % (dnss)
-	                dhcpd+="option domain-name \"zafiro\";\n"
-	                dhcpd+="subnet %s0 netmask 255.255.255.0 {\n" % ipprefijopri #/joe, Si aca no se abre la mascara a 16 bits no asigna ip en otras redes, si la red es de 24 hay que cerrar aca la mascara a 24 porque si no tira que no esta dentro de la red, OJO
-	                dhcpd+="\trange %s251 %s254;\n" % (ipprefijopri,ipprefijopri)
-	                dhcpd+="}";
+
+			# Forwarding y Nateos
+			iptables+="# FORWARDING DE PUERTOS\n"
+			iptables+=divisor
+			iptables+=getNateos()
+			iptables+=divisor
+
+
+            # Armado del archivo dhcpd.conf
+			dhcpd=""
+			dhcpd+="default-lease-time 86400;\n"
+			dhcpd+="max-lease-time 86400;\n"
+			dhcpd+="option domain-name-servers %s;\n"  % (dnss)
+			dhcpd+="option domain-name \"zafiro\";\n"
+			dhcpd+="subnet %s0 netmask 255.255.255.0 {\n" % ipprefijopri #/joe, Si aca no se abre la mascara a 16 bits no asigna ip en otras redes, si la red es de 24 hay que cerrar aca la mascara a 24 porque si no tira que no esta dentro de la red, OJO
+			dhcpd+="\trange %s251 %s254;\n" % (ipprefijopri,ipprefijopri)
+			dhcpd+="}";
 	
-	                # Armado del archivo dhcp 
-	                etcdhcp="INTERFACES=\"%s\"\n" % devpri
-	                f=open("%s/dhcp" % directorio,"w")
-	                f.write(etcdhcp)
-	                f.close()
-
-	                # NATeo de puertos
-	                curs.execute("""select forwardeospuesrc,forwardeospuedst,forwardeosipdst,forwardeosipsrc from forwardeos where forwardeosest=0""")
-	                nat=curs.fetchall()
-	                nateos=""
-	                for forwardeospuesrc,forwardeospuedst,forwardeosipdst,forwardeosipsrc in nat:
-	                        if forwardeosipsrc=='0.0.0.0':
-	                                forwardeosipsrc+='/0'
-	                        nateos+="iptables -t nat -A PREROUTING -i %s -p tcp -s %s --dport %s -j DNAT --to %s:%s\n" % (devpub,forwardeosipsrc,forwardeospuesrc,forwardeosipdst,forwardeospuedst)
-
-	                # Configuracion de pap para conectarse por adsl (no se si funciona)
-	                #curs.execute("""select configuracionadsusu,configuracionadspas from configuracion""")
-	                #pap=curs.fetchall()
-	                #papfile=""
-	                #for configuracionadsusu,configuracionadspas in pap:
-	                #        papfile="\"%s\"	*	\"%s\"" % (configuracionadsusu,configuracionadspas)
-	                #f=open("%s/pap-secrets" % directorio,"w")
-	                #f.write(papfile)
-	                #f.close()
-	                        
-	                # Configuracion de limitacion de clientes
-	                iptables+="#Definicion de las colas basicas\n"
-	                iptables+="#===========================================================================\n"
-	                iptables+="\n\n"
+			# Armado del archivo dhcp 
+			etcdhcp="INTERFACES=\"%s\"\n" % devpri
+			f=open("%s/dhcp" % archivosdir,"w")
+			f.write(etcdhcp)
+			f.close()
+			
+			# Configuracion de limitacion de clientes
+			iptables+="# DEFINICION DE COLAS BASICAS\n"
+			iptables+=divisor
 			iptables+="tc qdisc del dev eth0 root\n"
 			iptables+="tc qdisc add dev eth0 root handle 1: htb\n"
 			iptables+="tc qdisc del dev eth1 root\n"
 			iptables+="tc qdisc add dev eth1 root handle 1: htb\n"
-
-                        # Crea la configuracion de limitacion de cada cliente
-	                ipfijastr=""
-	                curs.execute("""select clientesid,clientesip,clientesmac,clientespla,clientesnom,ipsfijasip,ipsfijasint,ipsfijasest,clientespro,clientessal,clientesdes from clientes left join ipsfijas on ipsfijas.ipsfijascli=clientes.clientesid where clientes.clientesest=0 order by clientesnom""")
-	                clientes=curs.fetchall()
-	                hosts="127.0.0.1        localhost\n"
-	                for clientesid,clientesip,clientesmac,clientespla,clientesnom,ipsfijasip,ipsfijasint,ipsfijasest,clientespro,clientessal,clientesdes in clientes:
+			
+			# Crea la configuracion de limitacion de cada cliente
+			ipfijastr=""
+			curs.execute("""select id,ip,macaddress,plan,nombre,ipsfijasip,ipsfijasint,ipsfijasest,enruta_proxy,salida_habilitada,descripcion from clientes left join ipsfijas on ipsfijas.ipsfijascli=clientes.id where clientes.estado=0 order by nombre""")
+			clientes=curs.fetchall()
+			hosts="127.0.0.1        localhost\n"
+			for clientesid,clientesip,clientesmac,clientespla,clientesnom,ipsfijasip,ipsfijasint,ipsfijasest,clientespro,clientessal,clientesdes in clientes:
 				iptables+="\n\n"
-	                        iptables+="echo Cliente - %s	IP:%s    ID: %s\n" % (clientesnom,clientesip,clientesid)
-	                        iptables+="#------------------------------------------------------------------------------\n"
-	                        iptables+="#Cliente - %s	IP:%s    ID: %s\n" % (clientesnom,clientesip,clientesid)
-	                        iptables+="#------------------------------------------------------------------------------\n"
-	                        plan=clientespla
-	                        # Define el numero de ip, gateway e ip publica del cliente. Si hay oclutamiento! ojo al piojo!
-	                        ip="%s%s" % (ipprefijopri,clientesip)
-	
-	                        # Si el cliente tiene una ip publica asignada crea el alias de la placa
-	                        if ipsfijasip:
-	                                cuak=ipsfijasint[3:]
-	                                ipfijastr+="ifconfig %s:%s %s\n" % (devenm,cuak,ipsfijasip)
+				iptables+="echo Cliente - %s	IP:%s    ID: %s\n" % (clientesnom,clientesip,clientesid)
+				iptables+="#------------------------------------------------------------------------------\n"
+				iptables+="#Cliente - %s	IP:%s    ID: %s\n" % (clientesnom,clientesip,clientesid)
+				iptables+="#------------------------------------------------------------------------------\n"
+				plan=clientespla
+				# Define el numero de ip, gateway e ip publica del cliente. Si hay oclutamiento! ojo al piojo!
+				ip="%s%s" % (ipprefijopri,clientesip)
+				
+				# Si el cliente tiene una ip publica asignada crea el alias de la placa
+				if ipsfijasip:
+					cuak=ipsfijasint[3:]
+					ipfijastr+="ifconfig %s:%s %s\n" % (devenm,cuak,ipsfijasip)
 
-	                        # Selecciona el canal que debe utilizar el cliente
-	                        curs.execute("""select planescan,canalessub,canalesbaj,canalesnom from planes inner join canales on planes.planescan=canales.canalesid where planesid=%d and planesdia=%s and planeshor=%s"""%(plan,dia,hora))
-	                        marca=curs.fetchall()
-	                        i=0
-	                        flagnodebesalir=1
+				# Selecciona el canal que debe utilizar el cliente
+				curs.execute("""select planescan,canalessub,canalesbaj,canalesnom from planes inner join canales on planes.planescan=canales.canalesid where planesid=%d and planesdia=%s and planeshor=%s"""%(plan,dia,hora))
+				marca=curs.fetchall()
+				i=0
+				flagnodebesalir=1
 
-	                        # Crea las reglas de analisis de trafico por ip
-	                        iptables+="iptables -X %s_i\n" % ip
-	                        iptables+="iptables -X %s_o\n" % ip
-	                        iptables+="iptables -N %s_i\n" % ip
-	                        iptables+="iptables -N %s_o\n" % ip
-	                        iptables+="iptables -F %s_i\n" % ip
-	                        iptables+="iptables -F %s_o\n" % ip
-	                        iptables+="iptables -A FORWARD -s %s -j %s_o\n" % (ip,ip)
-	                        iptables+="iptables -A FORWARD -d %s -j %s_i\n" % (ip,ip)
-
-	                        for planescan, canalessub,canalesbaj,canalesnom in marca:
-	                                flagnodebesalir=0
-	                                i=i+1
-	                                if canalesbaj != 0:
-	                                        #servicio=planescan
-	                                        mark="%s%s" % (planescan,clientesip)
-	                                        servicio=mark
-	                                        #skbytes=canalessub
-	                                        #bkbytes=canalesbaj
-	                                        #skbits=skbytes*8
-	                                        #bkbits=bkbytes*8
+				# Crea las reglas de analisis de trafico por ip
+				iptables+="iptables -X %s_i\n" % ip
+				iptables+="iptables -X %s_o\n" % ip
+				iptables+="iptables -N %s_i\n" % ip
+				iptables+="iptables -N %s_o\n" % ip
+				iptables+="iptables -F %s_i\n" % ip
+				iptables+="iptables -F %s_o\n" % ip
+				iptables+="iptables -A FORWARD -s %s -j %s_o\n" % (ip,ip)
+				iptables+="iptables -A FORWARD -d %s -j %s_i\n" % (ip,ip)
+				
+				for planescan, canalessub,canalesbaj,canalesnom in marca:
+					flagnodebesalir=0
+			        i=i+1
+			        if canalesbaj != 0:
+						#servicio=planescan
+						mark="%s%s" % (planescan,clientesip)
+						servicio=mark
+						#skbytes=canalessub
+						#bkbytes=canalesbaj
+						#skbits=skbytes*8
+						#bkbits=bkbytes*8
 						skbits=canalessub
-	                                        bkbits=canalesbaj
-	                                        if clientessal==1:
-	                                                #	Verifica mac address y permite el forward
+						bkbits=canalesbaj
+						if clientessal==1:
+	                        #	Verifica mac address y permite el forward
 							iptables+="iptables -A FORWARD -s %s -m mac --mac-source %s -j ACCEPT\n" % (ip,clientesmac)
 							iptables+="iptables -A FORWARD -d %s -j ACCEPT\n" % ip
 	
-	                        # Agrega al cliente en el archivo hosts
-	                        hosts+="%s      %s\n" % (ip,clientesnom.replace(" ","_"))
+				# Agrega al cliente en el archivo hosts
+				hosts+="%s      %s\n" % (ip,clientesnom.replace(" ","_"))
 
-	                        # Crea su enrutamiento a traves del canal y plan elgidos
-				if liberado==0:
+				# Crea su enrutamiento a traves del canal y plan elgidos
+				
+				if getLiberado()==0:
 					idtmp+=1
 
 					# Creacion de las clases PADRE del cliente (Ej.: 1:1031)
@@ -368,7 +277,7 @@ while True:
 
 					
 					# El ceil es la cantidad de ancho de banda extra que puede utilizar la clase cuando las otras no estan utilizandose
-					# Hay que tener cuidado en no poner el mismo ceil para todo, porque si no sería un bardo
+					# Hay que tener cuidado en no poner el mismo ceil para todo, porque si no ser√≠a un bardo
 					# Priorizacion de puertos
 					# 10000:30000,22,445,139,80,443
 					# OTROS
@@ -483,35 +392,35 @@ while True:
 					#iptables+="\n"
 
 
-	                                if flagnodebesalir==0:
-	                                        #print "Cliente: %s \t(%s) - Canal: %s - Marca de servicio: %s - Velocidad de Subida: %s KBs - Velocidad de Bajada: %s KBs" % (clientesnom,ip,canalesnom,mark,skbytes,bkbytes)
-	                                        print "Cliente: %s \t(%s) - Canal: %s - Marca de servicio: %s - Velocidad de Subida: %s Kbits - Velocidad de Bajada: %s Kbits" % (clientesnom,ip,canalesnom,mark,skbits,bkbits)
-	                                else:
-	                                        print "Cliente: %s (%s) - SIN SALIDA ACTUAL" % (clientesnom,ip)
-	                        else:
-	                                if flagnodebesalir==0:
-	                                        print "Cliente: %s" % clientesnom
-	                                else:
-	                                        print "Cliente: %s - SIN SALIDA ACTUAL" % (clientesnom)
-	
-	                        #Enrutamiento al proxy
+					if flagnodebesalir==0:
+	                    #print "Cliente: %s \t(%s) - Canal: %s - Marca de servicio: %s - Velocidad de Subida: %s KBs - Velocidad de Bajada: %s KBs" % (clientesnom,ip,canalesnom,mark,skbytes,bkbytes)
+						print "Cliente: %s \t(%s) - Canal: %s - Marca de servicio: %s - Velocidad de Subida: %s Kbits - Velocidad de Bajada: %s Kbits" % (clientesnom,ip,canalesnom,mark,skbits,bkbits)
+					else:
+						print "Cliente: %s (%s) - SIN SALIDA ACTUAL" % (clientesnom,ip)
+				else:
+					if flagnodebesalir==0:
+						print "Cliente: %s" % clientesnom
+					else:
+						print "Cliente: %s - SIN SALIDA ACTUAL" % (clientesnom)
+
+                #Enrutamiento al proxy
 				if clientespro:
-	                                iptables+="iptables -t nat -A PREROUTING -i %s -p tcp --dport 80 -s %s -j REDIRECT --to-port 3128\n" % (devpri,ip)
+					iptables+="iptables -t nat -A PREROUTING -i %s -p tcp --dport 80 -s %s -j REDIRECT --to-port 3128\n" % (devpri,ip)
 	
 				#Enruta la ip publica
-	                        if ipsfijasip and ipsfijasest==0:
-	                                iptables+="iptables -t nat -A POSTROUTING -s %s -j SNAT --to %s\n" % (ip,ipsfijasip)
-	                                iptables+="iptables -t nat -A PREROUTING -d %s -j DNAT --to %s\n" % (ipsfijasip,ip)
-	                        else:
-	                                iptables+="iptables -t nat -A POSTROUTING -s %s -o %s -j MASQUERADE\n" % (ip,devenm)
+				if ipsfijasip and ipsfijasest==0:
+					iptables+="iptables -t nat -A POSTROUTING -s %s -j SNAT --to %s\n" % (ip,ipsfijasip)
+					iptables+="iptables -t nat -A PREROUTING -d %s -j DNAT --to %s\n" % (ipsfijasip,ip)
+				else:
+					iptables+="iptables -t nat -A POSTROUTING -s %s -o %s -j MASQUERADE\n" % (ip,devenm)
 	
-	                        #	Agrega el bloque para asignacion de IP por dhcp
-	                        dhcpd+="\nhost %s {\n" % clientesid
-	                        dhcpd+="\thardware ethernet %s;\n" % clientesmac
-	                        dhcpd+="\tfixed-address %s;\n" % ip
-	                        dhcpd+="\toption routers %s;\n" % gwcliente
-	                        dhcpd+="\toption subnet-mask 255.255.255.0;\n"
-	                        dhcpd+="}\n"
+				#	Agrega el bloque para asignacion de IP por dhcp
+				dhcpd+="\nhost %s {\n" % clientesid
+				dhcpd+="\thardware ethernet %s;\n" % clientesmac
+				dhcpd+="\tfixed-address %s;\n" % ip
+				dhcpd+="\toption routers %s;\n" % gwcliente
+				dhcpd+="\toption subnet-mask 255.255.255.0;\n"
+				dhcpd+="}\n"
 				
 				script=""
 				script="""
@@ -525,6 +434,7 @@ while True:
 				echo $uptime
 				echo $statname
 				""" % (ip,ip,ip)
+				
 				f=open("%s/%s.sh" % (scriptsdir,ip),"w")
 				f.write(script)
 				f.close()
@@ -538,112 +448,80 @@ while True:
 				#mrtg+="PageTop[%s]: ZAFIRO<br><hr><br>\n" % ip
 				mrtg+="Options[_]: growright, bits\n"
 
-	                        #Agrega la ip al SASA
-	                        #sasa+="L:%s:%s\n" % (ip,clientesnom)
+                #Agrega la ip al SASA
+                #sasa+="L:%s:%s\n" % (ip,clientesnom)
 	
-	                #######################################################  Armado de firewall para VPN  #######################################################
+            #######################################################  Armado de firewall para VPN  #######################################################
 			for f in os.listdir(openvpndir):
-                                if f !=".svn":
-                                    archivo=open("%s/%s" % (openvpndir,f))
-                                    for q in archivo.readlines():
-                                            p=q.split(" ")
-                                            #JOE aca es importante el tema de los puertos, si no funciona la VPN verificar si los puertos correctos estan abiertos
-                                            if p[0]=="lport":
-                                                    iptables+="iptables -A INPUT -p udp --dport %s -j ACCEPT\n" % p[1][0:-1]
-                                                    iptables+="iptables -A OUTPUT -p udp --sport %s -j ACCEPT\n" % p[1][0:-1]
-                                            #if p[0]=="rport":
-                                            #	iptables+="iptables -A INPUT -p udp --sport %s -j ACCEPT\n" % p[1][0:-1]
-                                            #	iptables+="iptables -A OUTPUT -p udp --dport %s -j ACCEPT\n" % p[1][0:-1]
+				if f !=".svn":
+					archivo=open("%s/%s" % (openvpndir,f))
+					for q in archivo.readlines():
+						p=q.split(" ")
+						#JOE aca es importante el tema de los puertos, si no funciona la VPN verificar si los puertos correctos estan abiertos
+						if p[0]=="lport":
+							iptables+="iptables -A INPUT -p udp --dport %s -j ACCEPT\n" % p[1][0:-1]
+							iptables+="iptables -A OUTPUT -p udp --sport %s -j ACCEPT\n" % p[1][0:-1]
+                        #if p[0]=="rport":
+                        #	iptables+="iptables -A INPUT -p udp --sport %s -j ACCEPT\n" % p[1][0:-1]
+                        #	iptables+="iptables -A OUTPUT -p udp --dport %s -j ACCEPT\n" % p[1][0:-1]
 
-	                iptables+="iptables -t mangle -A PREROUTING -p tcp -j RETURN\n"
-		        iptables+="iptables -P INPUT DROP\n"
-		        iptables+="iptables -P OUTPUT DROP\n"
-		        iptables+="iptables -P FORWARD DROP\n"
+			iptables+="iptables -t mangle -A PREROUTING -p tcp -j RETURN\n"
+			iptables+="iptables -P INPUT DROP\n"
+			iptables+="iptables -P OUTPUT DROP\n"
+			iptables+="iptables -P FORWARD DROP\n"
 
-	                ################################################# Escritura de archivos ##############################################################
-	                sasa+="E:/usr/sasacct-1.0.2/lang/\n"
-	                sasa+="U:en_UK\n"
-	                iptables+=ipfijastr
-	                iptables+=nateos
-	                #iptables+=ping
-	                f=open("%s/mrtg.cfg"%directorio,"w")
-	                f.write(mrtg)
-	                f.close()
-	
-	                f=open("%s/dhcpd.conf"%directorio,"w")
-	                f.write(dhcpd)
-	                f.close()
-	                f=open("%s/iptables.sh"%directorio,"w")
-	                f.write(iptables)
-	                f.close()
-	                f=open("%s/hosts"%directorio,"w")
-	                f.write(hosts)
-	                f.close()
-	                f=open("%s/sasacct.conf"%directorio,"w")
-	                f.write(sasa)
-	                f.close()
-
-                        # Ejecucion ##############################################################
-                        print "EJECUTANDO ZAFIRO"
-                        print "Ejecutando Firewall"
+			################################################# Escritura de archivos ##############################################################
+			sasa+="E:/usr/sasacct-1.0.2/lang/\n"
+			sasa+="U:en_UK\n"
+			iptables+=ipfijastr
+			iptables+=nateos
+			#iptables+=ping
+			f=open("%s/mrtg.cfg"%directorio,"w")
+			f.write(mrtg)
+			f.close()
+			
+			f=open("%s/dhcpd.conf"%directorio,"w")
+			f.write(dhcpd)
+			f.close()
+			f=open("%s/iptables.sh"%directorio,"w")
+			f.write(iptables)
+			f.close()
+			f=open("%s/hosts"%directorio,"w")
+			f.write(hosts)
+			f.close()
+			f=open("%s/sasacct.conf"%directorio,"w")
+			f.write(sasa)
+			f.close()
+			
+			# Ejecucion ##############################################################
+			print "EJECUTANDO ZAFIRO"
+			print "Ejecutando Firewall"
 			os.system("bash %s/iptables.sh" % (directorio))
 
-                # Acciones
-                print "Ejecutando Acciones"
-                #os.system("bash %s/acciones.sh" % (directorio))
-                os.system("chmod +x %s*" % (scriptsdir))
-                os.system("cat %s/icmp_echo_ignore_all > /proc/sys/net/ipv4/icmp_echo_ignore_all\n" % (directorio))
-
-                # Copia la configuracion al MRTG y lo ejecuta
-                print "Ejecutando Graficos"
-                os.system("cat %s/mrtg.cfg > /etc/mrtg.cfg\n" % (directorio))
-                os.system("env LANG=C mrtg\n")
-                
-                # Salida
-                print "Salida"
-                os.system("cat  %s/ip_forward > /proc/sys/net/ipv4/ip_forward\n" % (directorio))
-
-                # Estado de placas
-                print "Estado de placas"
-                os.system("ifconfig > %s/placas.txt\n" % directorio)
-
-                # REINICIAR DHCP #################################################################################################
-		reiniciardhcp=0
-	        inp=open("%s/reiniciardhcp" % directorio,"r")
-		for linea in inp.readlines():
-			reiniciardhcp=int(linea)
-		inp.close()
-		if reiniciardhcp==1:
-			print "REINICIANDO DHCP"
-                        os.system("echo 0 > %s/reiniciardhcp\n" % directorio)
-			os.system("/etc/init.d/isc-dhcp-server restart\n")
-
-                # REINICIAR NETWORK #################################################################################################
-		reiniciarred=0
-	        inp=open("%s/reiniciarred" % directorio,"r")
-		for linea in inp.readlines():
-			reiniciarred=int(linea)
-		inp.close()
-		if reiniciarred==1:
-			print "Reiniciando Servicio de Red"
-			os.system("/etc/init.d/networking restart\n")
-			os.system("echo 0 > %s/reiniciarred\n" % directorio)
-
-		# REINICIAR VPN #####################################################################################################
-		reiniciarvpn=0
-	        inp=open("%s/reiniciarvpn" % directorio,"r")
-		for linea in inp.readlines():
-			reiniciarvpn=int(linea)
-		inp.close()
-		if reiniciarvpn==1:
-			print "Reiniciando VPN"
-                        os.system("echo 0 > %s/reiniciarvpn\n" % directorio)
-			os.system("/etc/init.d/openvpn restart\n")
-
-                # FIN DE EJECUCION ###############################################################################################
-                print "FIN EJECUCION"
-
-                # TIEMPO DE ESPERA ANTES DE VOLVER A EJECUTAR ####################################################################
+			# Acciones
+			print "Ejecutando Acciones"
+			#os.system("bash %s/acciones.sh" % (directorio))
+			os.system("chmod +x %s*" % (scriptsdir))
+			os.system("cat %s/icmp_echo_ignore_all > /proc/sys/net/ipv4/icmp_echo_ignore_all\n" % (directorio))
+			
+			# Copia la configuracion al MRTG y lo ejecuta
+			
+			print "Ejecutando Graficos"
+			os.system("env LANG=C mrtg\n")
+			
+			# Salida
+			print "Salida"
+			os.system("cat  %s/ip_forward > /proc/sys/net/ipv4/ip_forward\n" % (directorio))
+			
+			# Estado de placas
+			print "Estado de placas"
+			os.system("ifconfig > %s/placas.txt\n" % directorio)
+			
+			
+			# FIN DE EJECUCION ###############################################################################################
+			print "FIN EJECUCION"
+			
+			# TIEMPO DE ESPERA ANTES DE VOLVER A EJECUTAR ####################################################################
 		time.sleep(5)
 	except ValueError,NameError:
 		print ValueError,NameError

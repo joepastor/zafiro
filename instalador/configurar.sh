@@ -1,5 +1,6 @@
 #!/bin/sh
 directorio="/zafiro"
+
 #mv /etc/network/interfaces /etc/network/interfaces.$(date +%Y%m%d%H%M%S)
 #mv /etc/default/dhcp /etc/default/dhcp.$(date +%Y%m%d%H%M%S)
 #mv /etc/default/dhcp3-server /etc/default/dhcp3-server.$(date +%Y%m%d%H%M%S)

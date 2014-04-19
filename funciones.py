@@ -1,7 +1,14 @@
 #!/usr/bin/env python
 import MySQLdb, sys
+import os
+from time import strftime,localtime
+
+dia=strftime("%w",localtime())
+hora=strftime("%H",localtime())
+
 try:
-	db = MySQLdb.connect(host='localhost',user='zafiro',passwd='j483nd8-34/23f--ds',db='zafiro')
+	#db = MySQLdb.connect(host='localhost',user='zafiro',passwd='j483nd8-34/23f--ds',db='zafiro')
+	db = MySQLdb.connect(host='localhost',user='root',passwd='',db='zafiro')
 	curs = db.cursor()
 except MySQLdb.Error, e:
 	print e
@@ -47,29 +54,18 @@ if dns3_force!="":
 if dns3_force=="-":
 	dns3=""
 
-print dns1
-print dns2
-print dns3
 
-inp=open(interfacesfile,"r")
-gwcliente=""
-iface=""
-global ipprefijopri
-ipprefijopri=""
-for linea in inp.readlines():
-	linea2=linea.split(" ")
-	if linea2[0]=="iface":
-		iface=linea2[1]
-	if len(linea2)>1:
-		if iface==devpri and linea2[0]=="\taddress":
-			gwcliente=linea2[1][:-1]
-			ip=linea2[1]
-			prioctpri=ip.split(".")[0]
-	                segoctpri=ip.split(".")[1]
-	                teroctpri=ip.split(".")[2]
-	                cuaoctpri=ip.split(".")[3][:-1]
-	                ipprefijopri="%s.%s.%s." % (prioctpri,segoctpri,teroctpri)
-inp.close()
+# Obteniendo datos de ip
+curs.execute("""select id,ip,device from interfaces where device='eth0' and enabled=true""")
+rs=curs.fetchall()
+for id,ip,device in rs:
+	gwcliente=ip
+	prioctpri=ip.split(".")[0]
+	segoctpri=ip.split(".")[1]
+	teroctpri=ip.split(".")[2]
+	cuaoctpri=ip.split(".")[3]
+	ipprefijopri="%s.%s.%s." % (prioctpri,segoctpri,teroctpri)
+
 ###### FUNCIONES ################################################################
 
 def fncgetlimitar():
@@ -78,22 +74,19 @@ def fncgetlimitar():
 		return linea
 	inp.close()
 
-def fncarmaip (p,s,t,c):
-        return "%s.%s.%s.%s" % (p,s,t,c)
-
 def fncgrafico(puerto, prefijo, mascara,tipo):
 	iptables=""
-        iptables+="iptables -X %din\n" % puerto
-        iptables+="iptables -N %din\n" % puerto
+	iptables+="iptables -X %din\n" % puerto
+	iptables+="iptables -N %din\n" % puerto
 	iptables+="iptables -A %din\n" % puerto
 	iptables+="iptables -X %dout\n" % puerto
 	iptables+="iptables -N %dout\n" % puerto
 	iptables+="iptables -A %dout\n" % puerto
 	iptables+="iptables -A FORWARD -s %s%s -p %s --dport %d -j %dout\n" % (prefijo,mascara,tipo,puerto,puerto)
 	iptables+="iptables -A FORWARD -d %s%s -p %s --sport %d -j %din\n" % (prefijo,mascara,tipo,puerto,puerto)
-        return iptables
+	return iptables
 
-def fncfiltros():
+def getFiltros():
 	iptables=""
 	iptables+="\n# COMIENZO DE FILTROS PERSONALIZADOS\n"
         curs.execute("""select tipo,ipsource,ipdestino,puertosource,puertodestino,interfaceentrada,interfacesalida from filtros where estado=0""")
@@ -121,7 +114,7 @@ def fncfiltros():
 	iptables+="\n# FIN DE FILTROS PERSONALIZADO\n"
 	return iptables
 
-def fncfwpersonalizado():
+def getFwPersonalizado():
 	iptables=""
 	iptables+="\n# COMIENZO DEL FIREWALL PERSONALIZADO\n"
         curs.execute("""select comando from firewall where estado=0 order by orden""")
@@ -131,7 +124,7 @@ def fncfwpersonalizado():
 	iptables+="\n# FIN DEL FIREWALL PERSONALIZADO\n"
 	return iptables
 
-def fncfirewall():
+def getFirewall():
 	iptables=""
 	iptables+="\n# COMIENZO DE FIREWALL ESTANDAR\n"
 	iptables+="iptables -P INPUT ACCEPT\n"
@@ -234,3 +227,68 @@ def fncfirewall():
 	iptables+="# FIN DE FIREWALL ESTANDAR\n\n"
 
 	return iptables
+
+def getAcciones():
+	curs.execute("""select id,descripcion,comando from acciones where valor = 1""")
+	rs=curs.fetchall()
+	for id,descripcion,comando in rs:
+		print id,descripcion,comando
+		if comando:
+			os.system(comando)
+		curs.execute("""update acciones set valor=0 where id=%s""" % id)
+
+def getEjecutar():
+	
+	ejecutar = 0
+	
+	# Si esta activado el flag de ejecucion, ejecutar 
+	
+	curs.execute("""select valor from acciones where id = 6""")
+	rs=curs.fetchall()
+	for valor in rs:
+		if valor == 1:
+			ejecutar = valor
+			curs.execute("""update acciones set valor=0 where id = 6""")
+	
+	# Si ha pasado una hora, ejecutar
+	if strftime("%M",localtime()) == 46 and strftime("%S",localtime()) == 0:
+		print "JECUOTO" 
+	
+	ejecutar=1 # HARDCODING JOE
+	return ejecutar		
+
+def getLiberado():
+	# Si esta liberado en ancho de banda
+	liberado=0
+	
+	inp=open("%s/liberado" % archivosdir,"r")
+	for linea in inp.readlines():
+		liberado=int(linea)
+		inp.close()
+		
+	return liberado
+	
+def getMRTG(dev):
+	mrtg=""
+	mrtg+="Target[%s]: `/usr/bin/mrtg-ip-acct %s`\n" % (dev,dev)
+	mrtg+="MaxBytes1[%s]: 1024000\n" % dev
+	mrtg+="MaxBytes2[%s]: 512000\n" % dev
+	mrtg+="Title[%s]: Analisis del trafico total en %s\n" % (dev,dev)
+	mrtg+="YLegend[%s]: Trafico\n" % dev
+	mrtg+="PageTop[%s]: <H1>Analisis del trafico total de la interface %s</H1>\n" % (dev,dev)
+	mrtg+="XSize[%s]:580\n" % dev
+	mrtg+="YSize[%s]:100\n" % dev
+	mrtg+="Language: spanish\n"
+	mrtg+="Options[_]: growright, bits\n"
+	
+	return mrtg
+	
+def getNateos():
+	nateos=""
+	curs.execute("""select forwardeospuesrc,forwardeospuedst,forwardeosipdst,forwardeosipsrc from forwardeos where forwardeosest=0""")
+	nat=curs.fetchall()
+	for forwardeospuesrc,forwardeospuedst,forwardeosipdst,forwardeosipsrc in nat:
+		if forwardeosipsrc=='0.0.0.0':
+			forwardeosipsrc+='/0'
+		nateos+="iptables -t nat -A PREROUTING -i %s -p tcp -s %s --dport %s -j DNAT --to %s:%s\n" % (devpub,forwardeosipsrc,forwardeospuesrc,forwardeosipdst,forwardeospuedst)
+	return nateos

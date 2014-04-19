@@ -7,6 +7,8 @@ if (isset($_POST["txtusu"]) && $_POST["txtpas"]) {
     $sql = "select usuariosid from usuarios where usuariosnom='" . $_POST["txtusu"] . "' and usuariospas='" . $_POST["txtpas"] . "'";
     $rsusuarios = sql::query($sql);
     $rsusuarios = mysql_fetch_assoc($rsusuarios);
+    var_dump($rsusuarios);
+
     if ($rsusuarios["usuariosid"]) {
         session_start();
         $_SESSION["usuario"]=1;

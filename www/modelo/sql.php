@@ -3,7 +3,7 @@
 class sql {
     function connect() {
         try {
-		$db = mysql_connect("localhost", "zafiro", "j483nd8-34/23f--ds");
+		$db = mysql_connect("localhost", "root", "root");
 		$db_selected = mysql_select_db("zafiro", $db);
 		if (!$db) {
             		throw new Exception('Error de conexion');
