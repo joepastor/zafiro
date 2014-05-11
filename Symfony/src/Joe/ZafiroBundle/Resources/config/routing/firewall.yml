@@ -1,0 +1,30 @@
+firewall:
+    pattern:  /
+    defaults: { _controller: "JoeZafiroBundle:Firewall:index" }
+
+firewall_show:
+    pattern:  /{id}/show
+    defaults: { _controller: "JoeZafiroBundle:Firewall:show" }
+
+firewall_new:
+    pattern:  /new
+    defaults: { _controller: "JoeZafiroBundle:Firewall:new" }
+
+firewall_create:
+    pattern:  /create
+    defaults: { _controller: "JoeZafiroBundle:Firewall:create" }
+    requirements: { _method: post }
+
+firewall_edit:
+    pattern:  /{id}/edit
+    defaults: { _controller: "JoeZafiroBundle:Firewall:edit" }
+
+firewall_update:
+    pattern:  /{id}/update
+    defaults: { _controller: "JoeZafiroBundle:Firewall:update" }
+    requirements: { _method: post|put }
+
+firewall_delete:
+    pattern:  /{id}/delete
+    defaults: { _controller: "JoeZafiroBundle:Firewall:delete" }
+    requirements: { _method: post|delete }

@@ -1,0 +1,43 @@
+{% extends 'JoeZafiroBundle:Default:base.html.twig' %}
+
+{% block body -%}
+    <h1>Forwardeos list</h1>
+
+    <table class="records_list">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Puesrc</th>
+                <th>Puedst</th>
+                <th>Ipdst</th>
+                <th>Estado</th>
+                <th>Ipsrc</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('forwardeos_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td>{{ entity.puesrc }}</td>
+                <td>{{ entity.puedst }}</td>
+                <td>{{ entity.ipdst }}</td>
+                <td>{{ entity.estado }}</td>
+                <td>{{ entity.ipsrc }}</td>
+                <td>
+                    <a href="{{ path('forwardeos_show', { 'id': entity.id }) }}">show</a>
+                    <a href="{{ path('forwardeos_edit', { 'id': entity.id }) }}">edit</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+        <ul>
+        <li>
+            <a href="{{ path('forwardeos_new') }}">
+                Create a new entry
+            </a>
+        </li>
+    </ul>
+    {% endblock %}

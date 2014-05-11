@@ -1,0 +1,30 @@
+clientes:
+    pattern:  /
+    defaults: { _controller: "JoeZafiroBundle:Clientes:index" }
+
+clientes_show:
+    pattern:  /{id}/show
+    defaults: { _controller: "JoeZafiroBundle:Clientes:show" }
+
+clientes_new:
+    pattern:  /new
+    defaults: { _controller: "JoeZafiroBundle:Clientes:new" }
+
+clientes_create:
+    pattern:  /create
+    defaults: { _controller: "JoeZafiroBundle:Clientes:create" }
+    requirements: { _method: post }
+
+clientes_edit:
+    pattern:  /{id}/edit
+    defaults: { _controller: "JoeZafiroBundle:Clientes:edit" }
+
+clientes_update:
+    pattern:  /{id}/update
+    defaults: { _controller: "JoeZafiroBundle:Clientes:update" }
+    requirements: { _method: post|put }
+
+clientes_delete:
+    pattern:  /{id}/delete
+    defaults: { _controller: "JoeZafiroBundle:Clientes:delete" }
+    requirements: { _method: post|delete }

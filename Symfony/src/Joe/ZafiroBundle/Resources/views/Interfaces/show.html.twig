@@ -1,0 +1,60 @@
+{% extends 'JoeZafiroBundle:Default:base.html.twig' %}
+
+{% block body -%}
+    <h1>Interfaces</h1>
+
+    <table class="record_properties">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ entity.id }}</td>
+            </tr>
+            <tr>
+                <th>Device</th>
+                <td>{{ entity.device }}</td>
+            </tr>
+            <tr>
+                <th>Descripcion</th>
+                <td>{{ entity.descripcion }}</td>
+            </tr>
+            <tr>
+                <th>Ip</th>
+                <td>{{ entity.ip }}</td>
+            </tr>
+            <tr>
+                <th>Netmask</th>
+                <td>{{ entity.netmask }}</td>
+            </tr>
+            <tr>
+                <th>Network</th>
+                <td>{{ entity.network }}</td>
+            </tr>
+            <tr>
+                <th>Broadcast</th>
+                <td>{{ entity.broadcast }}</td>
+            </tr>
+            <tr>
+                <th>Gateway</th>
+                <td>{{ entity.gateway }}</td>
+            </tr>
+            <tr>
+                <th>Enabled</th>
+                <td>{{ entity.enabled }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('interfaces') }}">
+            Back to the list
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('interfaces_edit', { 'id': entity.id }) }}">
+            Edit
+        </a>
+    </li>
+    <li>{{ form(delete_form) }}</li>
+</ul>
+{% endblock %}

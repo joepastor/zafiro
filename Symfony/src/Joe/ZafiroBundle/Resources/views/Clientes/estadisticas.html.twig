@@ -1,0 +1,52 @@
+{% extends 'JoeZafiroBundle:Default:base.html.twig' %}
+
+{% block body -%}
+    <h1>Clientes list</h1>
+
+    <table class="records_list">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nombre</th>
+                <th>Macaddress</th>
+                <th>Clientesper</th>
+                <th>Estado</th>
+                <th>Ip</th>
+                <th>Plan</th>
+                <th>Direccion</th>
+                <th>Telefono</th>
+                <th>Cuit</th>
+                <th>Email</th>
+                <th>Enrutaproxy</th>
+                <th>Salidahabilitada</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('clientes_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td>{{ entity.nombre }}</td>
+                <td>{{ entity.macaddress }}</td>
+                <td>{{ entity.clientesper }}</td>
+                <td>{{ entity.estado }}</td>
+                <td><a href="http://{{ entity.ip }}">{{ entity.ip }}<img src="{{ asset('bundles/joezafiro/mrtg/172.16.0.103-day.png') }}"></a></td>
+                <td>{{ entity.plan }}</td>
+                <td>{{ entity.direccion }}</td>
+                <td>{{ entity.telefono }}</td>
+                <td>{{ entity.cuit }}</td>
+                <td>{{ entity.email }}</td>
+                <td>{{ entity.enrutaProxy }}</td>
+                <td>{{ entity.salidaHabilitada }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+        <ul>
+        <li>
+            <a href="{{ path('clientes_new') }}">
+                Create a new entry
+            </a>
+        </li>
+    </ul>
+    {% endblock %}

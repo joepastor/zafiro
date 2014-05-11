@@ -1,0 +1,64 @@
+{% extends 'JoeZafiroBundle:Default:base.html.twig' %}
+
+{% block body -%}
+    <h1>Filtros</h1>
+
+    <table class="record_properties">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ entity.id }}</td>
+            </tr>
+            <tr>
+                <th>Nombre</th>
+                <td>{{ entity.nombre }}</td>
+            </tr>
+            <tr>
+                <th>Tipo</th>
+                <td>{{ entity.tipo }}</td>
+            </tr>
+            <tr>
+                <th>Ipsource</th>
+                <td>{{ entity.ipsource }}</td>
+            </tr>
+            <tr>
+                <th>Ipdestino</th>
+                <td>{{ entity.ipdestino }}</td>
+            </tr>
+            <tr>
+                <th>Puertosource</th>
+                <td>{{ entity.puertosource }}</td>
+            </tr>
+            <tr>
+                <th>Puertodestino</th>
+                <td>{{ entity.puertodestino }}</td>
+            </tr>
+            <tr>
+                <th>Estado</th>
+                <td>{{ entity.estado }}</td>
+            </tr>
+            <tr>
+                <th>Interfaceentrada</th>
+                <td>{{ entity.interfaceentrada }}</td>
+            </tr>
+            <tr>
+                <th>Interfacesalida</th>
+                <td>{{ entity.interfacesalida }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('filtros') }}">
+            Back to the list
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('filtros_edit', { 'id': entity.id }) }}">
+            Edit
+        </a>
+    </li>
+    <li>{{ form(delete_form) }}</li>
+</ul>
+{% endblock %}

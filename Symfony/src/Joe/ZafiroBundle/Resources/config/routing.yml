@@ -1,0 +1,38 @@
+joe_zafiro_homepages:
+    pattern:  /
+    defaults: { _controller: JoeZafiroBundle:Default:index }
+
+server_list:
+    pattern: /info/{name}
+    defaults: { _controller: JoeZafiroBundle:Server:info }
+
+whois:
+    pattern: /whois
+    defaults: { _controller: JoeZafiroBundle:Server:whois }
+
+server_tools:
+    pattern: /tools/{name}/{parameter}
+    defaults: { _controller: JoeZafiroBundle:Server:tools }
+    
+actions:
+    pattern: /actions/{name}
+    defaults: { _controller: JoeZafiroBundle:Server:action }
+
+JoeZafiroBundle_clientes:
+    resource: "@JoeZafiroBundle/Resources/config/routing/clientes.yml"
+    prefix:   /clientes
+JoeZafiroBundle_canales:
+    resource: "@JoeZafiroBundle/Resources/config/routing/canales.yml"
+    prefix:   /canales
+JoeZafiroBundle_firewall:
+    resource: "@JoeZafiroBundle/Resources/config/routing/firewall.yml"
+    prefix:   /firewall
+JoeZafiroBundle_forwardeos:
+    resource: "@JoeZafiroBundle/Resources/config/routing/forwardeos.yml"
+    prefix:   /forwardeos
+JoeZafiroBundle_interfaces:
+    resource: "@JoeZafiroBundle/Resources/config/routing/interfaces.yml"
+    prefix:   /interfaces
+JoeZafiroBundle_filtros:
+    resource: "@JoeZafiroBundle/Resources/config/routing/filtros.yml"
+    prefix:   /filtros

@@ -1,0 +1,7 @@
+parameters:
+#    joe_zafiro.example.class: Joe\ZafiroBundle\Example
+
+services:
+#    joe_zafiro.example:
+#        class: %joe_zafiro.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

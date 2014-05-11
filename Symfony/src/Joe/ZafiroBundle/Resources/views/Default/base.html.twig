@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>Zafiro - {% block title %}{% endblock %}</title>
+        {% block stylesheets %}            
+            <link href="{{ asset('bundles/joezafiro/css/codemirror.css') }}" rel="stylesheet" />
+            <link href="{{ asset('bundles/joezafiro/css/codemirror-theme.css') }}" rel="stylesheet" />
+            <link href="{{ asset('bundles/joezafiro/css/bootstrap.css') }}" rel="stylesheet" />
+            <link href="{{ asset('bundles/joezafiro/css/jshint.css') }}" rel="stylesheet" />
+            <link href="{{ asset('bundles/joezafiro/css/estilo.css') }}" rel="stylesheet" />
+            <script src="{{ asset('bundles/joezafiro/js/jquery-latest.js') }}"></script>
+    		<script src="{{ asset('bundles/joezafiro/js/bootstrap.min.js') }}"></script>
+        {% endblock %}
+    </head>
+    <body>
+    	<div id="header">
+        
+        <div class="navbar navbar-fixed-top navbar-inverse">
+			<div class="navbar-inner">
+				<a class="brand"><img src="{{ asset('bundles/joezafiro/images/ZAFIRO-LOGO.png') }}" width="80px"></a>
+				<ul class="nav">
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Networking <b class="caret"></b></a>
+						<ul class="dropdown-menu">
+							<li><a href="controlador.php?view=placas">Estado de Placas</a></li>
+		            		<li><a href="controlador.php?view=rutas">Rutas del Servidor</a></li>
+		            		<li><a href="controlador.php?view=arp">Tabla ARP</a></li>
+						</ul>
+	        		</li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Informaci&oacute;n <b class="caret"></b></a>
+						<ul class="dropdown-menu">
+							<li><a href="controlador.php?view=anchodebanda">Ancho de Banda</a></li>
+							<li><a href="controlador.php?view=estadoclientes">Estado de Clientes</a></li>
+							<li><a href="controlador.php?view=estadonodos">Estado de Nodos VPN</a></li>
+							<li><a href="calamaris">Estado de Proxy</a></li>
+							<li><a href="controlador.php?view=logsys">Log del Sistema</a></li>
+							<li><a href="controlador.php?view=dmesg">Mensajes de Inicio</a></li>
+						</ul>
+					</li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Herramientas <b class="caret"></b></a>
+						<ul class="dropdown-menu">
+							<li><a href="controlador.php?view=detectar">Detectar Equipos</a></li>
+							<li><a href="controlador.php?view=exe&comando=nslookup">DNS Lookup</a></li>
+							<li><a href="controlador.php?view=exe&comando=ping">Ping</a></li>
+							<li><a href="controlador.php?view=exe&comando=tracepath">Trazado de Ruta</a></li>
+							<li><a href="{{ path('whois') }}">Whois</a></li>
+							<li><a href="controlador.php?view=exe&comando=dig">Informaci&oacute;n de Dominio</a></li>
+						</ul>
+					</li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Configuracion <b class="caret"></b></a>
+						<ul class="dropdown-menu">
+							<li><a href="{{ path('filtros') }}">Filtros</a></li>
+							<li><a href="{{ path('firewall') }}">Firewall Manual</a></li>
+							<li><a href="{{ path('interfaces') }}">Interfaces</a></li>
+							<li><a href="{{ path('canales') }}">Canales</a></li>
+							<li><a href="listar.php?list=planes">Planes</a></li>
+							<li><a href="{{ path('clientes') }}">Clientes</a></li>
+							<li><a href="listar.php?list=ipspublicas">IPs Publicas</a></li>
+							<li><a href="{{ path('forwardeos') }}">Opciones NAT</a></li>
+							<li><a href="listar.php?list=nodos">Nodos VPN</a></li>
+						</ul>
+					</li>
+
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Acciones <b class="caret"></b></a>
+						<ul class="dropdown-menu">
+							<li><a href="{{ path('actions', { 'name': 'aplicar' }) }}"><img src="{{ asset('bundles/joezafiro/images/ok2.png') }}" width="16px"> Aplicar cambios</a></li>
+							<li><a href="#" onclick="if(confirm('Desea reinciar el servicio VPN?')){location='{{ path('actions', { 'name': 'reiniciar_vpn' }) }}';}"><img src="{{ asset('bundles/joezafiro/images/vpn.png') }}" width="16px"> Reiniciar VPN</a></li>
+							<li><a href="#" onclick="if(confirm('Desea reiniciar servicio DHCP?')){location='{{ path('actions', { 'name': 'reiniciar_dhcp' }) }}';}"><img src="{{ asset('bundles/joezafiro/images/dhcp.png') }}" width="16px"> Reiniciar DHCP</a></li>
+							<li><a href="#" onclick="if(confirm('Desea reiniciar el servicio de red?')){location='{{ path('actions', { 'name': 'reiniciar_red' }) }}';}" ><img src="{{ asset('bundles/joezafiro/images/network.png') }}" width="16px"> Reiniciar Network</a></li>
+							<li class="divider"></li>
+							<li class="nav-header">Warning</li>
+							<li><a href="#" onclick="if(confirm('Desea resetear el servidor?')){location='{{ path('actions', { 'name': 'reiniciar' }) }}';}"><img src="{{ asset('bundles/joezafiro/images/reset.png') }}" width="16px"> Resetear</a></li>
+							<li><a id="apagar" href="#" onclick="if(confirm('Desea apagar el servidor?')){location='{{ path('actions', { 'name': 'apagar' }) }}';}"> <img src="{{ asset('bundles/joezafiro/images/shutdown.png') }}" width="16px"> Apagar</a></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+		</div>
+        
+        <div id="content">
+            {% block body %}{% endblock %}
+        </div>
+        <div id="footer">
+            {% block footer %}{% endblock %}
+            Footer, todos los derechos reservados
+        </div>
+    </body>
+</html>

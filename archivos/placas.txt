@@ -9,9 +9,7 @@ stf0: flags=0<> mtu 1280
 en0: flags=8863<UP,BROADCAST,SMART,RUNNING,SIMPLEX,MULTICAST> mtu 1500
 	ether 54:26:96:d4:71:f5 
 	inet6 fe80::5626:96ff:fed4:71f5%en0 prefixlen 64 scopeid 0x4 
-	inet 192.168.1.125 netmask 0xffffff00 broadcast 192.168.1.255
-	inet6 fd56:7d0c:65ff::5626:96ff:fed4:71f5 prefixlen 64 autoconf 
-	inet6 fd56:7d0c:65ff::d422:4ec9:7bd4:e22f prefixlen 64 autoconf temporary 
+	inet 10.100.23.124 netmask 0xffff8000 broadcast 10.100.127.255
 	nd6 options=1<PERFORMNUD>
 	media: autoselect
 	status: active

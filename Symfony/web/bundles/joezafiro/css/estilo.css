@@ -1,0 +1,26 @@
+body {
+	//background-image: url('../images/bg.gif');
+    background-repeat: repeat;
+    margin-top: 30px;
+    padding: 20px;
+}
+.records_list {
+	border-spacing: 2px;
+	border: 1px solid;
+	border-collapse: separate;
+	
+}
+.records_list th {
+	background-color: #ccc;
+}
+.records_list tr {
+	background-color: #eee;
+	text-align: center;
+}
+.navbar{
+	box-shadow: 5px 5px 5px #888888;
+}
+
+#apagar{
+	background-color:#ffaaaa;
+}

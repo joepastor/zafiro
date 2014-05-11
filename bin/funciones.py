@@ -3,7 +3,7 @@ import MySQLdb, sys
 import os
 from time import strftime,localtime
 
-dia=strftime("%w",localtime())
+dia=int(strftime("%w",localtime()))+1
 hora=strftime("%H",localtime())
 
 try:

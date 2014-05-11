@@ -1,0 +1,30 @@
+filtros:
+    pattern:  /
+    defaults: { _controller: "JoeZafiroBundle:Filtros:index" }
+
+filtros_show:
+    pattern:  /{id}/show
+    defaults: { _controller: "JoeZafiroBundle:Filtros:show" }
+
+filtros_new:
+    pattern:  /new
+    defaults: { _controller: "JoeZafiroBundle:Filtros:new" }
+
+filtros_create:
+    pattern:  /create
+    defaults: { _controller: "JoeZafiroBundle:Filtros:create" }
+    requirements: { _method: post }
+
+filtros_edit:
+    pattern:  /{id}/edit
+    defaults: { _controller: "JoeZafiroBundle:Filtros:edit" }
+
+filtros_update:
+    pattern:  /{id}/update
+    defaults: { _controller: "JoeZafiroBundle:Filtros:update" }
+    requirements: { _method: post|put }
+
+filtros_delete:
+    pattern:  /{id}/delete
+    defaults: { _controller: "JoeZafiroBundle:Filtros:delete" }
+    requirements: { _method: post|delete }

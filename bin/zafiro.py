@@ -136,7 +136,7 @@ while True:
 			
 			# Crea la configuracion de limitacion de cada cliente
 			ipfijastr=""
-			curs.execute("""select id,ip,macaddress,plan,nombre,ipsfijasip,ipsfijasint,ipsfijasest,enruta_proxy,salida_habilitada,descripcion from clientes left join ipsfijas on ipsfijas.ipsfijascli=clientes.id where clientes.estado=0 order by nombre""")
+			curs.execute("""select clientes.id,clientes.ip,macaddress,plan,nombre,ipsfijas.ip,ipsfijas.interface,ipsfijas.estado,enruta_proxy,salida_habilitada,descripcion from clientes left join ipsfijas on ipsfijas.cliente=clientes.id where clientes.estado=0 order by nombre""")
 			clientes=curs.fetchall()
 			hosts="127.0.0.1        localhost\n"
 			for clientesid,clientesip,clientesmac,clientespla,clientesnom,ipsfijasip,ipsfijasint,ipsfijasest,clientespro,clientessal,clientesdes in clientes:
@@ -146,6 +146,7 @@ while True:
 				iptables+="#Cliente - %s	IP:%s    ID: %s\n" % (clientesnom,clientesip,clientesid)
 				iptables+="#------------------------------------------------------------------------------\n"
 				plan=clientespla
+
 				# Define el numero de ip, gateway e ip publica del cliente. Si hay oclutamiento! ojo al piojo!
 				ip="%s%s" % (ipprefijopri,clientesip)
 				
@@ -153,12 +154,6 @@ while True:
 				if ipsfijasip:
 					cuak=ipsfijasint[3:]
 					ipfijastr+="ifconfig %s:%s %s\n" % (devenm,cuak,ipsfijasip)
-
-				# Selecciona el canal que debe utilizar el cliente
-				curs.execute("""select canal,subida,bajada,planes.nombre from planes inner join canales on planes.canal=canales.id where planes.id=%d and planes.dia=%s and planes.hora=%s"""%(plan,dia,hora))
-				marca=curs.fetchall()
-				i=0
-				flagnodebesalir=1
 
 				# Crea las reglas de analisis de trafico por ip
 				iptables+="iptables -X %s_i\n" % ip
@@ -169,7 +164,13 @@ while True:
 				iptables+="iptables -F %s_o\n" % ip
 				iptables+="iptables -A FORWARD -s %s -j %s_o\n" % (ip,ip)
 				iptables+="iptables -A FORWARD -d %s -j %s_i\n" % (ip,ip)
-				
+
+				# Selecciona el canal que debe utilizar el cliente
+				curs.execute("""select canal,subida,bajada,planes.nombre from planes inner join canales on planes.canal=canales.id where planes.id=%d and planes.dia=%s and planes.hora=%s""" % (plan,dia,hora))
+				marca=curs.fetchall()
+				i=0
+				flagnodebesalir=1
+
 				for planescan, canalessub,canalesbaj,canalesnom in marca:
 					flagnodebesalir=0
 			        i=i+1
@@ -411,7 +412,7 @@ while True:
 				echo $uptime
 				echo $statname
 				""" % (ip,ip,ip)
-				
+
 				f=open("%s/%s.sh" % (scriptsdir,ip),"w")
 				f.write(script)
 				f.close()

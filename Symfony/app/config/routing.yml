@@ -1,0 +1,4 @@
+joe_zafiro:
+    resource: "@JoeZafiroBundle/Resources/config/routing.yml"
+    prefix:   /
+

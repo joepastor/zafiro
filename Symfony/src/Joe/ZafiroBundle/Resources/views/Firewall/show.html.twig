@@ -1,0 +1,44 @@
+{% extends 'JoeZafiroBundle:Default:base.html.twig' %}
+
+{% block body -%}
+    <h1>Firewall</h1>
+
+    <table class="record_properties">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ entity.id }}</td>
+            </tr>
+            <tr>
+                <th>Comando</th>
+                <td>{{ entity.comando }}</td>
+            </tr>
+            <tr>
+                <th>Estado</th>
+                <td>{{ entity.estado }}</td>
+            </tr>
+            <tr>
+                <th>Comentario</th>
+                <td>{{ entity.comentario }}</td>
+            </tr>
+            <tr>
+                <th>Orden</th>
+                <td>{{ entity.orden }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('firewall') }}">
+            Back to the list
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('firewall_edit', { 'id': entity.id }) }}">
+            Edit
+        </a>
+    </li>
+    <li>{{ form(delete_form) }}</li>
+</ul>
+{% endblock %}
