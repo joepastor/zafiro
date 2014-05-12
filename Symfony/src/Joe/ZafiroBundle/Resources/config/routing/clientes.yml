@@ -28,3 +28,11 @@ clientes_delete:
     pattern:  /{id}/delete
     defaults: { _controller: "JoeZafiroBundle:Clientes:delete" }
     requirements: { _method: post|delete }
+
+clientes_toggle_salida:
+    pattern:  /{id}/toggle_salida
+    defaults: { _controller: "JoeZafiroBundle:Clientes:toggle_salida" }
+
+clientes_toggle_proxy:
+    pattern:  /{id}/toggle_proxy
+    defaults: { _controller: "JoeZafiroBundle:Clientes:toggle_proxy" }    

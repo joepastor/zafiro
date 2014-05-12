@@ -5,6 +5,7 @@ body {
     padding: 20px;
 }
 .records_list {
+	margin: 0px auto;
 	border-spacing: 2px;
 	border: 1px solid;
 	border-collapse: separate;
