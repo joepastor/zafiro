@@ -31,6 +31,7 @@ devenm="eth0"
 
 # Directorios
 zafirodir="/Users/Joe/git/zafiro"
+zafirodir="/test/zafiro"
 archivosdir="%s/archivos" % zafirodir 
 openvpndir="%s/openvpn" % archivosdir
 scriptsdir="%s/scripts" % archivosdir
@@ -44,7 +45,5 @@ interfacesfile="/etc/network/interfaces"
 dyndnsfile="/etc/ddclient.conf"
 hostnamefile="/etc/hostname"
 resolvfile="/etc/resolv.conf"
-placasinfo="/zafiro/archivos/placas.txt"
-syslogfile="/var/log/syslog"
-ip_forward="/zafiro/archivos/ip_forward"
-pingignore="/zafiro/archivos/icmp_echo_ignore_all"
+ip_forward="%s/ip_forward" % archivosdir
+pingignore="%s/icmp_echo_ignore_all" % archivosdir
