@@ -23,9 +23,10 @@
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Networking <b class="caret"></b></a>
 						<ul class="dropdown-menu">
-							<li><a href="controlador.php?view=placas">Estado de Placas</a></li>
-		            		<li><a href="controlador.php?view=rutas">Rutas del Servidor</a></li>
-		            		<li><a href="controlador.php?view=arp">Tabla ARP</a></li>
+							<li><a href="{{ path('networkinfo') }}/ifconfig"">Estado de Placas</a></li>
+		            		<li><a href="{{ path('networkinfo') }}/route"">Rutas del Servidor</a></li>
+		            		<li><a href="{{ path('networkinfo') }}/arp">Tabla ARP</a></li>
+							<li><a href="{{ path('networkinfo') }}">Network Diagnostics</a></li>
 						</ul>
 	        		</li>
 					<li class="dropdown">
@@ -37,17 +38,6 @@
 							<li><a href="calamaris">Estado de Proxy</a></li>
 							<li><a href="controlador.php?view=logsys">Log del Sistema</a></li>
 							<li><a href="controlador.php?view=dmesg">Mensajes de Inicio</a></li>
-						</ul>
-					</li>
-					<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Herramientas <b class="caret"></b></a>
-						<ul class="dropdown-menu">
-							<li><a href="controlador.php?view=detectar">Detectar Equipos</a></li>
-							<li><a href="controlador.php?view=exe&comando=nslookup">DNS Lookup</a></li>
-							<li><a href="controlador.php?view=exe&comando=ping">Ping</a></li>
-							<li><a href="controlador.php?view=exe&comando=tracepath">Trazado de Ruta</a></li>
-							<li><a href="{{ path('whois') }}">Whois</a></li>
-							<li><a href="controlador.php?view=exe&comando=dig">Informaci&oacute;n de Dominio</a></li>
 						</ul>
 					</li>
 					<li class="dropdown">

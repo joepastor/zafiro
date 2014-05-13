@@ -292,9 +292,6 @@ def setSalida():
 	f=open("%s/ip_forward" % archivosdir,"w")
 	f.write(getValueSettings("salida"))
 	f.close()
-
-def getPlacas():
-	os.system("ifconfig > %s/placas.txt\n" % archivosdir)
 	
 def createInterfaces():
 	interfaces=""

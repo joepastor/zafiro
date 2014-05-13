@@ -22,9 +22,10 @@
                 <th>Telefono</th>
                 <th>Cuit</th>
                 <th>Email</th>
-                -->
                 <th>Enrutaproxy</th>
                 <th>Salidahabilitada</th>
+                -->
+                <th>Configuracion</th>
                 <th>Actividad</th>
                 <!--<th>Actions</th>-->
             </tr>
@@ -37,7 +38,7 @@
                 <!--<td>{{ entity.descripcion }}</td>-->
                 <!--<td>{{ entity.macaddress }}</td>-->
                 <td><a href="http://{{ entity.ip }}">172.16.0.{{ entity.ip }}</a><br>({{ entity.macaddress }})</td>
-                <td>{{ entity.plan }}</td>
+                <td>{{ entity.clientesplan }}</td>
                 <!--<td>{{ entity.clientesper }}</td>-->
                 <td>{{ entity.estado }}</td>
                 
@@ -49,17 +50,14 @@
                 <td>{{ entity.cuit }}</td>
                 <td>{{ entity.email }}</td>
                 -->
-                <td>{{ entity.enrutaProxy }}
+                <td>
                 <a href="{{ path('clientes_toggle_proxy', { 'id': entity.id }) }}">
 	                {% if entity.enrutaProxy == false %}
-	                	No Enruta
+	                	Proxy
 	               	{% else %}
-	               		Enrutado
+	               		Directo
 	                {% endif %}
 	                </a>
-	            </td>
-                <td>
-                {{ entity.salidaHabilitada }}
 	                <a href="{{ path('clientes_toggle_salida', { 'id': entity.id }) }}">
 	                {% if entity.salidaHabilitada == false %}
 	                	No Sale

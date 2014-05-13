@@ -6,9 +6,13 @@ server_list:
     pattern: /info/{name}
     defaults: { _controller: JoeZafiroBundle:Server:info }
 
-whois:
-    pattern: /whois
-    defaults: { _controller: JoeZafiroBundle:Server:whois }
+networkinfo:
+    pattern: /networkinfo
+    defaults: { _controller: JoeZafiroBundle:Server:networkinfo }
+
+networkinfo_comando:
+    pattern: /networkinfo/{info}
+    defaults: { _controller: JoeZafiroBundle:Server:networkinfo_comando }
 
 server_tools:
     pattern: /tools/{name}/{parameter}

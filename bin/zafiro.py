@@ -497,9 +497,6 @@ while True:
 			print "Creando interfaces"
 			createInterfaces()			
 			
-			print "Estado de placas"
-			getPlacas()
-			
 			print "FIN EJECUCION"
 			
 			# TIEMPO DE ESPERA ANTES DE VOLVER A EJECUTAR ####################################################################

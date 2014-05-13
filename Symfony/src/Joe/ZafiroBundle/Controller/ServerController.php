@@ -8,6 +8,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Joe\ZafiroBundle\Entity\Canales;
 use Joe\ZafiroBundle\Form\CanalesType;
 
+use Symfony\Component\Process\Process;
+
 /**
  * Server controller.
  *
@@ -37,18 +39,105 @@ class ServerController extends Controller
             'datos' => $c,
         ));
     }
-    public function whoisAction(){
-    	$placas="";
-    	return $this->render('JoeZafiroBundle:Server:whois.html.twig',array(
-    			'datos' => $placas,
+    
+    public function networkinfoAction(Request $r) 
+    {
+    	
+    	$form = $this
+    	->get('form.factory')->createNamedBuilder('')
+    	->setMethod("POST")
+    	->add('hostname', 'text')
+    	->add('comando','choice',array(
+    			'choices'=>array(
+    				'whois' => 'Whois',
+    				'traceroute' => 'Traza de ruta',
+    				'nslookup' => 'Informacion de IP',
+    				'dig' => 'Informacion de Dominio',
+					'nmap' => 'Deteccion de equipos',
+					'ping' => 'Ping',
+    			),
+    			'required' => true,
+    			'expanded'=>'false',))
+    	->add('submit', 'submit', array('label' => 'Consultar'))
+    	->setAction($this->generateUrl("networkinfo"))
+    	->getForm();
+    	
+    	//$f=$r->get("form");
+    	$datos="";
+    	$resultado="";
+    	
+    	if($r->get("hostname") != ""){
+    		$comando="";
+    		if($r->get("comando")=="whois"){
+    			$comando=$r->get("comando").' '.$r->get("hostname");
+    		}
+    		if($r->get("comando")=="traceroute"){
+    			$comando=$r->get("comando").' -m 10 -w 1 -n '.$r->get("hostname").' ';
+    		}
+    		if($r->get("comando")=="nslookup"){
+    			$comando=$r->get("comando").' '.$r->get("hostname");
+    		}
+    		if($r->get("comando")=="dig"){
+    			$comando=$r->get("comando").' '.$r->get("hostname");
+    		}
+    		if($r->get("comando")=="nmap"){
+    			$comando=$r->get("comando").' 172.16.0.*';
+    		}
+    		if($r->get("comando")=="ping"){
+    			$comando=$r->get("comando").' -c 4 '.$r->get("hostname");
+    		}
+    		$process = new Process($comando);
+			$process->run(function ($type, $buffer) {
+			    if (Process::ERR === $type) {
+			        $res='ERR > '.$buffer;
+			    } else {
+			        $res='OUT > '.$buffer;
+			    }
+			});
+			$resultado = $process->getOutput();
+    	}
+
+    	return $this->render('JoeZafiroBundle:Server:networkinfo.html.twig', array(
+    		'form'=>$form->createView(),
+    		'resultado'=>$resultado,
     	));
+    	
     }
     
-    public function toolsAction($parameter)
-    {
-    	switch($parameter){
-    		
+    public function networkinfo_comandoAction(Request $r)
+    {	
+    	if($r->get("info")!=""){
+    		switch($r->get("info")){
+    			case "arp":
+    				$comando=$r->get("info");
+    				break;
+    			case "ifconfig":
+    				$comando=$r->get("info");
+    				break;
+    			case "route":
+    				$comando=$r->get("info")." -n";
+    				break;
+    			default:
+    				$comando="";
+    				break;
+    		}
+    		$process = new Process($comando);
+    		$process->run(function ($type, $buffer) {
+    			if (Process::ERR === $type) {
+    				$res='ERR > '.$buffer;
+    			} else {
+    				$res='OUT > '.$buffer;
+    			}
+    		});
+    		$resultado = $process->getOutput();
     	}
+    	
+    		
+	   	return $this->render('JoeZafiroBundle:Server:networkinfo_comando.html.twig', array(
+	   		'resultado'=>$resultado,
+	   		'nombre'=>$r->get("info")
+	   	));
+
     }
     
     public function actionAction($name)
@@ -86,7 +175,6 @@ class ServerController extends Controller
     		$connection = $em->getConnection();
     		$statement = $connection->prepare("update acciones set valor=1 where id=".$id);
     		$statement->execute();
-    		
     	}
     	return $this->render('JoeZafiroBundle:Server:actions.html.twig',array(
     			'servicio' => $name,

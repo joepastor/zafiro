@@ -513,4 +513,24 @@ class Clientes
     {
         return $this->clientes_plan;
     }
+    
+    /**
+     *  JOE
+     * @param unknown $id
+     */
+    public function toggle_salida()
+    {
+    	$valor=0;
+    	$valor=($this->getSalidaHabilitada()) ? 0 : 1;
+    	$this->setSalidaHabilitada($valor);
+    	
+    }
+    
+    public function toggle_proxy()
+    {
+    	$valor=0;
+    	$valor=($this->getEnrutaProxy()) ? 0 : 1;
+    	$this->setEnrutaProxy($valor);
+    	 
+    }
 }

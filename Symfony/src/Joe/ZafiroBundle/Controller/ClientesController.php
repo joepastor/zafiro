@@ -228,41 +228,28 @@ class ClientesController extends Controller
     public function toggle_salidaAction($id)
     {
 		/*
-		 * 
+		 * JOE 
 		 * */
-    	$valor=0;
-		$product = $this->getDoctrine()->getRepository('JoeZafiroBundle:Clientes')->find($id);
-    	$valor=($product->getSalidaHabilitada()) ? 0 : 1;
-    	//$product->setSalidaHabilitada($valor);
     	
-    	
-
-    	$em = $this->getDoctrine()->getEntityManager();
-    	$connection = $em->getConnection();
-    	$statement = $connection->prepare("update clientes set salida_habilitada=".$valor." where id=".$id);
-    	$statement->execute();
-
-        $em = $this->getDoctrine()->getManager();
-        $entities = $em->getRepository('JoeZafiroBundle:Clientes')->findAll();
-        return $this->render('JoeZafiroBundle:Clientes:index.html.twig', array(
-            'entities' => $entities,
-        ));
+    	$em = $this->getDoctrine()->getManager();
+		$cliente = $em->getRepository('JoeZafiroBundle:Clientes')->find($id);
+    	$cliente->toggle_salida();
+		$em->flush();    	
+        
+		return $this->forward("JoeZafiroBundle:Clientes:index");
     }
     
     public function toggle_proxyAction($id)
     {
-    	$valor=0;
-    	$product = $this->getDoctrine()->getRepository('JoeZafiroBundle:Clientes')->find($id);
-    	$valor=($product->getEnrutaProxy()) ? 0 : 1;
-    	$em = $this->getDoctrine()->getEntityManager();
-    	$connection = $em->getConnection();
-    	$statement = $connection->prepare("update clientes set enruta_proxy=".$valor." where id=".$id);
-    	$statement->execute();
-    	 
+    	/*
+		 * JOE 
+		 * */
+    	
     	$em = $this->getDoctrine()->getManager();
-    	$entities = $em->getRepository('JoeZafiroBundle:Clientes')->findAll();
-    	return $this->render('JoeZafiroBundle:Clientes:index.html.twig', array(
-    			'entities' => $entities,
-    	));
+		$cliente = $em->getRepository('JoeZafiroBundle:Clientes')->find($id);
+    	$cliente->toggle_proxy();
+		$em->flush();    	
+        
+		return $this->forward("JoeZafiroBundle:Clientes:index");
     }
 }

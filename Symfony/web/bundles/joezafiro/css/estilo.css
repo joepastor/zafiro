@@ -25,3 +25,9 @@ body {
 #apagar{
 	background-color:#ffaaaa;
 }
+
+.div{
+	width: auto;
+	float: left;
+}
+ 

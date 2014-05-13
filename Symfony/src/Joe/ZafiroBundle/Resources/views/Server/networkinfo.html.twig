@@ -1,0 +1,15 @@
+{% extends 'JoeZafiroBundle:Default:base.html.twig' %}
+
+{% block body -%}
+    <h1>Diagn&oacute;stico de Red</h1>
+    <div class="div">
+	    <div class="div">
+		    {{ form(form) }}
+	    </div>
+		<div class="div">
+			<pre>
+			{{ resultado }}
+			</pre>
+		</div>
+	</div>
+{% endblock %}
