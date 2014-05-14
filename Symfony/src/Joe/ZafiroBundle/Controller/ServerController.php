@@ -117,6 +117,10 @@ class ServerController extends Controller
     			case "route":
     				$comando=$r->get("info")." -n";
     				break;
+    			case "dmesg":
+    				$comando=$r->get("info");
+    				break;
+    				
     			default:
     				$comando="";
     				break;
