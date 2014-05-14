@@ -38,7 +38,7 @@ class Canales
     /**
      * @var integer
      *
-     * @ORM\Column(name="estado", type="integer", nullable=false)
+     * @ORM\Column(name="estado", type="boolean", nullable=true)
      */
     private $estado;
 

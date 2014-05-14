@@ -1,0 +1,30 @@
+planes:
+    pattern:  /
+    defaults: { _controller: "JoeZafiroBundle:Planes:index" }
+
+planes_show:
+    pattern:  /{id}/show
+    defaults: { _controller: "JoeZafiroBundle:Planes:show" }
+
+planes_new:
+    pattern:  /new
+    defaults: { _controller: "JoeZafiroBundle:Planes:new" }
+
+planes_create:
+    pattern:  /create
+    defaults: { _controller: "JoeZafiroBundle:Planes:create" }
+    requirements: { _method: post }
+
+planes_edit:
+    pattern:  /{id}/edit
+    defaults: { _controller: "JoeZafiroBundle:Planes:edit" }
+
+planes_update:
+    pattern:  /{id}/update
+    defaults: { _controller: "JoeZafiroBundle:Planes:update" }
+    requirements: { _method: post|put }
+
+planes_delete:
+    pattern:  /{id}/delete
+    defaults: { _controller: "JoeZafiroBundle:Planes:delete" }
+    requirements: { _method: post|delete }

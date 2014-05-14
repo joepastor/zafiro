@@ -42,4 +42,4 @@ JoeZafiroBundle_filtros:
     prefix:   /filtros
 JoeZafiroBundle_planes:
     resource: "@JoeZafiroBundle/Resources/config/routing/planes.yml"
-    prefix:   /planes    
+    prefix:   /planes

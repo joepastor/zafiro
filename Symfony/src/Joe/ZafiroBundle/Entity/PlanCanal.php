@@ -56,14 +56,14 @@ class PlanCanal
     /**
      * @var integer
      * JOE Asi se hace un inner join
-     * @ORM\OneToMany(targetEntity="Planes",mappedBy="plan_pc")
+     * @ORM\ManyToMany(targetEntity="Planes",mappedBy="plan_pc")
      */
     private $pc_plan;
     
     /**
      * @var integer
      * JOE Asi se hace un inner join
-     * @ORM\OneToMany(targetEntity="Canales",mappedBy="canal_pc")
+     * @ORM\ManyToMany(targetEntity="Canales",mappedBy="canal_pc")
      */
     private $pc_canal;
 

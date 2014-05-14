@@ -10,15 +10,4 @@ class DefaultController extends Controller
     {
         return $this->render('JoeZafiroBundle:Default:index.html.twig');
     }
-    
-    public function listAction($name)
-    {
-    	switch($name){
-    		case "clientes":
-    			return $this->render('JoeZafiroBundle:Default:clientes.html.twig', array('name' => $name));
-    		case "canales":
-    			return $this->render('JoeZafiroBundle:Default:canales.html.twig', array('name' => $name));
-    	}
-    	
-    }  
 }

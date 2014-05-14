@@ -1,4 +1,4 @@
-{% extends '::base.html.twig' %}
+{% extends 'JoeZafiroBundle:Default:base.html.twig' %}
 
 {% block body -%}
     <h1>Planes list</h1>
@@ -18,7 +18,7 @@
         {% for entity in entities %}
             <tr>
                 <td><a href="{{ path('planes_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
-                <td>{{ entity.tiempos }}</td>
+                <td>{{ entity.plan_canal }}</td>
                 <td>{{ entity.estado }}</td>
                 <td>{{ entity.nombre }}</td>
                 <td>{{ entity.valor }}</td>
