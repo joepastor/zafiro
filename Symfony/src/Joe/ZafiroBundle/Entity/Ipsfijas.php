@@ -26,21 +26,21 @@ class Ipsfijas
      *
      * @ORM\Column(name="ip", type="string", length=45, nullable=false)
      */
-    private $ip = '';
+    private $ip;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="estado", type="integer", nullable=false)
      */
-    private $estado = '0';
+    private $estado;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="cliente", type="integer", nullable=false)
      */
-    private $cliente = '0';
+    private $cliente;
 
     /**
      * @var string

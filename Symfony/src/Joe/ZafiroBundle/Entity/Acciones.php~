@@ -26,14 +26,14 @@ class Acciones
      *
      * @ORM\Column(name="valor", type="integer", nullable=true)
      */
-    private $valor = '0';
+    private $valor;
 
     /**
      * @var string
      *
      * @ORM\Column(name="descripcion", type="string", length=200, nullable=true)
      */
-    private $descripcion = '';
+    private $descripcion;
 
     /**
      * @var string

@@ -75,7 +75,7 @@ class Interfaces
      *
      * @ORM\Column(name="enabled", type="boolean", nullable=false)
      */
-    private $enabled = '1';
+    private $enabled;
 
 
 

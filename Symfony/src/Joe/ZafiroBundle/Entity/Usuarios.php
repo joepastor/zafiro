@@ -26,21 +26,21 @@ class Usuarios
      *
      * @ORM\Column(name="nombre", type="string", length=20, nullable=false)
      */
-    private $nombre = '';
+    private $nombre;
 
     /**
      * @var string
      *
      * @ORM\Column(name="password", type="string", length=20, nullable=false)
      */
-    private $password = '';
+    private $password;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="estado", type="integer", nullable=false)
      */
-    private $estado = '0';
+    private $estado;
 
     /**
      * @var integer

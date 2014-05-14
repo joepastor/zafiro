@@ -1,0 +1,184 @@
+<?php
+
+namespace Joe\ZafiroBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * PlanCanal
+ *
+ * @ORM\Table(name="plan_canal")
+ * @ORM\Entity
+ */
+class PlanCanal
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
+     */
+    private $id;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="canales_id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
+     */
+    private $canalesId;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="planes_id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
+     */
+    private $planesId;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="dia", type="integer", nullable=true)
+     */
+    private $dia;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="hora", type="integer", nullable=true)
+     */
+    private $hora;
+
+    /**
+     * @var integer
+     * JOE Asi se hace un inner join
+     * @ORM\OneToMany(targetEntity="Planes",mappedBy="plan_pc")
+     */
+    private $pc_plan;
+    
+    /**
+     * @var integer
+     * JOE Asi se hace un inner join
+     * @ORM\OneToMany(targetEntity="Canales",mappedBy="canal_pc")
+     */
+    private $pc_canal;
+
+    /**
+     * Set id
+     *
+     * @param integer $id
+     * @return PlanCanal
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set canalesId
+     *
+     * @param integer $canalesId
+     * @return PlanCanal
+     */
+    public function setCanalesId($canalesId)
+    {
+        $this->canalesId = $canalesId;
+
+        return $this;
+    }
+
+    /**
+     * Get canalesId
+     *
+     * @return integer 
+     */
+    public function getCanalesId()
+    {
+        return $this->canalesId;
+    }
+
+    /**
+     * Set planesId
+     *
+     * @param integer $planesId
+     * @return PlanCanal
+     */
+    public function setPlanesId($planesId)
+    {
+        $this->planesId = $planesId;
+
+        return $this;
+    }
+
+    /**
+     * Get planesId
+     *
+     * @return integer 
+     */
+    public function getPlanesId()
+    {
+        return $this->planesId;
+    }
+
+    /**
+     * Set dia
+     *
+     * @param integer $dia
+     * @return PlanCanal
+     */
+    public function setDia($dia)
+    {
+        $this->dia = $dia;
+
+        return $this;
+    }
+
+    /**
+     * Get dia
+     *
+     * @return integer 
+     */
+    public function getDia()
+    {
+        return $this->dia;
+    }
+
+    /**
+     * Set hora
+     *
+     * @param integer $hora
+     * @return PlanCanal
+     */
+    public function setHora($hora)
+    {
+        $this->hora = $hora;
+
+        return $this;
+    }
+
+    /**
+     * Get hora
+     *
+     * @return integer 
+     */
+    public function getHora()
+    {
+        return $this->hora;
+    }
+}

@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Clientes
  *
- * @ORM\Table(name="clientes")
+ * @ORM\Table(name="clientes", indexes={@ORM\Index(name="IDX_50FE07D7DD5A5B7D", columns={"plan"})})
  * @ORM\Entity
  */
 class Clientes
@@ -19,49 +19,49 @@ class Clientes
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $id = '0';
+    private $id;
 
     /**
      * @var string
      *
      * @ORM\Column(name="descripcion", type="string", length=255, nullable=false)
      */
-    private $descripcion = '';
+    private $descripcion;
 
     /**
      * @var string
      *
      * @ORM\Column(name="macaddress", type="string", length=45, nullable=false)
      */
-    private $macaddress = '';
+    private $macaddress;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="clientesper", type="integer", nullable=false)
      */
-    private $clientesper = '0';
+    private $clientesper;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="estado", type="integer", nullable=false)
      */
-    private $estado = '0';
+    private $estado;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="ip", type="integer", nullable=false)
      */
-    private $ip = '0';
+    private $ip;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="fecha_alta", type="integer", nullable=false)
      */
-    private $fechaAlta = '0';
+    private $fechaAlta;
 
     /**
      * @var integer
@@ -75,14 +75,14 @@ class Clientes
      *
      * @ORM\Column(name="plan", type="integer", nullable=false)
      */
-    private $plan = '0';
+    private $plan;
 
     /**
      * @var string
      *
      * @ORM\Column(name="nombre", type="string", length=45, nullable=false)
      */
-    private $nombre = '';
+    private $nombre;
 
     /**
      * @var string
@@ -132,8 +132,7 @@ class Clientes
      * @ORM\ManyToOne(targetEntity="Planes" ,inversedBy="plan_clientes")
      * @ORM\JoinColumn(name="plan",referencedColumnName="id")
      */
-	private $clientes_plan; 
-    
+    private $clientes_plan;
 
     /**
      * Get id
@@ -489,5 +488,24 @@ class Clientes
     {
         return $this->salidaHabilitada;
     }
-
+    
+    /**
+     *  JOE
+     * @param unknown $id
+     */
+    public function toggle_salida()
+    {
+    	$valor=0;
+    	$valor=($this->getSalidaHabilitada()) ? 0 : 1;
+    	$this->setSalidaHabilitada($valor);
+    	 
+    }
+    
+    public function toggle_proxy()
+    {
+    	$valor=0;
+    	$valor=($this->getEnrutaProxy()) ? 0 : 1;
+    	$this->setEnrutaProxy($valor);
+    
+    }
 }

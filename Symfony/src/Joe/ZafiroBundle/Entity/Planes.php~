@@ -24,44 +24,23 @@ class Planes
     /**
      * @var integer
      *
-     * @ORM\Column(name="plan", type="integer", nullable=false)
+     * @ORM\Column(name="tiempos", type="integer", nullable=false)
      */
-    private $plan;
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="dia", type="integer", nullable=false)
-     */
-    private $dia = '0';
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="hora", type="integer", nullable=false)
-     */
-    private $hora = '0';
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="canal", type="integer", nullable=false)
-     */
-    private $canal = '0';
+    private $tiempos;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="estado", type="integer", nullable=false)
      */
-    private $estado = '0';
+    private $estado;
 
     /**
      * @var string
      *
      * @ORM\Column(name="nombre", type="string", length=45, nullable=false)
      */
-    private $nombre = '';
+    private $nombre;
 
     /**
      * @var integer
@@ -75,8 +54,20 @@ class Planes
      * JOE Asi se hace un inner join
      * @ORM\OneToMany(targetEntity="Clientes",mappedBy="clientes_plan")
      */
-	private $plan_clientes;
-	
+    private $plan_clientes;
+    
+    /**
+     * @var integer
+     * JOE Asi se hace un inner join
+     * @ORM\OneToMany(targetEntity="Clientes",mappedBy="pc_plan")
+     */
+    private $plan_pc;
+    
+    public function __toString()
+    {
+    	return $this->getNombre();
+    }
+
     /**
      * Get id
      *
@@ -88,95 +79,26 @@ class Planes
     }
 
     /**
-     * Set plan
+     * Set tiempos
      *
-     * @param integer $plan
+     * @param integer $tiempos
      * @return Planes
      */
-    public function setPlan($plan)
+    public function setTiempos($tiempos)
     {
-        $this->plan = $plan;
+        $this->tiempos = $tiempos;
 
         return $this;
     }
 
     /**
-     * Get plan
+     * Get tiempos
      *
      * @return integer 
      */
-    public function getPlan()
+    public function getTiempos()
     {
-        return $this->plan;
-    }
-
-    /**
-     * Set dia
-     *
-     * @param integer $dia
-     * @return Planes
-     */
-    public function setDia($dia)
-    {
-        $this->dia = $dia;
-
-        return $this;
-    }
-
-    /**
-     * Get dia
-     *
-     * @return integer 
-     */
-    public function getDia()
-    {
-        return $this->dia;
-    }
-
-    /**
-     * Set hora
-     *
-     * @param integer $hora
-     * @return Planes
-     */
-    public function setHora($hora)
-    {
-        $this->hora = $hora;
-
-        return $this;
-    }
-
-    /**
-     * Get hora
-     *
-     * @return integer 
-     */
-    public function getHora()
-    {
-        return $this->hora;
-    }
-
-    /**
-     * Set canal
-     *
-     * @param integer $canal
-     * @return Planes
-     */
-    public function setCanal($canal)
-    {
-        $this->canal = $canal;
-
-        return $this;
-    }
-
-    /**
-     * Get canal
-     *
-     * @return integer 
-     */
-    public function getCanal()
-    {
-        return $this->canal;
+        return $this->tiempos;
     }
 
     /**
@@ -246,5 +168,79 @@ class Planes
     public function getValor()
     {
         return $this->valor;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->plan_clientes = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->plan_pc = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add plan_clientes
+     *
+     * @param \Joe\ZafiroBundle\Entity\Clientes $planClientes
+     * @return Planes
+     */
+    public function addPlanCliente(\Joe\ZafiroBundle\Entity\Clientes $planClientes)
+    {
+        $this->plan_clientes[] = $planClientes;
+
+        return $this;
+    }
+
+    /**
+     * Remove plan_clientes
+     *
+     * @param \Joe\ZafiroBundle\Entity\Clientes $planClientes
+     */
+    public function removePlanCliente(\Joe\ZafiroBundle\Entity\Clientes $planClientes)
+    {
+        $this->plan_clientes->removeElement($planClientes);
+    }
+
+    /**
+     * Get plan_clientes
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPlanClientes()
+    {
+        return $this->plan_clientes;
+    }
+
+    /**
+     * Add plan_pc
+     *
+     * @param \Joe\ZafiroBundle\Entity\Clientes $planPc
+     * @return Planes
+     */
+    public function addPlanPc(\Joe\ZafiroBundle\Entity\Clientes $planPc)
+    {
+        $this->plan_pc[] = $planPc;
+
+        return $this;
+    }
+
+    /**
+     * Remove plan_pc
+     *
+     * @param \Joe\ZafiroBundle\Entity\Clientes $planPc
+     */
+    public function removePlanPc(\Joe\ZafiroBundle\Entity\Clientes $planPc)
+    {
+        $this->plan_pc->removeElement($planPc);
+    }
+
+    /**
+     * Get plan_pc
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPlanPc()
+    {
+        return $this->plan_pc;
     }
 }

@@ -26,35 +26,35 @@ class Forwardeos
      *
      * @ORM\Column(name="puesrc", type="integer", nullable=false)
      */
-    private $puesrc = '0';
+    private $puesrc;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="puedst", type="integer", nullable=false)
      */
-    private $puedst = '0';
+    private $puedst;
 
     /**
      * @var string
      *
      * @ORM\Column(name="ipdst", type="string", length=45, nullable=false)
      */
-    private $ipdst = '';
+    private $ipdst;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="estado", type="integer", nullable=false)
      */
-    private $estado = '0';
+    private $estado;
 
     /**
      * @var string
      *
      * @ORM\Column(name="ipsrc", type="string", length=45, nullable=false)
      */
-    private $ipsrc = '';
+    private $ipsrc;
 
 
 

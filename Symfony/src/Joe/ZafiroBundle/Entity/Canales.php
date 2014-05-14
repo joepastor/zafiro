@@ -19,36 +19,42 @@ class Canales
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $id = '0';
+    private $id;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="subida", type="integer", nullable=false)
      */
-    private $subida = '0';
+    private $subida;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="bajada", type="integer", nullable=false)
      */
-    private $bajada = '0';
+    private $bajada;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="estado", type="integer", nullable=false)
      */
-    private $estado = '0';
+    private $estado;
 
     /**
      * @var string
      *
      * @ORM\Column(name="nombre", type="string", length=45, nullable=false)
      */
-    private $nombre = '';
+    private $nombre;
 
+    /**
+     * @var integer
+     * JOE Asi se hace un inner join
+     * @ORM\OneToMany(targetEntity="PlanCanal",mappedBy="pc_canal")
+     */
+    private $canal_pc;
 
 
     /**
@@ -151,5 +157,45 @@ class Canales
     public function getNombre()
     {
         return $this->nombre;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->canal_pc = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add canal_pc
+     *
+     * @param \Joe\ZafiroBundle\Entity\PlanCanal $canalPc
+     * @return Canales
+     */
+    public function addCanalPc(\Joe\ZafiroBundle\Entity\PlanCanal $canalPc)
+    {
+        $this->canal_pc[] = $canalPc;
+
+        return $this;
+    }
+
+    /**
+     * Remove canal_pc
+     *
+     * @param \Joe\ZafiroBundle\Entity\PlanCanal $canalPc
+     */
+    public function removeCanalPc(\Joe\ZafiroBundle\Entity\PlanCanal $canalPc)
+    {
+        $this->canal_pc->removeElement($canalPc);
+    }
+
+    /**
+     * Get canal_pc
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getCanalPc()
+    {
+        return $this->canal_pc;
     }
 }
