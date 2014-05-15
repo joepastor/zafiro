@@ -133,7 +133,9 @@ class Clientes
      * @ORM\JoinColumn(name="plan",referencedColumnName="id")
      */
     private $clientes_plan;
+    
 
+    
     /**
      * Get id
      *

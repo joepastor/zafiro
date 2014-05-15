@@ -7,10 +7,10 @@
         <thead>
             <tr>
                 <th>Id</th>
-                <th>Tiempos</th>
                 <th>Estado</th>
                 <th>Nombre</th>
                 <th>Valor</th>
+                <th>BW Actual</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -18,10 +18,10 @@
         {% for entity in entities %}
             <tr>
                 <td><a href="{{ path('planes_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
-                <td>{{ entity.plan_canal }}</td>
                 <td>{{ entity.estado }}</td>
                 <td>{{ entity.nombre }}</td>
                 <td>{{ entity.valor }}</td>
+                <td>{{ entity.bwactual }}</td>
                 <td>
                 <ul>
                     <li>

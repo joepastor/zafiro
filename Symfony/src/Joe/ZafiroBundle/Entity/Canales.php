@@ -49,13 +49,6 @@ class Canales
      */
     private $nombre;
 
-    /**
-     * @var integer
-     * JOE Asi se hace un inner join
-     * @ORM\OneToMany(targetEntity="PlanCanal",mappedBy="pc_canal")
-     */
-    private $canal_pc;
-
 
     /**
      * Get id
