@@ -73,7 +73,7 @@ class Interfaces
     /**
      * @var boolean
      *
-     * @ORM\Column(name="enabled", type="boolean", nullable=false)
+     * @ORM\Column(name="enabled", type="boolean", nullable=true)
      */
     private $enabled;
 

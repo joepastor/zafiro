@@ -213,6 +213,13 @@ class Planes
     /**
      * @var integer
      *
+     * @ORM\Column(name="d1h00", type="integer", nullable=true)
+     */
+    private $d1h00;
+    
+    /**
+     * @var integer
+     *
      * @ORM\Column(name="d1h01", type="integer", nullable=true)
      */
     private $d1h01;
@@ -371,6 +378,13 @@ class Planes
      */
     private $d1h23;
 
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="d2h00", type="integer", nullable=true)
+     */
+    private $d2h00;
+    
     /**
      * @var integer
      *
@@ -535,6 +549,13 @@ class Planes
     /**
      * @var integer
      *
+     * @ORM\Column(name="d3h00", type="integer", nullable=true)
+     */
+    private $d3h00;
+    
+    /**
+     * @var integer
+     *
      * @ORM\Column(name="d3h01", type="integer", nullable=true)
      */
     private $d3h01;
@@ -692,7 +713,13 @@ class Planes
      * @ORM\Column(name="d3h23", type="integer", nullable=true)
      */
     private $d3h23;
-
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="d4h00", type="integer", nullable=true)
+     */
+    private $d4h00;
+    
     /**
      * @var integer
      *
@@ -853,7 +880,13 @@ class Planes
      * @ORM\Column(name="d4h23", type="integer", nullable=true)
      */
     private $d4h23;
-
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="d5h00", type="integer", nullable=true)
+     */
+    private $d5h00;
+    
     /**
      * @var integer
      *
@@ -1014,7 +1047,13 @@ class Planes
      * @ORM\Column(name="d5h23", type="integer", nullable=true)
      */
     private $d5h23;
-
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="d6h00", type="integer", nullable=true)
+     */
+    private $d6h00;
+    
     /**
      * @var integer
      *
@@ -4992,5 +5031,56 @@ class Planes
     public function getD6h23()
     {
         return $this->d6h23;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->plan_clientes = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add plan_clientes
+     *
+     * @param \Joe\ZafiroBundle\Entity\Clientes $planClientes
+     * @return Planes
+     */
+    public function addPlanCliente(\Joe\ZafiroBundle\Entity\Clientes $planClientes)
+    {
+        $this->plan_clientes[] = $planClientes;
+
+        return $this;
+    }
+
+    /**
+     * Remove plan_clientes
+     *
+     * @param \Joe\ZafiroBundle\Entity\Clientes $planClientes
+     */
+    public function removePlanCliente(\Joe\ZafiroBundle\Entity\Clientes $planClientes)
+    {
+        $this->plan_clientes->removeElement($planClientes);
+    }
+
+    /**
+     * Get plan_clientes
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPlanClientes()
+    {
+        return $this->plan_clientes;
+    }
+    
+    /**
+     * Get bwactual
+     * By Joe
+     * @return integer
+     */
+    public function getbwactual()
+    {
+    	$actual="d".date("w")."h".date("H");
+    	return $this->$actual;
     }
 }

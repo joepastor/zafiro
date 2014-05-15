@@ -17,29 +17,6 @@ use Symfony\Component\Process\Process;
 class ServerController extends Controller
 {
 
-    public function infoAction($name)
-    {
-    	switch($name){
-    		case "placas":
-    			$file="/Users/Joe/placas.txt";
-    			break;
-    		case "dmesg":
-    			$file="/Users/Joe/dmesg.txt";
-    			break;
-    	}
-    	$c="";
-        $fd = fopen($file, "r");
-        if ($fd) {
-        	while (!feof($fd)) {
-        		$c.=trim(fgets($fd, 1024)) . "\n";
-        	}
-        }
-
-        return $this->render('JoeZafiroBundle:Server:index.html.twig',array(
-            'datos' => $c,
-        ));
-    }
-    
     public function networkinfoAction(Request $r) 
     {
     	
@@ -109,7 +86,7 @@ class ServerController extends Controller
     	if($r->get("info")!=""){
     		switch($r->get("info")){
     			case "arp":
-    				$comando=$r->get("info");
+    				$comando=$r->get("info")." -n";
     				break;
     			case "ifconfig":
     				$comando=$r->get("info");

@@ -17,7 +17,12 @@ class CanalesType extends AbstractType
         $builder
             ->add('subida')
             ->add('bajada')
-            ->add('estado')
+            ->add('estado','choice', array(
+            		'choices' => array(
+            			'1' => 'Activo',
+            			'0' => 'Inactivo',
+            			)
+            		))
             ->add('nombre')
         ;
     }

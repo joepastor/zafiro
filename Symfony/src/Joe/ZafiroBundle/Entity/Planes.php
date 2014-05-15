@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Planes
 {
-    /**
+	/**
      * @var integer
      *
      * @ORM\Column(name="id", type="integer", nullable=false)
@@ -213,6 +213,13 @@ class Planes
     /**
      * @var integer
      *
+     * @ORM\Column(name="d1h00", type="integer", nullable=true)
+     */
+    private $d1h00;
+    
+    /**
+     * @var integer
+     *
      * @ORM\Column(name="d1h01", type="integer", nullable=true)
      */
     private $d1h01;
@@ -371,6 +378,13 @@ class Planes
      */
     private $d1h23;
 
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="d2h00", type="integer", nullable=true)
+     */
+    private $d2h00;
+    
     /**
      * @var integer
      *
@@ -535,6 +549,13 @@ class Planes
     /**
      * @var integer
      *
+     * @ORM\Column(name="d3h00", type="integer", nullable=true)
+     */
+    private $d3h00;
+    
+    /**
+     * @var integer
+     *
      * @ORM\Column(name="d3h01", type="integer", nullable=true)
      */
     private $d3h01;
@@ -692,7 +713,13 @@ class Planes
      * @ORM\Column(name="d3h23", type="integer", nullable=true)
      */
     private $d3h23;
-
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="d4h00", type="integer", nullable=true)
+     */
+    private $d4h00;
+    
     /**
      * @var integer
      *
@@ -853,7 +880,13 @@ class Planes
      * @ORM\Column(name="d4h23", type="integer", nullable=true)
      */
     private $d4h23;
-
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="d5h00", type="integer", nullable=true)
+     */
+    private $d5h00;
+    
     /**
      * @var integer
      *
@@ -1014,7 +1047,13 @@ class Planes
      * @ORM\Column(name="d5h23", type="integer", nullable=true)
      */
     private $d5h23;
-
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="d6h00", type="integer", nullable=true)
+     */
+    private $d6h00;
+    
     /**
      * @var integer
      *
@@ -5043,5 +5082,143 @@ class Planes
     {
     	$actual="d".date("w")."h".date("H");
     	return $this->$actual;
+    }
+
+    /**
+     * Set d1h00
+     *
+     * @param integer $d1h00
+     * @return Planes
+     */
+    public function setD1h00($d1h00)
+    {
+        $this->d1h00 = $d1h00;
+
+        return $this;
+    }
+
+    /**
+     * Get d1h00
+     *
+     * @return integer 
+     */
+    public function getD1h00()
+    {
+        return $this->d1h00;
+    }
+
+    /**
+     * Set d2h00
+     *
+     * @param integer $d2h00
+     * @return Planes
+     */
+    public function setD2h00($d2h00)
+    {
+        $this->d2h00 = $d2h00;
+
+        return $this;
+    }
+
+    /**
+     * Get d2h00
+     *
+     * @return integer 
+     */
+    public function getD2h00()
+    {
+        return $this->d2h00;
+    }
+
+    /**
+     * Set d3h00
+     *
+     * @param integer $d3h00
+     * @return Planes
+     */
+    public function setD3h00($d3h00)
+    {
+        $this->d3h00 = $d3h00;
+
+        return $this;
+    }
+
+    /**
+     * Get d3h00
+     *
+     * @return integer 
+     */
+    public function getD3h00()
+    {
+        return $this->d3h00;
+    }
+
+    /**
+     * Set d4h00
+     *
+     * @param integer $d4h00
+     * @return Planes
+     */
+    public function setD4h00($d4h00)
+    {
+        $this->d4h00 = $d4h00;
+
+        return $this;
+    }
+
+    /**
+     * Get d4h00
+     *
+     * @return integer 
+     */
+    public function getD4h00()
+    {
+        return $this->d4h00;
+    }
+
+    /**
+     * Set d5h00
+     *
+     * @param integer $d5h00
+     * @return Planes
+     */
+    public function setD5h00($d5h00)
+    {
+        $this->d5h00 = $d5h00;
+
+        return $this;
+    }
+
+    /**
+     * Get d5h00
+     *
+     * @return integer 
+     */
+    public function getD5h00()
+    {
+        return $this->d5h00;
+    }
+
+    /**
+     * Set d6h00
+     *
+     * @param integer $d6h00
+     * @return Planes
+     */
+    public function setD6h00($d6h00)
+    {
+        $this->d6h00 = $d6h00;
+
+        return $this;
+    }
+
+    /**
+     * Get d6h00
+     *
+     * @return integer 
+     */
+    public function getD6h00()
+    {
+        return $this->d6h00;
     }
 }
