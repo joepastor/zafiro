@@ -45,7 +45,7 @@ class Usuarios
     /**
      * @var integer
      *
-     * @ORM\Column(name="nivel", type="integer", nullable=true)
+     * @ORM\Column(name="nivel", type="string", length=30,nullable=false)
      */
     private $nivel;
 

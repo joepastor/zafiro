@@ -2,3 +2,14 @@ joe_zafiro:
     resource: "@JoeZafiroBundle/Resources/config/routing.yml"
     prefix:   /
 
+#Agregado pro el controlador
+
+login:
+    pattern: /login
+    defaults: { _controller: JoeZafiroBundle:Security:login }
+ 
+login_check:
+    pattern: /login_check
+ 
+logout:
+    pattern: /logout
