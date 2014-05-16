@@ -38,13 +38,6 @@ class Clientes
     /**
      * @var integer
      *
-     * @ORM\Column(name="clientesper", type="integer", nullable=false)
-     */
-    private $clientesper;
-
-    /**
-     * @var integer
-     *
      * @ORM\Column(name="estado", type="integer", nullable=false)
      */
     private $estado;
@@ -115,14 +108,14 @@ class Clientes
     /**
      * @var integer
      *
-     * @ORM\Column(name="enruta_proxy", type="integer", nullable=true)
+     * @ORM\Column(name="enruta_proxy", type="boolean", nullable=true)
      */
     private $enrutaProxy;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="salida_habilitada", type="integer", nullable=true)
+     * @ORM\Column(name="salida_habilitada", type="boolean", nullable=true)
      */
     private $salidaHabilitada;
 
@@ -190,29 +183,6 @@ class Clientes
     public function getMacaddress()
     {
         return $this->macaddress;
-    }
-
-    /**
-     * Set clientesper
-     *
-     * @param integer $clientesper
-     * @return Clientes
-     */
-    public function setClientesper($clientesper)
-    {
-        $this->clientesper = $clientesper;
-
-        return $this;
-    }
-
-    /**
-     * Get clientesper
-     *
-     * @return integer 
-     */
-    public function getClientesper()
-    {
-        return $this->clientesper;
     }
 
     /**

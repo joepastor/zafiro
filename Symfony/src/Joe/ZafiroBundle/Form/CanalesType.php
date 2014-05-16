@@ -15,15 +15,12 @@ class CanalesType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+        	->add('nombre')
+        	->add('bajada')
             ->add('subida')
-            ->add('bajada')
             ->add('estado','choice', array(
-            		'choices' => array(
-            			'1' => 'Activo',
-            			'0' => 'Inactivo',
-            			)
+            		'choices' => \Joe\ZafiroBundle\Entity\Canales::estados()
             		))
-            ->add('nombre')
         ;
     }
     

@@ -6,11 +6,11 @@
     <table class="records_list">
         <thead>
             <tr>
-                <th>Id</th>
+                <th>ID</th>
+                <th>Nombre</th>
                 <th>Subida</th>
                 <th>Bajada</th>
                 <th>Estado</th>
-                <th>Nombre</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -18,10 +18,10 @@
         {% for entity in entities %}
             <tr>
                 <td><a href="{{ path('canales_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
-                <td>{{ entity.subida }}</td>
-                <td>{{ entity.bajada }}</td>
-                <td>{{ entity.estado }}</td>
                 <td>{{ entity.nombre }}</td>
+                <td>{{ entity.subida }}Kbps</td>
+                <td>{{ entity.bajada }}Kbps</td>
+                <td>{{ entity.nombreestado }}</td>
                 <td>
                     <a href="{{ path('canales_show', { 'id': entity.id }) }}">show</a>
                     <a href="{{ path('canales_edit', { 'id': entity.id }) }}">edit</a>

@@ -48,7 +48,13 @@ class Canales
      * @ORM\Column(name="nombre", type="string", length=45, nullable=false)
      */
     private $nombre;
-
+    
+    public function __toString()
+    {
+    	return $this->getNombre();
+    
+    }
+    
 
     /**
      * Get id
@@ -159,36 +165,14 @@ class Canales
         $this->canal_pc = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
-    /**
-     * Add canal_pc
-     *
-     * @param \Joe\ZafiroBundle\Entity\PlanCanal $canalPc
-     * @return Canales
-     */
-    public function addCanalPc(\Joe\ZafiroBundle\Entity\PlanCanal $canalPc)
-    {
-        $this->canal_pc[] = $canalPc;
-
-        return $this;
+    public static function estados(){
+    	return array(
+    			'1' => 'Activo',
+    			'0' => 'Inactivo',
+    	);
     }
-
-    /**
-     * Remove canal_pc
-     *
-     * @param \Joe\ZafiroBundle\Entity\PlanCanal $canalPc
-     */
-    public function removeCanalPc(\Joe\ZafiroBundle\Entity\PlanCanal $canalPc)
-    {
-        $this->canal_pc->removeElement($canalPc);
-    }
-
-    /**
-     * Get canal_pc
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getCanalPc()
-    {
-        return $this->canal_pc;
+    public function getNombreEstado(){
+    	$a = $this->estados();
+    	return $a[$this->estado];
     }
 }

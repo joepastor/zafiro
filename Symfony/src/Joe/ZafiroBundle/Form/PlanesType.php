@@ -27,11 +27,15 @@ class PlanesType extends AbstractType
             		))
         ;
 		for($d=0;$d<7;$d++){
-			for($h=0;$h<23;$h++){
-				$h=str_pad($h,2,STR_PAD_LEFT); 
-				$builder->add('d'.$d.'h'.$h);				
+			for($h=0;$h<24;$h++){
+				$h1=str_pad($h,2,"0",STR_PAD_LEFT);
+				$builder->add('d'.$d.'h'.$h1,'entity',
+            		array(
+					'class'=>'JoeZafiroBundle:Canales',
+            		'label'=>'Dia '.$d.' hora '.$h1,
+				)
+            		);				
 			}
-			
 		}
     }
     

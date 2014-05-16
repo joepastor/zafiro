@@ -17,7 +17,6 @@ class ClientesType extends AbstractType
         $builder
             ->add('descripcion')
             ->add('macaddress')
-            ->add('clientesper')
             ->add('estado','choice', array(
             		'choices' => array(
             			'1' => 'Activo',

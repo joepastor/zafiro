@@ -1,0 +1,30 @@
+usuarios:
+    pattern:  /
+    defaults: { _controller: "JoeZafiroBundle:Usuarios:index" }
+
+usuarios_show:
+    pattern:  /{id}/show
+    defaults: { _controller: "JoeZafiroBundle:Usuarios:show" }
+
+usuarios_new:
+    pattern:  /new
+    defaults: { _controller: "JoeZafiroBundle:Usuarios:new" }
+
+usuarios_create:
+    pattern:  /create
+    defaults: { _controller: "JoeZafiroBundle:Usuarios:create" }
+    requirements: { _method: post }
+
+usuarios_edit:
+    pattern:  /{id}/edit
+    defaults: { _controller: "JoeZafiroBundle:Usuarios:edit" }
+
+usuarios_update:
+    pattern:  /{id}/update
+    defaults: { _controller: "JoeZafiroBundle:Usuarios:update" }
+    requirements: { _method: post|put }
+
+usuarios_delete:
+    pattern:  /{id}/delete
+    defaults: { _controller: "JoeZafiroBundle:Usuarios:delete" }
+    requirements: { _method: post|delete }
