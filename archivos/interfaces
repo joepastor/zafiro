@@ -13,5 +13,9 @@ iface 192.168.0.1 inet static
 
 # WAN
 auto eth1
-iface eth1 inet dhcp
+iface 46456456 inet static
+	address 46456456
+	netmask 255.255.255.0
+	broadcast 1.1.1.255
+	network 1.1.1.0
 

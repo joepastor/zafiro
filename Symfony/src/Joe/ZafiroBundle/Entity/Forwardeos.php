@@ -45,7 +45,7 @@ class Forwardeos
     /**
      * @var integer
      *
-     * @ORM\Column(name="estado", type="integer", nullable=false)
+     * @ORM\Column(name="estado", type="boolean", nullable=true)
      */
     private $estado;
 
@@ -181,5 +181,15 @@ class Forwardeos
     public function getIpsrc()
     {
         return $this->ipsrc;
+    }
+    public static function estados(){
+    	return array(
+    			'1' => 'Activo',
+    			'0' => 'Inactivo',
+    	);
+    }
+    public function getNombreEstado(){
+    	$a = $this->estados();
+    	return $a[$this->estado];
     }
 }

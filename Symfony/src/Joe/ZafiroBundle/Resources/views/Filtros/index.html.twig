@@ -6,16 +6,16 @@
     <table class="records_list">
         <thead>
             <tr>
-                <th>Id</th>
+                <th>ID</th>
                 <th>Nombre</th>
-                <th>Tipo</th>
-                <th>Ipsource</th>
-                <th>Ipdestino</th>
-                <th>Puertosource</th>
-                <th>Puertodestino</th>
+                <th>Protocolo</th>
+                <th>Origen</th>
+                <th>Destino</th>
+                <th>Puerto Origen</th>
+                <th>Puerto Destino</th>
                 <th>Estado</th>
-                <th>Interfaceentrada</th>
-                <th>Interfacesalida</th>
+                <th>Device IN</th>
+                <th>Device Out</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -33,13 +33,8 @@
                 <td>{{ entity.interfaceentrada }}</td>
                 <td>{{ entity.interfacesalida }}</td>
                 <td>
-                <ul>
-                    <li>
-                        <a href="{{ path('filtros_show', { 'id': entity.id }) }}">show</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('filtros_edit', { 'id': entity.id }) }}">edit</a>
-                    </li>
+                    <a href="{{ path('filtros_show', { 'id': entity.id }) }}">show</a>
+                    <a href="{{ path('filtros_edit', { 'id': entity.id }) }}">edit</a>
                 </ul>
                 </td>
             </tr>

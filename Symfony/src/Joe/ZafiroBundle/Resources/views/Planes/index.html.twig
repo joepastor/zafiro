@@ -23,14 +23,8 @@
                 <td>{{ entity.valor }}</td>
                 <td>{{ entity.bwactual }}</td>
                 <td>
-                <ul>
-                    <li>
-                        <a href="{{ path('planes_show', { 'id': entity.id }) }}">show</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('planes_edit', { 'id': entity.id }) }}">edit</a>
-                    </li>
-                </ul>
+                    <a href="{{ path('planes_show', { 'id': entity.id }) }}">show</a>
+                    <a href="{{ path('planes_edit', { 'id': entity.id }) }}">edit</a>
                 </td>
             </tr>
         {% endfor %}

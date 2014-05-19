@@ -9,7 +9,7 @@
                 <th>Id</th>
                 <th>Device</th>
                 <th>Descripcion</th>
-                <th>Ip</th>
+                <th>IP</th>
                 <th>Netmask</th>
                 <th>Network</th>
                 <th>Broadcast</th>
@@ -31,14 +31,8 @@
                 <td>{{ entity.gateway }}</td>
                 <td>{{ entity.enabled }}</td>
                 <td>
-                <ul>
-                    <li>
-                        <a href="{{ path('interfaces_show', { 'id': entity.id }) }}">show</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('interfaces_edit', { 'id': entity.id }) }}">edit</a>
-                    </li>
-                </ul>
+                    <a href="{{ path('interfaces_show', { 'id': entity.id }) }}">show</a>
+                    <a href="{{ path('interfaces_edit', { 'id': entity.id }) }}">edit</a>
                 </td>
             </tr>
         {% endfor %}

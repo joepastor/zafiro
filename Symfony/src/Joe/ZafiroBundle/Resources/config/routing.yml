@@ -43,6 +43,3 @@ JoeZafiroBundle_filtros:
 JoeZafiroBundle_planes:
     resource: "@JoeZafiroBundle/Resources/config/routing/planes.yml"
     prefix:   /planes
-JoeZafiroBundle_usuarios:
-    resource: "@JoeZafiroBundle/Resources/config/routing/usuarios.yml"
-    prefix:   /usuarios

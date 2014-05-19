@@ -16,9 +16,9 @@ class FirewallType extends AbstractType
     {
         $builder
             ->add('comando')
-            ->add('estado')
             ->add('comentario')
             ->add('orden')
+            ->add('estado')
         ;
     }
     

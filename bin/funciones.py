@@ -8,7 +8,7 @@ hora=strftime("%H",localtime())
 
 try:
 	#db = MySQLdb.connect(host='localhost',user='zafiro',passwd='j483nd8-34/23f--ds',db='zafiro')
-	db = MySQLdb.connect(host='localhost',user='root',passwd='',db='zafiro')
+	db = MySQLdb.connect(host='localhost',user='root',passwd='t0r0nj4',db='zafiro')
 	curs = db.cursor()
 except MySQLdb.Error, e:
 	print e
@@ -54,7 +54,7 @@ if dns3_force!="":
 if dns3_force=="-":
 	dns3=""
 
-
+print "hola"
 # Obteniendo datos de ip
 curs.execute("""select id,ip,device from interfaces where device='eth0' and enabled=true""")
 rs=curs.fetchall()
@@ -66,6 +66,7 @@ for id,ip,device in rs:
 	cuaoctpri=ip.split(".")[3]
 	ipprefijopri="%s.%s.%s." % (prioctpri,segoctpri,teroctpri)
 
+print ipprefijopri
 ###### FUNCIONES ################################################################
 
 
@@ -84,7 +85,7 @@ def fncgrafico(puerto, prefijo, mascara,tipo):
 def getFiltros():
 	iptables=""
 	iptables+="\n# COMIENZO DE FILTROS PERSONALIZADOS\n"
-        curs.execute("""select tipo,ipsource,ipdestino,puertosource,puertodestino,interfaceentrada,interfacesalida from filtros where estado=0""")
+        curs.execute("""select tipo,ipsource,ipdestino,puertosource,puertodestino,interfaceentrada,interfacesalida from filtros where estado=1""")
         rstfiltros=curs.fetchall()
         for tipo,ipsource,ipdestino,puertosource,puertodestino,interfaceentrada,interfacesalida in rstfiltros:
         	if ipsource:
@@ -112,7 +113,7 @@ def getFiltros():
 def getFwPersonalizado():
 	iptables=""
 	iptables+="\n# COMIENZO DEL FIREWALL PERSONALIZADO\n"
-        curs.execute("""select comando from firewall where estado=0 order by orden""")
+        curs.execute("""select comando from firewall where estado=1 order by orden""")
         rstfire=curs.fetchall()
         for comando in rstfire:
         	iptables+="iptables %s\n" % comando
@@ -247,9 +248,9 @@ def getEjecutar():
 	
 	# Si ha pasado una hora, ejecutar
 	if strftime("%M",localtime()) == 46 and strftime("%S",localtime()) == 0:
-		print "JECUOTO" 
-	
+		print "Ejecuto" 
 	ejecutar=1 # HARDCODING JOE
+
 	return ejecutar		
 
 def getValueSettings(value):
@@ -280,7 +281,7 @@ def getMRTG(dev):
 	
 def getNateos():
 	nateos=""
-	curs.execute("""select puesrc,puedst,ipdst,ipsrc from forwardeos where estado=0""")
+	curs.execute("""select puesrc,puedst,ipdst,ipsrc from forwardeos where estado=1""")
 	nat=curs.fetchall()
 	for forwardeospuesrc,forwardeospuedst,forwardeosipdst,forwardeosipsrc in nat:
 		if forwardeosipsrc=='0.0.0.0':

@@ -24,21 +24,21 @@ class Firewall
     /**
      * @var string
      *
-     * @ORM\Column(name="comando", type="string", length=255, nullable=true)
+     * @ORM\Column(name="comando", type="string", length=255, nullable=false)
      */
     private $comando;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="estado", type="integer", nullable=true)
+     * @ORM\Column(name="estado", type="boolean", nullable=true)
      */
     private $estado;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="comentario", type="string", length=255, nullable=true)
+     * @ORM\Column(name="comentario", type="string", length=255, nullable=false)
      */
     private $comentario;
 
@@ -151,5 +151,15 @@ class Firewall
     public function getOrden()
     {
         return $this->orden;
+    }
+    public static function estados(){
+    	return array(
+    			'1' => 'Activo',
+    			'0' => 'Inactivo',
+    	);
+    }
+    public function getNombreEstado(){
+    	$a = $this->estados();
+    	return $a[$this->estado];
     }
 }

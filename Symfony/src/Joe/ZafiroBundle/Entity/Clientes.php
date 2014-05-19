@@ -503,4 +503,15 @@ class Clientes
     {
         return $this->clientes_plan;
     }
+    
+    public static function estados(){
+    	return array(
+    			'1' => 'Activo',
+    			'0' => 'Inactivo',
+    	);
+    }
+    public function getNombreEstado(){
+    	$a = $this->estados();
+    	return $a[$this->estado];
+    }
 }

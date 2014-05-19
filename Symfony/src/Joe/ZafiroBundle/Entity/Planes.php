@@ -24,7 +24,7 @@ class Planes
     /**
      * @var integer
      *
-     * @ORM\Column(name="estado", type="integer", nullable=false)
+     * @ORM\Column(name="estado", type="boolean", nullable=false)
      */
     private $estado;
 

@@ -7,11 +7,11 @@
     <table class="records_list">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Comando</th>
-                <th>Estado</th>
+                <th>ID</th>
                 <th>Comentario</th>
+                <th>Comando</th>
                 <th>Orden</th>
+                <th>Estado</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -19,10 +19,10 @@
         {% for entity in entities %}
             <tr>
                 <td><a href="{{ path('firewall_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
-                <td>{{ entity.comando }}</td>
-                <td>{{ entity.estado }}</td>
                 <td>{{ entity.comentario }}</td>
+                <td>iptables {{ entity.comando }}</td>
                 <td>{{ entity.orden }}</td>
+                <td>{{ entity.nombreestado }}</td>
                 <td>
                     <a href="{{ path('firewall_show', { 'id': entity.id }) }}">show</a>
                     <a href="{{ path('firewall_edit', { 'id': entity.id }) }}">edit</a>

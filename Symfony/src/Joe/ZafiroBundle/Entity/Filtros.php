@@ -24,14 +24,14 @@ class Filtros
     /**
      * @var string
      *
-     * @ORM\Column(name="nombre", type="string", length=255, nullable=true)
+     * @ORM\Column(name="nombre", type="string", length=255, nullable=false)
      */
     private $nombre;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="tipo", type="string", length=10, nullable=true)
+     * @ORM\Column(name="tipo", type="string", length=10, nullable=false)
      */
     private $tipo;
 
@@ -66,21 +66,21 @@ class Filtros
     /**
      * @var integer
      *
-     * @ORM\Column(name="estado", type="integer", nullable=true)
+     * @ORM\Column(name="estado", type="boolean", nullable=true)
      */
     private $estado;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="interfaceentrada", type="string", length=20, nullable=true)
+     * @ORM\Column(name="interfaceentrada", type="string", length=20, nullable=false)
      */
     private $interfaceentrada;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="interfacesalida", type="string", length=20, nullable=true)
+     * @ORM\Column(name="interfacesalida", type="string", length=20, nullable=false)
      */
     private $interfacesalida;
 

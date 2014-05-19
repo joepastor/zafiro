@@ -16,14 +16,21 @@ class FiltrosType extends AbstractType
     {
         $builder
             ->add('nombre')
-            ->add('tipo')
+            ->add('tipo','choice', array(
+            		'choices' => array(
+            			'TCP' => 'TCP',
+            			'UDP' => 'UDP',
+            			)
+            		))
             ->add('ipsource')
             ->add('ipdestino')
             ->add('puertosource')
             ->add('puertodestino')
-            ->add('estado')
-            ->add('interfaceentrada')
-            ->add('interfacesalida')
+            ->add('interfaceentrada','entity',array(
+					'class'=>'JoeZafiroBundle:Interfaces'))
+            ->add('interfacesalida','entity',array(
+					'class'=>'JoeZafiroBundle:Interfaces'))
+			->add('estado')
         ;
     }
     

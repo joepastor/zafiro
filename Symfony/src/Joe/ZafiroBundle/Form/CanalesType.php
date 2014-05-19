@@ -18,9 +18,7 @@ class CanalesType extends AbstractType
         	->add('nombre')
         	->add('bajada')
             ->add('subida')
-            ->add('estado','choice', array(
-            		'choices' => \Joe\ZafiroBundle\Entity\Canales::estados()
-            		))
+            ->add('estado')
         ;
     }
     

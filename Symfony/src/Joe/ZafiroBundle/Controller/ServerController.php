@@ -97,6 +97,9 @@ class ServerController extends Controller
     			case "dmesg":
     				$comando=$r->get("info");
     				break;
+				case "syslog":
+    				$comando="tail /var/log/system.log";
+    				break;
     				
     			default:
     				$comando="";

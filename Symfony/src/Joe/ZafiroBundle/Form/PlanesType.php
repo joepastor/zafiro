@@ -8,7 +8,13 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class PlanesType extends AbstractType
 {
-        /**
+	
+	private $canales;
+	
+	public function __construct($Canales){
+		$this->canales=$Canales;
+	}
+     /**
      * @param FormBuilderInterface $builder
      * @param array $options
      */
@@ -19,22 +25,16 @@ class PlanesType extends AbstractType
         $builder
             ->add('nombre')
             ->add('valor')
-        	->add('estado','choice', array(
-            		'choices' => array(
-            			'1' => 'Activo',
-            			'0' => 'Inactivo',
-            			)
-            		))
+        	->add('estado')
         ;
 		for($d=0;$d<7;$d++){
 			for($h=0;$h<24;$h++){
 				$h1=str_pad($h,2,"0",STR_PAD_LEFT);
-				$builder->add('d'.$d.'h'.$h1,'entity',
+				$builder->add('d'.$d.'h'.$h1,'choice',
             		array(
-					'class'=>'JoeZafiroBundle:Canales',
+					'choices'=>$this->canales,
             		'label'=>'Dia '.$d.' hora '.$h1,
-				)
-            		);				
+				));				
 			}
 		}
     }

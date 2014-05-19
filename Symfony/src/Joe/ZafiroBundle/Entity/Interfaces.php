@@ -77,7 +77,12 @@ class Interfaces
      */
     private $enabled;
 
-
+    public function __toString()
+    {
+    	return $this->getDevice();
+    
+    }
+    
 
     /**
      * Get id

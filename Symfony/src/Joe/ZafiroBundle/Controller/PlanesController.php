@@ -62,7 +62,9 @@ class PlanesController extends Controller
     */
     private function createCreateForm(Planes $entity)
     {
-        $form = $this->createForm(new PlanesType(), $entity, array(
+    	$ac=$this->getDoctrine()->getManager()->getRepository('JoeZafiroBundle:Canales')->getCanalesArray();
+
+        $form = $this->createForm(new PlanesType($ac), $entity, array(
             'action' => $this->generateUrl('planes_create'),
             'method' => 'POST',
         ));
@@ -141,7 +143,9 @@ class PlanesController extends Controller
     */
     private function createEditForm(Planes $entity)
     {
-        $form = $this->createForm(new PlanesType(), $entity, array(
+		$ac=$this->getDoctrine()->getManager()->getRepository('JoeZafiroBundle:Canales')->getCanalesArray();
+
+        $form = $this->createForm(new PlanesType($ac), $entity, array(
             'action' => $this->generateUrl('planes_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));

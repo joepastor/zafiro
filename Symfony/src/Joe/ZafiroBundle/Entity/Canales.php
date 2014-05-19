@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Canales
  *
  * @ORM\Table(name="canales")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="\Joe\ZafiroBundle\Entity\CanalesRepository")
  */
 class Canales
 {
@@ -163,16 +163,5 @@ class Canales
     public function __construct()
     {
         $this->canal_pc = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
-    public static function estados(){
-    	return array(
-    			'1' => 'Activo',
-    			'0' => 'Inactivo',
-    	);
-    }
-    public function getNombreEstado(){
-    	$a = $this->estados();
-    	return $a[$this->estado];
     }
 }

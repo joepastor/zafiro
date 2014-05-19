@@ -18,8 +18,8 @@ class ForwardeosType extends AbstractType
             ->add('puesrc')
             ->add('puedst')
             ->add('ipdst')
-            ->add('estado')
             ->add('ipsrc')
+            ->add('estado')
         ;
     }
     

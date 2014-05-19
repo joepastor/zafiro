@@ -31,3 +31,7 @@ body {
 	float: left;
 }
  
+.inactivo{
+	color: #ccc;
+	background-color: #f00;
+}

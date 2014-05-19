@@ -18,10 +18,7 @@ class ClientesType extends AbstractType
             ->add('descripcion')
             ->add('macaddress')
             ->add('estado','choice', array(
-            		'choices' => array(
-            			'1' => 'Activo',
-            			'0' => 'Inactivo',
-            			)
+            		'choices' => \Joe\ZafiroBundle\Entity\Clientes::estados()
             		))
             ->add('ip')
             ->add('fechaAlta')
