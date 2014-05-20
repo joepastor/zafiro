@@ -127,7 +127,14 @@ class Clientes
      */
     private $clientes_plan;
     
-
+    /**
+     * @var integer
+     * JOE Asi se hace un inner join
+     * @ORM\ManyToOne(targetEntity="Interfaces" ,inversedBy="interface_clientes")
+     * @ORM\JoinColumn(name="interface",referencedColumnName="id")
+     */
+    private $clientes_interface;
+    
     
     /**
      * Get id
@@ -513,5 +520,51 @@ class Clientes
     public function getNombreEstado(){
     	$a = $this->estados();
     	return $a[$this->estado];
+    }
+    
+    /**
+     * Set interface
+     *
+     * @param integer $interface
+     * @return Clientes
+     */
+    public function setInterface($interface)
+    {
+    	$this->interface = $interface;
+    
+    	return $this;
+    }
+    
+    /**
+     * Get interface
+     *
+     * @return integer
+     */
+    public function getInterface()
+    {
+    	return $this->interface;
+    }
+    
+    /**
+     * Set clientes_interface
+     *
+     * @param \Joe\ZafiroBundle\Entity\Planes $clientesInterface
+     * @return Clientes
+     */
+    public function setClientesInterface(\Joe\ZafiroBundle\Entity\Interfaces $clientesInterface = null)
+    {
+    	$this->clientes_interface = $clientesInterface;
+    
+    	return $this;
+    }
+    
+    /**
+     * Get clientes_interface
+     *
+     * @return \Joe\ZafiroBundle\Entity\Interfaces
+     */
+    public function getClientesInterface()
+    {
+    	return $this->clientes_interface;
     }
 }

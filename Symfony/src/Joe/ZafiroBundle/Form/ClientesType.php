@@ -32,6 +32,7 @@ class ClientesType extends AbstractType
             ->add('email', 'email',array('required'=>false))
             ->add('enrutaProxy')
             ->add('salidaHabilitada')
+            ->add('clientes_interface')
         ;
     }
     

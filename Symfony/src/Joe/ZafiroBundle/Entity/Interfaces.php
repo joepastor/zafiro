@@ -77,6 +77,13 @@ class Interfaces
      */
     private $enabled;
 
+    /**
+     * @var integer
+     * JOE Asi se hace un inner join
+     * @ORM\OneToMany(targetEntity="Clientes" ,mappedBy="clientes_interface")
+     */
+    private $interface_clientes;
+    
     public function __toString()
     {
     	return $this->getDevice();
