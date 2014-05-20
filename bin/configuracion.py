@@ -31,6 +31,7 @@ devenm="eth0"
 
 # Directorios
 zafirodir="/Users/Joe/git/zafiro"
+zafirodir="/home/joe/git/zafiro"
 archivosdir="%s/archivos" % zafirodir 
 openvpndir="%s/openvpn" % archivosdir
 scriptsdir="%s/scripts" % archivosdir

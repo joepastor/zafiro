@@ -1,0 +1,3 @@
+[submodule "Symfony/vendor/bundles/FOS/UserBundle"]
+	path = Symfony/vendor/bundles/FOS/UserBundle
+	url = git://github.com/FriendsOfSymfony/FOSUserBundle.git
