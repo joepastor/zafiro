@@ -150,7 +150,7 @@ try:
 		hosts="127.0.0.1        localhost\n"
 		for clientesid,clientesip,clientesmac,clientespla,clientesnom,ipsfijasip,ipsfijasint,ipsfijasest,clientespro,clientessal,clientesdes,canalessub,canalesbaj in clientes:
 			iptables+="\n\n"
-			iptables+="echo Cliente - %s	IP:%s    ID: %s\n" % (clientesnom,clientesip,clientesid)
+			iptables+="echo ID: %s	%s	IP:%s    \n" % (clientesid,clientesnom,clientesip)
 			iptables+="#------------------------------------------------------------------------------\n"
 			iptables+="#Cliente - %s	IP:%s    ID: %s\n" % (clientesnom,clientesip,clientesid)
 			iptables+="#------------------------------------------------------------------------------\n"

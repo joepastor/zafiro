@@ -113,10 +113,10 @@ def getFiltros():
 def getFwPersonalizado():
 	iptables=""
 	iptables+="\n# COMIENZO DEL FIREWALL PERSONALIZADO\n"
-        curs.execute("""select comando from firewall where estado=1 order by orden""")
-        rstfire=curs.fetchall()
-        for comando in rstfire:
-        	iptables+="iptables %s\n" % comando
+	curs.execute("""select comando from firewall where estado=1 order by orden""")
+	rstfire=curs.fetchall()
+	for comando in rstfire:
+		iptables+="iptables %s\n" % comando
 	iptables+="\n# FIN DEL FIREWALL PERSONALIZADO\n"
 	return iptables
 
@@ -254,11 +254,11 @@ def getEjecutar():
 	return ejecutar		
 
 def getValueSettings(value):
-	curs.execute("""select valor from settings where llave='%s'""" % value)
+	sql="""select valor from settings where llave='%s'""" % value
+	curs.execute(sql)
 	rs=curs.fetchall()
 	for valor in rs:
 		return valor[0]
-	rs.close()
 	
 def getLimitacion():
 	# Si esta liberado en ancho de banda
@@ -291,7 +291,11 @@ def getNateos():
 
 def setSalida():
 	f=open("%s/ip_forward" % archivosdir,"w")
-	f.write(getValueSettings("salida"))
+	if getValueSettings("salida")==1:
+		valor="1"
+	else:
+		valor="0"
+	f.write(valor)
 	f.close()
 	
 def createInterfaces():
@@ -322,5 +326,9 @@ def createInterfaces():
 
 def pingIgnore():
 	f=open("%s/icmp_echo_ignore_all" % archivosdir,"w")
-	f.write(getValueSettings("ping_ignore"))
+	if getValueSettings("ping_ignore"):
+		valor="1"
+	else:
+		valor="0"
+	f.write(valor)
 	f.close()

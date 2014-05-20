@@ -4,18 +4,9 @@ iface lo inet loopback
 
 # LAN
 auto eth0
-iface 192.168.0.1 inet static
-	address 192.168.0.1
+iface 172.16.0.1 inet static
+	address 172.16.0.1
 	netmask 255.255.255.0
-	broadcast 192.168.0.255
-	network 192.168.0.0
-	gateway 192.168.0.20
-
-# WAN
-auto eth1
-iface 46456456 inet static
-	address 46456456
-	netmask 255.255.255.0
-	broadcast 1.1.1.255
-	network 1.1.1.0
+	broadcast 172.16.0.255
+	network 172.16.0.0
 
