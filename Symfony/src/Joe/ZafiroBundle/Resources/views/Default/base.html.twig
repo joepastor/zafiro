@@ -69,16 +69,27 @@
 							<li><a id="apagar" href="#" onclick="if(confirm('Desea apagar el servidor?')){location='{{ path('actions', { 'name': 'apagar' }) }}';}"> <img src="{{ asset('bundles/joezafiro/images/shutdown.png') }}" width="16px"> Apagar</a></li>
 						</ul>
 					</li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ app.user }} <b class="caret"></b></a>
+						<ul class="dropdown-menu">
+							<li><a href="{{ path('fos_user_profile_show') }}">Ver</a></li>
+							<li><a href="{{ path('fos_user_profile_edit') }}">Editar</a></li>
+							<li><a href="{{ path('fos_user_change_password') }}">Cambiar Password</a></li>
+							<li><a href="{{ path('fos_user_security_logout') }}">Salir</a></li>
+						</ul>
+					</li> 
 				</ul>
 			</div>
 		</div>
+        
         
         <div id="content">
             {% block body %}{% endblock %}
         </div>
         <div id="footer">
             {% block footer %}{% endblock %}
-            Footer, todos los derechos reservados
+            	Zafiro - Bandwidth Shaping & Firewall Server
         </div>
+        
     </body>
 </html>

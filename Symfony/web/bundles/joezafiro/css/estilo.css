@@ -35,3 +35,19 @@ body {
 	color: #ccc;
 	background-color: #f00;
 }
+#div_login_logo{
+	margin: 0px auto;
+	width: 300px;
+	height: 180px;
+	text-align: center;
+	background-color: #666;
+	vertical-align: middle;
+	border: 2px solid #000;
+	padding-top: 30px;
+	color: #eee;
+	font-size: 20px;
+}
+#contenedor_login{
+	margin-top: 30px;
+	text-align: center;
+}
