@@ -23,7 +23,6 @@ class ClientesType extends AbstractType
             ->add('ip')
             ->add('fechaAlta')
             ->add('fechaBaja')
-            ->add('plan')
             ->add('clientes_plan')
             ->add('nombre')
             ->add('direccion')

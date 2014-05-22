@@ -1,0 +1,8 @@
+{% extends 'JoeZafiroBundle:Default:base.html.twig' %}
+
+{% block body %}
+<h1>Edicion de perfil</h1>
+{% block fos_user_content %}
+{% include "FOSUserBundle:Profile:edit_content.html.twig" %}
+{% endblock fos_user_content %}
+{% endblock %}

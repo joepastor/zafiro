@@ -142,118 +142,6 @@ tc qdisc del dev eth1 root
 tc qdisc add dev eth1 root handle 1: htb
 
 
-echo ID: 418	Alejandro Rogers	IP:29    
-#------------------------------------------------------------------------------
-#Cliente - Alejandro Rogers	IP:29    ID: 418
-#------------------------------------------------------------------------------
-iptables -X 172.16.0.29_i
-iptables -X 172.16.0.29_o
-iptables -N 172.16.0.29_i
-iptables -N 172.16.0.29_o
-iptables -F 172.16.0.29_i
-iptables -F 172.16.0.29_o
-iptables -A FORWARD -s 172.16.0.29 -j 172.16.0.29_o
-iptables -A FORWARD -d 172.16.0.29 -j 172.16.0.29_i
-iptables -A FORWARD -s 172.16.0.29 -m mac --mac-source 94:39:e5:0e:73:15 -j ACCEPT
-iptables -A FORWARD -d 172.16.0.29 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:4181 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4181 classid 1:3 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4181 classid 1:4 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4181 classid 1:5 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4181 classid 1:6 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4181 classid 1:7 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4181 classid 1:8 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4181 classid 1:9 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4181 classid 1:a htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4181 classid 1:b htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 41820 fw classid 1:3
-tc filter add dev br2 protocol ip parent 1: handle 41821 fw classid 1:4
-tc filter add dev br2 protocol ip parent 1: handle 41822 fw classid 1:5
-tc filter add dev br2 protocol ip parent 1: handle 41823 fw classid 1:6
-tc filter add dev br2 protocol ip parent 1: handle 41824 fw classid 1:7
-tc filter add dev br2 protocol ip parent 1: handle 41825 fw classid 1:8
-tc filter add dev br2 protocol ip parent 1: handle 41826 fw classid 1:9
-tc filter add dev br2 protocol ip parent 1: handle 41827 fw classid 1:a
-tc filter add dev br2 protocol ip parent 1: handle 41828 fw classid 1:b
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:4182 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4182 classid 1:c htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4182 classid 1:d htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4182 classid 1:e htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4182 classid 1:f htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4182 classid 1:10 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4182 classid 1:11 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4182 classid 1:12 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4182 classid 1:13 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4182 classid 1:14 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 41830 fw classid 1:c
-tc filter add dev eth0 protocol ip parent 1: handle 41831 fw classid 1:d
-tc filter add dev eth0 protocol ip parent 1: handle 41832 fw classid 1:e
-tc filter add dev eth0 protocol ip parent 1: handle 41833 fw classid 1:f
-tc filter add dev eth0 protocol ip parent 1: handle 41834 fw classid 1:10
-tc filter add dev eth0 protocol ip parent 1: handle 41835 fw classid 1:11
-tc filter add dev eth0 protocol ip parent 1: handle 41836 fw classid 1:12
-tc filter add dev eth0 protocol ip parent 1: handle 41837 fw classid 1:13
-tc filter add dev eth0 protocol ip parent 1: handle 41838 fw classid 1:14
-
-
-# MARCAJE DE PAQUETES
-
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.29 -p udp --sport 10000:30000 -j MARK --set-mark 41820
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.29 -p udp --sport 10000:30000 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.29 -p udp --dport 10000:30000 -j MARK --set-mark 41830
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.29 -p udp --dport 10000:30000 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.29 -p udp --sport 5060:5082 -j MARK --set-mark 41820
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.29 -p udp --sport 5060:5082 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.29 -p udp --dport 5060:5082 -j MARK --set-mark 41830
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.29 -p udp --dport 5060:5082 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.29 -p udp --sport 53 -j MARK --set-mark 41821
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.29 -p udp --sport 53 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.29 -p udp --dport 53 -j MARK --set-mark 41831
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.29 -p udp --dport 53 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.29 -p tcp --sport 22 -j MARK --set-mark 41822
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.29 -p tcp --sport 22 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.29 -p tcp --dport 22 -j MARK --set-mark 41832
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.29 -p tcp --dport 22 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.29 -p tcp --sport 443 -j MARK --set-mark 41823
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.29 -p tcp --sport 443 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.29 -p tcp --dport 443 -j MARK --set-mark 41833
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.29 -p tcp --dport 443 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.29 -p tcp --sport 80 -j MARK --set-mark 41824
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.29 -p tcp --sport 80 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.29 -p tcp --dport 80 -j MARK --set-mark 41834
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.29 -p tcp --dport 80 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.29 -p tcp --sport 25 -j MARK --set-mark 41826
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.29 -p tcp --sport 25 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.29 -p tcp --dport 25 -j MARK --set-mark 41836
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.29 -p tcp --dport 25 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.29 -p tcp --sport 110 -j MARK --set-mark 41826
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.29 -p tcp --sport 110 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.29 -p tcp --dport 110 -j MARK --set-mark 41836
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.29 -p tcp --dport 110 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.29 -p tcp --sport 143 -j MARK --set-mark 41826
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.29 -p tcp --sport 143 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.29 -p tcp --dport 143 -j MARK --set-mark 41836
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.29 -p tcp --dport 143 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.29 -p tcp --sport 21 -j MARK --set-mark 41827
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.29 -p tcp --sport 21 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.29 -p tcp --dport 21 -j MARK --set-mark 41837
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.29 -p tcp --dport 21 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.29 -j MARK --set-mark 41827
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.29 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.29 -j MARK --set-mark 41837
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.29 -j RETURN
-iptables -t nat -A PREROUTING -i br2 -p tcp --dport 80 -s 172.16.0.29 -j REDIRECT --to-port 3128
-iptables -t nat -A POSTROUTING -s 172.16.0.29 -o eth0 -j MASQUERADE
-
-
 echo ID: 478	Alejandro Rogers	IP:19    
 #------------------------------------------------------------------------------
 #Cliente - Alejandro Rogers	IP:19    ID: 478
@@ -268,56 +156,6 @@ iptables -A FORWARD -s 172.16.0.19 -j 172.16.0.19_o
 iptables -A FORWARD -d 172.16.0.19 -j 172.16.0.19_i
 iptables -A FORWARD -s 172.16.0.19 -m mac --mac-source e8:03:9a:53:01:65 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.19 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:4781 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4781 classid 1:15 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4781 classid 1:16 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4781 classid 1:17 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4781 classid 1:18 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4781 classid 1:19 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4781 classid 1:1a htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4781 classid 1:1b htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4781 classid 1:1c htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4781 classid 1:1d htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 47820 fw classid 1:15
-tc filter add dev br2 protocol ip parent 1: handle 47821 fw classid 1:16
-tc filter add dev br2 protocol ip parent 1: handle 47822 fw classid 1:17
-tc filter add dev br2 protocol ip parent 1: handle 47823 fw classid 1:18
-tc filter add dev br2 protocol ip parent 1: handle 47824 fw classid 1:19
-tc filter add dev br2 protocol ip parent 1: handle 47825 fw classid 1:1a
-tc filter add dev br2 protocol ip parent 1: handle 47826 fw classid 1:1b
-tc filter add dev br2 protocol ip parent 1: handle 47827 fw classid 1:1c
-tc filter add dev br2 protocol ip parent 1: handle 47828 fw classid 1:1d
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:4782 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4782 classid 1:1e htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4782 classid 1:1f htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4782 classid 1:20 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4782 classid 1:21 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4782 classid 1:22 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4782 classid 1:23 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4782 classid 1:24 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4782 classid 1:25 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4782 classid 1:26 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 47830 fw classid 1:1e
-tc filter add dev eth0 protocol ip parent 1: handle 47831 fw classid 1:1f
-tc filter add dev eth0 protocol ip parent 1: handle 47832 fw classid 1:20
-tc filter add dev eth0 protocol ip parent 1: handle 47833 fw classid 1:21
-tc filter add dev eth0 protocol ip parent 1: handle 47834 fw classid 1:22
-tc filter add dev eth0 protocol ip parent 1: handle 47835 fw classid 1:23
-tc filter add dev eth0 protocol ip parent 1: handle 47836 fw classid 1:24
-tc filter add dev eth0 protocol ip parent 1: handle 47837 fw classid 1:25
-tc filter add dev eth0 protocol ip parent 1: handle 47838 fw classid 1:26
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.19 -p udp --sport 10000:30000 -j MARK --set-mark 47820
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.19 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.19 -p udp --dport 10000:30000 -j MARK --set-mark 47830
@@ -380,56 +218,6 @@ iptables -A FORWARD -s 172.16.0.62 -j 172.16.0.62_o
 iptables -A FORWARD -d 172.16.0.62 -j 172.16.0.62_i
 iptables -A FORWARD -s 172.16.0.62 -m mac --mac-source f0:de:f1:87:cb:2c -j ACCEPT
 iptables -A FORWARD -d 172.16.0.62 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:3581 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:3581 classid 1:27 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:3581 classid 1:28 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:3581 classid 1:29 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:3581 classid 1:2a htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:3581 classid 1:2b htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:3581 classid 1:2c htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:3581 classid 1:2d htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:3581 classid 1:2e htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:3581 classid 1:2f htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 35820 fw classid 1:27
-tc filter add dev br2 protocol ip parent 1: handle 35821 fw classid 1:28
-tc filter add dev br2 protocol ip parent 1: handle 35822 fw classid 1:29
-tc filter add dev br2 protocol ip parent 1: handle 35823 fw classid 1:2a
-tc filter add dev br2 protocol ip parent 1: handle 35824 fw classid 1:2b
-tc filter add dev br2 protocol ip parent 1: handle 35825 fw classid 1:2c
-tc filter add dev br2 protocol ip parent 1: handle 35826 fw classid 1:2d
-tc filter add dev br2 protocol ip parent 1: handle 35827 fw classid 1:2e
-tc filter add dev br2 protocol ip parent 1: handle 35828 fw classid 1:2f
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:3582 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:3582 classid 1:30 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:3582 classid 1:31 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:3582 classid 1:32 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:3582 classid 1:33 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:3582 classid 1:34 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:3582 classid 1:35 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:3582 classid 1:36 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:3582 classid 1:37 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:3582 classid 1:38 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 35830 fw classid 1:30
-tc filter add dev eth0 protocol ip parent 1: handle 35831 fw classid 1:31
-tc filter add dev eth0 protocol ip parent 1: handle 35832 fw classid 1:32
-tc filter add dev eth0 protocol ip parent 1: handle 35833 fw classid 1:33
-tc filter add dev eth0 protocol ip parent 1: handle 35834 fw classid 1:34
-tc filter add dev eth0 protocol ip parent 1: handle 35835 fw classid 1:35
-tc filter add dev eth0 protocol ip parent 1: handle 35836 fw classid 1:36
-tc filter add dev eth0 protocol ip parent 1: handle 35837 fw classid 1:37
-tc filter add dev eth0 protocol ip parent 1: handle 35838 fw classid 1:38
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.62 -p udp --sport 10000:30000 -j MARK --set-mark 35820
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.62 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.62 -p udp --dport 10000:30000 -j MARK --set-mark 35830
@@ -492,56 +280,6 @@ iptables -A FORWARD -s 172.16.0.98 -j 172.16.0.98_o
 iptables -A FORWARD -d 172.16.0.98 -j 172.16.0.98_i
 iptables -A FORWARD -s 172.16.0.98 -m mac --mac-source bc:3b:af:c3:21:0e -j ACCEPT
 iptables -A FORWARD -d 172.16.0.98 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:4581 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4581 classid 1:39 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4581 classid 1:3a htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4581 classid 1:3b htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4581 classid 1:3c htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4581 classid 1:3d htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4581 classid 1:3e htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4581 classid 1:3f htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4581 classid 1:40 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4581 classid 1:41 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 45820 fw classid 1:39
-tc filter add dev br2 protocol ip parent 1: handle 45821 fw classid 1:3a
-tc filter add dev br2 protocol ip parent 1: handle 45822 fw classid 1:3b
-tc filter add dev br2 protocol ip parent 1: handle 45823 fw classid 1:3c
-tc filter add dev br2 protocol ip parent 1: handle 45824 fw classid 1:3d
-tc filter add dev br2 protocol ip parent 1: handle 45825 fw classid 1:3e
-tc filter add dev br2 protocol ip parent 1: handle 45826 fw classid 1:3f
-tc filter add dev br2 protocol ip parent 1: handle 45827 fw classid 1:40
-tc filter add dev br2 protocol ip parent 1: handle 45828 fw classid 1:41
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:4582 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4582 classid 1:42 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4582 classid 1:43 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4582 classid 1:44 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4582 classid 1:45 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4582 classid 1:46 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4582 classid 1:47 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4582 classid 1:48 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4582 classid 1:49 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4582 classid 1:4a htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 45830 fw classid 1:42
-tc filter add dev eth0 protocol ip parent 1: handle 45831 fw classid 1:43
-tc filter add dev eth0 protocol ip parent 1: handle 45832 fw classid 1:44
-tc filter add dev eth0 protocol ip parent 1: handle 45833 fw classid 1:45
-tc filter add dev eth0 protocol ip parent 1: handle 45834 fw classid 1:46
-tc filter add dev eth0 protocol ip parent 1: handle 45835 fw classid 1:47
-tc filter add dev eth0 protocol ip parent 1: handle 45836 fw classid 1:48
-tc filter add dev eth0 protocol ip parent 1: handle 45837 fw classid 1:49
-tc filter add dev eth0 protocol ip parent 1: handle 45838 fw classid 1:4a
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.98 -p udp --sport 10000:30000 -j MARK --set-mark 45820
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.98 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.98 -p udp --dport 10000:30000 -j MARK --set-mark 45830
@@ -604,56 +342,6 @@ iptables -A FORWARD -s 172.16.0.49 -j 172.16.0.49_o
 iptables -A FORWARD -d 172.16.0.49 -j 172.16.0.49_i
 iptables -A FORWARD -s 172.16.0.49 -m mac --mac-source 18:67:b0:66:5c:8b -j ACCEPT
 iptables -A FORWARD -d 172.16.0.49 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:4761 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4761 classid 1:4b htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4761 classid 1:4c htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4761 classid 1:4d htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4761 classid 1:4e htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4761 classid 1:4f htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4761 classid 1:50 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4761 classid 1:51 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4761 classid 1:52 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4761 classid 1:53 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 47620 fw classid 1:4b
-tc filter add dev br2 protocol ip parent 1: handle 47621 fw classid 1:4c
-tc filter add dev br2 protocol ip parent 1: handle 47622 fw classid 1:4d
-tc filter add dev br2 protocol ip parent 1: handle 47623 fw classid 1:4e
-tc filter add dev br2 protocol ip parent 1: handle 47624 fw classid 1:4f
-tc filter add dev br2 protocol ip parent 1: handle 47625 fw classid 1:50
-tc filter add dev br2 protocol ip parent 1: handle 47626 fw classid 1:51
-tc filter add dev br2 protocol ip parent 1: handle 47627 fw classid 1:52
-tc filter add dev br2 protocol ip parent 1: handle 47628 fw classid 1:53
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:4762 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4762 classid 1:54 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4762 classid 1:55 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4762 classid 1:56 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4762 classid 1:57 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4762 classid 1:58 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4762 classid 1:59 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4762 classid 1:5a htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4762 classid 1:5b htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4762 classid 1:5c htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 47630 fw classid 1:54
-tc filter add dev eth0 protocol ip parent 1: handle 47631 fw classid 1:55
-tc filter add dev eth0 protocol ip parent 1: handle 47632 fw classid 1:56
-tc filter add dev eth0 protocol ip parent 1: handle 47633 fw classid 1:57
-tc filter add dev eth0 protocol ip parent 1: handle 47634 fw classid 1:58
-tc filter add dev eth0 protocol ip parent 1: handle 47635 fw classid 1:59
-tc filter add dev eth0 protocol ip parent 1: handle 47636 fw classid 1:5a
-tc filter add dev eth0 protocol ip parent 1: handle 47637 fw classid 1:5b
-tc filter add dev eth0 protocol ip parent 1: handle 47638 fw classid 1:5c
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.49 -p udp --sport 10000:30000 -j MARK --set-mark 47620
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.49 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.49 -p udp --dport 10000:30000 -j MARK --set-mark 47630
@@ -716,56 +404,6 @@ iptables -A FORWARD -s 172.16.0.15 -j 172.16.0.15_o
 iptables -A FORWARD -d 172.16.0.15 -j 172.16.0.15_i
 iptables -A FORWARD -s 172.16.0.15 -m mac --mac-source 00:1b:b9:e2:51:7e -j ACCEPT
 iptables -A FORWARD -d 172.16.0.15 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:4541 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4541 classid 1:5d htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4541 classid 1:5e htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4541 classid 1:5f htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4541 classid 1:60 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4541 classid 1:61 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4541 classid 1:62 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4541 classid 1:63 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4541 classid 1:64 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4541 classid 1:65 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 45420 fw classid 1:5d
-tc filter add dev br2 protocol ip parent 1: handle 45421 fw classid 1:5e
-tc filter add dev br2 protocol ip parent 1: handle 45422 fw classid 1:5f
-tc filter add dev br2 protocol ip parent 1: handle 45423 fw classid 1:60
-tc filter add dev br2 protocol ip parent 1: handle 45424 fw classid 1:61
-tc filter add dev br2 protocol ip parent 1: handle 45425 fw classid 1:62
-tc filter add dev br2 protocol ip parent 1: handle 45426 fw classid 1:63
-tc filter add dev br2 protocol ip parent 1: handle 45427 fw classid 1:64
-tc filter add dev br2 protocol ip parent 1: handle 45428 fw classid 1:65
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:4542 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4542 classid 1:66 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4542 classid 1:67 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4542 classid 1:68 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4542 classid 1:69 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4542 classid 1:6a htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4542 classid 1:6b htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4542 classid 1:6c htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4542 classid 1:6d htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4542 classid 1:6e htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 45430 fw classid 1:66
-tc filter add dev eth0 protocol ip parent 1: handle 45431 fw classid 1:67
-tc filter add dev eth0 protocol ip parent 1: handle 45432 fw classid 1:68
-tc filter add dev eth0 protocol ip parent 1: handle 45433 fw classid 1:69
-tc filter add dev eth0 protocol ip parent 1: handle 45434 fw classid 1:6a
-tc filter add dev eth0 protocol ip parent 1: handle 45435 fw classid 1:6b
-tc filter add dev eth0 protocol ip parent 1: handle 45436 fw classid 1:6c
-tc filter add dev eth0 protocol ip parent 1: handle 45437 fw classid 1:6d
-tc filter add dev eth0 protocol ip parent 1: handle 45438 fw classid 1:6e
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.15 -p udp --sport 10000:30000 -j MARK --set-mark 45420
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.15 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.15 -p udp --dport 10000:30000 -j MARK --set-mark 45430
@@ -814,6 +452,68 @@ iptables -t nat -A PREROUTING -i br2 -p tcp --dport 80 -s 172.16.0.15 -j REDIREC
 iptables -t nat -A POSTROUTING -s 172.16.0.15 -o eth0 -j MASQUERADE
 
 
+echo ID: 418	Alejandro Rogers	IP:29    
+#------------------------------------------------------------------------------
+#Cliente - Alejandro Rogers	IP:29    ID: 418
+#------------------------------------------------------------------------------
+iptables -X 172.16.0.29_i
+iptables -X 172.16.0.29_o
+iptables -N 172.16.0.29_i
+iptables -N 172.16.0.29_o
+iptables -F 172.16.0.29_i
+iptables -F 172.16.0.29_o
+iptables -A FORWARD -s 172.16.0.29 -j 172.16.0.29_o
+iptables -A FORWARD -d 172.16.0.29 -j 172.16.0.29_i
+iptables -A FORWARD -s 172.16.0.29 -m mac --mac-source 94:39:e5:0e:73:15 -j ACCEPT
+iptables -A FORWARD -d 172.16.0.29 -j ACCEPT
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.29 -p udp --sport 10000:30000 -j MARK --set-mark 41820
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.29 -p udp --sport 10000:30000 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.29 -p udp --dport 10000:30000 -j MARK --set-mark 41830
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.29 -p udp --dport 10000:30000 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.29 -p udp --sport 5060:5082 -j MARK --set-mark 41820
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.29 -p udp --sport 5060:5082 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.29 -p udp --dport 5060:5082 -j MARK --set-mark 41830
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.29 -p udp --dport 5060:5082 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.29 -p udp --sport 53 -j MARK --set-mark 41821
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.29 -p udp --sport 53 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.29 -p udp --dport 53 -j MARK --set-mark 41831
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.29 -p udp --dport 53 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.29 -p tcp --sport 22 -j MARK --set-mark 41822
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.29 -p tcp --sport 22 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.29 -p tcp --dport 22 -j MARK --set-mark 41832
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.29 -p tcp --dport 22 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.29 -p tcp --sport 443 -j MARK --set-mark 41823
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.29 -p tcp --sport 443 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.29 -p tcp --dport 443 -j MARK --set-mark 41833
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.29 -p tcp --dport 443 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.29 -p tcp --sport 80 -j MARK --set-mark 41824
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.29 -p tcp --sport 80 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.29 -p tcp --dport 80 -j MARK --set-mark 41834
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.29 -p tcp --dport 80 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.29 -p tcp --sport 25 -j MARK --set-mark 41826
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.29 -p tcp --sport 25 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.29 -p tcp --dport 25 -j MARK --set-mark 41836
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.29 -p tcp --dport 25 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.29 -p tcp --sport 110 -j MARK --set-mark 41826
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.29 -p tcp --sport 110 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.29 -p tcp --dport 110 -j MARK --set-mark 41836
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.29 -p tcp --dport 110 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.29 -p tcp --sport 143 -j MARK --set-mark 41826
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.29 -p tcp --sport 143 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.29 -p tcp --dport 143 -j MARK --set-mark 41836
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.29 -p tcp --dport 143 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.29 -p tcp --sport 21 -j MARK --set-mark 41827
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.29 -p tcp --sport 21 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.29 -p tcp --dport 21 -j MARK --set-mark 41837
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.29 -p tcp --dport 21 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.29 -j MARK --set-mark 41827
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.29 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.29 -j MARK --set-mark 41837
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.29 -j RETURN
+iptables -t nat -A PREROUTING -i br2 -p tcp --dport 80 -s 172.16.0.29 -j REDIRECT --to-port 3128
+iptables -t nat -A POSTROUTING -s 172.16.0.29 -o eth0 -j MASQUERADE
+
+
 echo ID: 469	Android TV	IP:5    
 #------------------------------------------------------------------------------
 #Cliente - Android TV	IP:5    ID: 469
@@ -828,56 +528,6 @@ iptables -A FORWARD -s 172.16.0.5 -j 172.16.0.5_o
 iptables -A FORWARD -d 172.16.0.5 -j 172.16.0.5_i
 iptables -A FORWARD -s 172.16.0.5 -m mac --mac-source 48:02:2a:b4:ee:e1 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.5 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:4691 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4691 classid 1:6f htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4691 classid 1:70 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4691 classid 1:71 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4691 classid 1:72 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4691 classid 1:73 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4691 classid 1:74 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4691 classid 1:75 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4691 classid 1:76 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4691 classid 1:77 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 46920 fw classid 1:6f
-tc filter add dev br2 protocol ip parent 1: handle 46921 fw classid 1:70
-tc filter add dev br2 protocol ip parent 1: handle 46922 fw classid 1:71
-tc filter add dev br2 protocol ip parent 1: handle 46923 fw classid 1:72
-tc filter add dev br2 protocol ip parent 1: handle 46924 fw classid 1:73
-tc filter add dev br2 protocol ip parent 1: handle 46925 fw classid 1:74
-tc filter add dev br2 protocol ip parent 1: handle 46926 fw classid 1:75
-tc filter add dev br2 protocol ip parent 1: handle 46927 fw classid 1:76
-tc filter add dev br2 protocol ip parent 1: handle 46928 fw classid 1:77
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:4692 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4692 classid 1:78 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4692 classid 1:79 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4692 classid 1:7a htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4692 classid 1:7b htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4692 classid 1:7c htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4692 classid 1:7d htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4692 classid 1:7e htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4692 classid 1:7f htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4692 classid 1:80 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 46930 fw classid 1:78
-tc filter add dev eth0 protocol ip parent 1: handle 46931 fw classid 1:79
-tc filter add dev eth0 protocol ip parent 1: handle 46932 fw classid 1:7a
-tc filter add dev eth0 protocol ip parent 1: handle 46933 fw classid 1:7b
-tc filter add dev eth0 protocol ip parent 1: handle 46934 fw classid 1:7c
-tc filter add dev eth0 protocol ip parent 1: handle 46935 fw classid 1:7d
-tc filter add dev eth0 protocol ip parent 1: handle 46936 fw classid 1:7e
-tc filter add dev eth0 protocol ip parent 1: handle 46937 fw classid 1:7f
-tc filter add dev eth0 protocol ip parent 1: handle 46938 fw classid 1:80
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.5 -p udp --sport 10000:30000 -j MARK --set-mark 46920
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.5 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.5 -p udp --dport 10000:30000 -j MARK --set-mark 46930
@@ -940,56 +590,6 @@ iptables -A FORWARD -s 172.16.0.52 -j 172.16.0.52_o
 iptables -A FORWARD -d 172.16.0.52 -j 172.16.0.52_i
 iptables -A FORWARD -s 172.16.0.52 -m mac --mac-source 00:19:d1:10:7a:b8 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.52 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:4911 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4911 classid 1:81 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4911 classid 1:82 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4911 classid 1:83 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4911 classid 1:84 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4911 classid 1:85 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4911 classid 1:86 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4911 classid 1:87 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4911 classid 1:88 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4911 classid 1:89 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 49120 fw classid 1:81
-tc filter add dev br2 protocol ip parent 1: handle 49121 fw classid 1:82
-tc filter add dev br2 protocol ip parent 1: handle 49122 fw classid 1:83
-tc filter add dev br2 protocol ip parent 1: handle 49123 fw classid 1:84
-tc filter add dev br2 protocol ip parent 1: handle 49124 fw classid 1:85
-tc filter add dev br2 protocol ip parent 1: handle 49125 fw classid 1:86
-tc filter add dev br2 protocol ip parent 1: handle 49126 fw classid 1:87
-tc filter add dev br2 protocol ip parent 1: handle 49127 fw classid 1:88
-tc filter add dev br2 protocol ip parent 1: handle 49128 fw classid 1:89
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:4912 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4912 classid 1:8a htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4912 classid 1:8b htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4912 classid 1:8c htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4912 classid 1:8d htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4912 classid 1:8e htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4912 classid 1:8f htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4912 classid 1:90 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4912 classid 1:91 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4912 classid 1:92 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 49130 fw classid 1:8a
-tc filter add dev eth0 protocol ip parent 1: handle 49131 fw classid 1:8b
-tc filter add dev eth0 protocol ip parent 1: handle 49132 fw classid 1:8c
-tc filter add dev eth0 protocol ip parent 1: handle 49133 fw classid 1:8d
-tc filter add dev eth0 protocol ip parent 1: handle 49134 fw classid 1:8e
-tc filter add dev eth0 protocol ip parent 1: handle 49135 fw classid 1:8f
-tc filter add dev eth0 protocol ip parent 1: handle 49136 fw classid 1:90
-tc filter add dev eth0 protocol ip parent 1: handle 49137 fw classid 1:91
-tc filter add dev eth0 protocol ip parent 1: handle 49138 fw classid 1:92
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.52 -p udp --sport 10000:30000 -j MARK --set-mark 49120
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.52 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.52 -p udp --dport 10000:30000 -j MARK --set-mark 49130
@@ -1050,56 +650,6 @@ iptables -F 172.16.0.205_i
 iptables -F 172.16.0.205_o
 iptables -A FORWARD -s 172.16.0.205 -j 172.16.0.205_o
 iptables -A FORWARD -d 172.16.0.205 -j 172.16.0.205_i
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:3921 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:3921 classid 1:93 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:3921 classid 1:94 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:3921 classid 1:95 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:3921 classid 1:96 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:3921 classid 1:97 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:3921 classid 1:98 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:3921 classid 1:99 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:3921 classid 1:9a htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:3921 classid 1:9b htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 39220 fw classid 1:93
-tc filter add dev br2 protocol ip parent 1: handle 39221 fw classid 1:94
-tc filter add dev br2 protocol ip parent 1: handle 39222 fw classid 1:95
-tc filter add dev br2 protocol ip parent 1: handle 39223 fw classid 1:96
-tc filter add dev br2 protocol ip parent 1: handle 39224 fw classid 1:97
-tc filter add dev br2 protocol ip parent 1: handle 39225 fw classid 1:98
-tc filter add dev br2 protocol ip parent 1: handle 39226 fw classid 1:99
-tc filter add dev br2 protocol ip parent 1: handle 39227 fw classid 1:9a
-tc filter add dev br2 protocol ip parent 1: handle 39228 fw classid 1:9b
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:3922 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:3922 classid 1:9c htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:3922 classid 1:9d htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:3922 classid 1:9e htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:3922 classid 1:9f htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:3922 classid 1:a0 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:3922 classid 1:a1 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:3922 classid 1:a2 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:3922 classid 1:a3 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:3922 classid 1:a4 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 39230 fw classid 1:9c
-tc filter add dev eth0 protocol ip parent 1: handle 39231 fw classid 1:9d
-tc filter add dev eth0 protocol ip parent 1: handle 39232 fw classid 1:9e
-tc filter add dev eth0 protocol ip parent 1: handle 39233 fw classid 1:9f
-tc filter add dev eth0 protocol ip parent 1: handle 39234 fw classid 1:a0
-tc filter add dev eth0 protocol ip parent 1: handle 39235 fw classid 1:a1
-tc filter add dev eth0 protocol ip parent 1: handle 39236 fw classid 1:a2
-tc filter add dev eth0 protocol ip parent 1: handle 39237 fw classid 1:a3
-tc filter add dev eth0 protocol ip parent 1: handle 39238 fw classid 1:a4
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.205 -p udp --sport 10000:30000 -j MARK --set-mark 39220
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.205 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.205 -p udp --dport 10000:30000 -j MARK --set-mark 39230
@@ -1160,56 +710,6 @@ iptables -F 172.16.0.206_i
 iptables -F 172.16.0.206_o
 iptables -A FORWARD -s 172.16.0.206 -j 172.16.0.206_o
 iptables -A FORWARD -d 172.16.0.206 -j 172.16.0.206_i
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:3951 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:3951 classid 1:a5 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:3951 classid 1:a6 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:3951 classid 1:a7 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:3951 classid 1:a8 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:3951 classid 1:a9 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:3951 classid 1:aa htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:3951 classid 1:ab htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:3951 classid 1:ac htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:3951 classid 1:ad htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 39520 fw classid 1:a5
-tc filter add dev br2 protocol ip parent 1: handle 39521 fw classid 1:a6
-tc filter add dev br2 protocol ip parent 1: handle 39522 fw classid 1:a7
-tc filter add dev br2 protocol ip parent 1: handle 39523 fw classid 1:a8
-tc filter add dev br2 protocol ip parent 1: handle 39524 fw classid 1:a9
-tc filter add dev br2 protocol ip parent 1: handle 39525 fw classid 1:aa
-tc filter add dev br2 protocol ip parent 1: handle 39526 fw classid 1:ab
-tc filter add dev br2 protocol ip parent 1: handle 39527 fw classid 1:ac
-tc filter add dev br2 protocol ip parent 1: handle 39528 fw classid 1:ad
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:3952 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:3952 classid 1:ae htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:3952 classid 1:af htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:3952 classid 1:b0 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:3952 classid 1:b1 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:3952 classid 1:b2 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:3952 classid 1:b3 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:3952 classid 1:b4 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:3952 classid 1:b5 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:3952 classid 1:b6 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 39530 fw classid 1:ae
-tc filter add dev eth0 protocol ip parent 1: handle 39531 fw classid 1:af
-tc filter add dev eth0 protocol ip parent 1: handle 39532 fw classid 1:b0
-tc filter add dev eth0 protocol ip parent 1: handle 39533 fw classid 1:b1
-tc filter add dev eth0 protocol ip parent 1: handle 39534 fw classid 1:b2
-tc filter add dev eth0 protocol ip parent 1: handle 39535 fw classid 1:b3
-tc filter add dev eth0 protocol ip parent 1: handle 39536 fw classid 1:b4
-tc filter add dev eth0 protocol ip parent 1: handle 39537 fw classid 1:b5
-tc filter add dev eth0 protocol ip parent 1: handle 39538 fw classid 1:b6
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.206 -p udp --sport 10000:30000 -j MARK --set-mark 39520
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.206 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.206 -p udp --dport 10000:30000 -j MARK --set-mark 39530
@@ -1272,56 +772,6 @@ iptables -A FORWARD -s 172.16.0.2 -j 172.16.0.2_o
 iptables -A FORWARD -d 172.16.0.2 -j 172.16.0.2_i
 iptables -A FORWARD -s 172.16.0.2 -m mac --mac-source 70:71:bc:71:98:2a -j ACCEPT
 iptables -A FORWARD -d 172.16.0.2 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:771 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:771 classid 1:b7 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:771 classid 1:b8 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:771 classid 1:b9 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:771 classid 1:ba htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:771 classid 1:bb htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:771 classid 1:bc htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:771 classid 1:bd htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:771 classid 1:be htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:771 classid 1:bf htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 7720 fw classid 1:b7
-tc filter add dev br2 protocol ip parent 1: handle 7721 fw classid 1:b8
-tc filter add dev br2 protocol ip parent 1: handle 7722 fw classid 1:b9
-tc filter add dev br2 protocol ip parent 1: handle 7723 fw classid 1:ba
-tc filter add dev br2 protocol ip parent 1: handle 7724 fw classid 1:bb
-tc filter add dev br2 protocol ip parent 1: handle 7725 fw classid 1:bc
-tc filter add dev br2 protocol ip parent 1: handle 7726 fw classid 1:bd
-tc filter add dev br2 protocol ip parent 1: handle 7727 fw classid 1:be
-tc filter add dev br2 protocol ip parent 1: handle 7728 fw classid 1:bf
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:772 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:772 classid 1:c0 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:772 classid 1:c1 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:772 classid 1:c2 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:772 classid 1:c3 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:772 classid 1:c4 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:772 classid 1:c5 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:772 classid 1:c6 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:772 classid 1:c7 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:772 classid 1:c8 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 7730 fw classid 1:c0
-tc filter add dev eth0 protocol ip parent 1: handle 7731 fw classid 1:c1
-tc filter add dev eth0 protocol ip parent 1: handle 7732 fw classid 1:c2
-tc filter add dev eth0 protocol ip parent 1: handle 7733 fw classid 1:c3
-tc filter add dev eth0 protocol ip parent 1: handle 7734 fw classid 1:c4
-tc filter add dev eth0 protocol ip parent 1: handle 7735 fw classid 1:c5
-tc filter add dev eth0 protocol ip parent 1: handle 7736 fw classid 1:c6
-tc filter add dev eth0 protocol ip parent 1: handle 7737 fw classid 1:c7
-tc filter add dev eth0 protocol ip parent 1: handle 7738 fw classid 1:c8
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.2 -p udp --sport 10000:30000 -j MARK --set-mark 7720
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.2 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.2 -p udp --dport 10000:30000 -j MARK --set-mark 7730
@@ -1383,56 +833,6 @@ iptables -A FORWARD -s 172.16.0.10 -j 172.16.0.10_o
 iptables -A FORWARD -d 172.16.0.10 -j 172.16.0.10_i
 iptables -A FORWARD -s 172.16.0.10 -m mac --mac-source 00:1C:C0:B1:3B:F3 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.10 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:1601 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:1601 classid 1:c9 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:1601 classid 1:ca htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:1601 classid 1:cb htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:1601 classid 1:cc htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:1601 classid 1:cd htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:1601 classid 1:ce htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:1601 classid 1:cf htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:1601 classid 1:d0 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:1601 classid 1:d1 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 16020 fw classid 1:c9
-tc filter add dev br2 protocol ip parent 1: handle 16021 fw classid 1:ca
-tc filter add dev br2 protocol ip parent 1: handle 16022 fw classid 1:cb
-tc filter add dev br2 protocol ip parent 1: handle 16023 fw classid 1:cc
-tc filter add dev br2 protocol ip parent 1: handle 16024 fw classid 1:cd
-tc filter add dev br2 protocol ip parent 1: handle 16025 fw classid 1:ce
-tc filter add dev br2 protocol ip parent 1: handle 16026 fw classid 1:cf
-tc filter add dev br2 protocol ip parent 1: handle 16027 fw classid 1:d0
-tc filter add dev br2 protocol ip parent 1: handle 16028 fw classid 1:d1
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:1602 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:1602 classid 1:d2 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:1602 classid 1:d3 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:1602 classid 1:d4 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:1602 classid 1:d5 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:1602 classid 1:d6 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:1602 classid 1:d7 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:1602 classid 1:d8 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:1602 classid 1:d9 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:1602 classid 1:da htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 16030 fw classid 1:d2
-tc filter add dev eth0 protocol ip parent 1: handle 16031 fw classid 1:d3
-tc filter add dev eth0 protocol ip parent 1: handle 16032 fw classid 1:d4
-tc filter add dev eth0 protocol ip parent 1: handle 16033 fw classid 1:d5
-tc filter add dev eth0 protocol ip parent 1: handle 16034 fw classid 1:d6
-tc filter add dev eth0 protocol ip parent 1: handle 16035 fw classid 1:d7
-tc filter add dev eth0 protocol ip parent 1: handle 16036 fw classid 1:d8
-tc filter add dev eth0 protocol ip parent 1: handle 16037 fw classid 1:d9
-tc filter add dev eth0 protocol ip parent 1: handle 16038 fw classid 1:da
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.10 -p udp --sport 10000:30000 -j MARK --set-mark 16020
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.10 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.10 -p udp --dport 10000:30000 -j MARK --set-mark 16030
@@ -1495,56 +895,6 @@ iptables -A FORWARD -s 172.16.0.34 -j 172.16.0.34_o
 iptables -A FORWARD -d 172.16.0.34 -j 172.16.0.34_i
 iptables -A FORWARD -s 172.16.0.34 -m mac --mac-source 74:de:2b:d2:2b:cf -j ACCEPT
 iptables -A FORWARD -d 172.16.0.34 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:4741 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4741 classid 1:db htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4741 classid 1:dc htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4741 classid 1:dd htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4741 classid 1:de htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4741 classid 1:df htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4741 classid 1:e0 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4741 classid 1:e1 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4741 classid 1:e2 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4741 classid 1:e3 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 47420 fw classid 1:db
-tc filter add dev br2 protocol ip parent 1: handle 47421 fw classid 1:dc
-tc filter add dev br2 protocol ip parent 1: handle 47422 fw classid 1:dd
-tc filter add dev br2 protocol ip parent 1: handle 47423 fw classid 1:de
-tc filter add dev br2 protocol ip parent 1: handle 47424 fw classid 1:df
-tc filter add dev br2 protocol ip parent 1: handle 47425 fw classid 1:e0
-tc filter add dev br2 protocol ip parent 1: handle 47426 fw classid 1:e1
-tc filter add dev br2 protocol ip parent 1: handle 47427 fw classid 1:e2
-tc filter add dev br2 protocol ip parent 1: handle 47428 fw classid 1:e3
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:4742 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4742 classid 1:e4 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4742 classid 1:e5 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4742 classid 1:e6 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4742 classid 1:e7 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4742 classid 1:e8 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4742 classid 1:e9 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4742 classid 1:ea htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4742 classid 1:eb htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4742 classid 1:ec htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 47430 fw classid 1:e4
-tc filter add dev eth0 protocol ip parent 1: handle 47431 fw classid 1:e5
-tc filter add dev eth0 protocol ip parent 1: handle 47432 fw classid 1:e6
-tc filter add dev eth0 protocol ip parent 1: handle 47433 fw classid 1:e7
-tc filter add dev eth0 protocol ip parent 1: handle 47434 fw classid 1:e8
-tc filter add dev eth0 protocol ip parent 1: handle 47435 fw classid 1:e9
-tc filter add dev eth0 protocol ip parent 1: handle 47436 fw classid 1:ea
-tc filter add dev eth0 protocol ip parent 1: handle 47437 fw classid 1:eb
-tc filter add dev eth0 protocol ip parent 1: handle 47438 fw classid 1:ec
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.34 -p udp --sport 10000:30000 -j MARK --set-mark 47420
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.34 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.34 -p udp --dport 10000:30000 -j MARK --set-mark 47430
@@ -1607,56 +957,6 @@ iptables -A FORWARD -s 172.16.0.56 -j 172.16.0.56_o
 iptables -A FORWARD -d 172.16.0.56 -j 172.16.0.56_i
 iptables -A FORWARD -s 172.16.0.56 -m mac --mac-source 00:27:0E:16:AC:39 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.56 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:1381 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:1381 classid 1:ed htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:1381 classid 1:ee htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:1381 classid 1:ef htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:1381 classid 1:f0 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:1381 classid 1:f1 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:1381 classid 1:f2 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:1381 classid 1:f3 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:1381 classid 1:f4 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:1381 classid 1:f5 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 13820 fw classid 1:ed
-tc filter add dev br2 protocol ip parent 1: handle 13821 fw classid 1:ee
-tc filter add dev br2 protocol ip parent 1: handle 13822 fw classid 1:ef
-tc filter add dev br2 protocol ip parent 1: handle 13823 fw classid 1:f0
-tc filter add dev br2 protocol ip parent 1: handle 13824 fw classid 1:f1
-tc filter add dev br2 protocol ip parent 1: handle 13825 fw classid 1:f2
-tc filter add dev br2 protocol ip parent 1: handle 13826 fw classid 1:f3
-tc filter add dev br2 protocol ip parent 1: handle 13827 fw classid 1:f4
-tc filter add dev br2 protocol ip parent 1: handle 13828 fw classid 1:f5
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:1382 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:1382 classid 1:f6 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:1382 classid 1:f7 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:1382 classid 1:f8 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:1382 classid 1:f9 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:1382 classid 1:fa htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:1382 classid 1:fb htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:1382 classid 1:fc htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:1382 classid 1:fd htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:1382 classid 1:fe htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 13830 fw classid 1:f6
-tc filter add dev eth0 protocol ip parent 1: handle 13831 fw classid 1:f7
-tc filter add dev eth0 protocol ip parent 1: handle 13832 fw classid 1:f8
-tc filter add dev eth0 protocol ip parent 1: handle 13833 fw classid 1:f9
-tc filter add dev eth0 protocol ip parent 1: handle 13834 fw classid 1:fa
-tc filter add dev eth0 protocol ip parent 1: handle 13835 fw classid 1:fb
-tc filter add dev eth0 protocol ip parent 1: handle 13836 fw classid 1:fc
-tc filter add dev eth0 protocol ip parent 1: handle 13837 fw classid 1:fd
-tc filter add dev eth0 protocol ip parent 1: handle 13838 fw classid 1:fe
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.56 -p udp --sport 10000:30000 -j MARK --set-mark 13820
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.56 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.56 -p udp --dport 10000:30000 -j MARK --set-mark 13830
@@ -1719,56 +1019,6 @@ iptables -A FORWARD -s 172.16.0.12 -j 172.16.0.12_o
 iptables -A FORWARD -d 172.16.0.12 -j 172.16.0.12_i
 iptables -A FORWARD -s 172.16.0.12 -m mac --mac-source 98:0c:82:cf:59:fa -j ACCEPT
 iptables -A FORWARD -d 172.16.0.12 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:4721 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4721 classid 1:ff htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4721 classid 1:100 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4721 classid 1:101 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4721 classid 1:102 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4721 classid 1:103 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4721 classid 1:104 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4721 classid 1:105 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4721 classid 1:106 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4721 classid 1:107 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 47220 fw classid 1:ff
-tc filter add dev br2 protocol ip parent 1: handle 47221 fw classid 1:100
-tc filter add dev br2 protocol ip parent 1: handle 47222 fw classid 1:101
-tc filter add dev br2 protocol ip parent 1: handle 47223 fw classid 1:102
-tc filter add dev br2 protocol ip parent 1: handle 47224 fw classid 1:103
-tc filter add dev br2 protocol ip parent 1: handle 47225 fw classid 1:104
-tc filter add dev br2 protocol ip parent 1: handle 47226 fw classid 1:105
-tc filter add dev br2 protocol ip parent 1: handle 47227 fw classid 1:106
-tc filter add dev br2 protocol ip parent 1: handle 47228 fw classid 1:107
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:4722 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4722 classid 1:108 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4722 classid 1:109 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4722 classid 1:10a htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4722 classid 1:10b htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4722 classid 1:10c htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4722 classid 1:10d htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4722 classid 1:10e htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4722 classid 1:10f htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4722 classid 1:110 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 47230 fw classid 1:108
-tc filter add dev eth0 protocol ip parent 1: handle 47231 fw classid 1:109
-tc filter add dev eth0 protocol ip parent 1: handle 47232 fw classid 1:10a
-tc filter add dev eth0 protocol ip parent 1: handle 47233 fw classid 1:10b
-tc filter add dev eth0 protocol ip parent 1: handle 47234 fw classid 1:10c
-tc filter add dev eth0 protocol ip parent 1: handle 47235 fw classid 1:10d
-tc filter add dev eth0 protocol ip parent 1: handle 47236 fw classid 1:10e
-tc filter add dev eth0 protocol ip parent 1: handle 47237 fw classid 1:10f
-tc filter add dev eth0 protocol ip parent 1: handle 47238 fw classid 1:110
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.12 -p udp --sport 10000:30000 -j MARK --set-mark 47220
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.12 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.12 -p udp --dport 10000:30000 -j MARK --set-mark 47230
@@ -1831,56 +1081,6 @@ iptables -A FORWARD -s 172.16.0.45 -j 172.16.0.45_o
 iptables -A FORWARD -d 172.16.0.45 -j 172.16.0.45_i
 iptables -A FORWARD -s 172.16.0.45 -m mac --mac-source 00:0d:28:8f:9e:6f -j ACCEPT
 iptables -A FORWARD -d 172.16.0.45 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:4041 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4041 classid 1:111 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4041 classid 1:112 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4041 classid 1:113 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4041 classid 1:114 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4041 classid 1:115 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4041 classid 1:116 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4041 classid 1:117 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4041 classid 1:118 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4041 classid 1:119 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 40420 fw classid 1:111
-tc filter add dev br2 protocol ip parent 1: handle 40421 fw classid 1:112
-tc filter add dev br2 protocol ip parent 1: handle 40422 fw classid 1:113
-tc filter add dev br2 protocol ip parent 1: handle 40423 fw classid 1:114
-tc filter add dev br2 protocol ip parent 1: handle 40424 fw classid 1:115
-tc filter add dev br2 protocol ip parent 1: handle 40425 fw classid 1:116
-tc filter add dev br2 protocol ip parent 1: handle 40426 fw classid 1:117
-tc filter add dev br2 protocol ip parent 1: handle 40427 fw classid 1:118
-tc filter add dev br2 protocol ip parent 1: handle 40428 fw classid 1:119
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:4042 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4042 classid 1:11a htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4042 classid 1:11b htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4042 classid 1:11c htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4042 classid 1:11d htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4042 classid 1:11e htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4042 classid 1:11f htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4042 classid 1:120 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4042 classid 1:121 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4042 classid 1:122 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 40430 fw classid 1:11a
-tc filter add dev eth0 protocol ip parent 1: handle 40431 fw classid 1:11b
-tc filter add dev eth0 protocol ip parent 1: handle 40432 fw classid 1:11c
-tc filter add dev eth0 protocol ip parent 1: handle 40433 fw classid 1:11d
-tc filter add dev eth0 protocol ip parent 1: handle 40434 fw classid 1:11e
-tc filter add dev eth0 protocol ip parent 1: handle 40435 fw classid 1:11f
-tc filter add dev eth0 protocol ip parent 1: handle 40436 fw classid 1:120
-tc filter add dev eth0 protocol ip parent 1: handle 40437 fw classid 1:121
-tc filter add dev eth0 protocol ip parent 1: handle 40438 fw classid 1:122
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.45 -p udp --sport 10000:30000 -j MARK --set-mark 40420
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.45 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.45 -p udp --dport 10000:30000 -j MARK --set-mark 40430
@@ -1942,56 +1142,6 @@ iptables -A FORWARD -s 172.16.0.71 -j 172.16.0.71_o
 iptables -A FORWARD -d 172.16.0.71 -j 172.16.0.71_i
 iptables -A FORWARD -s 172.16.0.71 -m mac --mac-source 00:27:0e:16:27:b3 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.71 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:1331 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:1331 classid 1:123 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:1331 classid 1:124 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:1331 classid 1:125 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:1331 classid 1:126 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:1331 classid 1:127 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:1331 classid 1:128 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:1331 classid 1:129 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:1331 classid 1:12a htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:1331 classid 1:12b htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 13320 fw classid 1:123
-tc filter add dev br2 protocol ip parent 1: handle 13321 fw classid 1:124
-tc filter add dev br2 protocol ip parent 1: handle 13322 fw classid 1:125
-tc filter add dev br2 protocol ip parent 1: handle 13323 fw classid 1:126
-tc filter add dev br2 protocol ip parent 1: handle 13324 fw classid 1:127
-tc filter add dev br2 protocol ip parent 1: handle 13325 fw classid 1:128
-tc filter add dev br2 protocol ip parent 1: handle 13326 fw classid 1:129
-tc filter add dev br2 protocol ip parent 1: handle 13327 fw classid 1:12a
-tc filter add dev br2 protocol ip parent 1: handle 13328 fw classid 1:12b
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:1332 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:1332 classid 1:12c htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:1332 classid 1:12d htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:1332 classid 1:12e htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:1332 classid 1:12f htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:1332 classid 1:130 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:1332 classid 1:131 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:1332 classid 1:132 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:1332 classid 1:133 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:1332 classid 1:134 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 13330 fw classid 1:12c
-tc filter add dev eth0 protocol ip parent 1: handle 13331 fw classid 1:12d
-tc filter add dev eth0 protocol ip parent 1: handle 13332 fw classid 1:12e
-tc filter add dev eth0 protocol ip parent 1: handle 13333 fw classid 1:12f
-tc filter add dev eth0 protocol ip parent 1: handle 13334 fw classid 1:130
-tc filter add dev eth0 protocol ip parent 1: handle 13335 fw classid 1:131
-tc filter add dev eth0 protocol ip parent 1: handle 13336 fw classid 1:132
-tc filter add dev eth0 protocol ip parent 1: handle 13337 fw classid 1:133
-tc filter add dev eth0 protocol ip parent 1: handle 13338 fw classid 1:134
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.71 -p udp --sport 10000:30000 -j MARK --set-mark 13320
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.71 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.71 -p udp --dport 10000:30000 -j MARK --set-mark 13330
@@ -2054,56 +1204,6 @@ iptables -A FORWARD -s 172.16.0.60 -j 172.16.0.60_o
 iptables -A FORWARD -d 172.16.0.60 -j 172.16.0.60_i
 iptables -A FORWARD -s 172.16.0.60 -m mac --mac-source 00:1c:25:9f:e2:82 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.60 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:4661 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4661 classid 1:135 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4661 classid 1:136 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4661 classid 1:137 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4661 classid 1:138 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4661 classid 1:139 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4661 classid 1:13a htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4661 classid 1:13b htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4661 classid 1:13c htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4661 classid 1:13d htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 46620 fw classid 1:135
-tc filter add dev br2 protocol ip parent 1: handle 46621 fw classid 1:136
-tc filter add dev br2 protocol ip parent 1: handle 46622 fw classid 1:137
-tc filter add dev br2 protocol ip parent 1: handle 46623 fw classid 1:138
-tc filter add dev br2 protocol ip parent 1: handle 46624 fw classid 1:139
-tc filter add dev br2 protocol ip parent 1: handle 46625 fw classid 1:13a
-tc filter add dev br2 protocol ip parent 1: handle 46626 fw classid 1:13b
-tc filter add dev br2 protocol ip parent 1: handle 46627 fw classid 1:13c
-tc filter add dev br2 protocol ip parent 1: handle 46628 fw classid 1:13d
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:4662 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4662 classid 1:13e htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4662 classid 1:13f htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4662 classid 1:140 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4662 classid 1:141 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4662 classid 1:142 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4662 classid 1:143 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4662 classid 1:144 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4662 classid 1:145 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4662 classid 1:146 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 46630 fw classid 1:13e
-tc filter add dev eth0 protocol ip parent 1: handle 46631 fw classid 1:13f
-tc filter add dev eth0 protocol ip parent 1: handle 46632 fw classid 1:140
-tc filter add dev eth0 protocol ip parent 1: handle 46633 fw classid 1:141
-tc filter add dev eth0 protocol ip parent 1: handle 46634 fw classid 1:142
-tc filter add dev eth0 protocol ip parent 1: handle 46635 fw classid 1:143
-tc filter add dev eth0 protocol ip parent 1: handle 46636 fw classid 1:144
-tc filter add dev eth0 protocol ip parent 1: handle 46637 fw classid 1:145
-tc filter add dev eth0 protocol ip parent 1: handle 46638 fw classid 1:146
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.60 -p udp --sport 10000:30000 -j MARK --set-mark 46620
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.60 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.60 -p udp --dport 10000:30000 -j MARK --set-mark 46630
@@ -2166,56 +1266,6 @@ iptables -A FORWARD -s 172.16.0.90 -j 172.16.0.90_o
 iptables -A FORWARD -d 172.16.0.90 -j 172.16.0.90_i
 iptables -A FORWARD -s 172.16.0.90 -m mac --mac-source 30:39:26:65:8b:8e -j ACCEPT
 iptables -A FORWARD -d 172.16.0.90 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:4631 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4631 classid 1:147 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4631 classid 1:148 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4631 classid 1:149 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4631 classid 1:14a htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4631 classid 1:14b htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4631 classid 1:14c htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4631 classid 1:14d htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4631 classid 1:14e htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4631 classid 1:14f htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 46320 fw classid 1:147
-tc filter add dev br2 protocol ip parent 1: handle 46321 fw classid 1:148
-tc filter add dev br2 protocol ip parent 1: handle 46322 fw classid 1:149
-tc filter add dev br2 protocol ip parent 1: handle 46323 fw classid 1:14a
-tc filter add dev br2 protocol ip parent 1: handle 46324 fw classid 1:14b
-tc filter add dev br2 protocol ip parent 1: handle 46325 fw classid 1:14c
-tc filter add dev br2 protocol ip parent 1: handle 46326 fw classid 1:14d
-tc filter add dev br2 protocol ip parent 1: handle 46327 fw classid 1:14e
-tc filter add dev br2 protocol ip parent 1: handle 46328 fw classid 1:14f
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:4632 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4632 classid 1:150 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4632 classid 1:151 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4632 classid 1:152 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4632 classid 1:153 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4632 classid 1:154 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4632 classid 1:155 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4632 classid 1:156 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4632 classid 1:157 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4632 classid 1:158 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 46330 fw classid 1:150
-tc filter add dev eth0 protocol ip parent 1: handle 46331 fw classid 1:151
-tc filter add dev eth0 protocol ip parent 1: handle 46332 fw classid 1:152
-tc filter add dev eth0 protocol ip parent 1: handle 46333 fw classid 1:153
-tc filter add dev eth0 protocol ip parent 1: handle 46334 fw classid 1:154
-tc filter add dev eth0 protocol ip parent 1: handle 46335 fw classid 1:155
-tc filter add dev eth0 protocol ip parent 1: handle 46336 fw classid 1:156
-tc filter add dev eth0 protocol ip parent 1: handle 46337 fw classid 1:157
-tc filter add dev eth0 protocol ip parent 1: handle 46338 fw classid 1:158
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.90 -p udp --sport 10000:30000 -j MARK --set-mark 46320
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.90 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.90 -p udp --dport 10000:30000 -j MARK --set-mark 46330
@@ -2278,56 +1328,6 @@ iptables -A FORWARD -s 172.16.0.17 -j 172.16.0.17_o
 iptables -A FORWARD -d 172.16.0.17 -j 172.16.0.17_i
 iptables -A FORWARD -s 172.16.0.17 -m mac --mac-source 00:22:fa:2d:c8:a6 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.17 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:4441 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4441 classid 1:159 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4441 classid 1:15a htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4441 classid 1:15b htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4441 classid 1:15c htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4441 classid 1:15d htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4441 classid 1:15e htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4441 classid 1:15f htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4441 classid 1:160 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4441 classid 1:161 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 44420 fw classid 1:159
-tc filter add dev br2 protocol ip parent 1: handle 44421 fw classid 1:15a
-tc filter add dev br2 protocol ip parent 1: handle 44422 fw classid 1:15b
-tc filter add dev br2 protocol ip parent 1: handle 44423 fw classid 1:15c
-tc filter add dev br2 protocol ip parent 1: handle 44424 fw classid 1:15d
-tc filter add dev br2 protocol ip parent 1: handle 44425 fw classid 1:15e
-tc filter add dev br2 protocol ip parent 1: handle 44426 fw classid 1:15f
-tc filter add dev br2 protocol ip parent 1: handle 44427 fw classid 1:160
-tc filter add dev br2 protocol ip parent 1: handle 44428 fw classid 1:161
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:4442 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4442 classid 1:162 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4442 classid 1:163 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4442 classid 1:164 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4442 classid 1:165 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4442 classid 1:166 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4442 classid 1:167 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4442 classid 1:168 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4442 classid 1:169 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4442 classid 1:16a htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 44430 fw classid 1:162
-tc filter add dev eth0 protocol ip parent 1: handle 44431 fw classid 1:163
-tc filter add dev eth0 protocol ip parent 1: handle 44432 fw classid 1:164
-tc filter add dev eth0 protocol ip parent 1: handle 44433 fw classid 1:165
-tc filter add dev eth0 protocol ip parent 1: handle 44434 fw classid 1:166
-tc filter add dev eth0 protocol ip parent 1: handle 44435 fw classid 1:167
-tc filter add dev eth0 protocol ip parent 1: handle 44436 fw classid 1:168
-tc filter add dev eth0 protocol ip parent 1: handle 44437 fw classid 1:169
-tc filter add dev eth0 protocol ip parent 1: handle 44438 fw classid 1:16a
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.17 -p udp --sport 10000:30000 -j MARK --set-mark 44420
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.17 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.17 -p udp --dport 10000:30000 -j MARK --set-mark 44430
@@ -2388,56 +1388,6 @@ iptables -F 172.16.0.57_i
 iptables -F 172.16.0.57_o
 iptables -A FORWARD -s 172.16.0.57 -j 172.16.0.57_o
 iptables -A FORWARD -d 172.16.0.57 -j 172.16.0.57_i
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:2311 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:2311 classid 1:16b htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:2311 classid 1:16c htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:2311 classid 1:16d htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:2311 classid 1:16e htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:2311 classid 1:16f htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:2311 classid 1:170 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:2311 classid 1:171 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:2311 classid 1:172 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:2311 classid 1:173 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 23120 fw classid 1:16b
-tc filter add dev br2 protocol ip parent 1: handle 23121 fw classid 1:16c
-tc filter add dev br2 protocol ip parent 1: handle 23122 fw classid 1:16d
-tc filter add dev br2 protocol ip parent 1: handle 23123 fw classid 1:16e
-tc filter add dev br2 protocol ip parent 1: handle 23124 fw classid 1:16f
-tc filter add dev br2 protocol ip parent 1: handle 23125 fw classid 1:170
-tc filter add dev br2 protocol ip parent 1: handle 23126 fw classid 1:171
-tc filter add dev br2 protocol ip parent 1: handle 23127 fw classid 1:172
-tc filter add dev br2 protocol ip parent 1: handle 23128 fw classid 1:173
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:2312 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:2312 classid 1:174 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:2312 classid 1:175 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:2312 classid 1:176 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:2312 classid 1:177 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:2312 classid 1:178 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:2312 classid 1:179 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:2312 classid 1:17a htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:2312 classid 1:17b htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:2312 classid 1:17c htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 23130 fw classid 1:174
-tc filter add dev eth0 protocol ip parent 1: handle 23131 fw classid 1:175
-tc filter add dev eth0 protocol ip parent 1: handle 23132 fw classid 1:176
-tc filter add dev eth0 protocol ip parent 1: handle 23133 fw classid 1:177
-tc filter add dev eth0 protocol ip parent 1: handle 23134 fw classid 1:178
-tc filter add dev eth0 protocol ip parent 1: handle 23135 fw classid 1:179
-tc filter add dev eth0 protocol ip parent 1: handle 23136 fw classid 1:17a
-tc filter add dev eth0 protocol ip parent 1: handle 23137 fw classid 1:17b
-tc filter add dev eth0 protocol ip parent 1: handle 23138 fw classid 1:17c
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.57 -p udp --sport 10000:30000 -j MARK --set-mark 23120
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.57 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.57 -p udp --dport 10000:30000 -j MARK --set-mark 23130
@@ -2498,56 +1448,6 @@ iptables -F 172.16.0.67_i
 iptables -F 172.16.0.67_o
 iptables -A FORWARD -s 172.16.0.67 -j 172.16.0.67_o
 iptables -A FORWARD -d 172.16.0.67 -j 172.16.0.67_i
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:3301 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:3301 classid 1:17d htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:3301 classid 1:17e htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:3301 classid 1:17f htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:3301 classid 1:180 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:3301 classid 1:181 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:3301 classid 1:182 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:3301 classid 1:183 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:3301 classid 1:184 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:3301 classid 1:185 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 33020 fw classid 1:17d
-tc filter add dev br2 protocol ip parent 1: handle 33021 fw classid 1:17e
-tc filter add dev br2 protocol ip parent 1: handle 33022 fw classid 1:17f
-tc filter add dev br2 protocol ip parent 1: handle 33023 fw classid 1:180
-tc filter add dev br2 protocol ip parent 1: handle 33024 fw classid 1:181
-tc filter add dev br2 protocol ip parent 1: handle 33025 fw classid 1:182
-tc filter add dev br2 protocol ip parent 1: handle 33026 fw classid 1:183
-tc filter add dev br2 protocol ip parent 1: handle 33027 fw classid 1:184
-tc filter add dev br2 protocol ip parent 1: handle 33028 fw classid 1:185
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:3302 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:3302 classid 1:186 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:3302 classid 1:187 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:3302 classid 1:188 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:3302 classid 1:189 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:3302 classid 1:18a htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:3302 classid 1:18b htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:3302 classid 1:18c htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:3302 classid 1:18d htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:3302 classid 1:18e htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 33030 fw classid 1:186
-tc filter add dev eth0 protocol ip parent 1: handle 33031 fw classid 1:187
-tc filter add dev eth0 protocol ip parent 1: handle 33032 fw classid 1:188
-tc filter add dev eth0 protocol ip parent 1: handle 33033 fw classid 1:189
-tc filter add dev eth0 protocol ip parent 1: handle 33034 fw classid 1:18a
-tc filter add dev eth0 protocol ip parent 1: handle 33035 fw classid 1:18b
-tc filter add dev eth0 protocol ip parent 1: handle 33036 fw classid 1:18c
-tc filter add dev eth0 protocol ip parent 1: handle 33037 fw classid 1:18d
-tc filter add dev eth0 protocol ip parent 1: handle 33038 fw classid 1:18e
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.67 -p udp --sport 10000:30000 -j MARK --set-mark 33020
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.67 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.67 -p udp --dport 10000:30000 -j MARK --set-mark 33030
@@ -2610,56 +1510,6 @@ iptables -A FORWARD -s 172.16.0.26 -j 172.16.0.26_o
 iptables -A FORWARD -d 172.16.0.26 -j 172.16.0.26_i
 iptables -A FORWARD -s 172.16.0.26 -m mac --mac-source e4:d5:3d:12:3a:db -j ACCEPT
 iptables -A FORWARD -d 172.16.0.26 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:4141 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4141 classid 1:18f htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4141 classid 1:190 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4141 classid 1:191 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4141 classid 1:192 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4141 classid 1:193 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4141 classid 1:194 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4141 classid 1:195 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4141 classid 1:196 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4141 classid 1:197 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 41420 fw classid 1:18f
-tc filter add dev br2 protocol ip parent 1: handle 41421 fw classid 1:190
-tc filter add dev br2 protocol ip parent 1: handle 41422 fw classid 1:191
-tc filter add dev br2 protocol ip parent 1: handle 41423 fw classid 1:192
-tc filter add dev br2 protocol ip parent 1: handle 41424 fw classid 1:193
-tc filter add dev br2 protocol ip parent 1: handle 41425 fw classid 1:194
-tc filter add dev br2 protocol ip parent 1: handle 41426 fw classid 1:195
-tc filter add dev br2 protocol ip parent 1: handle 41427 fw classid 1:196
-tc filter add dev br2 protocol ip parent 1: handle 41428 fw classid 1:197
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:4142 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4142 classid 1:198 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4142 classid 1:199 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4142 classid 1:19a htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4142 classid 1:19b htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4142 classid 1:19c htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4142 classid 1:19d htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4142 classid 1:19e htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4142 classid 1:19f htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4142 classid 1:1a0 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 41430 fw classid 1:198
-tc filter add dev eth0 protocol ip parent 1: handle 41431 fw classid 1:199
-tc filter add dev eth0 protocol ip parent 1: handle 41432 fw classid 1:19a
-tc filter add dev eth0 protocol ip parent 1: handle 41433 fw classid 1:19b
-tc filter add dev eth0 protocol ip parent 1: handle 41434 fw classid 1:19c
-tc filter add dev eth0 protocol ip parent 1: handle 41435 fw classid 1:19d
-tc filter add dev eth0 protocol ip parent 1: handle 41436 fw classid 1:19e
-tc filter add dev eth0 protocol ip parent 1: handle 41437 fw classid 1:19f
-tc filter add dev eth0 protocol ip parent 1: handle 41438 fw classid 1:1a0
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.26 -p udp --sport 10000:30000 -j MARK --set-mark 41420
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.26 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.26 -p udp --dport 10000:30000 -j MARK --set-mark 41430
@@ -2722,56 +1572,6 @@ iptables -A FORWARD -s 172.16.0.99 -j 172.16.0.99_o
 iptables -A FORWARD -d 172.16.0.99 -j 172.16.0.99_i
 iptables -A FORWARD -s 172.16.0.99 -m mac --mac-source 00:22:68:19:c9:96 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.99 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:4471 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4471 classid 1:1a1 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4471 classid 1:1a2 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4471 classid 1:1a3 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4471 classid 1:1a4 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4471 classid 1:1a5 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4471 classid 1:1a6 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4471 classid 1:1a7 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4471 classid 1:1a8 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4471 classid 1:1a9 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 44720 fw classid 1:1a1
-tc filter add dev br2 protocol ip parent 1: handle 44721 fw classid 1:1a2
-tc filter add dev br2 protocol ip parent 1: handle 44722 fw classid 1:1a3
-tc filter add dev br2 protocol ip parent 1: handle 44723 fw classid 1:1a4
-tc filter add dev br2 protocol ip parent 1: handle 44724 fw classid 1:1a5
-tc filter add dev br2 protocol ip parent 1: handle 44725 fw classid 1:1a6
-tc filter add dev br2 protocol ip parent 1: handle 44726 fw classid 1:1a7
-tc filter add dev br2 protocol ip parent 1: handle 44727 fw classid 1:1a8
-tc filter add dev br2 protocol ip parent 1: handle 44728 fw classid 1:1a9
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:4472 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4472 classid 1:1aa htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4472 classid 1:1ab htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4472 classid 1:1ac htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4472 classid 1:1ad htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4472 classid 1:1ae htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4472 classid 1:1af htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4472 classid 1:1b0 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4472 classid 1:1b1 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4472 classid 1:1b2 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 44730 fw classid 1:1aa
-tc filter add dev eth0 protocol ip parent 1: handle 44731 fw classid 1:1ab
-tc filter add dev eth0 protocol ip parent 1: handle 44732 fw classid 1:1ac
-tc filter add dev eth0 protocol ip parent 1: handle 44733 fw classid 1:1ad
-tc filter add dev eth0 protocol ip parent 1: handle 44734 fw classid 1:1ae
-tc filter add dev eth0 protocol ip parent 1: handle 44735 fw classid 1:1af
-tc filter add dev eth0 protocol ip parent 1: handle 44736 fw classid 1:1b0
-tc filter add dev eth0 protocol ip parent 1: handle 44737 fw classid 1:1b1
-tc filter add dev eth0 protocol ip parent 1: handle 44738 fw classid 1:1b2
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.99 -p udp --sport 10000:30000 -j MARK --set-mark 44720
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.99 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.99 -p udp --dport 10000:30000 -j MARK --set-mark 44730
@@ -2834,56 +1634,6 @@ iptables -A FORWARD -s 172.16.0.59 -j 172.16.0.59_o
 iptables -A FORWARD -d 172.16.0.59 -j 172.16.0.59_i
 iptables -A FORWARD -s 172.16.0.59 -m mac --mac-source 80:96:b1:df:d1:77 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.59 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:4561 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4561 classid 1:1b3 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4561 classid 1:1b4 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4561 classid 1:1b5 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4561 classid 1:1b6 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4561 classid 1:1b7 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4561 classid 1:1b8 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4561 classid 1:1b9 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4561 classid 1:1ba htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4561 classid 1:1bb htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 45620 fw classid 1:1b3
-tc filter add dev br2 protocol ip parent 1: handle 45621 fw classid 1:1b4
-tc filter add dev br2 protocol ip parent 1: handle 45622 fw classid 1:1b5
-tc filter add dev br2 protocol ip parent 1: handle 45623 fw classid 1:1b6
-tc filter add dev br2 protocol ip parent 1: handle 45624 fw classid 1:1b7
-tc filter add dev br2 protocol ip parent 1: handle 45625 fw classid 1:1b8
-tc filter add dev br2 protocol ip parent 1: handle 45626 fw classid 1:1b9
-tc filter add dev br2 protocol ip parent 1: handle 45627 fw classid 1:1ba
-tc filter add dev br2 protocol ip parent 1: handle 45628 fw classid 1:1bb
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:4562 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4562 classid 1:1bc htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4562 classid 1:1bd htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4562 classid 1:1be htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4562 classid 1:1bf htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4562 classid 1:1c0 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4562 classid 1:1c1 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4562 classid 1:1c2 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4562 classid 1:1c3 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4562 classid 1:1c4 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 45630 fw classid 1:1bc
-tc filter add dev eth0 protocol ip parent 1: handle 45631 fw classid 1:1bd
-tc filter add dev eth0 protocol ip parent 1: handle 45632 fw classid 1:1be
-tc filter add dev eth0 protocol ip parent 1: handle 45633 fw classid 1:1bf
-tc filter add dev eth0 protocol ip parent 1: handle 45634 fw classid 1:1c0
-tc filter add dev eth0 protocol ip parent 1: handle 45635 fw classid 1:1c1
-tc filter add dev eth0 protocol ip parent 1: handle 45636 fw classid 1:1c2
-tc filter add dev eth0 protocol ip parent 1: handle 45637 fw classid 1:1c3
-tc filter add dev eth0 protocol ip parent 1: handle 45638 fw classid 1:1c4
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.59 -p udp --sport 10000:30000 -j MARK --set-mark 45620
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.59 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.59 -p udp --dport 10000:30000 -j MARK --set-mark 45630
@@ -2945,56 +1695,6 @@ iptables -A FORWARD -s 172.16.0.43 -j 172.16.0.43_o
 iptables -A FORWARD -d 172.16.0.43 -j 172.16.0.43_i
 iptables -A FORWARD -s 172.16.0.43 -m mac --mac-source 00:26:c6:c6:7e:c4 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.43 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:4451 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4451 classid 1:1c5 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4451 classid 1:1c6 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4451 classid 1:1c7 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4451 classid 1:1c8 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4451 classid 1:1c9 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4451 classid 1:1ca htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4451 classid 1:1cb htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4451 classid 1:1cc htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4451 classid 1:1cd htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 44520 fw classid 1:1c5
-tc filter add dev br2 protocol ip parent 1: handle 44521 fw classid 1:1c6
-tc filter add dev br2 protocol ip parent 1: handle 44522 fw classid 1:1c7
-tc filter add dev br2 protocol ip parent 1: handle 44523 fw classid 1:1c8
-tc filter add dev br2 protocol ip parent 1: handle 44524 fw classid 1:1c9
-tc filter add dev br2 protocol ip parent 1: handle 44525 fw classid 1:1ca
-tc filter add dev br2 protocol ip parent 1: handle 44526 fw classid 1:1cb
-tc filter add dev br2 protocol ip parent 1: handle 44527 fw classid 1:1cc
-tc filter add dev br2 protocol ip parent 1: handle 44528 fw classid 1:1cd
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:4452 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4452 classid 1:1ce htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4452 classid 1:1cf htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4452 classid 1:1d0 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4452 classid 1:1d1 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4452 classid 1:1d2 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4452 classid 1:1d3 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4452 classid 1:1d4 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4452 classid 1:1d5 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4452 classid 1:1d6 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 44530 fw classid 1:1ce
-tc filter add dev eth0 protocol ip parent 1: handle 44531 fw classid 1:1cf
-tc filter add dev eth0 protocol ip parent 1: handle 44532 fw classid 1:1d0
-tc filter add dev eth0 protocol ip parent 1: handle 44533 fw classid 1:1d1
-tc filter add dev eth0 protocol ip parent 1: handle 44534 fw classid 1:1d2
-tc filter add dev eth0 protocol ip parent 1: handle 44535 fw classid 1:1d3
-tc filter add dev eth0 protocol ip parent 1: handle 44536 fw classid 1:1d4
-tc filter add dev eth0 protocol ip parent 1: handle 44537 fw classid 1:1d5
-tc filter add dev eth0 protocol ip parent 1: handle 44538 fw classid 1:1d6
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.43 -p udp --sport 10000:30000 -j MARK --set-mark 44520
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.43 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.43 -p udp --dport 10000:30000 -j MARK --set-mark 44530
@@ -3057,56 +1757,6 @@ iptables -A FORWARD -s 172.16.0.202 -j 172.16.0.202_o
 iptables -A FORWARD -d 172.16.0.202 -j 172.16.0.202_i
 iptables -A FORWARD -s 172.16.0.202 -m mac --mac-source 00:80:f0:d1:cd:dc -j ACCEPT
 iptables -A FORWARD -d 172.16.0.202 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:4061 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4061 classid 1:1d7 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4061 classid 1:1d8 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4061 classid 1:1d9 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4061 classid 1:1da htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4061 classid 1:1db htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4061 classid 1:1dc htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4061 classid 1:1dd htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4061 classid 1:1de htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4061 classid 1:1df htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 40620 fw classid 1:1d7
-tc filter add dev br2 protocol ip parent 1: handle 40621 fw classid 1:1d8
-tc filter add dev br2 protocol ip parent 1: handle 40622 fw classid 1:1d9
-tc filter add dev br2 protocol ip parent 1: handle 40623 fw classid 1:1da
-tc filter add dev br2 protocol ip parent 1: handle 40624 fw classid 1:1db
-tc filter add dev br2 protocol ip parent 1: handle 40625 fw classid 1:1dc
-tc filter add dev br2 protocol ip parent 1: handle 40626 fw classid 1:1dd
-tc filter add dev br2 protocol ip parent 1: handle 40627 fw classid 1:1de
-tc filter add dev br2 protocol ip parent 1: handle 40628 fw classid 1:1df
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:4062 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4062 classid 1:1e0 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4062 classid 1:1e1 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4062 classid 1:1e2 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4062 classid 1:1e3 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4062 classid 1:1e4 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4062 classid 1:1e5 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4062 classid 1:1e6 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4062 classid 1:1e7 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4062 classid 1:1e8 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 40630 fw classid 1:1e0
-tc filter add dev eth0 protocol ip parent 1: handle 40631 fw classid 1:1e1
-tc filter add dev eth0 protocol ip parent 1: handle 40632 fw classid 1:1e2
-tc filter add dev eth0 protocol ip parent 1: handle 40633 fw classid 1:1e3
-tc filter add dev eth0 protocol ip parent 1: handle 40634 fw classid 1:1e4
-tc filter add dev eth0 protocol ip parent 1: handle 40635 fw classid 1:1e5
-tc filter add dev eth0 protocol ip parent 1: handle 40636 fw classid 1:1e6
-tc filter add dev eth0 protocol ip parent 1: handle 40637 fw classid 1:1e7
-tc filter add dev eth0 protocol ip parent 1: handle 40638 fw classid 1:1e8
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.202 -p udp --sport 10000:30000 -j MARK --set-mark 40620
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.202 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.202 -p udp --dport 10000:30000 -j MARK --set-mark 40630
@@ -3169,56 +1819,6 @@ iptables -A FORWARD -s 172.16.0.41 -j 172.16.0.41_o
 iptables -A FORWARD -d 172.16.0.41 -j 172.16.0.41_i
 iptables -A FORWARD -s 172.16.0.41 -m mac --mac-source 00:13:ce:20:4c:c3 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.41 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:4851 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4851 classid 1:1e9 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4851 classid 1:1ea htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4851 classid 1:1eb htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4851 classid 1:1ec htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4851 classid 1:1ed htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4851 classid 1:1ee htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4851 classid 1:1ef htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4851 classid 1:1f0 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4851 classid 1:1f1 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 48520 fw classid 1:1e9
-tc filter add dev br2 protocol ip parent 1: handle 48521 fw classid 1:1ea
-tc filter add dev br2 protocol ip parent 1: handle 48522 fw classid 1:1eb
-tc filter add dev br2 protocol ip parent 1: handle 48523 fw classid 1:1ec
-tc filter add dev br2 protocol ip parent 1: handle 48524 fw classid 1:1ed
-tc filter add dev br2 protocol ip parent 1: handle 48525 fw classid 1:1ee
-tc filter add dev br2 protocol ip parent 1: handle 48526 fw classid 1:1ef
-tc filter add dev br2 protocol ip parent 1: handle 48527 fw classid 1:1f0
-tc filter add dev br2 protocol ip parent 1: handle 48528 fw classid 1:1f1
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:4852 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4852 classid 1:1f2 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4852 classid 1:1f3 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4852 classid 1:1f4 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4852 classid 1:1f5 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4852 classid 1:1f6 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4852 classid 1:1f7 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4852 classid 1:1f8 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4852 classid 1:1f9 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4852 classid 1:1fa htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 48530 fw classid 1:1f2
-tc filter add dev eth0 protocol ip parent 1: handle 48531 fw classid 1:1f3
-tc filter add dev eth0 protocol ip parent 1: handle 48532 fw classid 1:1f4
-tc filter add dev eth0 protocol ip parent 1: handle 48533 fw classid 1:1f5
-tc filter add dev eth0 protocol ip parent 1: handle 48534 fw classid 1:1f6
-tc filter add dev eth0 protocol ip parent 1: handle 48535 fw classid 1:1f7
-tc filter add dev eth0 protocol ip parent 1: handle 48536 fw classid 1:1f8
-tc filter add dev eth0 protocol ip parent 1: handle 48537 fw classid 1:1f9
-tc filter add dev eth0 protocol ip parent 1: handle 48538 fw classid 1:1fa
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.41 -p udp --sport 10000:30000 -j MARK --set-mark 48520
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.41 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.41 -p udp --dport 10000:30000 -j MARK --set-mark 48530
@@ -3281,56 +1881,6 @@ iptables -A FORWARD -s 172.16.0.16 -j 172.16.0.16_o
 iptables -A FORWARD -d 172.16.0.16 -j 172.16.0.16_i
 iptables -A FORWARD -s 172.16.0.16 -m mac --mac-source 00:0b:6a:bf:79:58 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.16 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:4381 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4381 classid 1:1fb htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4381 classid 1:1fc htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4381 classid 1:1fd htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4381 classid 1:1fe htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4381 classid 1:1ff htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4381 classid 1:200 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4381 classid 1:201 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4381 classid 1:202 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4381 classid 1:203 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 43820 fw classid 1:1fb
-tc filter add dev br2 protocol ip parent 1: handle 43821 fw classid 1:1fc
-tc filter add dev br2 protocol ip parent 1: handle 43822 fw classid 1:1fd
-tc filter add dev br2 protocol ip parent 1: handle 43823 fw classid 1:1fe
-tc filter add dev br2 protocol ip parent 1: handle 43824 fw classid 1:1ff
-tc filter add dev br2 protocol ip parent 1: handle 43825 fw classid 1:200
-tc filter add dev br2 protocol ip parent 1: handle 43826 fw classid 1:201
-tc filter add dev br2 protocol ip parent 1: handle 43827 fw classid 1:202
-tc filter add dev br2 protocol ip parent 1: handle 43828 fw classid 1:203
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:4382 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4382 classid 1:204 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4382 classid 1:205 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4382 classid 1:206 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4382 classid 1:207 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4382 classid 1:208 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4382 classid 1:209 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4382 classid 1:20a htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4382 classid 1:20b htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4382 classid 1:20c htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 43830 fw classid 1:204
-tc filter add dev eth0 protocol ip parent 1: handle 43831 fw classid 1:205
-tc filter add dev eth0 protocol ip parent 1: handle 43832 fw classid 1:206
-tc filter add dev eth0 protocol ip parent 1: handle 43833 fw classid 1:207
-tc filter add dev eth0 protocol ip parent 1: handle 43834 fw classid 1:208
-tc filter add dev eth0 protocol ip parent 1: handle 43835 fw classid 1:209
-tc filter add dev eth0 protocol ip parent 1: handle 43836 fw classid 1:20a
-tc filter add dev eth0 protocol ip parent 1: handle 43837 fw classid 1:20b
-tc filter add dev eth0 protocol ip parent 1: handle 43838 fw classid 1:20c
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.16 -p udp --sport 10000:30000 -j MARK --set-mark 43820
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.16 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.16 -p udp --dport 10000:30000 -j MARK --set-mark 43830
@@ -3393,56 +1943,6 @@ iptables -A FORWARD -s 172.16.0.9 -j 172.16.0.9_o
 iptables -A FORWARD -d 172.16.0.9 -j 172.16.0.9_i
 iptables -A FORWARD -s 172.16.0.9 -m mac --mac-source 00:5e:09:07:fc:0a -j ACCEPT
 iptables -A FORWARD -d 172.16.0.9 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:2011 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:2011 classid 1:20d htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:2011 classid 1:20e htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:2011 classid 1:20f htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:2011 classid 1:210 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:2011 classid 1:211 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:2011 classid 1:212 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:2011 classid 1:213 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:2011 classid 1:214 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:2011 classid 1:215 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 20120 fw classid 1:20d
-tc filter add dev br2 protocol ip parent 1: handle 20121 fw classid 1:20e
-tc filter add dev br2 protocol ip parent 1: handle 20122 fw classid 1:20f
-tc filter add dev br2 protocol ip parent 1: handle 20123 fw classid 1:210
-tc filter add dev br2 protocol ip parent 1: handle 20124 fw classid 1:211
-tc filter add dev br2 protocol ip parent 1: handle 20125 fw classid 1:212
-tc filter add dev br2 protocol ip parent 1: handle 20126 fw classid 1:213
-tc filter add dev br2 protocol ip parent 1: handle 20127 fw classid 1:214
-tc filter add dev br2 protocol ip parent 1: handle 20128 fw classid 1:215
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:2012 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:2012 classid 1:216 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:2012 classid 1:217 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:2012 classid 1:218 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:2012 classid 1:219 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:2012 classid 1:21a htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:2012 classid 1:21b htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:2012 classid 1:21c htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:2012 classid 1:21d htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:2012 classid 1:21e htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 20130 fw classid 1:216
-tc filter add dev eth0 protocol ip parent 1: handle 20131 fw classid 1:217
-tc filter add dev eth0 protocol ip parent 1: handle 20132 fw classid 1:218
-tc filter add dev eth0 protocol ip parent 1: handle 20133 fw classid 1:219
-tc filter add dev eth0 protocol ip parent 1: handle 20134 fw classid 1:21a
-tc filter add dev eth0 protocol ip parent 1: handle 20135 fw classid 1:21b
-tc filter add dev eth0 protocol ip parent 1: handle 20136 fw classid 1:21c
-tc filter add dev eth0 protocol ip parent 1: handle 20137 fw classid 1:21d
-tc filter add dev eth0 protocol ip parent 1: handle 20138 fw classid 1:21e
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.9 -p udp --sport 10000:30000 -j MARK --set-mark 20120
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.9 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.9 -p udp --dport 10000:30000 -j MARK --set-mark 20130
@@ -3504,56 +2004,6 @@ iptables -A FORWARD -s 172.16.0.8 -j 172.16.0.8_o
 iptables -A FORWARD -d 172.16.0.8 -j 172.16.0.8_i
 iptables -A FORWARD -s 172.16.0.8 -m mac --mac-source 00:6b:58:2c:2c:55 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.8 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:2001 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:2001 classid 1:21f htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:2001 classid 1:220 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:2001 classid 1:221 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:2001 classid 1:222 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:2001 classid 1:223 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:2001 classid 1:224 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:2001 classid 1:225 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:2001 classid 1:226 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:2001 classid 1:227 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 20020 fw classid 1:21f
-tc filter add dev br2 protocol ip parent 1: handle 20021 fw classid 1:220
-tc filter add dev br2 protocol ip parent 1: handle 20022 fw classid 1:221
-tc filter add dev br2 protocol ip parent 1: handle 20023 fw classid 1:222
-tc filter add dev br2 protocol ip parent 1: handle 20024 fw classid 1:223
-tc filter add dev br2 protocol ip parent 1: handle 20025 fw classid 1:224
-tc filter add dev br2 protocol ip parent 1: handle 20026 fw classid 1:225
-tc filter add dev br2 protocol ip parent 1: handle 20027 fw classid 1:226
-tc filter add dev br2 protocol ip parent 1: handle 20028 fw classid 1:227
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:2002 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:2002 classid 1:228 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:2002 classid 1:229 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:2002 classid 1:22a htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:2002 classid 1:22b htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:2002 classid 1:22c htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:2002 classid 1:22d htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:2002 classid 1:22e htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:2002 classid 1:22f htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:2002 classid 1:230 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 20030 fw classid 1:228
-tc filter add dev eth0 protocol ip parent 1: handle 20031 fw classid 1:229
-tc filter add dev eth0 protocol ip parent 1: handle 20032 fw classid 1:22a
-tc filter add dev eth0 protocol ip parent 1: handle 20033 fw classid 1:22b
-tc filter add dev eth0 protocol ip parent 1: handle 20034 fw classid 1:22c
-tc filter add dev eth0 protocol ip parent 1: handle 20035 fw classid 1:22d
-tc filter add dev eth0 protocol ip parent 1: handle 20036 fw classid 1:22e
-tc filter add dev eth0 protocol ip parent 1: handle 20037 fw classid 1:22f
-tc filter add dev eth0 protocol ip parent 1: handle 20038 fw classid 1:230
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.8 -p udp --sport 10000:30000 -j MARK --set-mark 20020
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.8 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.8 -p udp --dport 10000:30000 -j MARK --set-mark 20030
@@ -3615,56 +2065,6 @@ iptables -A FORWARD -s 172.16.0.200 -j 172.16.0.200_o
 iptables -A FORWARD -d 172.16.0.200 -j 172.16.0.200_i
 iptables -A FORWARD -s 172.16.0.200 -m mac --mac-source 00:80:f0:d1:d1:9f -j ACCEPT
 iptables -A FORWARD -d 172.16.0.200 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:4101 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4101 classid 1:231 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4101 classid 1:232 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4101 classid 1:233 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4101 classid 1:234 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4101 classid 1:235 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4101 classid 1:236 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4101 classid 1:237 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4101 classid 1:238 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4101 classid 1:239 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 41020 fw classid 1:231
-tc filter add dev br2 protocol ip parent 1: handle 41021 fw classid 1:232
-tc filter add dev br2 protocol ip parent 1: handle 41022 fw classid 1:233
-tc filter add dev br2 protocol ip parent 1: handle 41023 fw classid 1:234
-tc filter add dev br2 protocol ip parent 1: handle 41024 fw classid 1:235
-tc filter add dev br2 protocol ip parent 1: handle 41025 fw classid 1:236
-tc filter add dev br2 protocol ip parent 1: handle 41026 fw classid 1:237
-tc filter add dev br2 protocol ip parent 1: handle 41027 fw classid 1:238
-tc filter add dev br2 protocol ip parent 1: handle 41028 fw classid 1:239
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:4102 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4102 classid 1:23a htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4102 classid 1:23b htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4102 classid 1:23c htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4102 classid 1:23d htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4102 classid 1:23e htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4102 classid 1:23f htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4102 classid 1:240 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4102 classid 1:241 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4102 classid 1:242 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 41030 fw classid 1:23a
-tc filter add dev eth0 protocol ip parent 1: handle 41031 fw classid 1:23b
-tc filter add dev eth0 protocol ip parent 1: handle 41032 fw classid 1:23c
-tc filter add dev eth0 protocol ip parent 1: handle 41033 fw classid 1:23d
-tc filter add dev eth0 protocol ip parent 1: handle 41034 fw classid 1:23e
-tc filter add dev eth0 protocol ip parent 1: handle 41035 fw classid 1:23f
-tc filter add dev eth0 protocol ip parent 1: handle 41036 fw classid 1:240
-tc filter add dev eth0 protocol ip parent 1: handle 41037 fw classid 1:241
-tc filter add dev eth0 protocol ip parent 1: handle 41038 fw classid 1:242
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.200 -p udp --sport 10000:30000 -j MARK --set-mark 41020
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.200 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.200 -p udp --dport 10000:30000 -j MARK --set-mark 41030
@@ -3727,56 +2127,6 @@ iptables -A FORWARD -s 172.16.0.61 -j 172.16.0.61_o
 iptables -A FORWARD -d 172.16.0.61 -j 172.16.0.61_i
 iptables -A FORWARD -s 172.16.0.61 -m mac --mac-source 00:27:0e:15:9d:38 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.61 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:3741 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:3741 classid 1:243 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:3741 classid 1:244 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:3741 classid 1:245 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:3741 classid 1:246 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:3741 classid 1:247 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:3741 classid 1:248 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:3741 classid 1:249 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:3741 classid 1:24a htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:3741 classid 1:24b htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 37420 fw classid 1:243
-tc filter add dev br2 protocol ip parent 1: handle 37421 fw classid 1:244
-tc filter add dev br2 protocol ip parent 1: handle 37422 fw classid 1:245
-tc filter add dev br2 protocol ip parent 1: handle 37423 fw classid 1:246
-tc filter add dev br2 protocol ip parent 1: handle 37424 fw classid 1:247
-tc filter add dev br2 protocol ip parent 1: handle 37425 fw classid 1:248
-tc filter add dev br2 protocol ip parent 1: handle 37426 fw classid 1:249
-tc filter add dev br2 protocol ip parent 1: handle 37427 fw classid 1:24a
-tc filter add dev br2 protocol ip parent 1: handle 37428 fw classid 1:24b
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:3742 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:3742 classid 1:24c htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:3742 classid 1:24d htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:3742 classid 1:24e htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:3742 classid 1:24f htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:3742 classid 1:250 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:3742 classid 1:251 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:3742 classid 1:252 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:3742 classid 1:253 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:3742 classid 1:254 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 37430 fw classid 1:24c
-tc filter add dev eth0 protocol ip parent 1: handle 37431 fw classid 1:24d
-tc filter add dev eth0 protocol ip parent 1: handle 37432 fw classid 1:24e
-tc filter add dev eth0 protocol ip parent 1: handle 37433 fw classid 1:24f
-tc filter add dev eth0 protocol ip parent 1: handle 37434 fw classid 1:250
-tc filter add dev eth0 protocol ip parent 1: handle 37435 fw classid 1:251
-tc filter add dev eth0 protocol ip parent 1: handle 37436 fw classid 1:252
-tc filter add dev eth0 protocol ip parent 1: handle 37437 fw classid 1:253
-tc filter add dev eth0 protocol ip parent 1: handle 37438 fw classid 1:254
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.61 -p udp --sport 10000:30000 -j MARK --set-mark 37420
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.61 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.61 -p udp --dport 10000:30000 -j MARK --set-mark 37430
@@ -3839,56 +2189,6 @@ iptables -A FORWARD -s 172.16.0.28 -j 172.16.0.28_o
 iptables -A FORWARD -d 172.16.0.28 -j 172.16.0.28_i
 iptables -A FORWARD -s 172.16.0.28 -m mac --mac-source 00:0b:82:11:b9:3f -j ACCEPT
 iptables -A FORWARD -d 172.16.0.28 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:4831 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4831 classid 1:255 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4831 classid 1:256 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4831 classid 1:257 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4831 classid 1:258 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4831 classid 1:259 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4831 classid 1:25a htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4831 classid 1:25b htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4831 classid 1:25c htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4831 classid 1:25d htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 48320 fw classid 1:255
-tc filter add dev br2 protocol ip parent 1: handle 48321 fw classid 1:256
-tc filter add dev br2 protocol ip parent 1: handle 48322 fw classid 1:257
-tc filter add dev br2 protocol ip parent 1: handle 48323 fw classid 1:258
-tc filter add dev br2 protocol ip parent 1: handle 48324 fw classid 1:259
-tc filter add dev br2 protocol ip parent 1: handle 48325 fw classid 1:25a
-tc filter add dev br2 protocol ip parent 1: handle 48326 fw classid 1:25b
-tc filter add dev br2 protocol ip parent 1: handle 48327 fw classid 1:25c
-tc filter add dev br2 protocol ip parent 1: handle 48328 fw classid 1:25d
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:4832 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4832 classid 1:25e htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4832 classid 1:25f htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4832 classid 1:260 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4832 classid 1:261 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4832 classid 1:262 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4832 classid 1:263 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4832 classid 1:264 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4832 classid 1:265 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4832 classid 1:266 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 48330 fw classid 1:25e
-tc filter add dev eth0 protocol ip parent 1: handle 48331 fw classid 1:25f
-tc filter add dev eth0 protocol ip parent 1: handle 48332 fw classid 1:260
-tc filter add dev eth0 protocol ip parent 1: handle 48333 fw classid 1:261
-tc filter add dev eth0 protocol ip parent 1: handle 48334 fw classid 1:262
-tc filter add dev eth0 protocol ip parent 1: handle 48335 fw classid 1:263
-tc filter add dev eth0 protocol ip parent 1: handle 48336 fw classid 1:264
-tc filter add dev eth0 protocol ip parent 1: handle 48337 fw classid 1:265
-tc filter add dev eth0 protocol ip parent 1: handle 48338 fw classid 1:266
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.28 -p udp --sport 10000:30000 -j MARK --set-mark 48320
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.28 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.28 -p udp --dport 10000:30000 -j MARK --set-mark 48330
@@ -3951,56 +2251,6 @@ iptables -A FORWARD -s 172.16.0.27 -j 172.16.0.27_o
 iptables -A FORWARD -d 172.16.0.27 -j 172.16.0.27_i
 iptables -A FORWARD -s 172.16.0.27 -m mac --mac-source 00:21:19:e5:91:09 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.27 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:4821 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4821 classid 1:267 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4821 classid 1:268 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4821 classid 1:269 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4821 classid 1:26a htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4821 classid 1:26b htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4821 classid 1:26c htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4821 classid 1:26d htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4821 classid 1:26e htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4821 classid 1:26f htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 48220 fw classid 1:267
-tc filter add dev br2 protocol ip parent 1: handle 48221 fw classid 1:268
-tc filter add dev br2 protocol ip parent 1: handle 48222 fw classid 1:269
-tc filter add dev br2 protocol ip parent 1: handle 48223 fw classid 1:26a
-tc filter add dev br2 protocol ip parent 1: handle 48224 fw classid 1:26b
-tc filter add dev br2 protocol ip parent 1: handle 48225 fw classid 1:26c
-tc filter add dev br2 protocol ip parent 1: handle 48226 fw classid 1:26d
-tc filter add dev br2 protocol ip parent 1: handle 48227 fw classid 1:26e
-tc filter add dev br2 protocol ip parent 1: handle 48228 fw classid 1:26f
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:4822 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4822 classid 1:270 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4822 classid 1:271 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4822 classid 1:272 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4822 classid 1:273 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4822 classid 1:274 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4822 classid 1:275 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4822 classid 1:276 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4822 classid 1:277 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4822 classid 1:278 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 48230 fw classid 1:270
-tc filter add dev eth0 protocol ip parent 1: handle 48231 fw classid 1:271
-tc filter add dev eth0 protocol ip parent 1: handle 48232 fw classid 1:272
-tc filter add dev eth0 protocol ip parent 1: handle 48233 fw classid 1:273
-tc filter add dev eth0 protocol ip parent 1: handle 48234 fw classid 1:274
-tc filter add dev eth0 protocol ip parent 1: handle 48235 fw classid 1:275
-tc filter add dev eth0 protocol ip parent 1: handle 48236 fw classid 1:276
-tc filter add dev eth0 protocol ip parent 1: handle 48237 fw classid 1:277
-tc filter add dev eth0 protocol ip parent 1: handle 48238 fw classid 1:278
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.27 -p udp --sport 10000:30000 -j MARK --set-mark 48220
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.27 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.27 -p udp --dport 10000:30000 -j MARK --set-mark 48230
@@ -4063,56 +2313,6 @@ iptables -A FORWARD -s 172.16.0.25 -j 172.16.0.25_o
 iptables -A FORWARD -d 172.16.0.25 -j 172.16.0.25_i
 iptables -A FORWARD -s 172.16.0.25 -m mac --mac-source 78:dd:08:be:7c:63 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.25 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:4811 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4811 classid 1:279 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4811 classid 1:27a htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4811 classid 1:27b htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4811 classid 1:27c htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4811 classid 1:27d htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4811 classid 1:27e htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4811 classid 1:27f htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4811 classid 1:280 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4811 classid 1:281 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 48120 fw classid 1:279
-tc filter add dev br2 protocol ip parent 1: handle 48121 fw classid 1:27a
-tc filter add dev br2 protocol ip parent 1: handle 48122 fw classid 1:27b
-tc filter add dev br2 protocol ip parent 1: handle 48123 fw classid 1:27c
-tc filter add dev br2 protocol ip parent 1: handle 48124 fw classid 1:27d
-tc filter add dev br2 protocol ip parent 1: handle 48125 fw classid 1:27e
-tc filter add dev br2 protocol ip parent 1: handle 48126 fw classid 1:27f
-tc filter add dev br2 protocol ip parent 1: handle 48127 fw classid 1:280
-tc filter add dev br2 protocol ip parent 1: handle 48128 fw classid 1:281
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:4812 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4812 classid 1:282 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4812 classid 1:283 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4812 classid 1:284 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4812 classid 1:285 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4812 classid 1:286 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4812 classid 1:287 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4812 classid 1:288 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4812 classid 1:289 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4812 classid 1:28a htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 48130 fw classid 1:282
-tc filter add dev eth0 protocol ip parent 1: handle 48131 fw classid 1:283
-tc filter add dev eth0 protocol ip parent 1: handle 48132 fw classid 1:284
-tc filter add dev eth0 protocol ip parent 1: handle 48133 fw classid 1:285
-tc filter add dev eth0 protocol ip parent 1: handle 48134 fw classid 1:286
-tc filter add dev eth0 protocol ip parent 1: handle 48135 fw classid 1:287
-tc filter add dev eth0 protocol ip parent 1: handle 48136 fw classid 1:288
-tc filter add dev eth0 protocol ip parent 1: handle 48137 fw classid 1:289
-tc filter add dev eth0 protocol ip parent 1: handle 48138 fw classid 1:28a
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.25 -p udp --sport 10000:30000 -j MARK --set-mark 48120
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.25 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.25 -p udp --dport 10000:30000 -j MARK --set-mark 48130
@@ -4175,56 +2375,6 @@ iptables -A FORWARD -s 172.16.0.32 -j 172.16.0.32_o
 iptables -A FORWARD -d 172.16.0.32 -j 172.16.0.32_i
 iptables -A FORWARD -s 172.16.0.32 -m mac --mac-source 28:92:4a:a6:11:7a -j ACCEPT
 iptables -A FORWARD -d 172.16.0.32 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:4001 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4001 classid 1:28b htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4001 classid 1:28c htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4001 classid 1:28d htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4001 classid 1:28e htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4001 classid 1:28f htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4001 classid 1:290 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4001 classid 1:291 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4001 classid 1:292 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4001 classid 1:293 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 40020 fw classid 1:28b
-tc filter add dev br2 protocol ip parent 1: handle 40021 fw classid 1:28c
-tc filter add dev br2 protocol ip parent 1: handle 40022 fw classid 1:28d
-tc filter add dev br2 protocol ip parent 1: handle 40023 fw classid 1:28e
-tc filter add dev br2 protocol ip parent 1: handle 40024 fw classid 1:28f
-tc filter add dev br2 protocol ip parent 1: handle 40025 fw classid 1:290
-tc filter add dev br2 protocol ip parent 1: handle 40026 fw classid 1:291
-tc filter add dev br2 protocol ip parent 1: handle 40027 fw classid 1:292
-tc filter add dev br2 protocol ip parent 1: handle 40028 fw classid 1:293
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:4002 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4002 classid 1:294 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4002 classid 1:295 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4002 classid 1:296 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4002 classid 1:297 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4002 classid 1:298 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4002 classid 1:299 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4002 classid 1:29a htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4002 classid 1:29b htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4002 classid 1:29c htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 40030 fw classid 1:294
-tc filter add dev eth0 protocol ip parent 1: handle 40031 fw classid 1:295
-tc filter add dev eth0 protocol ip parent 1: handle 40032 fw classid 1:296
-tc filter add dev eth0 protocol ip parent 1: handle 40033 fw classid 1:297
-tc filter add dev eth0 protocol ip parent 1: handle 40034 fw classid 1:298
-tc filter add dev eth0 protocol ip parent 1: handle 40035 fw classid 1:299
-tc filter add dev eth0 protocol ip parent 1: handle 40036 fw classid 1:29a
-tc filter add dev eth0 protocol ip parent 1: handle 40037 fw classid 1:29b
-tc filter add dev eth0 protocol ip parent 1: handle 40038 fw classid 1:29c
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.32 -p udp --sport 10000:30000 -j MARK --set-mark 40020
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.32 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.32 -p udp --dport 10000:30000 -j MARK --set-mark 40030
@@ -4287,56 +2437,6 @@ iptables -A FORWARD -s 172.16.0.18 -j 172.16.0.18_o
 iptables -A FORWARD -d 172.16.0.18 -j 172.16.0.18_i
 iptables -A FORWARD -s 172.16.0.18 -m mac --mac-source 00:08:54:a5:f0:8c -j ACCEPT
 iptables -A FORWARD -d 172.16.0.18 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:4771 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4771 classid 1:29d htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4771 classid 1:29e htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4771 classid 1:29f htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4771 classid 1:2a0 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4771 classid 1:2a1 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4771 classid 1:2a2 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4771 classid 1:2a3 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4771 classid 1:2a4 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4771 classid 1:2a5 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 47720 fw classid 1:29d
-tc filter add dev br2 protocol ip parent 1: handle 47721 fw classid 1:29e
-tc filter add dev br2 protocol ip parent 1: handle 47722 fw classid 1:29f
-tc filter add dev br2 protocol ip parent 1: handle 47723 fw classid 1:2a0
-tc filter add dev br2 protocol ip parent 1: handle 47724 fw classid 1:2a1
-tc filter add dev br2 protocol ip parent 1: handle 47725 fw classid 1:2a2
-tc filter add dev br2 protocol ip parent 1: handle 47726 fw classid 1:2a3
-tc filter add dev br2 protocol ip parent 1: handle 47727 fw classid 1:2a4
-tc filter add dev br2 protocol ip parent 1: handle 47728 fw classid 1:2a5
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:4772 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4772 classid 1:2a6 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4772 classid 1:2a7 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4772 classid 1:2a8 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4772 classid 1:2a9 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4772 classid 1:2aa htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4772 classid 1:2ab htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4772 classid 1:2ac htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4772 classid 1:2ad htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4772 classid 1:2ae htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 47730 fw classid 1:2a6
-tc filter add dev eth0 protocol ip parent 1: handle 47731 fw classid 1:2a7
-tc filter add dev eth0 protocol ip parent 1: handle 47732 fw classid 1:2a8
-tc filter add dev eth0 protocol ip parent 1: handle 47733 fw classid 1:2a9
-tc filter add dev eth0 protocol ip parent 1: handle 47734 fw classid 1:2aa
-tc filter add dev eth0 protocol ip parent 1: handle 47735 fw classid 1:2ab
-tc filter add dev eth0 protocol ip parent 1: handle 47736 fw classid 1:2ac
-tc filter add dev eth0 protocol ip parent 1: handle 47737 fw classid 1:2ad
-tc filter add dev eth0 protocol ip parent 1: handle 47738 fw classid 1:2ae
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.18 -p udp --sport 10000:30000 -j MARK --set-mark 47720
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.18 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.18 -p udp --dport 10000:30000 -j MARK --set-mark 47730
@@ -4398,56 +2498,6 @@ iptables -A FORWARD -s 172.16.0.22 -j 172.16.0.22_o
 iptables -A FORWARD -d 172.16.0.22 -j 172.16.0.22_i
 iptables -A FORWARD -s 172.16.0.22 -m mac --mac-source 00:30:4f:79:29:f9 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.22 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:2201 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:2201 classid 1:2af htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:2201 classid 1:2b0 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:2201 classid 1:2b1 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:2201 classid 1:2b2 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:2201 classid 1:2b3 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:2201 classid 1:2b4 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:2201 classid 1:2b5 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:2201 classid 1:2b6 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:2201 classid 1:2b7 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 22020 fw classid 1:2af
-tc filter add dev br2 protocol ip parent 1: handle 22021 fw classid 1:2b0
-tc filter add dev br2 protocol ip parent 1: handle 22022 fw classid 1:2b1
-tc filter add dev br2 protocol ip parent 1: handle 22023 fw classid 1:2b2
-tc filter add dev br2 protocol ip parent 1: handle 22024 fw classid 1:2b3
-tc filter add dev br2 protocol ip parent 1: handle 22025 fw classid 1:2b4
-tc filter add dev br2 protocol ip parent 1: handle 22026 fw classid 1:2b5
-tc filter add dev br2 protocol ip parent 1: handle 22027 fw classid 1:2b6
-tc filter add dev br2 protocol ip parent 1: handle 22028 fw classid 1:2b7
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:2202 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:2202 classid 1:2b8 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:2202 classid 1:2b9 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:2202 classid 1:2ba htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:2202 classid 1:2bb htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:2202 classid 1:2bc htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:2202 classid 1:2bd htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:2202 classid 1:2be htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:2202 classid 1:2bf htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:2202 classid 1:2c0 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 22030 fw classid 1:2b8
-tc filter add dev eth0 protocol ip parent 1: handle 22031 fw classid 1:2b9
-tc filter add dev eth0 protocol ip parent 1: handle 22032 fw classid 1:2ba
-tc filter add dev eth0 protocol ip parent 1: handle 22033 fw classid 1:2bb
-tc filter add dev eth0 protocol ip parent 1: handle 22034 fw classid 1:2bc
-tc filter add dev eth0 protocol ip parent 1: handle 22035 fw classid 1:2bd
-tc filter add dev eth0 protocol ip parent 1: handle 22036 fw classid 1:2be
-tc filter add dev eth0 protocol ip parent 1: handle 22037 fw classid 1:2bf
-tc filter add dev eth0 protocol ip parent 1: handle 22038 fw classid 1:2c0
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.22 -p udp --sport 10000:30000 -j MARK --set-mark 22020
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.22 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.22 -p udp --dport 10000:30000 -j MARK --set-mark 22030
@@ -4509,56 +2559,6 @@ iptables -A FORWARD -s 172.16.0.31 -j 172.16.0.31_o
 iptables -A FORWARD -d 172.16.0.31 -j 172.16.0.31_i
 iptables -A FORWARD -s 172.16.0.31 -m mac --mac-source 00:15:99:ac:98:99 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.31 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:4171 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4171 classid 1:2c1 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4171 classid 1:2c2 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4171 classid 1:2c3 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4171 classid 1:2c4 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4171 classid 1:2c5 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4171 classid 1:2c6 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4171 classid 1:2c7 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4171 classid 1:2c8 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4171 classid 1:2c9 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 41720 fw classid 1:2c1
-tc filter add dev br2 protocol ip parent 1: handle 41721 fw classid 1:2c2
-tc filter add dev br2 protocol ip parent 1: handle 41722 fw classid 1:2c3
-tc filter add dev br2 protocol ip parent 1: handle 41723 fw classid 1:2c4
-tc filter add dev br2 protocol ip parent 1: handle 41724 fw classid 1:2c5
-tc filter add dev br2 protocol ip parent 1: handle 41725 fw classid 1:2c6
-tc filter add dev br2 protocol ip parent 1: handle 41726 fw classid 1:2c7
-tc filter add dev br2 protocol ip parent 1: handle 41727 fw classid 1:2c8
-tc filter add dev br2 protocol ip parent 1: handle 41728 fw classid 1:2c9
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:4172 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4172 classid 1:2ca htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4172 classid 1:2cb htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4172 classid 1:2cc htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4172 classid 1:2cd htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4172 classid 1:2ce htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4172 classid 1:2cf htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4172 classid 1:2d0 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4172 classid 1:2d1 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4172 classid 1:2d2 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 41730 fw classid 1:2ca
-tc filter add dev eth0 protocol ip parent 1: handle 41731 fw classid 1:2cb
-tc filter add dev eth0 protocol ip parent 1: handle 41732 fw classid 1:2cc
-tc filter add dev eth0 protocol ip parent 1: handle 41733 fw classid 1:2cd
-tc filter add dev eth0 protocol ip parent 1: handle 41734 fw classid 1:2ce
-tc filter add dev eth0 protocol ip parent 1: handle 41735 fw classid 1:2cf
-tc filter add dev eth0 protocol ip parent 1: handle 41736 fw classid 1:2d0
-tc filter add dev eth0 protocol ip parent 1: handle 41737 fw classid 1:2d1
-tc filter add dev eth0 protocol ip parent 1: handle 41738 fw classid 1:2d2
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.31 -p udp --sport 10000:30000 -j MARK --set-mark 41720
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.31 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.31 -p udp --dport 10000:30000 -j MARK --set-mark 41730
@@ -4618,56 +2618,6 @@ iptables -F 172.16.0.30_i
 iptables -F 172.16.0.30_o
 iptables -A FORWARD -s 172.16.0.30 -j 172.16.0.30_o
 iptables -A FORWARD -d 172.16.0.30 -j 172.16.0.30_i
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:3901 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:3901 classid 1:2d3 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:3901 classid 1:2d4 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:3901 classid 1:2d5 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:3901 classid 1:2d6 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:3901 classid 1:2d7 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:3901 classid 1:2d8 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:3901 classid 1:2d9 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:3901 classid 1:2da htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:3901 classid 1:2db htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 39020 fw classid 1:2d3
-tc filter add dev br2 protocol ip parent 1: handle 39021 fw classid 1:2d4
-tc filter add dev br2 protocol ip parent 1: handle 39022 fw classid 1:2d5
-tc filter add dev br2 protocol ip parent 1: handle 39023 fw classid 1:2d6
-tc filter add dev br2 protocol ip parent 1: handle 39024 fw classid 1:2d7
-tc filter add dev br2 protocol ip parent 1: handle 39025 fw classid 1:2d8
-tc filter add dev br2 protocol ip parent 1: handle 39026 fw classid 1:2d9
-tc filter add dev br2 protocol ip parent 1: handle 39027 fw classid 1:2da
-tc filter add dev br2 protocol ip parent 1: handle 39028 fw classid 1:2db
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:3902 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:3902 classid 1:2dc htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:3902 classid 1:2dd htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:3902 classid 1:2de htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:3902 classid 1:2df htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:3902 classid 1:2e0 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:3902 classid 1:2e1 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:3902 classid 1:2e2 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:3902 classid 1:2e3 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:3902 classid 1:2e4 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 39030 fw classid 1:2dc
-tc filter add dev eth0 protocol ip parent 1: handle 39031 fw classid 1:2dd
-tc filter add dev eth0 protocol ip parent 1: handle 39032 fw classid 1:2de
-tc filter add dev eth0 protocol ip parent 1: handle 39033 fw classid 1:2df
-tc filter add dev eth0 protocol ip parent 1: handle 39034 fw classid 1:2e0
-tc filter add dev eth0 protocol ip parent 1: handle 39035 fw classid 1:2e1
-tc filter add dev eth0 protocol ip parent 1: handle 39036 fw classid 1:2e2
-tc filter add dev eth0 protocol ip parent 1: handle 39037 fw classid 1:2e3
-tc filter add dev eth0 protocol ip parent 1: handle 39038 fw classid 1:2e4
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.30 -p udp --sport 10000:30000 -j MARK --set-mark 39020
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.30 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.30 -p udp --dport 10000:30000 -j MARK --set-mark 39030
@@ -4729,56 +2679,6 @@ iptables -A FORWARD -s 172.16.0.63 -j 172.16.0.63_o
 iptables -A FORWARD -d 172.16.0.63 -j 172.16.0.63_i
 iptables -A FORWARD -s 172.16.0.63 -m mac --mac-source 00:0b:82:11:b9:33 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.63 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:4971 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4971 classid 1:2e5 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4971 classid 1:2e6 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4971 classid 1:2e7 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4971 classid 1:2e8 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4971 classid 1:2e9 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4971 classid 1:2ea htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4971 classid 1:2eb htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4971 classid 1:2ec htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4971 classid 1:2ed htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 49720 fw classid 1:2e5
-tc filter add dev br2 protocol ip parent 1: handle 49721 fw classid 1:2e6
-tc filter add dev br2 protocol ip parent 1: handle 49722 fw classid 1:2e7
-tc filter add dev br2 protocol ip parent 1: handle 49723 fw classid 1:2e8
-tc filter add dev br2 protocol ip parent 1: handle 49724 fw classid 1:2e9
-tc filter add dev br2 protocol ip parent 1: handle 49725 fw classid 1:2ea
-tc filter add dev br2 protocol ip parent 1: handle 49726 fw classid 1:2eb
-tc filter add dev br2 protocol ip parent 1: handle 49727 fw classid 1:2ec
-tc filter add dev br2 protocol ip parent 1: handle 49728 fw classid 1:2ed
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:4972 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4972 classid 1:2ee htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4972 classid 1:2ef htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4972 classid 1:2f0 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4972 classid 1:2f1 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4972 classid 1:2f2 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4972 classid 1:2f3 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4972 classid 1:2f4 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4972 classid 1:2f5 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4972 classid 1:2f6 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 49730 fw classid 1:2ee
-tc filter add dev eth0 protocol ip parent 1: handle 49731 fw classid 1:2ef
-tc filter add dev eth0 protocol ip parent 1: handle 49732 fw classid 1:2f0
-tc filter add dev eth0 protocol ip parent 1: handle 49733 fw classid 1:2f1
-tc filter add dev eth0 protocol ip parent 1: handle 49734 fw classid 1:2f2
-tc filter add dev eth0 protocol ip parent 1: handle 49735 fw classid 1:2f3
-tc filter add dev eth0 protocol ip parent 1: handle 49736 fw classid 1:2f4
-tc filter add dev eth0 protocol ip parent 1: handle 49737 fw classid 1:2f5
-tc filter add dev eth0 protocol ip parent 1: handle 49738 fw classid 1:2f6
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.63 -p udp --sport 10000:30000 -j MARK --set-mark 49720
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.63 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.63 -p udp --dport 10000:30000 -j MARK --set-mark 49730
@@ -4840,56 +2740,6 @@ iptables -A FORWARD -s 172.16.0.64 -j 172.16.0.64_o
 iptables -A FORWARD -d 172.16.0.64 -j 172.16.0.64_i
 iptables -A FORWARD -s 172.16.0.64 -m mac --mac-source 00:0b:82:11:b9:33 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.64 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:4981 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4981 classid 1:2f7 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4981 classid 1:2f8 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4981 classid 1:2f9 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4981 classid 1:2fa htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4981 classid 1:2fb htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4981 classid 1:2fc htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4981 classid 1:2fd htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4981 classid 1:2fe htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4981 classid 1:2ff htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 49820 fw classid 1:2f7
-tc filter add dev br2 protocol ip parent 1: handle 49821 fw classid 1:2f8
-tc filter add dev br2 protocol ip parent 1: handle 49822 fw classid 1:2f9
-tc filter add dev br2 protocol ip parent 1: handle 49823 fw classid 1:2fa
-tc filter add dev br2 protocol ip parent 1: handle 49824 fw classid 1:2fb
-tc filter add dev br2 protocol ip parent 1: handle 49825 fw classid 1:2fc
-tc filter add dev br2 protocol ip parent 1: handle 49826 fw classid 1:2fd
-tc filter add dev br2 protocol ip parent 1: handle 49827 fw classid 1:2fe
-tc filter add dev br2 protocol ip parent 1: handle 49828 fw classid 1:2ff
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:4982 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4982 classid 1:300 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4982 classid 1:301 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4982 classid 1:302 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4982 classid 1:303 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4982 classid 1:304 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4982 classid 1:305 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4982 classid 1:306 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4982 classid 1:307 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4982 classid 1:308 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 49830 fw classid 1:300
-tc filter add dev eth0 protocol ip parent 1: handle 49831 fw classid 1:301
-tc filter add dev eth0 protocol ip parent 1: handle 49832 fw classid 1:302
-tc filter add dev eth0 protocol ip parent 1: handle 49833 fw classid 1:303
-tc filter add dev eth0 protocol ip parent 1: handle 49834 fw classid 1:304
-tc filter add dev eth0 protocol ip parent 1: handle 49835 fw classid 1:305
-tc filter add dev eth0 protocol ip parent 1: handle 49836 fw classid 1:306
-tc filter add dev eth0 protocol ip parent 1: handle 49837 fw classid 1:307
-tc filter add dev eth0 protocol ip parent 1: handle 49838 fw classid 1:308
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.64 -p udp --sport 10000:30000 -j MARK --set-mark 49820
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.64 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.64 -p udp --dport 10000:30000 -j MARK --set-mark 49830
@@ -4951,56 +2801,6 @@ iptables -A FORWARD -s 172.16.0.58 -j 172.16.0.58_o
 iptables -A FORWARD -d 172.16.0.58 -j 172.16.0.58_i
 iptables -A FORWARD -s 172.16.0.58 -m mac --mac-source f0:f6:1c:eb:51:a2 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.58 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:4961 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4961 classid 1:309 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4961 classid 1:30a htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4961 classid 1:30b htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4961 classid 1:30c htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4961 classid 1:30d htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4961 classid 1:30e htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4961 classid 1:30f htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4961 classid 1:310 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4961 classid 1:311 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 49620 fw classid 1:309
-tc filter add dev br2 protocol ip parent 1: handle 49621 fw classid 1:30a
-tc filter add dev br2 protocol ip parent 1: handle 49622 fw classid 1:30b
-tc filter add dev br2 protocol ip parent 1: handle 49623 fw classid 1:30c
-tc filter add dev br2 protocol ip parent 1: handle 49624 fw classid 1:30d
-tc filter add dev br2 protocol ip parent 1: handle 49625 fw classid 1:30e
-tc filter add dev br2 protocol ip parent 1: handle 49626 fw classid 1:30f
-tc filter add dev br2 protocol ip parent 1: handle 49627 fw classid 1:310
-tc filter add dev br2 protocol ip parent 1: handle 49628 fw classid 1:311
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:4962 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4962 classid 1:312 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4962 classid 1:313 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4962 classid 1:314 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4962 classid 1:315 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4962 classid 1:316 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4962 classid 1:317 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4962 classid 1:318 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4962 classid 1:319 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4962 classid 1:31a htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 49630 fw classid 1:312
-tc filter add dev eth0 protocol ip parent 1: handle 49631 fw classid 1:313
-tc filter add dev eth0 protocol ip parent 1: handle 49632 fw classid 1:314
-tc filter add dev eth0 protocol ip parent 1: handle 49633 fw classid 1:315
-tc filter add dev eth0 protocol ip parent 1: handle 49634 fw classid 1:316
-tc filter add dev eth0 protocol ip parent 1: handle 49635 fw classid 1:317
-tc filter add dev eth0 protocol ip parent 1: handle 49636 fw classid 1:318
-tc filter add dev eth0 protocol ip parent 1: handle 49637 fw classid 1:319
-tc filter add dev eth0 protocol ip parent 1: handle 49638 fw classid 1:31a
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.58 -p udp --sport 10000:30000 -j MARK --set-mark 49620
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.58 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.58 -p udp --dport 10000:30000 -j MARK --set-mark 49630
@@ -5062,56 +2862,6 @@ iptables -A FORWARD -s 172.16.0.36 -j 172.16.0.36_o
 iptables -A FORWARD -d 172.16.0.36 -j 172.16.0.36_i
 iptables -A FORWARD -s 172.16.0.36 -m mac --mac-source e0:06:e6:07:3c:87 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.36 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:2611 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:2611 classid 1:31b htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:2611 classid 1:31c htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:2611 classid 1:31d htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:2611 classid 1:31e htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:2611 classid 1:31f htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:2611 classid 1:320 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:2611 classid 1:321 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:2611 classid 1:322 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:2611 classid 1:323 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 26120 fw classid 1:31b
-tc filter add dev br2 protocol ip parent 1: handle 26121 fw classid 1:31c
-tc filter add dev br2 protocol ip parent 1: handle 26122 fw classid 1:31d
-tc filter add dev br2 protocol ip parent 1: handle 26123 fw classid 1:31e
-tc filter add dev br2 protocol ip parent 1: handle 26124 fw classid 1:31f
-tc filter add dev br2 protocol ip parent 1: handle 26125 fw classid 1:320
-tc filter add dev br2 protocol ip parent 1: handle 26126 fw classid 1:321
-tc filter add dev br2 protocol ip parent 1: handle 26127 fw classid 1:322
-tc filter add dev br2 protocol ip parent 1: handle 26128 fw classid 1:323
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:2612 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:2612 classid 1:324 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:2612 classid 1:325 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:2612 classid 1:326 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:2612 classid 1:327 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:2612 classid 1:328 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:2612 classid 1:329 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:2612 classid 1:32a htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:2612 classid 1:32b htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:2612 classid 1:32c htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 26130 fw classid 1:324
-tc filter add dev eth0 protocol ip parent 1: handle 26131 fw classid 1:325
-tc filter add dev eth0 protocol ip parent 1: handle 26132 fw classid 1:326
-tc filter add dev eth0 protocol ip parent 1: handle 26133 fw classid 1:327
-tc filter add dev eth0 protocol ip parent 1: handle 26134 fw classid 1:328
-tc filter add dev eth0 protocol ip parent 1: handle 26135 fw classid 1:329
-tc filter add dev eth0 protocol ip parent 1: handle 26136 fw classid 1:32a
-tc filter add dev eth0 protocol ip parent 1: handle 26137 fw classid 1:32b
-tc filter add dev eth0 protocol ip parent 1: handle 26138 fw classid 1:32c
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.36 -p udp --sport 10000:30000 -j MARK --set-mark 26120
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.36 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.36 -p udp --dport 10000:30000 -j MARK --set-mark 26130
@@ -5174,56 +2924,6 @@ iptables -A FORWARD -s 172.16.0.33 -j 172.16.0.33_o
 iptables -A FORWARD -d 172.16.0.33 -j 172.16.0.33_i
 iptables -A FORWARD -s 172.16.0.33 -m mac --mac-source 24:b6:fd:4d:ba:bc -j ACCEPT
 iptables -A FORWARD -d 172.16.0.33 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:2861 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:2861 classid 1:32d htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:2861 classid 1:32e htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:2861 classid 1:32f htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:2861 classid 1:330 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:2861 classid 1:331 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:2861 classid 1:332 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:2861 classid 1:333 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:2861 classid 1:334 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:2861 classid 1:335 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 28620 fw classid 1:32d
-tc filter add dev br2 protocol ip parent 1: handle 28621 fw classid 1:32e
-tc filter add dev br2 protocol ip parent 1: handle 28622 fw classid 1:32f
-tc filter add dev br2 protocol ip parent 1: handle 28623 fw classid 1:330
-tc filter add dev br2 protocol ip parent 1: handle 28624 fw classid 1:331
-tc filter add dev br2 protocol ip parent 1: handle 28625 fw classid 1:332
-tc filter add dev br2 protocol ip parent 1: handle 28626 fw classid 1:333
-tc filter add dev br2 protocol ip parent 1: handle 28627 fw classid 1:334
-tc filter add dev br2 protocol ip parent 1: handle 28628 fw classid 1:335
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:2862 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:2862 classid 1:336 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:2862 classid 1:337 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:2862 classid 1:338 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:2862 classid 1:339 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:2862 classid 1:33a htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:2862 classid 1:33b htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:2862 classid 1:33c htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:2862 classid 1:33d htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:2862 classid 1:33e htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 28630 fw classid 1:336
-tc filter add dev eth0 protocol ip parent 1: handle 28631 fw classid 1:337
-tc filter add dev eth0 protocol ip parent 1: handle 28632 fw classid 1:338
-tc filter add dev eth0 protocol ip parent 1: handle 28633 fw classid 1:339
-tc filter add dev eth0 protocol ip parent 1: handle 28634 fw classid 1:33a
-tc filter add dev eth0 protocol ip parent 1: handle 28635 fw classid 1:33b
-tc filter add dev eth0 protocol ip parent 1: handle 28636 fw classid 1:33c
-tc filter add dev eth0 protocol ip parent 1: handle 28637 fw classid 1:33d
-tc filter add dev eth0 protocol ip parent 1: handle 28638 fw classid 1:33e
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.33 -p udp --sport 10000:30000 -j MARK --set-mark 28620
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.33 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.33 -p udp --dport 10000:30000 -j MARK --set-mark 28630
@@ -5286,56 +2986,6 @@ iptables -A FORWARD -s 172.16.0.37 -j 172.16.0.37_o
 iptables -A FORWARD -d 172.16.0.37 -j 172.16.0.37_i
 iptables -A FORWARD -s 172.16.0.37 -m mac --mac-source 54:26:96:d4:71:f5 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.37 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:4861 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4861 classid 1:33f htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4861 classid 1:340 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4861 classid 1:341 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4861 classid 1:342 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4861 classid 1:343 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4861 classid 1:344 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4861 classid 1:345 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4861 classid 1:346 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4861 classid 1:347 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 48620 fw classid 1:33f
-tc filter add dev br2 protocol ip parent 1: handle 48621 fw classid 1:340
-tc filter add dev br2 protocol ip parent 1: handle 48622 fw classid 1:341
-tc filter add dev br2 protocol ip parent 1: handle 48623 fw classid 1:342
-tc filter add dev br2 protocol ip parent 1: handle 48624 fw classid 1:343
-tc filter add dev br2 protocol ip parent 1: handle 48625 fw classid 1:344
-tc filter add dev br2 protocol ip parent 1: handle 48626 fw classid 1:345
-tc filter add dev br2 protocol ip parent 1: handle 48627 fw classid 1:346
-tc filter add dev br2 protocol ip parent 1: handle 48628 fw classid 1:347
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:4862 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4862 classid 1:348 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4862 classid 1:349 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4862 classid 1:34a htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4862 classid 1:34b htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4862 classid 1:34c htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4862 classid 1:34d htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4862 classid 1:34e htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4862 classid 1:34f htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4862 classid 1:350 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 48630 fw classid 1:348
-tc filter add dev eth0 protocol ip parent 1: handle 48631 fw classid 1:349
-tc filter add dev eth0 protocol ip parent 1: handle 48632 fw classid 1:34a
-tc filter add dev eth0 protocol ip parent 1: handle 48633 fw classid 1:34b
-tc filter add dev eth0 protocol ip parent 1: handle 48634 fw classid 1:34c
-tc filter add dev eth0 protocol ip parent 1: handle 48635 fw classid 1:34d
-tc filter add dev eth0 protocol ip parent 1: handle 48636 fw classid 1:34e
-tc filter add dev eth0 protocol ip parent 1: handle 48637 fw classid 1:34f
-tc filter add dev eth0 protocol ip parent 1: handle 48638 fw classid 1:350
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.37 -p udp --sport 10000:30000 -j MARK --set-mark 48620
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.37 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.37 -p udp --dport 10000:30000 -j MARK --set-mark 48630
@@ -5398,56 +3048,6 @@ iptables -A FORWARD -s 172.16.0.55 -j 172.16.0.55_o
 iptables -A FORWARD -d 172.16.0.55 -j 172.16.0.55_i
 iptables -A FORWARD -s 172.16.0.55 -m mac --mac-source 84:8e:0c:68:dc:00 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.55 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:4931 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4931 classid 1:351 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4931 classid 1:352 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4931 classid 1:353 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4931 classid 1:354 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4931 classid 1:355 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4931 classid 1:356 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4931 classid 1:357 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4931 classid 1:358 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4931 classid 1:359 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 49320 fw classid 1:351
-tc filter add dev br2 protocol ip parent 1: handle 49321 fw classid 1:352
-tc filter add dev br2 protocol ip parent 1: handle 49322 fw classid 1:353
-tc filter add dev br2 protocol ip parent 1: handle 49323 fw classid 1:354
-tc filter add dev br2 protocol ip parent 1: handle 49324 fw classid 1:355
-tc filter add dev br2 protocol ip parent 1: handle 49325 fw classid 1:356
-tc filter add dev br2 protocol ip parent 1: handle 49326 fw classid 1:357
-tc filter add dev br2 protocol ip parent 1: handle 49327 fw classid 1:358
-tc filter add dev br2 protocol ip parent 1: handle 49328 fw classid 1:359
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:4932 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4932 classid 1:35a htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4932 classid 1:35b htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4932 classid 1:35c htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4932 classid 1:35d htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4932 classid 1:35e htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4932 classid 1:35f htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4932 classid 1:360 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4932 classid 1:361 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4932 classid 1:362 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 49330 fw classid 1:35a
-tc filter add dev eth0 protocol ip parent 1: handle 49331 fw classid 1:35b
-tc filter add dev eth0 protocol ip parent 1: handle 49332 fw classid 1:35c
-tc filter add dev eth0 protocol ip parent 1: handle 49333 fw classid 1:35d
-tc filter add dev eth0 protocol ip parent 1: handle 49334 fw classid 1:35e
-tc filter add dev eth0 protocol ip parent 1: handle 49335 fw classid 1:35f
-tc filter add dev eth0 protocol ip parent 1: handle 49336 fw classid 1:360
-tc filter add dev eth0 protocol ip parent 1: handle 49337 fw classid 1:361
-tc filter add dev eth0 protocol ip parent 1: handle 49338 fw classid 1:362
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.55 -p udp --sport 10000:30000 -j MARK --set-mark 49320
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.55 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.55 -p udp --dport 10000:30000 -j MARK --set-mark 49330
@@ -5509,56 +3109,6 @@ iptables -A FORWARD -s 172.16.0.72 -j 172.16.0.72_o
 iptables -A FORWARD -d 172.16.0.72 -j 172.16.0.72_i
 iptables -A FORWARD -s 172.16.0.72 -m mac --mac-source 00:21:6b:ca:89:d0 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.72 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:4461 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4461 classid 1:363 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4461 classid 1:364 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4461 classid 1:365 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4461 classid 1:366 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4461 classid 1:367 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4461 classid 1:368 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4461 classid 1:369 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4461 classid 1:36a htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4461 classid 1:36b htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 44620 fw classid 1:363
-tc filter add dev br2 protocol ip parent 1: handle 44621 fw classid 1:364
-tc filter add dev br2 protocol ip parent 1: handle 44622 fw classid 1:365
-tc filter add dev br2 protocol ip parent 1: handle 44623 fw classid 1:366
-tc filter add dev br2 protocol ip parent 1: handle 44624 fw classid 1:367
-tc filter add dev br2 protocol ip parent 1: handle 44625 fw classid 1:368
-tc filter add dev br2 protocol ip parent 1: handle 44626 fw classid 1:369
-tc filter add dev br2 protocol ip parent 1: handle 44627 fw classid 1:36a
-tc filter add dev br2 protocol ip parent 1: handle 44628 fw classid 1:36b
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:4462 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4462 classid 1:36c htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4462 classid 1:36d htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4462 classid 1:36e htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4462 classid 1:36f htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4462 classid 1:370 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4462 classid 1:371 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4462 classid 1:372 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4462 classid 1:373 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4462 classid 1:374 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 44630 fw classid 1:36c
-tc filter add dev eth0 protocol ip parent 1: handle 44631 fw classid 1:36d
-tc filter add dev eth0 protocol ip parent 1: handle 44632 fw classid 1:36e
-tc filter add dev eth0 protocol ip parent 1: handle 44633 fw classid 1:36f
-tc filter add dev eth0 protocol ip parent 1: handle 44634 fw classid 1:370
-tc filter add dev eth0 protocol ip parent 1: handle 44635 fw classid 1:371
-tc filter add dev eth0 protocol ip parent 1: handle 44636 fw classid 1:372
-tc filter add dev eth0 protocol ip parent 1: handle 44637 fw classid 1:373
-tc filter add dev eth0 protocol ip parent 1: handle 44638 fw classid 1:374
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.72 -p udp --sport 10000:30000 -j MARK --set-mark 44620
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.72 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.72 -p udp --dport 10000:30000 -j MARK --set-mark 44630
@@ -5621,56 +3171,6 @@ iptables -A FORWARD -s 172.16.0.73 -j 172.16.0.73_o
 iptables -A FORWARD -d 172.16.0.73 -j 172.16.0.73_i
 iptables -A FORWARD -s 172.16.0.73 -m mac --mac-source 00:1c:c0:37:40:b7 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.73 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:3231 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:3231 classid 1:375 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:3231 classid 1:376 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:3231 classid 1:377 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:3231 classid 1:378 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:3231 classid 1:379 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:3231 classid 1:37a htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:3231 classid 1:37b htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:3231 classid 1:37c htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:3231 classid 1:37d htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 32320 fw classid 1:375
-tc filter add dev br2 protocol ip parent 1: handle 32321 fw classid 1:376
-tc filter add dev br2 protocol ip parent 1: handle 32322 fw classid 1:377
-tc filter add dev br2 protocol ip parent 1: handle 32323 fw classid 1:378
-tc filter add dev br2 protocol ip parent 1: handle 32324 fw classid 1:379
-tc filter add dev br2 protocol ip parent 1: handle 32325 fw classid 1:37a
-tc filter add dev br2 protocol ip parent 1: handle 32326 fw classid 1:37b
-tc filter add dev br2 protocol ip parent 1: handle 32327 fw classid 1:37c
-tc filter add dev br2 protocol ip parent 1: handle 32328 fw classid 1:37d
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:3232 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:3232 classid 1:37e htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:3232 classid 1:37f htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:3232 classid 1:380 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:3232 classid 1:381 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:3232 classid 1:382 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:3232 classid 1:383 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:3232 classid 1:384 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:3232 classid 1:385 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:3232 classid 1:386 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 32330 fw classid 1:37e
-tc filter add dev eth0 protocol ip parent 1: handle 32331 fw classid 1:37f
-tc filter add dev eth0 protocol ip parent 1: handle 32332 fw classid 1:380
-tc filter add dev eth0 protocol ip parent 1: handle 32333 fw classid 1:381
-tc filter add dev eth0 protocol ip parent 1: handle 32334 fw classid 1:382
-tc filter add dev eth0 protocol ip parent 1: handle 32335 fw classid 1:383
-tc filter add dev eth0 protocol ip parent 1: handle 32336 fw classid 1:384
-tc filter add dev eth0 protocol ip parent 1: handle 32337 fw classid 1:385
-tc filter add dev eth0 protocol ip parent 1: handle 32338 fw classid 1:386
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.73 -p udp --sport 10000:30000 -j MARK --set-mark 32320
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.73 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.73 -p udp --dport 10000:30000 -j MARK --set-mark 32330
@@ -5733,56 +3233,6 @@ iptables -A FORWARD -s 172.16.0.46 -j 172.16.0.46_o
 iptables -A FORWARD -d 172.16.0.46 -j 172.16.0.46_i
 iptables -A FORWARD -s 172.16.0.46 -m mac --mac-source 00:0b:82:14:dc:47 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.46 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:4111 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4111 classid 1:387 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4111 classid 1:388 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4111 classid 1:389 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4111 classid 1:38a htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4111 classid 1:38b htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4111 classid 1:38c htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4111 classid 1:38d htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4111 classid 1:38e htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4111 classid 1:38f htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 41120 fw classid 1:387
-tc filter add dev br2 protocol ip parent 1: handle 41121 fw classid 1:388
-tc filter add dev br2 protocol ip parent 1: handle 41122 fw classid 1:389
-tc filter add dev br2 protocol ip parent 1: handle 41123 fw classid 1:38a
-tc filter add dev br2 protocol ip parent 1: handle 41124 fw classid 1:38b
-tc filter add dev br2 protocol ip parent 1: handle 41125 fw classid 1:38c
-tc filter add dev br2 protocol ip parent 1: handle 41126 fw classid 1:38d
-tc filter add dev br2 protocol ip parent 1: handle 41127 fw classid 1:38e
-tc filter add dev br2 protocol ip parent 1: handle 41128 fw classid 1:38f
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:4112 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4112 classid 1:390 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4112 classid 1:391 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4112 classid 1:392 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4112 classid 1:393 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4112 classid 1:394 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4112 classid 1:395 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4112 classid 1:396 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4112 classid 1:397 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4112 classid 1:398 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 41130 fw classid 1:390
-tc filter add dev eth0 protocol ip parent 1: handle 41131 fw classid 1:391
-tc filter add dev eth0 protocol ip parent 1: handle 41132 fw classid 1:392
-tc filter add dev eth0 protocol ip parent 1: handle 41133 fw classid 1:393
-tc filter add dev eth0 protocol ip parent 1: handle 41134 fw classid 1:394
-tc filter add dev eth0 protocol ip parent 1: handle 41135 fw classid 1:395
-tc filter add dev eth0 protocol ip parent 1: handle 41136 fw classid 1:396
-tc filter add dev eth0 protocol ip parent 1: handle 41137 fw classid 1:397
-tc filter add dev eth0 protocol ip parent 1: handle 41138 fw classid 1:398
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.46 -p udp --sport 10000:30000 -j MARK --set-mark 41120
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.46 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.46 -p udp --dport 10000:30000 -j MARK --set-mark 41130
@@ -5844,56 +3294,6 @@ iptables -A FORWARD -s 172.16.0.4 -j 172.16.0.4_o
 iptables -A FORWARD -d 172.16.0.4 -j 172.16.0.4_i
 iptables -A FORWARD -s 172.16.0.4 -m mac --mac-source 00:11:3b:18:87:57 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.4 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:2811 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:2811 classid 1:399 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:2811 classid 1:39a htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:2811 classid 1:39b htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:2811 classid 1:39c htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:2811 classid 1:39d htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:2811 classid 1:39e htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:2811 classid 1:39f htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:2811 classid 1:3a0 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:2811 classid 1:3a1 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 28120 fw classid 1:399
-tc filter add dev br2 protocol ip parent 1: handle 28121 fw classid 1:39a
-tc filter add dev br2 protocol ip parent 1: handle 28122 fw classid 1:39b
-tc filter add dev br2 protocol ip parent 1: handle 28123 fw classid 1:39c
-tc filter add dev br2 protocol ip parent 1: handle 28124 fw classid 1:39d
-tc filter add dev br2 protocol ip parent 1: handle 28125 fw classid 1:39e
-tc filter add dev br2 protocol ip parent 1: handle 28126 fw classid 1:39f
-tc filter add dev br2 protocol ip parent 1: handle 28127 fw classid 1:3a0
-tc filter add dev br2 protocol ip parent 1: handle 28128 fw classid 1:3a1
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:2812 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:2812 classid 1:3a2 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:2812 classid 1:3a3 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:2812 classid 1:3a4 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:2812 classid 1:3a5 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:2812 classid 1:3a6 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:2812 classid 1:3a7 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:2812 classid 1:3a8 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:2812 classid 1:3a9 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:2812 classid 1:3aa htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 28130 fw classid 1:3a2
-tc filter add dev eth0 protocol ip parent 1: handle 28131 fw classid 1:3a3
-tc filter add dev eth0 protocol ip parent 1: handle 28132 fw classid 1:3a4
-tc filter add dev eth0 protocol ip parent 1: handle 28133 fw classid 1:3a5
-tc filter add dev eth0 protocol ip parent 1: handle 28134 fw classid 1:3a6
-tc filter add dev eth0 protocol ip parent 1: handle 28135 fw classid 1:3a7
-tc filter add dev eth0 protocol ip parent 1: handle 28136 fw classid 1:3a8
-tc filter add dev eth0 protocol ip parent 1: handle 28137 fw classid 1:3a9
-tc filter add dev eth0 protocol ip parent 1: handle 28138 fw classid 1:3aa
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.4 -p udp --sport 10000:30000 -j MARK --set-mark 28120
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.4 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.4 -p udp --dport 10000:30000 -j MARK --set-mark 28130
@@ -5956,56 +3356,6 @@ iptables -A FORWARD -s 172.16.0.40 -j 172.16.0.40_o
 iptables -A FORWARD -d 172.16.0.40 -j 172.16.0.40_i
 iptables -A FORWARD -s 172.16.0.40 -m mac --mac-source 00:40:01:2e:15:55 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.40 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:2241 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:2241 classid 1:3ab htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:2241 classid 1:3ac htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:2241 classid 1:3ad htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:2241 classid 1:3ae htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:2241 classid 1:3af htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:2241 classid 1:3b0 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:2241 classid 1:3b1 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:2241 classid 1:3b2 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:2241 classid 1:3b3 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 22420 fw classid 1:3ab
-tc filter add dev br2 protocol ip parent 1: handle 22421 fw classid 1:3ac
-tc filter add dev br2 protocol ip parent 1: handle 22422 fw classid 1:3ad
-tc filter add dev br2 protocol ip parent 1: handle 22423 fw classid 1:3ae
-tc filter add dev br2 protocol ip parent 1: handle 22424 fw classid 1:3af
-tc filter add dev br2 protocol ip parent 1: handle 22425 fw classid 1:3b0
-tc filter add dev br2 protocol ip parent 1: handle 22426 fw classid 1:3b1
-tc filter add dev br2 protocol ip parent 1: handle 22427 fw classid 1:3b2
-tc filter add dev br2 protocol ip parent 1: handle 22428 fw classid 1:3b3
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:2242 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:2242 classid 1:3b4 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:2242 classid 1:3b5 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:2242 classid 1:3b6 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:2242 classid 1:3b7 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:2242 classid 1:3b8 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:2242 classid 1:3b9 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:2242 classid 1:3ba htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:2242 classid 1:3bb htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:2242 classid 1:3bc htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 22430 fw classid 1:3b4
-tc filter add dev eth0 protocol ip parent 1: handle 22431 fw classid 1:3b5
-tc filter add dev eth0 protocol ip parent 1: handle 22432 fw classid 1:3b6
-tc filter add dev eth0 protocol ip parent 1: handle 22433 fw classid 1:3b7
-tc filter add dev eth0 protocol ip parent 1: handle 22434 fw classid 1:3b8
-tc filter add dev eth0 protocol ip parent 1: handle 22435 fw classid 1:3b9
-tc filter add dev eth0 protocol ip parent 1: handle 22436 fw classid 1:3ba
-tc filter add dev eth0 protocol ip parent 1: handle 22437 fw classid 1:3bb
-tc filter add dev eth0 protocol ip parent 1: handle 22438 fw classid 1:3bc
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.40 -p udp --sport 10000:30000 -j MARK --set-mark 22420
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.40 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.40 -p udp --dport 10000:30000 -j MARK --set-mark 22430
@@ -6068,56 +3418,6 @@ iptables -A FORWARD -s 172.16.0.39 -j 172.16.0.39_o
 iptables -A FORWARD -d 172.16.0.39 -j 172.16.0.39_i
 iptables -A FORWARD -s 172.16.0.39 -m mac --mac-source 4c:8d:79:e9:51:36 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.39 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:4031 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4031 classid 1:3bd htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4031 classid 1:3be htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4031 classid 1:3bf htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4031 classid 1:3c0 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4031 classid 1:3c1 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4031 classid 1:3c2 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4031 classid 1:3c3 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4031 classid 1:3c4 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4031 classid 1:3c5 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 40320 fw classid 1:3bd
-tc filter add dev br2 protocol ip parent 1: handle 40321 fw classid 1:3be
-tc filter add dev br2 protocol ip parent 1: handle 40322 fw classid 1:3bf
-tc filter add dev br2 protocol ip parent 1: handle 40323 fw classid 1:3c0
-tc filter add dev br2 protocol ip parent 1: handle 40324 fw classid 1:3c1
-tc filter add dev br2 protocol ip parent 1: handle 40325 fw classid 1:3c2
-tc filter add dev br2 protocol ip parent 1: handle 40326 fw classid 1:3c3
-tc filter add dev br2 protocol ip parent 1: handle 40327 fw classid 1:3c4
-tc filter add dev br2 protocol ip parent 1: handle 40328 fw classid 1:3c5
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:4032 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4032 classid 1:3c6 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4032 classid 1:3c7 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4032 classid 1:3c8 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4032 classid 1:3c9 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4032 classid 1:3ca htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4032 classid 1:3cb htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4032 classid 1:3cc htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4032 classid 1:3cd htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4032 classid 1:3ce htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 40330 fw classid 1:3c6
-tc filter add dev eth0 protocol ip parent 1: handle 40331 fw classid 1:3c7
-tc filter add dev eth0 protocol ip parent 1: handle 40332 fw classid 1:3c8
-tc filter add dev eth0 protocol ip parent 1: handle 40333 fw classid 1:3c9
-tc filter add dev eth0 protocol ip parent 1: handle 40334 fw classid 1:3ca
-tc filter add dev eth0 protocol ip parent 1: handle 40335 fw classid 1:3cb
-tc filter add dev eth0 protocol ip parent 1: handle 40336 fw classid 1:3cc
-tc filter add dev eth0 protocol ip parent 1: handle 40337 fw classid 1:3cd
-tc filter add dev eth0 protocol ip parent 1: handle 40338 fw classid 1:3ce
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.39 -p udp --sport 10000:30000 -j MARK --set-mark 40320
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.39 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.39 -p udp --dport 10000:30000 -j MARK --set-mark 40330
@@ -6180,56 +3480,6 @@ iptables -A FORWARD -s 172.16.0.35 -j 172.16.0.35_o
 iptables -A FORWARD -d 172.16.0.35 -j 172.16.0.35_i
 iptables -A FORWARD -s 172.16.0.35 -m mac --mac-source 00:27:0e:1c:28:ac -j ACCEPT
 iptables -A FORWARD -d 172.16.0.35 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:4021 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4021 classid 1:3cf htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4021 classid 1:3d0 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4021 classid 1:3d1 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4021 classid 1:3d2 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4021 classid 1:3d3 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4021 classid 1:3d4 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4021 classid 1:3d5 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4021 classid 1:3d6 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4021 classid 1:3d7 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 40220 fw classid 1:3cf
-tc filter add dev br2 protocol ip parent 1: handle 40221 fw classid 1:3d0
-tc filter add dev br2 protocol ip parent 1: handle 40222 fw classid 1:3d1
-tc filter add dev br2 protocol ip parent 1: handle 40223 fw classid 1:3d2
-tc filter add dev br2 protocol ip parent 1: handle 40224 fw classid 1:3d3
-tc filter add dev br2 protocol ip parent 1: handle 40225 fw classid 1:3d4
-tc filter add dev br2 protocol ip parent 1: handle 40226 fw classid 1:3d5
-tc filter add dev br2 protocol ip parent 1: handle 40227 fw classid 1:3d6
-tc filter add dev br2 protocol ip parent 1: handle 40228 fw classid 1:3d7
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:4022 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4022 classid 1:3d8 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4022 classid 1:3d9 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4022 classid 1:3da htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4022 classid 1:3db htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4022 classid 1:3dc htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4022 classid 1:3dd htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4022 classid 1:3de htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4022 classid 1:3df htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4022 classid 1:3e0 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 40230 fw classid 1:3d8
-tc filter add dev eth0 protocol ip parent 1: handle 40231 fw classid 1:3d9
-tc filter add dev eth0 protocol ip parent 1: handle 40232 fw classid 1:3da
-tc filter add dev eth0 protocol ip parent 1: handle 40233 fw classid 1:3db
-tc filter add dev eth0 protocol ip parent 1: handle 40234 fw classid 1:3dc
-tc filter add dev eth0 protocol ip parent 1: handle 40235 fw classid 1:3dd
-tc filter add dev eth0 protocol ip parent 1: handle 40236 fw classid 1:3de
-tc filter add dev eth0 protocol ip parent 1: handle 40237 fw classid 1:3df
-tc filter add dev eth0 protocol ip parent 1: handle 40238 fw classid 1:3e0
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.35 -p udp --sport 10000:30000 -j MARK --set-mark 40220
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.35 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.35 -p udp --dport 10000:30000 -j MARK --set-mark 40230
@@ -6292,56 +3542,6 @@ iptables -A FORWARD -s 172.16.0.23 -j 172.16.0.23_o
 iptables -A FORWARD -d 172.16.0.23 -j 172.16.0.23_i
 iptables -A FORWARD -s 172.16.0.23 -m mac --mac-source 84:8e:0c:09:37:5e -j ACCEPT
 iptables -A FORWARD -d 172.16.0.23 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:4801 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4801 classid 1:3e1 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4801 classid 1:3e2 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4801 classid 1:3e3 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4801 classid 1:3e4 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4801 classid 1:3e5 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4801 classid 1:3e6 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4801 classid 1:3e7 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4801 classid 1:3e8 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4801 classid 1:3e9 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 48020 fw classid 1:3e1
-tc filter add dev br2 protocol ip parent 1: handle 48021 fw classid 1:3e2
-tc filter add dev br2 protocol ip parent 1: handle 48022 fw classid 1:3e3
-tc filter add dev br2 protocol ip parent 1: handle 48023 fw classid 1:3e4
-tc filter add dev br2 protocol ip parent 1: handle 48024 fw classid 1:3e5
-tc filter add dev br2 protocol ip parent 1: handle 48025 fw classid 1:3e6
-tc filter add dev br2 protocol ip parent 1: handle 48026 fw classid 1:3e7
-tc filter add dev br2 protocol ip parent 1: handle 48027 fw classid 1:3e8
-tc filter add dev br2 protocol ip parent 1: handle 48028 fw classid 1:3e9
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:4802 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4802 classid 1:3ea htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4802 classid 1:3eb htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4802 classid 1:3ec htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4802 classid 1:3ed htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4802 classid 1:3ee htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4802 classid 1:3ef htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4802 classid 1:3f0 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4802 classid 1:3f1 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4802 classid 1:3f2 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 48030 fw classid 1:3ea
-tc filter add dev eth0 protocol ip parent 1: handle 48031 fw classid 1:3eb
-tc filter add dev eth0 protocol ip parent 1: handle 48032 fw classid 1:3ec
-tc filter add dev eth0 protocol ip parent 1: handle 48033 fw classid 1:3ed
-tc filter add dev eth0 protocol ip parent 1: handle 48034 fw classid 1:3ee
-tc filter add dev eth0 protocol ip parent 1: handle 48035 fw classid 1:3ef
-tc filter add dev eth0 protocol ip parent 1: handle 48036 fw classid 1:3f0
-tc filter add dev eth0 protocol ip parent 1: handle 48037 fw classid 1:3f1
-tc filter add dev eth0 protocol ip parent 1: handle 48038 fw classid 1:3f2
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.23 -p udp --sport 10000:30000 -j MARK --set-mark 48020
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.23 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.23 -p udp --dport 10000:30000 -j MARK --set-mark 48030
@@ -6404,56 +3604,6 @@ iptables -A FORWARD -s 172.16.0.48 -j 172.16.0.48_o
 iptables -A FORWARD -d 172.16.0.48 -j 172.16.0.48_i
 iptables -A FORWARD -s 172.16.0.48 -m mac --mac-source 10:dd:b1:aa:09:3a -j ACCEPT
 iptables -A FORWARD -d 172.16.0.48 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:4331 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4331 classid 1:3f3 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4331 classid 1:3f4 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4331 classid 1:3f5 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4331 classid 1:3f6 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4331 classid 1:3f7 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4331 classid 1:3f8 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4331 classid 1:3f9 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4331 classid 1:3fa htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4331 classid 1:3fb htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 43320 fw classid 1:3f3
-tc filter add dev br2 protocol ip parent 1: handle 43321 fw classid 1:3f4
-tc filter add dev br2 protocol ip parent 1: handle 43322 fw classid 1:3f5
-tc filter add dev br2 protocol ip parent 1: handle 43323 fw classid 1:3f6
-tc filter add dev br2 protocol ip parent 1: handle 43324 fw classid 1:3f7
-tc filter add dev br2 protocol ip parent 1: handle 43325 fw classid 1:3f8
-tc filter add dev br2 protocol ip parent 1: handle 43326 fw classid 1:3f9
-tc filter add dev br2 protocol ip parent 1: handle 43327 fw classid 1:3fa
-tc filter add dev br2 protocol ip parent 1: handle 43328 fw classid 1:3fb
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:4332 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4332 classid 1:3fc htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4332 classid 1:3fd htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4332 classid 1:3fe htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4332 classid 1:3ff htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4332 classid 1:400 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4332 classid 1:401 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4332 classid 1:402 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4332 classid 1:403 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4332 classid 1:404 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 43330 fw classid 1:3fc
-tc filter add dev eth0 protocol ip parent 1: handle 43331 fw classid 1:3fd
-tc filter add dev eth0 protocol ip parent 1: handle 43332 fw classid 1:3fe
-tc filter add dev eth0 protocol ip parent 1: handle 43333 fw classid 1:3ff
-tc filter add dev eth0 protocol ip parent 1: handle 43334 fw classid 1:400
-tc filter add dev eth0 protocol ip parent 1: handle 43335 fw classid 1:401
-tc filter add dev eth0 protocol ip parent 1: handle 43336 fw classid 1:402
-tc filter add dev eth0 protocol ip parent 1: handle 43337 fw classid 1:403
-tc filter add dev eth0 protocol ip parent 1: handle 43338 fw classid 1:404
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.48 -p udp --sport 10000:30000 -j MARK --set-mark 43320
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.48 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.48 -p udp --dport 10000:30000 -j MARK --set-mark 43330
@@ -6516,56 +3666,6 @@ iptables -A FORWARD -s 172.16.0.47 -j 172.16.0.47_o
 iptables -A FORWARD -d 172.16.0.47 -j 172.16.0.47_i
 iptables -A FORWARD -s 172.16.0.47 -m mac --mac-source f4:f9:51:c8:db:ed -j ACCEPT
 iptables -A FORWARD -d 172.16.0.47 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:4611 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4611 classid 1:405 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4611 classid 1:406 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4611 classid 1:407 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4611 classid 1:408 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4611 classid 1:409 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4611 classid 1:40a htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4611 classid 1:40b htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4611 classid 1:40c htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4611 classid 1:40d htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 46120 fw classid 1:405
-tc filter add dev br2 protocol ip parent 1: handle 46121 fw classid 1:406
-tc filter add dev br2 protocol ip parent 1: handle 46122 fw classid 1:407
-tc filter add dev br2 protocol ip parent 1: handle 46123 fw classid 1:408
-tc filter add dev br2 protocol ip parent 1: handle 46124 fw classid 1:409
-tc filter add dev br2 protocol ip parent 1: handle 46125 fw classid 1:40a
-tc filter add dev br2 protocol ip parent 1: handle 46126 fw classid 1:40b
-tc filter add dev br2 protocol ip parent 1: handle 46127 fw classid 1:40c
-tc filter add dev br2 protocol ip parent 1: handle 46128 fw classid 1:40d
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:4612 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4612 classid 1:40e htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4612 classid 1:40f htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4612 classid 1:410 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4612 classid 1:411 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4612 classid 1:412 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4612 classid 1:413 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4612 classid 1:414 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4612 classid 1:415 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4612 classid 1:416 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 46130 fw classid 1:40e
-tc filter add dev eth0 protocol ip parent 1: handle 46131 fw classid 1:40f
-tc filter add dev eth0 protocol ip parent 1: handle 46132 fw classid 1:410
-tc filter add dev eth0 protocol ip parent 1: handle 46133 fw classid 1:411
-tc filter add dev eth0 protocol ip parent 1: handle 46134 fw classid 1:412
-tc filter add dev eth0 protocol ip parent 1: handle 46135 fw classid 1:413
-tc filter add dev eth0 protocol ip parent 1: handle 46136 fw classid 1:414
-tc filter add dev eth0 protocol ip parent 1: handle 46137 fw classid 1:415
-tc filter add dev eth0 protocol ip parent 1: handle 46138 fw classid 1:416
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.47 -p udp --sport 10000:30000 -j MARK --set-mark 46120
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.47 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.47 -p udp --dport 10000:30000 -j MARK --set-mark 46130
@@ -6628,56 +3728,6 @@ iptables -A FORWARD -s 172.16.0.20 -j 172.16.0.20_o
 iptables -A FORWARD -d 172.16.0.20 -j 172.16.0.20_i
 iptables -A FORWARD -s 172.16.0.20 -m mac --mac-source 60:03:08:9e:91:36 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.20 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:4791 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4791 classid 1:417 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4791 classid 1:418 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4791 classid 1:419 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4791 classid 1:41a htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4791 classid 1:41b htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4791 classid 1:41c htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4791 classid 1:41d htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4791 classid 1:41e htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4791 classid 1:41f htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 47920 fw classid 1:417
-tc filter add dev br2 protocol ip parent 1: handle 47921 fw classid 1:418
-tc filter add dev br2 protocol ip parent 1: handle 47922 fw classid 1:419
-tc filter add dev br2 protocol ip parent 1: handle 47923 fw classid 1:41a
-tc filter add dev br2 protocol ip parent 1: handle 47924 fw classid 1:41b
-tc filter add dev br2 protocol ip parent 1: handle 47925 fw classid 1:41c
-tc filter add dev br2 protocol ip parent 1: handle 47926 fw classid 1:41d
-tc filter add dev br2 protocol ip parent 1: handle 47927 fw classid 1:41e
-tc filter add dev br2 protocol ip parent 1: handle 47928 fw classid 1:41f
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:4792 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4792 classid 1:420 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4792 classid 1:421 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4792 classid 1:422 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4792 classid 1:423 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4792 classid 1:424 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4792 classid 1:425 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4792 classid 1:426 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4792 classid 1:427 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4792 classid 1:428 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 47930 fw classid 1:420
-tc filter add dev eth0 protocol ip parent 1: handle 47931 fw classid 1:421
-tc filter add dev eth0 protocol ip parent 1: handle 47932 fw classid 1:422
-tc filter add dev eth0 protocol ip parent 1: handle 47933 fw classid 1:423
-tc filter add dev eth0 protocol ip parent 1: handle 47934 fw classid 1:424
-tc filter add dev eth0 protocol ip parent 1: handle 47935 fw classid 1:425
-tc filter add dev eth0 protocol ip parent 1: handle 47936 fw classid 1:426
-tc filter add dev eth0 protocol ip parent 1: handle 47937 fw classid 1:427
-tc filter add dev eth0 protocol ip parent 1: handle 47938 fw classid 1:428
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.20 -p udp --sport 10000:30000 -j MARK --set-mark 47920
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.20 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.20 -p udp --dport 10000:30000 -j MARK --set-mark 47930
@@ -6740,56 +3790,6 @@ iptables -A FORWARD -s 172.16.0.44 -j 172.16.0.44_o
 iptables -A FORWARD -d 172.16.0.44 -j 172.16.0.44_i
 iptables -A FORWARD -s 172.16.0.44 -m mac --mac-source 00:80:f0:d1:ce:23 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.44 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:4051 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4051 classid 1:429 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4051 classid 1:42a htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4051 classid 1:42b htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4051 classid 1:42c htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4051 classid 1:42d htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4051 classid 1:42e htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4051 classid 1:42f htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4051 classid 1:430 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4051 classid 1:431 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 40520 fw classid 1:429
-tc filter add dev br2 protocol ip parent 1: handle 40521 fw classid 1:42a
-tc filter add dev br2 protocol ip parent 1: handle 40522 fw classid 1:42b
-tc filter add dev br2 protocol ip parent 1: handle 40523 fw classid 1:42c
-tc filter add dev br2 protocol ip parent 1: handle 40524 fw classid 1:42d
-tc filter add dev br2 protocol ip parent 1: handle 40525 fw classid 1:42e
-tc filter add dev br2 protocol ip parent 1: handle 40526 fw classid 1:42f
-tc filter add dev br2 protocol ip parent 1: handle 40527 fw classid 1:430
-tc filter add dev br2 protocol ip parent 1: handle 40528 fw classid 1:431
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:4052 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4052 classid 1:432 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4052 classid 1:433 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4052 classid 1:434 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4052 classid 1:435 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4052 classid 1:436 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4052 classid 1:437 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4052 classid 1:438 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4052 classid 1:439 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4052 classid 1:43a htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 40530 fw classid 1:432
-tc filter add dev eth0 protocol ip parent 1: handle 40531 fw classid 1:433
-tc filter add dev eth0 protocol ip parent 1: handle 40532 fw classid 1:434
-tc filter add dev eth0 protocol ip parent 1: handle 40533 fw classid 1:435
-tc filter add dev eth0 protocol ip parent 1: handle 40534 fw classid 1:436
-tc filter add dev eth0 protocol ip parent 1: handle 40535 fw classid 1:437
-tc filter add dev eth0 protocol ip parent 1: handle 40536 fw classid 1:438
-tc filter add dev eth0 protocol ip parent 1: handle 40537 fw classid 1:439
-tc filter add dev eth0 protocol ip parent 1: handle 40538 fw classid 1:43a
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.44 -p udp --sport 10000:30000 -j MARK --set-mark 40520
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.44 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.44 -p udp --dport 10000:30000 -j MARK --set-mark 40530
@@ -6851,56 +3851,6 @@ iptables -A FORWARD -s 172.16.0.65 -j 172.16.0.65_o
 iptables -A FORWARD -d 172.16.0.65 -j 172.16.0.65_i
 iptables -A FORWARD -s 172.16.0.65 -m mac --mac-source 52:54:00:7f:34:d5 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.65 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:4991 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4991 classid 1:43b htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4991 classid 1:43c htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4991 classid 1:43d htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4991 classid 1:43e htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4991 classid 1:43f htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4991 classid 1:440 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4991 classid 1:441 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4991 classid 1:442 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4991 classid 1:443 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 49920 fw classid 1:43b
-tc filter add dev br2 protocol ip parent 1: handle 49921 fw classid 1:43c
-tc filter add dev br2 protocol ip parent 1: handle 49922 fw classid 1:43d
-tc filter add dev br2 protocol ip parent 1: handle 49923 fw classid 1:43e
-tc filter add dev br2 protocol ip parent 1: handle 49924 fw classid 1:43f
-tc filter add dev br2 protocol ip parent 1: handle 49925 fw classid 1:440
-tc filter add dev br2 protocol ip parent 1: handle 49926 fw classid 1:441
-tc filter add dev br2 protocol ip parent 1: handle 49927 fw classid 1:442
-tc filter add dev br2 protocol ip parent 1: handle 49928 fw classid 1:443
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:4992 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4992 classid 1:444 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4992 classid 1:445 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4992 classid 1:446 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4992 classid 1:447 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4992 classid 1:448 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4992 classid 1:449 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4992 classid 1:44a htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4992 classid 1:44b htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4992 classid 1:44c htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 49930 fw classid 1:444
-tc filter add dev eth0 protocol ip parent 1: handle 49931 fw classid 1:445
-tc filter add dev eth0 protocol ip parent 1: handle 49932 fw classid 1:446
-tc filter add dev eth0 protocol ip parent 1: handle 49933 fw classid 1:447
-tc filter add dev eth0 protocol ip parent 1: handle 49934 fw classid 1:448
-tc filter add dev eth0 protocol ip parent 1: handle 49935 fw classid 1:449
-tc filter add dev eth0 protocol ip parent 1: handle 49936 fw classid 1:44a
-tc filter add dev eth0 protocol ip parent 1: handle 49937 fw classid 1:44b
-tc filter add dev eth0 protocol ip parent 1: handle 49938 fw classid 1:44c
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.65 -p udp --sport 10000:30000 -j MARK --set-mark 49920
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.65 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.65 -p udp --dport 10000:30000 -j MARK --set-mark 49930
@@ -6960,56 +3910,6 @@ iptables -F 172.16.0.101_i
 iptables -F 172.16.0.101_o
 iptables -A FORWARD -s 172.16.0.101 -j 172.16.0.101_o
 iptables -A FORWARD -d 172.16.0.101 -j 172.16.0.101_i
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:1701 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:1701 classid 1:44d htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:1701 classid 1:44e htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:1701 classid 1:44f htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:1701 classid 1:450 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:1701 classid 1:451 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:1701 classid 1:452 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:1701 classid 1:453 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:1701 classid 1:454 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:1701 classid 1:455 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 17020 fw classid 1:44d
-tc filter add dev br2 protocol ip parent 1: handle 17021 fw classid 1:44e
-tc filter add dev br2 protocol ip parent 1: handle 17022 fw classid 1:44f
-tc filter add dev br2 protocol ip parent 1: handle 17023 fw classid 1:450
-tc filter add dev br2 protocol ip parent 1: handle 17024 fw classid 1:451
-tc filter add dev br2 protocol ip parent 1: handle 17025 fw classid 1:452
-tc filter add dev br2 protocol ip parent 1: handle 17026 fw classid 1:453
-tc filter add dev br2 protocol ip parent 1: handle 17027 fw classid 1:454
-tc filter add dev br2 protocol ip parent 1: handle 17028 fw classid 1:455
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:1702 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:1702 classid 1:456 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:1702 classid 1:457 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:1702 classid 1:458 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:1702 classid 1:459 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:1702 classid 1:45a htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:1702 classid 1:45b htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:1702 classid 1:45c htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:1702 classid 1:45d htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:1702 classid 1:45e htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 17030 fw classid 1:456
-tc filter add dev eth0 protocol ip parent 1: handle 17031 fw classid 1:457
-tc filter add dev eth0 protocol ip parent 1: handle 17032 fw classid 1:458
-tc filter add dev eth0 protocol ip parent 1: handle 17033 fw classid 1:459
-tc filter add dev eth0 protocol ip parent 1: handle 17034 fw classid 1:45a
-tc filter add dev eth0 protocol ip parent 1: handle 17035 fw classid 1:45b
-tc filter add dev eth0 protocol ip parent 1: handle 17036 fw classid 1:45c
-tc filter add dev eth0 protocol ip parent 1: handle 17037 fw classid 1:45d
-tc filter add dev eth0 protocol ip parent 1: handle 17038 fw classid 1:45e
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.101 -p udp --sport 10000:30000 -j MARK --set-mark 17020
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.101 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.101 -p udp --dport 10000:30000 -j MARK --set-mark 17030
@@ -7070,56 +3970,6 @@ iptables -F 172.16.0.102_i
 iptables -F 172.16.0.102_o
 iptables -A FORWARD -s 172.16.0.102 -j 172.16.0.102_o
 iptables -A FORWARD -d 172.16.0.102 -j 172.16.0.102_i
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:1681 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:1681 classid 1:45f htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:1681 classid 1:460 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:1681 classid 1:461 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:1681 classid 1:462 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:1681 classid 1:463 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:1681 classid 1:464 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:1681 classid 1:465 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:1681 classid 1:466 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:1681 classid 1:467 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 16820 fw classid 1:45f
-tc filter add dev br2 protocol ip parent 1: handle 16821 fw classid 1:460
-tc filter add dev br2 protocol ip parent 1: handle 16822 fw classid 1:461
-tc filter add dev br2 protocol ip parent 1: handle 16823 fw classid 1:462
-tc filter add dev br2 protocol ip parent 1: handle 16824 fw classid 1:463
-tc filter add dev br2 protocol ip parent 1: handle 16825 fw classid 1:464
-tc filter add dev br2 protocol ip parent 1: handle 16826 fw classid 1:465
-tc filter add dev br2 protocol ip parent 1: handle 16827 fw classid 1:466
-tc filter add dev br2 protocol ip parent 1: handle 16828 fw classid 1:467
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:1682 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:1682 classid 1:468 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:1682 classid 1:469 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:1682 classid 1:46a htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:1682 classid 1:46b htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:1682 classid 1:46c htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:1682 classid 1:46d htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:1682 classid 1:46e htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:1682 classid 1:46f htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:1682 classid 1:470 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 16830 fw classid 1:468
-tc filter add dev eth0 protocol ip parent 1: handle 16831 fw classid 1:469
-tc filter add dev eth0 protocol ip parent 1: handle 16832 fw classid 1:46a
-tc filter add dev eth0 protocol ip parent 1: handle 16833 fw classid 1:46b
-tc filter add dev eth0 protocol ip parent 1: handle 16834 fw classid 1:46c
-tc filter add dev eth0 protocol ip parent 1: handle 16835 fw classid 1:46d
-tc filter add dev eth0 protocol ip parent 1: handle 16836 fw classid 1:46e
-tc filter add dev eth0 protocol ip parent 1: handle 16837 fw classid 1:46f
-tc filter add dev eth0 protocol ip parent 1: handle 16838 fw classid 1:470
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.102 -p udp --sport 10000:30000 -j MARK --set-mark 16820
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.102 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.102 -p udp --dport 10000:30000 -j MARK --set-mark 16830
@@ -7180,56 +4030,6 @@ iptables -F 172.16.0.103_i
 iptables -F 172.16.0.103_o
 iptables -A FORWARD -s 172.16.0.103 -j 172.16.0.103_o
 iptables -A FORWARD -d 172.16.0.103 -j 172.16.0.103_i
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:1241 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:1241 classid 1:471 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:1241 classid 1:472 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:1241 classid 1:473 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:1241 classid 1:474 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:1241 classid 1:475 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:1241 classid 1:476 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:1241 classid 1:477 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:1241 classid 1:478 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:1241 classid 1:479 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 12420 fw classid 1:471
-tc filter add dev br2 protocol ip parent 1: handle 12421 fw classid 1:472
-tc filter add dev br2 protocol ip parent 1: handle 12422 fw classid 1:473
-tc filter add dev br2 protocol ip parent 1: handle 12423 fw classid 1:474
-tc filter add dev br2 protocol ip parent 1: handle 12424 fw classid 1:475
-tc filter add dev br2 protocol ip parent 1: handle 12425 fw classid 1:476
-tc filter add dev br2 protocol ip parent 1: handle 12426 fw classid 1:477
-tc filter add dev br2 protocol ip parent 1: handle 12427 fw classid 1:478
-tc filter add dev br2 protocol ip parent 1: handle 12428 fw classid 1:479
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:1242 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:1242 classid 1:47a htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:1242 classid 1:47b htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:1242 classid 1:47c htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:1242 classid 1:47d htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:1242 classid 1:47e htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:1242 classid 1:47f htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:1242 classid 1:480 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:1242 classid 1:481 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:1242 classid 1:482 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 12430 fw classid 1:47a
-tc filter add dev eth0 protocol ip parent 1: handle 12431 fw classid 1:47b
-tc filter add dev eth0 protocol ip parent 1: handle 12432 fw classid 1:47c
-tc filter add dev eth0 protocol ip parent 1: handle 12433 fw classid 1:47d
-tc filter add dev eth0 protocol ip parent 1: handle 12434 fw classid 1:47e
-tc filter add dev eth0 protocol ip parent 1: handle 12435 fw classid 1:47f
-tc filter add dev eth0 protocol ip parent 1: handle 12436 fw classid 1:480
-tc filter add dev eth0 protocol ip parent 1: handle 12437 fw classid 1:481
-tc filter add dev eth0 protocol ip parent 1: handle 12438 fw classid 1:482
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.103 -p udp --sport 10000:30000 -j MARK --set-mark 12420
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.103 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.103 -p udp --dport 10000:30000 -j MARK --set-mark 12430
@@ -7290,56 +4090,6 @@ iptables -F 172.16.0.104_i
 iptables -F 172.16.0.104_o
 iptables -A FORWARD -s 172.16.0.104 -j 172.16.0.104_o
 iptables -A FORWARD -d 172.16.0.104 -j 172.16.0.104_i
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:1411 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:1411 classid 1:483 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:1411 classid 1:484 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:1411 classid 1:485 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:1411 classid 1:486 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:1411 classid 1:487 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:1411 classid 1:488 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:1411 classid 1:489 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:1411 classid 1:48a htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:1411 classid 1:48b htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 14120 fw classid 1:483
-tc filter add dev br2 protocol ip parent 1: handle 14121 fw classid 1:484
-tc filter add dev br2 protocol ip parent 1: handle 14122 fw classid 1:485
-tc filter add dev br2 protocol ip parent 1: handle 14123 fw classid 1:486
-tc filter add dev br2 protocol ip parent 1: handle 14124 fw classid 1:487
-tc filter add dev br2 protocol ip parent 1: handle 14125 fw classid 1:488
-tc filter add dev br2 protocol ip parent 1: handle 14126 fw classid 1:489
-tc filter add dev br2 protocol ip parent 1: handle 14127 fw classid 1:48a
-tc filter add dev br2 protocol ip parent 1: handle 14128 fw classid 1:48b
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:1412 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:1412 classid 1:48c htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:1412 classid 1:48d htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:1412 classid 1:48e htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:1412 classid 1:48f htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:1412 classid 1:490 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:1412 classid 1:491 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:1412 classid 1:492 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:1412 classid 1:493 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:1412 classid 1:494 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 14130 fw classid 1:48c
-tc filter add dev eth0 protocol ip parent 1: handle 14131 fw classid 1:48d
-tc filter add dev eth0 protocol ip parent 1: handle 14132 fw classid 1:48e
-tc filter add dev eth0 protocol ip parent 1: handle 14133 fw classid 1:48f
-tc filter add dev eth0 protocol ip parent 1: handle 14134 fw classid 1:490
-tc filter add dev eth0 protocol ip parent 1: handle 14135 fw classid 1:491
-tc filter add dev eth0 protocol ip parent 1: handle 14136 fw classid 1:492
-tc filter add dev eth0 protocol ip parent 1: handle 14137 fw classid 1:493
-tc filter add dev eth0 protocol ip parent 1: handle 14138 fw classid 1:494
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.104 -p udp --sport 10000:30000 -j MARK --set-mark 14120
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.104 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.104 -p udp --dport 10000:30000 -j MARK --set-mark 14130
@@ -7400,56 +4150,6 @@ iptables -F 172.16.0.105_i
 iptables -F 172.16.0.105_o
 iptables -A FORWARD -s 172.16.0.105 -j 172.16.0.105_o
 iptables -A FORWARD -d 172.16.0.105 -j 172.16.0.105_i
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:1161 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:1161 classid 1:495 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:1161 classid 1:496 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:1161 classid 1:497 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:1161 classid 1:498 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:1161 classid 1:499 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:1161 classid 1:49a htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:1161 classid 1:49b htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:1161 classid 1:49c htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:1161 classid 1:49d htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 11620 fw classid 1:495
-tc filter add dev br2 protocol ip parent 1: handle 11621 fw classid 1:496
-tc filter add dev br2 protocol ip parent 1: handle 11622 fw classid 1:497
-tc filter add dev br2 protocol ip parent 1: handle 11623 fw classid 1:498
-tc filter add dev br2 protocol ip parent 1: handle 11624 fw classid 1:499
-tc filter add dev br2 protocol ip parent 1: handle 11625 fw classid 1:49a
-tc filter add dev br2 protocol ip parent 1: handle 11626 fw classid 1:49b
-tc filter add dev br2 protocol ip parent 1: handle 11627 fw classid 1:49c
-tc filter add dev br2 protocol ip parent 1: handle 11628 fw classid 1:49d
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:1162 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:1162 classid 1:49e htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:1162 classid 1:49f htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:1162 classid 1:4a0 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:1162 classid 1:4a1 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:1162 classid 1:4a2 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:1162 classid 1:4a3 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:1162 classid 1:4a4 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:1162 classid 1:4a5 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:1162 classid 1:4a6 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 11630 fw classid 1:49e
-tc filter add dev eth0 protocol ip parent 1: handle 11631 fw classid 1:49f
-tc filter add dev eth0 protocol ip parent 1: handle 11632 fw classid 1:4a0
-tc filter add dev eth0 protocol ip parent 1: handle 11633 fw classid 1:4a1
-tc filter add dev eth0 protocol ip parent 1: handle 11634 fw classid 1:4a2
-tc filter add dev eth0 protocol ip parent 1: handle 11635 fw classid 1:4a3
-tc filter add dev eth0 protocol ip parent 1: handle 11636 fw classid 1:4a4
-tc filter add dev eth0 protocol ip parent 1: handle 11637 fw classid 1:4a5
-tc filter add dev eth0 protocol ip parent 1: handle 11638 fw classid 1:4a6
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.105 -p udp --sport 10000:30000 -j MARK --set-mark 11620
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.105 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.105 -p udp --dport 10000:30000 -j MARK --set-mark 11630
@@ -7510,56 +4210,6 @@ iptables -F 172.16.0.106_i
 iptables -F 172.16.0.106_o
 iptables -A FORWARD -s 172.16.0.106 -j 172.16.0.106_o
 iptables -A FORWARD -d 172.16.0.106 -j 172.16.0.106_i
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:1691 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:1691 classid 1:4a7 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:1691 classid 1:4a8 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:1691 classid 1:4a9 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:1691 classid 1:4aa htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:1691 classid 1:4ab htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:1691 classid 1:4ac htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:1691 classid 1:4ad htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:1691 classid 1:4ae htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:1691 classid 1:4af htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 16920 fw classid 1:4a7
-tc filter add dev br2 protocol ip parent 1: handle 16921 fw classid 1:4a8
-tc filter add dev br2 protocol ip parent 1: handle 16922 fw classid 1:4a9
-tc filter add dev br2 protocol ip parent 1: handle 16923 fw classid 1:4aa
-tc filter add dev br2 protocol ip parent 1: handle 16924 fw classid 1:4ab
-tc filter add dev br2 protocol ip parent 1: handle 16925 fw classid 1:4ac
-tc filter add dev br2 protocol ip parent 1: handle 16926 fw classid 1:4ad
-tc filter add dev br2 protocol ip parent 1: handle 16927 fw classid 1:4ae
-tc filter add dev br2 protocol ip parent 1: handle 16928 fw classid 1:4af
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:1692 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:1692 classid 1:4b0 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:1692 classid 1:4b1 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:1692 classid 1:4b2 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:1692 classid 1:4b3 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:1692 classid 1:4b4 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:1692 classid 1:4b5 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:1692 classid 1:4b6 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:1692 classid 1:4b7 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:1692 classid 1:4b8 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 16930 fw classid 1:4b0
-tc filter add dev eth0 protocol ip parent 1: handle 16931 fw classid 1:4b1
-tc filter add dev eth0 protocol ip parent 1: handle 16932 fw classid 1:4b2
-tc filter add dev eth0 protocol ip parent 1: handle 16933 fw classid 1:4b3
-tc filter add dev eth0 protocol ip parent 1: handle 16934 fw classid 1:4b4
-tc filter add dev eth0 protocol ip parent 1: handle 16935 fw classid 1:4b5
-tc filter add dev eth0 protocol ip parent 1: handle 16936 fw classid 1:4b6
-tc filter add dev eth0 protocol ip parent 1: handle 16937 fw classid 1:4b7
-tc filter add dev eth0 protocol ip parent 1: handle 16938 fw classid 1:4b8
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.106 -p udp --sport 10000:30000 -j MARK --set-mark 16920
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.106 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.106 -p udp --dport 10000:30000 -j MARK --set-mark 16930
@@ -7620,56 +4270,6 @@ iptables -F 172.16.0.107_i
 iptables -F 172.16.0.107_o
 iptables -A FORWARD -s 172.16.0.107 -j 172.16.0.107_o
 iptables -A FORWARD -d 172.16.0.107 -j 172.16.0.107_i
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:31 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:31 classid 1:4b9 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:31 classid 1:4ba htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:31 classid 1:4bb htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:31 classid 1:4bc htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:31 classid 1:4bd htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:31 classid 1:4be htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:31 classid 1:4bf htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:31 classid 1:4c0 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:31 classid 1:4c1 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 320 fw classid 1:4b9
-tc filter add dev br2 protocol ip parent 1: handle 321 fw classid 1:4ba
-tc filter add dev br2 protocol ip parent 1: handle 322 fw classid 1:4bb
-tc filter add dev br2 protocol ip parent 1: handle 323 fw classid 1:4bc
-tc filter add dev br2 protocol ip parent 1: handle 324 fw classid 1:4bd
-tc filter add dev br2 protocol ip parent 1: handle 325 fw classid 1:4be
-tc filter add dev br2 protocol ip parent 1: handle 326 fw classid 1:4bf
-tc filter add dev br2 protocol ip parent 1: handle 327 fw classid 1:4c0
-tc filter add dev br2 protocol ip parent 1: handle 328 fw classid 1:4c1
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:32 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:32 classid 1:4c2 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:32 classid 1:4c3 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:32 classid 1:4c4 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:32 classid 1:4c5 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:32 classid 1:4c6 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:32 classid 1:4c7 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:32 classid 1:4c8 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:32 classid 1:4c9 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:32 classid 1:4ca htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 330 fw classid 1:4c2
-tc filter add dev eth0 protocol ip parent 1: handle 331 fw classid 1:4c3
-tc filter add dev eth0 protocol ip parent 1: handle 332 fw classid 1:4c4
-tc filter add dev eth0 protocol ip parent 1: handle 333 fw classid 1:4c5
-tc filter add dev eth0 protocol ip parent 1: handle 334 fw classid 1:4c6
-tc filter add dev eth0 protocol ip parent 1: handle 335 fw classid 1:4c7
-tc filter add dev eth0 protocol ip parent 1: handle 336 fw classid 1:4c8
-tc filter add dev eth0 protocol ip parent 1: handle 337 fw classid 1:4c9
-tc filter add dev eth0 protocol ip parent 1: handle 338 fw classid 1:4ca
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.107 -p udp --sport 10000:30000 -j MARK --set-mark 320
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.107 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.107 -p udp --dport 10000:30000 -j MARK --set-mark 330
@@ -7730,56 +4330,6 @@ iptables -F 172.16.0.108_i
 iptables -F 172.16.0.108_o
 iptables -A FORWARD -s 172.16.0.108 -j 172.16.0.108_o
 iptables -A FORWARD -d 172.16.0.108 -j 172.16.0.108_i
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:1231 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:1231 classid 1:4cb htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:1231 classid 1:4cc htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:1231 classid 1:4cd htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:1231 classid 1:4ce htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:1231 classid 1:4cf htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:1231 classid 1:4d0 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:1231 classid 1:4d1 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:1231 classid 1:4d2 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:1231 classid 1:4d3 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 12320 fw classid 1:4cb
-tc filter add dev br2 protocol ip parent 1: handle 12321 fw classid 1:4cc
-tc filter add dev br2 protocol ip parent 1: handle 12322 fw classid 1:4cd
-tc filter add dev br2 protocol ip parent 1: handle 12323 fw classid 1:4ce
-tc filter add dev br2 protocol ip parent 1: handle 12324 fw classid 1:4cf
-tc filter add dev br2 protocol ip parent 1: handle 12325 fw classid 1:4d0
-tc filter add dev br2 protocol ip parent 1: handle 12326 fw classid 1:4d1
-tc filter add dev br2 protocol ip parent 1: handle 12327 fw classid 1:4d2
-tc filter add dev br2 protocol ip parent 1: handle 12328 fw classid 1:4d3
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:1232 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:1232 classid 1:4d4 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:1232 classid 1:4d5 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:1232 classid 1:4d6 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:1232 classid 1:4d7 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:1232 classid 1:4d8 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:1232 classid 1:4d9 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:1232 classid 1:4da htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:1232 classid 1:4db htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:1232 classid 1:4dc htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 12330 fw classid 1:4d4
-tc filter add dev eth0 protocol ip parent 1: handle 12331 fw classid 1:4d5
-tc filter add dev eth0 protocol ip parent 1: handle 12332 fw classid 1:4d6
-tc filter add dev eth0 protocol ip parent 1: handle 12333 fw classid 1:4d7
-tc filter add dev eth0 protocol ip parent 1: handle 12334 fw classid 1:4d8
-tc filter add dev eth0 protocol ip parent 1: handle 12335 fw classid 1:4d9
-tc filter add dev eth0 protocol ip parent 1: handle 12336 fw classid 1:4da
-tc filter add dev eth0 protocol ip parent 1: handle 12337 fw classid 1:4db
-tc filter add dev eth0 protocol ip parent 1: handle 12338 fw classid 1:4dc
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.108 -p udp --sport 10000:30000 -j MARK --set-mark 12320
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.108 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.108 -p udp --dport 10000:30000 -j MARK --set-mark 12330
@@ -7840,56 +4390,6 @@ iptables -F 172.16.0.109_i
 iptables -F 172.16.0.109_o
 iptables -A FORWARD -s 172.16.0.109 -j 172.16.0.109_o
 iptables -A FORWARD -d 172.16.0.109 -j 172.16.0.109_i
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:1591 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:1591 classid 1:4dd htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:1591 classid 1:4de htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:1591 classid 1:4df htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:1591 classid 1:4e0 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:1591 classid 1:4e1 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:1591 classid 1:4e2 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:1591 classid 1:4e3 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:1591 classid 1:4e4 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:1591 classid 1:4e5 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 15920 fw classid 1:4dd
-tc filter add dev br2 protocol ip parent 1: handle 15921 fw classid 1:4de
-tc filter add dev br2 protocol ip parent 1: handle 15922 fw classid 1:4df
-tc filter add dev br2 protocol ip parent 1: handle 15923 fw classid 1:4e0
-tc filter add dev br2 protocol ip parent 1: handle 15924 fw classid 1:4e1
-tc filter add dev br2 protocol ip parent 1: handle 15925 fw classid 1:4e2
-tc filter add dev br2 protocol ip parent 1: handle 15926 fw classid 1:4e3
-tc filter add dev br2 protocol ip parent 1: handle 15927 fw classid 1:4e4
-tc filter add dev br2 protocol ip parent 1: handle 15928 fw classid 1:4e5
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:1592 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:1592 classid 1:4e6 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:1592 classid 1:4e7 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:1592 classid 1:4e8 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:1592 classid 1:4e9 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:1592 classid 1:4ea htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:1592 classid 1:4eb htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:1592 classid 1:4ec htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:1592 classid 1:4ed htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:1592 classid 1:4ee htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 15930 fw classid 1:4e6
-tc filter add dev eth0 protocol ip parent 1: handle 15931 fw classid 1:4e7
-tc filter add dev eth0 protocol ip parent 1: handle 15932 fw classid 1:4e8
-tc filter add dev eth0 protocol ip parent 1: handle 15933 fw classid 1:4e9
-tc filter add dev eth0 protocol ip parent 1: handle 15934 fw classid 1:4ea
-tc filter add dev eth0 protocol ip parent 1: handle 15935 fw classid 1:4eb
-tc filter add dev eth0 protocol ip parent 1: handle 15936 fw classid 1:4ec
-tc filter add dev eth0 protocol ip parent 1: handle 15937 fw classid 1:4ed
-tc filter add dev eth0 protocol ip parent 1: handle 15938 fw classid 1:4ee
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.109 -p udp --sport 10000:30000 -j MARK --set-mark 15920
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.109 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.109 -p udp --dport 10000:30000 -j MARK --set-mark 15930
@@ -7952,56 +4452,6 @@ iptables -A FORWARD -s 172.16.0.110 -j 172.16.0.110_o
 iptables -A FORWARD -d 172.16.0.110 -j 172.16.0.110_i
 iptables -A FORWARD -s 172.16.0.110 -m mac --mac-source 44:87:fc:ef:f3:72 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.110 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:2071 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:2071 classid 1:4ef htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:2071 classid 1:4f0 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:2071 classid 1:4f1 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:2071 classid 1:4f2 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:2071 classid 1:4f3 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:2071 classid 1:4f4 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:2071 classid 1:4f5 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:2071 classid 1:4f6 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:2071 classid 1:4f7 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 20720 fw classid 1:4ef
-tc filter add dev br2 protocol ip parent 1: handle 20721 fw classid 1:4f0
-tc filter add dev br2 protocol ip parent 1: handle 20722 fw classid 1:4f1
-tc filter add dev br2 protocol ip parent 1: handle 20723 fw classid 1:4f2
-tc filter add dev br2 protocol ip parent 1: handle 20724 fw classid 1:4f3
-tc filter add dev br2 protocol ip parent 1: handle 20725 fw classid 1:4f4
-tc filter add dev br2 protocol ip parent 1: handle 20726 fw classid 1:4f5
-tc filter add dev br2 protocol ip parent 1: handle 20727 fw classid 1:4f6
-tc filter add dev br2 protocol ip parent 1: handle 20728 fw classid 1:4f7
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:2072 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:2072 classid 1:4f8 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:2072 classid 1:4f9 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:2072 classid 1:4fa htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:2072 classid 1:4fb htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:2072 classid 1:4fc htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:2072 classid 1:4fd htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:2072 classid 1:4fe htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:2072 classid 1:4ff htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:2072 classid 1:500 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 20730 fw classid 1:4f8
-tc filter add dev eth0 protocol ip parent 1: handle 20731 fw classid 1:4f9
-tc filter add dev eth0 protocol ip parent 1: handle 20732 fw classid 1:4fa
-tc filter add dev eth0 protocol ip parent 1: handle 20733 fw classid 1:4fb
-tc filter add dev eth0 protocol ip parent 1: handle 20734 fw classid 1:4fc
-tc filter add dev eth0 protocol ip parent 1: handle 20735 fw classid 1:4fd
-tc filter add dev eth0 protocol ip parent 1: handle 20736 fw classid 1:4fe
-tc filter add dev eth0 protocol ip parent 1: handle 20737 fw classid 1:4ff
-tc filter add dev eth0 protocol ip parent 1: handle 20738 fw classid 1:500
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.110 -p udp --sport 10000:30000 -j MARK --set-mark 20720
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.110 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.110 -p udp --dport 10000:30000 -j MARK --set-mark 20730
@@ -8061,56 +4511,6 @@ iptables -F 172.16.0.111_i
 iptables -F 172.16.0.111_o
 iptables -A FORWARD -s 172.16.0.111 -j 172.16.0.111_o
 iptables -A FORWARD -d 172.16.0.111 -j 172.16.0.111_i
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:2231 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:2231 classid 1:501 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:2231 classid 1:502 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:2231 classid 1:503 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:2231 classid 1:504 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:2231 classid 1:505 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:2231 classid 1:506 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:2231 classid 1:507 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:2231 classid 1:508 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:2231 classid 1:509 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 22320 fw classid 1:501
-tc filter add dev br2 protocol ip parent 1: handle 22321 fw classid 1:502
-tc filter add dev br2 protocol ip parent 1: handle 22322 fw classid 1:503
-tc filter add dev br2 protocol ip parent 1: handle 22323 fw classid 1:504
-tc filter add dev br2 protocol ip parent 1: handle 22324 fw classid 1:505
-tc filter add dev br2 protocol ip parent 1: handle 22325 fw classid 1:506
-tc filter add dev br2 protocol ip parent 1: handle 22326 fw classid 1:507
-tc filter add dev br2 protocol ip parent 1: handle 22327 fw classid 1:508
-tc filter add dev br2 protocol ip parent 1: handle 22328 fw classid 1:509
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:2232 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:2232 classid 1:50a htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:2232 classid 1:50b htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:2232 classid 1:50c htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:2232 classid 1:50d htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:2232 classid 1:50e htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:2232 classid 1:50f htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:2232 classid 1:510 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:2232 classid 1:511 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:2232 classid 1:512 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 22330 fw classid 1:50a
-tc filter add dev eth0 protocol ip parent 1: handle 22331 fw classid 1:50b
-tc filter add dev eth0 protocol ip parent 1: handle 22332 fw classid 1:50c
-tc filter add dev eth0 protocol ip parent 1: handle 22333 fw classid 1:50d
-tc filter add dev eth0 protocol ip parent 1: handle 22334 fw classid 1:50e
-tc filter add dev eth0 protocol ip parent 1: handle 22335 fw classid 1:50f
-tc filter add dev eth0 protocol ip parent 1: handle 22336 fw classid 1:510
-tc filter add dev eth0 protocol ip parent 1: handle 22337 fw classid 1:511
-tc filter add dev eth0 protocol ip parent 1: handle 22338 fw classid 1:512
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.111 -p udp --sport 10000:30000 -j MARK --set-mark 22320
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.111 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.111 -p udp --dport 10000:30000 -j MARK --set-mark 22330
@@ -8171,56 +4571,6 @@ iptables -F 172.16.0.112_i
 iptables -F 172.16.0.112_o
 iptables -A FORWARD -s 172.16.0.112 -j 172.16.0.112_o
 iptables -A FORWARD -d 172.16.0.112 -j 172.16.0.112_i
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:1361 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:1361 classid 1:513 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:1361 classid 1:514 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:1361 classid 1:515 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:1361 classid 1:516 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:1361 classid 1:517 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:1361 classid 1:518 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:1361 classid 1:519 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:1361 classid 1:51a htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:1361 classid 1:51b htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 13620 fw classid 1:513
-tc filter add dev br2 protocol ip parent 1: handle 13621 fw classid 1:514
-tc filter add dev br2 protocol ip parent 1: handle 13622 fw classid 1:515
-tc filter add dev br2 protocol ip parent 1: handle 13623 fw classid 1:516
-tc filter add dev br2 protocol ip parent 1: handle 13624 fw classid 1:517
-tc filter add dev br2 protocol ip parent 1: handle 13625 fw classid 1:518
-tc filter add dev br2 protocol ip parent 1: handle 13626 fw classid 1:519
-tc filter add dev br2 protocol ip parent 1: handle 13627 fw classid 1:51a
-tc filter add dev br2 protocol ip parent 1: handle 13628 fw classid 1:51b
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:1362 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:1362 classid 1:51c htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:1362 classid 1:51d htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:1362 classid 1:51e htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:1362 classid 1:51f htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:1362 classid 1:520 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:1362 classid 1:521 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:1362 classid 1:522 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:1362 classid 1:523 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:1362 classid 1:524 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 13630 fw classid 1:51c
-tc filter add dev eth0 protocol ip parent 1: handle 13631 fw classid 1:51d
-tc filter add dev eth0 protocol ip parent 1: handle 13632 fw classid 1:51e
-tc filter add dev eth0 protocol ip parent 1: handle 13633 fw classid 1:51f
-tc filter add dev eth0 protocol ip parent 1: handle 13634 fw classid 1:520
-tc filter add dev eth0 protocol ip parent 1: handle 13635 fw classid 1:521
-tc filter add dev eth0 protocol ip parent 1: handle 13636 fw classid 1:522
-tc filter add dev eth0 protocol ip parent 1: handle 13637 fw classid 1:523
-tc filter add dev eth0 protocol ip parent 1: handle 13638 fw classid 1:524
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.112 -p udp --sport 10000:30000 -j MARK --set-mark 13620
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.112 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.112 -p udp --dport 10000:30000 -j MARK --set-mark 13630
@@ -8281,56 +4631,6 @@ iptables -F 172.16.0.113_i
 iptables -F 172.16.0.113_o
 iptables -A FORWARD -s 172.16.0.113 -j 172.16.0.113_o
 iptables -A FORWARD -d 172.16.0.113 -j 172.16.0.113_i
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:1611 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:1611 classid 1:525 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:1611 classid 1:526 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:1611 classid 1:527 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:1611 classid 1:528 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:1611 classid 1:529 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:1611 classid 1:52a htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:1611 classid 1:52b htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:1611 classid 1:52c htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:1611 classid 1:52d htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 16120 fw classid 1:525
-tc filter add dev br2 protocol ip parent 1: handle 16121 fw classid 1:526
-tc filter add dev br2 protocol ip parent 1: handle 16122 fw classid 1:527
-tc filter add dev br2 protocol ip parent 1: handle 16123 fw classid 1:528
-tc filter add dev br2 protocol ip parent 1: handle 16124 fw classid 1:529
-tc filter add dev br2 protocol ip parent 1: handle 16125 fw classid 1:52a
-tc filter add dev br2 protocol ip parent 1: handle 16126 fw classid 1:52b
-tc filter add dev br2 protocol ip parent 1: handle 16127 fw classid 1:52c
-tc filter add dev br2 protocol ip parent 1: handle 16128 fw classid 1:52d
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:1612 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:1612 classid 1:52e htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:1612 classid 1:52f htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:1612 classid 1:530 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:1612 classid 1:531 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:1612 classid 1:532 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:1612 classid 1:533 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:1612 classid 1:534 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:1612 classid 1:535 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:1612 classid 1:536 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 16130 fw classid 1:52e
-tc filter add dev eth0 protocol ip parent 1: handle 16131 fw classid 1:52f
-tc filter add dev eth0 protocol ip parent 1: handle 16132 fw classid 1:530
-tc filter add dev eth0 protocol ip parent 1: handle 16133 fw classid 1:531
-tc filter add dev eth0 protocol ip parent 1: handle 16134 fw classid 1:532
-tc filter add dev eth0 protocol ip parent 1: handle 16135 fw classid 1:533
-tc filter add dev eth0 protocol ip parent 1: handle 16136 fw classid 1:534
-tc filter add dev eth0 protocol ip parent 1: handle 16137 fw classid 1:535
-tc filter add dev eth0 protocol ip parent 1: handle 16138 fw classid 1:536
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.113 -p udp --sport 10000:30000 -j MARK --set-mark 16120
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.113 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.113 -p udp --dport 10000:30000 -j MARK --set-mark 16130
@@ -8391,56 +4691,6 @@ iptables -F 172.16.0.114_i
 iptables -F 172.16.0.114_o
 iptables -A FORWARD -s 172.16.0.114 -j 172.16.0.114_o
 iptables -A FORWARD -d 172.16.0.114 -j 172.16.0.114_i
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:1561 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:1561 classid 1:537 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:1561 classid 1:538 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:1561 classid 1:539 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:1561 classid 1:53a htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:1561 classid 1:53b htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:1561 classid 1:53c htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:1561 classid 1:53d htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:1561 classid 1:53e htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:1561 classid 1:53f htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 15620 fw classid 1:537
-tc filter add dev br2 protocol ip parent 1: handle 15621 fw classid 1:538
-tc filter add dev br2 protocol ip parent 1: handle 15622 fw classid 1:539
-tc filter add dev br2 protocol ip parent 1: handle 15623 fw classid 1:53a
-tc filter add dev br2 protocol ip parent 1: handle 15624 fw classid 1:53b
-tc filter add dev br2 protocol ip parent 1: handle 15625 fw classid 1:53c
-tc filter add dev br2 protocol ip parent 1: handle 15626 fw classid 1:53d
-tc filter add dev br2 protocol ip parent 1: handle 15627 fw classid 1:53e
-tc filter add dev br2 protocol ip parent 1: handle 15628 fw classid 1:53f
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:1562 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:1562 classid 1:540 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:1562 classid 1:541 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:1562 classid 1:542 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:1562 classid 1:543 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:1562 classid 1:544 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:1562 classid 1:545 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:1562 classid 1:546 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:1562 classid 1:547 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:1562 classid 1:548 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 15630 fw classid 1:540
-tc filter add dev eth0 protocol ip parent 1: handle 15631 fw classid 1:541
-tc filter add dev eth0 protocol ip parent 1: handle 15632 fw classid 1:542
-tc filter add dev eth0 protocol ip parent 1: handle 15633 fw classid 1:543
-tc filter add dev eth0 protocol ip parent 1: handle 15634 fw classid 1:544
-tc filter add dev eth0 protocol ip parent 1: handle 15635 fw classid 1:545
-tc filter add dev eth0 protocol ip parent 1: handle 15636 fw classid 1:546
-tc filter add dev eth0 protocol ip parent 1: handle 15637 fw classid 1:547
-tc filter add dev eth0 protocol ip parent 1: handle 15638 fw classid 1:548
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.114 -p udp --sport 10000:30000 -j MARK --set-mark 15620
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.114 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.114 -p udp --dport 10000:30000 -j MARK --set-mark 15630
@@ -8501,56 +4751,6 @@ iptables -F 172.16.0.115_i
 iptables -F 172.16.0.115_o
 iptables -A FORWARD -s 172.16.0.115 -j 172.16.0.115_o
 iptables -A FORWARD -d 172.16.0.115 -j 172.16.0.115_i
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:1531 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:1531 classid 1:549 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:1531 classid 1:54a htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:1531 classid 1:54b htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:1531 classid 1:54c htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:1531 classid 1:54d htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:1531 classid 1:54e htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:1531 classid 1:54f htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:1531 classid 1:550 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:1531 classid 1:551 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 15320 fw classid 1:549
-tc filter add dev br2 protocol ip parent 1: handle 15321 fw classid 1:54a
-tc filter add dev br2 protocol ip parent 1: handle 15322 fw classid 1:54b
-tc filter add dev br2 protocol ip parent 1: handle 15323 fw classid 1:54c
-tc filter add dev br2 protocol ip parent 1: handle 15324 fw classid 1:54d
-tc filter add dev br2 protocol ip parent 1: handle 15325 fw classid 1:54e
-tc filter add dev br2 protocol ip parent 1: handle 15326 fw classid 1:54f
-tc filter add dev br2 protocol ip parent 1: handle 15327 fw classid 1:550
-tc filter add dev br2 protocol ip parent 1: handle 15328 fw classid 1:551
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:1532 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:1532 classid 1:552 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:1532 classid 1:553 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:1532 classid 1:554 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:1532 classid 1:555 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:1532 classid 1:556 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:1532 classid 1:557 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:1532 classid 1:558 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:1532 classid 1:559 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:1532 classid 1:55a htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 15330 fw classid 1:552
-tc filter add dev eth0 protocol ip parent 1: handle 15331 fw classid 1:553
-tc filter add dev eth0 protocol ip parent 1: handle 15332 fw classid 1:554
-tc filter add dev eth0 protocol ip parent 1: handle 15333 fw classid 1:555
-tc filter add dev eth0 protocol ip parent 1: handle 15334 fw classid 1:556
-tc filter add dev eth0 protocol ip parent 1: handle 15335 fw classid 1:557
-tc filter add dev eth0 protocol ip parent 1: handle 15336 fw classid 1:558
-tc filter add dev eth0 protocol ip parent 1: handle 15337 fw classid 1:559
-tc filter add dev eth0 protocol ip parent 1: handle 15338 fw classid 1:55a
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.115 -p udp --sport 10000:30000 -j MARK --set-mark 15320
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.115 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.115 -p udp --dport 10000:30000 -j MARK --set-mark 15330
@@ -8611,56 +4811,6 @@ iptables -F 172.16.0.116_i
 iptables -F 172.16.0.116_o
 iptables -A FORWARD -s 172.16.0.116 -j 172.16.0.116_o
 iptables -A FORWARD -d 172.16.0.116 -j 172.16.0.116_i
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:1641 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:1641 classid 1:55b htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:1641 classid 1:55c htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:1641 classid 1:55d htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:1641 classid 1:55e htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:1641 classid 1:55f htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:1641 classid 1:560 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:1641 classid 1:561 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:1641 classid 1:562 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:1641 classid 1:563 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 16420 fw classid 1:55b
-tc filter add dev br2 protocol ip parent 1: handle 16421 fw classid 1:55c
-tc filter add dev br2 protocol ip parent 1: handle 16422 fw classid 1:55d
-tc filter add dev br2 protocol ip parent 1: handle 16423 fw classid 1:55e
-tc filter add dev br2 protocol ip parent 1: handle 16424 fw classid 1:55f
-tc filter add dev br2 protocol ip parent 1: handle 16425 fw classid 1:560
-tc filter add dev br2 protocol ip parent 1: handle 16426 fw classid 1:561
-tc filter add dev br2 protocol ip parent 1: handle 16427 fw classid 1:562
-tc filter add dev br2 protocol ip parent 1: handle 16428 fw classid 1:563
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:1642 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:1642 classid 1:564 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:1642 classid 1:565 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:1642 classid 1:566 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:1642 classid 1:567 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:1642 classid 1:568 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:1642 classid 1:569 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:1642 classid 1:56a htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:1642 classid 1:56b htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:1642 classid 1:56c htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 16430 fw classid 1:564
-tc filter add dev eth0 protocol ip parent 1: handle 16431 fw classid 1:565
-tc filter add dev eth0 protocol ip parent 1: handle 16432 fw classid 1:566
-tc filter add dev eth0 protocol ip parent 1: handle 16433 fw classid 1:567
-tc filter add dev eth0 protocol ip parent 1: handle 16434 fw classid 1:568
-tc filter add dev eth0 protocol ip parent 1: handle 16435 fw classid 1:569
-tc filter add dev eth0 protocol ip parent 1: handle 16436 fw classid 1:56a
-tc filter add dev eth0 protocol ip parent 1: handle 16437 fw classid 1:56b
-tc filter add dev eth0 protocol ip parent 1: handle 16438 fw classid 1:56c
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.116 -p udp --sport 10000:30000 -j MARK --set-mark 16420
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.116 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.116 -p udp --dport 10000:30000 -j MARK --set-mark 16430
@@ -8721,56 +4871,6 @@ iptables -F 172.16.0.117_i
 iptables -F 172.16.0.117_o
 iptables -A FORWARD -s 172.16.0.117 -j 172.16.0.117_o
 iptables -A FORWARD -d 172.16.0.117 -j 172.16.0.117_i
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:1671 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:1671 classid 1:56d htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:1671 classid 1:56e htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:1671 classid 1:56f htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:1671 classid 1:570 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:1671 classid 1:571 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:1671 classid 1:572 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:1671 classid 1:573 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:1671 classid 1:574 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:1671 classid 1:575 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 16720 fw classid 1:56d
-tc filter add dev br2 protocol ip parent 1: handle 16721 fw classid 1:56e
-tc filter add dev br2 protocol ip parent 1: handle 16722 fw classid 1:56f
-tc filter add dev br2 protocol ip parent 1: handle 16723 fw classid 1:570
-tc filter add dev br2 protocol ip parent 1: handle 16724 fw classid 1:571
-tc filter add dev br2 protocol ip parent 1: handle 16725 fw classid 1:572
-tc filter add dev br2 protocol ip parent 1: handle 16726 fw classid 1:573
-tc filter add dev br2 protocol ip parent 1: handle 16727 fw classid 1:574
-tc filter add dev br2 protocol ip parent 1: handle 16728 fw classid 1:575
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:1672 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:1672 classid 1:576 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:1672 classid 1:577 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:1672 classid 1:578 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:1672 classid 1:579 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:1672 classid 1:57a htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:1672 classid 1:57b htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:1672 classid 1:57c htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:1672 classid 1:57d htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:1672 classid 1:57e htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 16730 fw classid 1:576
-tc filter add dev eth0 protocol ip parent 1: handle 16731 fw classid 1:577
-tc filter add dev eth0 protocol ip parent 1: handle 16732 fw classid 1:578
-tc filter add dev eth0 protocol ip parent 1: handle 16733 fw classid 1:579
-tc filter add dev eth0 protocol ip parent 1: handle 16734 fw classid 1:57a
-tc filter add dev eth0 protocol ip parent 1: handle 16735 fw classid 1:57b
-tc filter add dev eth0 protocol ip parent 1: handle 16736 fw classid 1:57c
-tc filter add dev eth0 protocol ip parent 1: handle 16737 fw classid 1:57d
-tc filter add dev eth0 protocol ip parent 1: handle 16738 fw classid 1:57e
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.117 -p udp --sport 10000:30000 -j MARK --set-mark 16720
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.117 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.117 -p udp --dport 10000:30000 -j MARK --set-mark 16730
@@ -8831,56 +4931,6 @@ iptables -F 172.16.0.118_i
 iptables -F 172.16.0.118_o
 iptables -A FORWARD -s 172.16.0.118 -j 172.16.0.118_o
 iptables -A FORWARD -d 172.16.0.118 -j 172.16.0.118_i
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:2521 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:2521 classid 1:57f htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:2521 classid 1:580 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:2521 classid 1:581 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:2521 classid 1:582 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:2521 classid 1:583 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:2521 classid 1:584 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:2521 classid 1:585 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:2521 classid 1:586 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:2521 classid 1:587 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 25220 fw classid 1:57f
-tc filter add dev br2 protocol ip parent 1: handle 25221 fw classid 1:580
-tc filter add dev br2 protocol ip parent 1: handle 25222 fw classid 1:581
-tc filter add dev br2 protocol ip parent 1: handle 25223 fw classid 1:582
-tc filter add dev br2 protocol ip parent 1: handle 25224 fw classid 1:583
-tc filter add dev br2 protocol ip parent 1: handle 25225 fw classid 1:584
-tc filter add dev br2 protocol ip parent 1: handle 25226 fw classid 1:585
-tc filter add dev br2 protocol ip parent 1: handle 25227 fw classid 1:586
-tc filter add dev br2 protocol ip parent 1: handle 25228 fw classid 1:587
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:2522 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:2522 classid 1:588 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:2522 classid 1:589 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:2522 classid 1:58a htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:2522 classid 1:58b htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:2522 classid 1:58c htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:2522 classid 1:58d htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:2522 classid 1:58e htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:2522 classid 1:58f htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:2522 classid 1:590 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 25230 fw classid 1:588
-tc filter add dev eth0 protocol ip parent 1: handle 25231 fw classid 1:589
-tc filter add dev eth0 protocol ip parent 1: handle 25232 fw classid 1:58a
-tc filter add dev eth0 protocol ip parent 1: handle 25233 fw classid 1:58b
-tc filter add dev eth0 protocol ip parent 1: handle 25234 fw classid 1:58c
-tc filter add dev eth0 protocol ip parent 1: handle 25235 fw classid 1:58d
-tc filter add dev eth0 protocol ip parent 1: handle 25236 fw classid 1:58e
-tc filter add dev eth0 protocol ip parent 1: handle 25237 fw classid 1:58f
-tc filter add dev eth0 protocol ip parent 1: handle 25238 fw classid 1:590
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.118 -p udp --sport 10000:30000 -j MARK --set-mark 25220
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.118 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.118 -p udp --dport 10000:30000 -j MARK --set-mark 25230
@@ -8941,56 +4991,6 @@ iptables -F 172.16.0.119_i
 iptables -F 172.16.0.119_o
 iptables -A FORWARD -s 172.16.0.119 -j 172.16.0.119_o
 iptables -A FORWARD -d 172.16.0.119 -j 172.16.0.119_i
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:2061 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:2061 classid 1:591 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:2061 classid 1:592 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:2061 classid 1:593 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:2061 classid 1:594 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:2061 classid 1:595 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:2061 classid 1:596 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:2061 classid 1:597 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:2061 classid 1:598 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:2061 classid 1:599 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 20620 fw classid 1:591
-tc filter add dev br2 protocol ip parent 1: handle 20621 fw classid 1:592
-tc filter add dev br2 protocol ip parent 1: handle 20622 fw classid 1:593
-tc filter add dev br2 protocol ip parent 1: handle 20623 fw classid 1:594
-tc filter add dev br2 protocol ip parent 1: handle 20624 fw classid 1:595
-tc filter add dev br2 protocol ip parent 1: handle 20625 fw classid 1:596
-tc filter add dev br2 protocol ip parent 1: handle 20626 fw classid 1:597
-tc filter add dev br2 protocol ip parent 1: handle 20627 fw classid 1:598
-tc filter add dev br2 protocol ip parent 1: handle 20628 fw classid 1:599
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:2062 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:2062 classid 1:59a htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:2062 classid 1:59b htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:2062 classid 1:59c htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:2062 classid 1:59d htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:2062 classid 1:59e htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:2062 classid 1:59f htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:2062 classid 1:5a0 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:2062 classid 1:5a1 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:2062 classid 1:5a2 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 20630 fw classid 1:59a
-tc filter add dev eth0 protocol ip parent 1: handle 20631 fw classid 1:59b
-tc filter add dev eth0 protocol ip parent 1: handle 20632 fw classid 1:59c
-tc filter add dev eth0 protocol ip parent 1: handle 20633 fw classid 1:59d
-tc filter add dev eth0 protocol ip parent 1: handle 20634 fw classid 1:59e
-tc filter add dev eth0 protocol ip parent 1: handle 20635 fw classid 1:59f
-tc filter add dev eth0 protocol ip parent 1: handle 20636 fw classid 1:5a0
-tc filter add dev eth0 protocol ip parent 1: handle 20637 fw classid 1:5a1
-tc filter add dev eth0 protocol ip parent 1: handle 20638 fw classid 1:5a2
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.119 -p udp --sport 10000:30000 -j MARK --set-mark 20620
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.119 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.119 -p udp --dport 10000:30000 -j MARK --set-mark 20630
@@ -9051,56 +5051,6 @@ iptables -F 172.16.0.120_i
 iptables -F 172.16.0.120_o
 iptables -A FORWARD -s 172.16.0.120 -j 172.16.0.120_o
 iptables -A FORWARD -d 172.16.0.120 -j 172.16.0.120_i
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:2101 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:2101 classid 1:5a3 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:2101 classid 1:5a4 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:2101 classid 1:5a5 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:2101 classid 1:5a6 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:2101 classid 1:5a7 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:2101 classid 1:5a8 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:2101 classid 1:5a9 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:2101 classid 1:5aa htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:2101 classid 1:5ab htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 21020 fw classid 1:5a3
-tc filter add dev br2 protocol ip parent 1: handle 21021 fw classid 1:5a4
-tc filter add dev br2 protocol ip parent 1: handle 21022 fw classid 1:5a5
-tc filter add dev br2 protocol ip parent 1: handle 21023 fw classid 1:5a6
-tc filter add dev br2 protocol ip parent 1: handle 21024 fw classid 1:5a7
-tc filter add dev br2 protocol ip parent 1: handle 21025 fw classid 1:5a8
-tc filter add dev br2 protocol ip parent 1: handle 21026 fw classid 1:5a9
-tc filter add dev br2 protocol ip parent 1: handle 21027 fw classid 1:5aa
-tc filter add dev br2 protocol ip parent 1: handle 21028 fw classid 1:5ab
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:2102 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:2102 classid 1:5ac htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:2102 classid 1:5ad htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:2102 classid 1:5ae htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:2102 classid 1:5af htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:2102 classid 1:5b0 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:2102 classid 1:5b1 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:2102 classid 1:5b2 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:2102 classid 1:5b3 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:2102 classid 1:5b4 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 21030 fw classid 1:5ac
-tc filter add dev eth0 protocol ip parent 1: handle 21031 fw classid 1:5ad
-tc filter add dev eth0 protocol ip parent 1: handle 21032 fw classid 1:5ae
-tc filter add dev eth0 protocol ip parent 1: handle 21033 fw classid 1:5af
-tc filter add dev eth0 protocol ip parent 1: handle 21034 fw classid 1:5b0
-tc filter add dev eth0 protocol ip parent 1: handle 21035 fw classid 1:5b1
-tc filter add dev eth0 protocol ip parent 1: handle 21036 fw classid 1:5b2
-tc filter add dev eth0 protocol ip parent 1: handle 21037 fw classid 1:5b3
-tc filter add dev eth0 protocol ip parent 1: handle 21038 fw classid 1:5b4
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.120 -p udp --sport 10000:30000 -j MARK --set-mark 21020
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.120 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.120 -p udp --dport 10000:30000 -j MARK --set-mark 21030
@@ -9161,56 +5111,6 @@ iptables -F 172.16.0.121_i
 iptables -F 172.16.0.121_o
 iptables -A FORWARD -s 172.16.0.121 -j 172.16.0.121_o
 iptables -A FORWARD -d 172.16.0.121 -j 172.16.0.121_i
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:2191 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:2191 classid 1:5b5 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:2191 classid 1:5b6 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:2191 classid 1:5b7 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:2191 classid 1:5b8 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:2191 classid 1:5b9 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:2191 classid 1:5ba htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:2191 classid 1:5bb htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:2191 classid 1:5bc htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:2191 classid 1:5bd htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 21920 fw classid 1:5b5
-tc filter add dev br2 protocol ip parent 1: handle 21921 fw classid 1:5b6
-tc filter add dev br2 protocol ip parent 1: handle 21922 fw classid 1:5b7
-tc filter add dev br2 protocol ip parent 1: handle 21923 fw classid 1:5b8
-tc filter add dev br2 protocol ip parent 1: handle 21924 fw classid 1:5b9
-tc filter add dev br2 protocol ip parent 1: handle 21925 fw classid 1:5ba
-tc filter add dev br2 protocol ip parent 1: handle 21926 fw classid 1:5bb
-tc filter add dev br2 protocol ip parent 1: handle 21927 fw classid 1:5bc
-tc filter add dev br2 protocol ip parent 1: handle 21928 fw classid 1:5bd
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:2192 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:2192 classid 1:5be htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:2192 classid 1:5bf htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:2192 classid 1:5c0 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:2192 classid 1:5c1 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:2192 classid 1:5c2 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:2192 classid 1:5c3 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:2192 classid 1:5c4 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:2192 classid 1:5c5 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:2192 classid 1:5c6 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 21930 fw classid 1:5be
-tc filter add dev eth0 protocol ip parent 1: handle 21931 fw classid 1:5bf
-tc filter add dev eth0 protocol ip parent 1: handle 21932 fw classid 1:5c0
-tc filter add dev eth0 protocol ip parent 1: handle 21933 fw classid 1:5c1
-tc filter add dev eth0 protocol ip parent 1: handle 21934 fw classid 1:5c2
-tc filter add dev eth0 protocol ip parent 1: handle 21935 fw classid 1:5c3
-tc filter add dev eth0 protocol ip parent 1: handle 21936 fw classid 1:5c4
-tc filter add dev eth0 protocol ip parent 1: handle 21937 fw classid 1:5c5
-tc filter add dev eth0 protocol ip parent 1: handle 21938 fw classid 1:5c6
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.121 -p udp --sport 10000:30000 -j MARK --set-mark 21920
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.121 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.121 -p udp --dport 10000:30000 -j MARK --set-mark 21930
@@ -9271,56 +5171,6 @@ iptables -F 172.16.0.122_i
 iptables -F 172.16.0.122_o
 iptables -A FORWARD -s 172.16.0.122 -j 172.16.0.122_o
 iptables -A FORWARD -d 172.16.0.122 -j 172.16.0.122_i
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:1771 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:1771 classid 1:5c7 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:1771 classid 1:5c8 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:1771 classid 1:5c9 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:1771 classid 1:5ca htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:1771 classid 1:5cb htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:1771 classid 1:5cc htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:1771 classid 1:5cd htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:1771 classid 1:5ce htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:1771 classid 1:5cf htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 17720 fw classid 1:5c7
-tc filter add dev br2 protocol ip parent 1: handle 17721 fw classid 1:5c8
-tc filter add dev br2 protocol ip parent 1: handle 17722 fw classid 1:5c9
-tc filter add dev br2 protocol ip parent 1: handle 17723 fw classid 1:5ca
-tc filter add dev br2 protocol ip parent 1: handle 17724 fw classid 1:5cb
-tc filter add dev br2 protocol ip parent 1: handle 17725 fw classid 1:5cc
-tc filter add dev br2 protocol ip parent 1: handle 17726 fw classid 1:5cd
-tc filter add dev br2 protocol ip parent 1: handle 17727 fw classid 1:5ce
-tc filter add dev br2 protocol ip parent 1: handle 17728 fw classid 1:5cf
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:1772 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:1772 classid 1:5d0 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:1772 classid 1:5d1 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:1772 classid 1:5d2 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:1772 classid 1:5d3 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:1772 classid 1:5d4 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:1772 classid 1:5d5 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:1772 classid 1:5d6 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:1772 classid 1:5d7 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:1772 classid 1:5d8 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 17730 fw classid 1:5d0
-tc filter add dev eth0 protocol ip parent 1: handle 17731 fw classid 1:5d1
-tc filter add dev eth0 protocol ip parent 1: handle 17732 fw classid 1:5d2
-tc filter add dev eth0 protocol ip parent 1: handle 17733 fw classid 1:5d3
-tc filter add dev eth0 protocol ip parent 1: handle 17734 fw classid 1:5d4
-tc filter add dev eth0 protocol ip parent 1: handle 17735 fw classid 1:5d5
-tc filter add dev eth0 protocol ip parent 1: handle 17736 fw classid 1:5d6
-tc filter add dev eth0 protocol ip parent 1: handle 17737 fw classid 1:5d7
-tc filter add dev eth0 protocol ip parent 1: handle 17738 fw classid 1:5d8
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.122 -p udp --sport 10000:30000 -j MARK --set-mark 17720
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.122 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.122 -p udp --dport 10000:30000 -j MARK --set-mark 17730
@@ -9381,56 +5231,6 @@ iptables -F 172.16.0.123_i
 iptables -F 172.16.0.123_o
 iptables -A FORWARD -s 172.16.0.123 -j 172.16.0.123_o
 iptables -A FORWARD -d 172.16.0.123 -j 172.16.0.123_i
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:2091 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:2091 classid 1:5d9 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:2091 classid 1:5da htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:2091 classid 1:5db htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:2091 classid 1:5dc htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:2091 classid 1:5dd htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:2091 classid 1:5de htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:2091 classid 1:5df htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:2091 classid 1:5e0 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:2091 classid 1:5e1 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 20920 fw classid 1:5d9
-tc filter add dev br2 protocol ip parent 1: handle 20921 fw classid 1:5da
-tc filter add dev br2 protocol ip parent 1: handle 20922 fw classid 1:5db
-tc filter add dev br2 protocol ip parent 1: handle 20923 fw classid 1:5dc
-tc filter add dev br2 protocol ip parent 1: handle 20924 fw classid 1:5dd
-tc filter add dev br2 protocol ip parent 1: handle 20925 fw classid 1:5de
-tc filter add dev br2 protocol ip parent 1: handle 20926 fw classid 1:5df
-tc filter add dev br2 protocol ip parent 1: handle 20927 fw classid 1:5e0
-tc filter add dev br2 protocol ip parent 1: handle 20928 fw classid 1:5e1
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:2092 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:2092 classid 1:5e2 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:2092 classid 1:5e3 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:2092 classid 1:5e4 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:2092 classid 1:5e5 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:2092 classid 1:5e6 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:2092 classid 1:5e7 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:2092 classid 1:5e8 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:2092 classid 1:5e9 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:2092 classid 1:5ea htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 20930 fw classid 1:5e2
-tc filter add dev eth0 protocol ip parent 1: handle 20931 fw classid 1:5e3
-tc filter add dev eth0 protocol ip parent 1: handle 20932 fw classid 1:5e4
-tc filter add dev eth0 protocol ip parent 1: handle 20933 fw classid 1:5e5
-tc filter add dev eth0 protocol ip parent 1: handle 20934 fw classid 1:5e6
-tc filter add dev eth0 protocol ip parent 1: handle 20935 fw classid 1:5e7
-tc filter add dev eth0 protocol ip parent 1: handle 20936 fw classid 1:5e8
-tc filter add dev eth0 protocol ip parent 1: handle 20937 fw classid 1:5e9
-tc filter add dev eth0 protocol ip parent 1: handle 20938 fw classid 1:5ea
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.123 -p udp --sport 10000:30000 -j MARK --set-mark 20920
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.123 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.123 -p udp --dport 10000:30000 -j MARK --set-mark 20930
@@ -9491,56 +5291,6 @@ iptables -F 172.16.0.124_i
 iptables -F 172.16.0.124_o
 iptables -A FORWARD -s 172.16.0.124 -j 172.16.0.124_o
 iptables -A FORWARD -d 172.16.0.124 -j 172.16.0.124_i
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:3981 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:3981 classid 1:5eb htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:3981 classid 1:5ec htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:3981 classid 1:5ed htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:3981 classid 1:5ee htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:3981 classid 1:5ef htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:3981 classid 1:5f0 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:3981 classid 1:5f1 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:3981 classid 1:5f2 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:3981 classid 1:5f3 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 39820 fw classid 1:5eb
-tc filter add dev br2 protocol ip parent 1: handle 39821 fw classid 1:5ec
-tc filter add dev br2 protocol ip parent 1: handle 39822 fw classid 1:5ed
-tc filter add dev br2 protocol ip parent 1: handle 39823 fw classid 1:5ee
-tc filter add dev br2 protocol ip parent 1: handle 39824 fw classid 1:5ef
-tc filter add dev br2 protocol ip parent 1: handle 39825 fw classid 1:5f0
-tc filter add dev br2 protocol ip parent 1: handle 39826 fw classid 1:5f1
-tc filter add dev br2 protocol ip parent 1: handle 39827 fw classid 1:5f2
-tc filter add dev br2 protocol ip parent 1: handle 39828 fw classid 1:5f3
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:3982 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:3982 classid 1:5f4 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:3982 classid 1:5f5 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:3982 classid 1:5f6 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:3982 classid 1:5f7 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:3982 classid 1:5f8 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:3982 classid 1:5f9 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:3982 classid 1:5fa htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:3982 classid 1:5fb htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:3982 classid 1:5fc htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 39830 fw classid 1:5f4
-tc filter add dev eth0 protocol ip parent 1: handle 39831 fw classid 1:5f5
-tc filter add dev eth0 protocol ip parent 1: handle 39832 fw classid 1:5f6
-tc filter add dev eth0 protocol ip parent 1: handle 39833 fw classid 1:5f7
-tc filter add dev eth0 protocol ip parent 1: handle 39834 fw classid 1:5f8
-tc filter add dev eth0 protocol ip parent 1: handle 39835 fw classid 1:5f9
-tc filter add dev eth0 protocol ip parent 1: handle 39836 fw classid 1:5fa
-tc filter add dev eth0 protocol ip parent 1: handle 39837 fw classid 1:5fb
-tc filter add dev eth0 protocol ip parent 1: handle 39838 fw classid 1:5fc
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.124 -p udp --sport 10000:30000 -j MARK --set-mark 39820
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.124 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.124 -p udp --dport 10000:30000 -j MARK --set-mark 39830
@@ -9601,56 +5351,6 @@ iptables -F 172.16.0.125_i
 iptables -F 172.16.0.125_o
 iptables -A FORWARD -s 172.16.0.125 -j 172.16.0.125_o
 iptables -A FORWARD -d 172.16.0.125 -j 172.16.0.125_i
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:1961 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:1961 classid 1:5fd htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:1961 classid 1:5fe htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:1961 classid 1:5ff htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:1961 classid 1:600 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:1961 classid 1:601 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:1961 classid 1:602 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:1961 classid 1:603 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:1961 classid 1:604 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:1961 classid 1:605 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 19620 fw classid 1:5fd
-tc filter add dev br2 protocol ip parent 1: handle 19621 fw classid 1:5fe
-tc filter add dev br2 protocol ip parent 1: handle 19622 fw classid 1:5ff
-tc filter add dev br2 protocol ip parent 1: handle 19623 fw classid 1:600
-tc filter add dev br2 protocol ip parent 1: handle 19624 fw classid 1:601
-tc filter add dev br2 protocol ip parent 1: handle 19625 fw classid 1:602
-tc filter add dev br2 protocol ip parent 1: handle 19626 fw classid 1:603
-tc filter add dev br2 protocol ip parent 1: handle 19627 fw classid 1:604
-tc filter add dev br2 protocol ip parent 1: handle 19628 fw classid 1:605
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:1962 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:1962 classid 1:606 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:1962 classid 1:607 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:1962 classid 1:608 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:1962 classid 1:609 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:1962 classid 1:60a htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:1962 classid 1:60b htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:1962 classid 1:60c htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:1962 classid 1:60d htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:1962 classid 1:60e htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 19630 fw classid 1:606
-tc filter add dev eth0 protocol ip parent 1: handle 19631 fw classid 1:607
-tc filter add dev eth0 protocol ip parent 1: handle 19632 fw classid 1:608
-tc filter add dev eth0 protocol ip parent 1: handle 19633 fw classid 1:609
-tc filter add dev eth0 protocol ip parent 1: handle 19634 fw classid 1:60a
-tc filter add dev eth0 protocol ip parent 1: handle 19635 fw classid 1:60b
-tc filter add dev eth0 protocol ip parent 1: handle 19636 fw classid 1:60c
-tc filter add dev eth0 protocol ip parent 1: handle 19637 fw classid 1:60d
-tc filter add dev eth0 protocol ip parent 1: handle 19638 fw classid 1:60e
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.125 -p udp --sport 10000:30000 -j MARK --set-mark 19620
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.125 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.125 -p udp --dport 10000:30000 -j MARK --set-mark 19630
@@ -9711,56 +5411,6 @@ iptables -F 172.16.0.127_i
 iptables -F 172.16.0.127_o
 iptables -A FORWARD -s 172.16.0.127 -j 172.16.0.127_o
 iptables -A FORWARD -d 172.16.0.127 -j 172.16.0.127_i
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:2441 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:2441 classid 1:60f htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:2441 classid 1:610 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:2441 classid 1:611 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:2441 classid 1:612 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:2441 classid 1:613 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:2441 classid 1:614 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:2441 classid 1:615 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:2441 classid 1:616 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:2441 classid 1:617 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 24420 fw classid 1:60f
-tc filter add dev br2 protocol ip parent 1: handle 24421 fw classid 1:610
-tc filter add dev br2 protocol ip parent 1: handle 24422 fw classid 1:611
-tc filter add dev br2 protocol ip parent 1: handle 24423 fw classid 1:612
-tc filter add dev br2 protocol ip parent 1: handle 24424 fw classid 1:613
-tc filter add dev br2 protocol ip parent 1: handle 24425 fw classid 1:614
-tc filter add dev br2 protocol ip parent 1: handle 24426 fw classid 1:615
-tc filter add dev br2 protocol ip parent 1: handle 24427 fw classid 1:616
-tc filter add dev br2 protocol ip parent 1: handle 24428 fw classid 1:617
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:2442 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:2442 classid 1:618 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:2442 classid 1:619 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:2442 classid 1:61a htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:2442 classid 1:61b htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:2442 classid 1:61c htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:2442 classid 1:61d htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:2442 classid 1:61e htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:2442 classid 1:61f htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:2442 classid 1:620 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 24430 fw classid 1:618
-tc filter add dev eth0 protocol ip parent 1: handle 24431 fw classid 1:619
-tc filter add dev eth0 protocol ip parent 1: handle 24432 fw classid 1:61a
-tc filter add dev eth0 protocol ip parent 1: handle 24433 fw classid 1:61b
-tc filter add dev eth0 protocol ip parent 1: handle 24434 fw classid 1:61c
-tc filter add dev eth0 protocol ip parent 1: handle 24435 fw classid 1:61d
-tc filter add dev eth0 protocol ip parent 1: handle 24436 fw classid 1:61e
-tc filter add dev eth0 protocol ip parent 1: handle 24437 fw classid 1:61f
-tc filter add dev eth0 protocol ip parent 1: handle 24438 fw classid 1:620
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.127 -p udp --sport 10000:30000 -j MARK --set-mark 24420
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.127 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.127 -p udp --dport 10000:30000 -j MARK --set-mark 24430
@@ -9821,56 +5471,6 @@ iptables -F 172.16.0.128_i
 iptables -F 172.16.0.128_o
 iptables -A FORWARD -s 172.16.0.128 -j 172.16.0.128_o
 iptables -A FORWARD -d 172.16.0.128 -j 172.16.0.128_i
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:2461 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:2461 classid 1:621 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:2461 classid 1:622 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:2461 classid 1:623 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:2461 classid 1:624 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:2461 classid 1:625 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:2461 classid 1:626 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:2461 classid 1:627 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:2461 classid 1:628 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:2461 classid 1:629 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 24620 fw classid 1:621
-tc filter add dev br2 protocol ip parent 1: handle 24621 fw classid 1:622
-tc filter add dev br2 protocol ip parent 1: handle 24622 fw classid 1:623
-tc filter add dev br2 protocol ip parent 1: handle 24623 fw classid 1:624
-tc filter add dev br2 protocol ip parent 1: handle 24624 fw classid 1:625
-tc filter add dev br2 protocol ip parent 1: handle 24625 fw classid 1:626
-tc filter add dev br2 protocol ip parent 1: handle 24626 fw classid 1:627
-tc filter add dev br2 protocol ip parent 1: handle 24627 fw classid 1:628
-tc filter add dev br2 protocol ip parent 1: handle 24628 fw classid 1:629
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:2462 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:2462 classid 1:62a htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:2462 classid 1:62b htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:2462 classid 1:62c htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:2462 classid 1:62d htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:2462 classid 1:62e htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:2462 classid 1:62f htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:2462 classid 1:630 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:2462 classid 1:631 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:2462 classid 1:632 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 24630 fw classid 1:62a
-tc filter add dev eth0 protocol ip parent 1: handle 24631 fw classid 1:62b
-tc filter add dev eth0 protocol ip parent 1: handle 24632 fw classid 1:62c
-tc filter add dev eth0 protocol ip parent 1: handle 24633 fw classid 1:62d
-tc filter add dev eth0 protocol ip parent 1: handle 24634 fw classid 1:62e
-tc filter add dev eth0 protocol ip parent 1: handle 24635 fw classid 1:62f
-tc filter add dev eth0 protocol ip parent 1: handle 24636 fw classid 1:630
-tc filter add dev eth0 protocol ip parent 1: handle 24637 fw classid 1:631
-tc filter add dev eth0 protocol ip parent 1: handle 24638 fw classid 1:632
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.128 -p udp --sport 10000:30000 -j MARK --set-mark 24620
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.128 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.128 -p udp --dport 10000:30000 -j MARK --set-mark 24630
@@ -9931,56 +5531,6 @@ iptables -F 172.16.0.129_i
 iptables -F 172.16.0.129_o
 iptables -A FORWARD -s 172.16.0.129 -j 172.16.0.129_o
 iptables -A FORWARD -d 172.16.0.129 -j 172.16.0.129_i
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:2501 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:2501 classid 1:633 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:2501 classid 1:634 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:2501 classid 1:635 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:2501 classid 1:636 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:2501 classid 1:637 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:2501 classid 1:638 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:2501 classid 1:639 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:2501 classid 1:63a htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:2501 classid 1:63b htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 25020 fw classid 1:633
-tc filter add dev br2 protocol ip parent 1: handle 25021 fw classid 1:634
-tc filter add dev br2 protocol ip parent 1: handle 25022 fw classid 1:635
-tc filter add dev br2 protocol ip parent 1: handle 25023 fw classid 1:636
-tc filter add dev br2 protocol ip parent 1: handle 25024 fw classid 1:637
-tc filter add dev br2 protocol ip parent 1: handle 25025 fw classid 1:638
-tc filter add dev br2 protocol ip parent 1: handle 25026 fw classid 1:639
-tc filter add dev br2 protocol ip parent 1: handle 25027 fw classid 1:63a
-tc filter add dev br2 protocol ip parent 1: handle 25028 fw classid 1:63b
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:2502 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:2502 classid 1:63c htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:2502 classid 1:63d htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:2502 classid 1:63e htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:2502 classid 1:63f htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:2502 classid 1:640 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:2502 classid 1:641 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:2502 classid 1:642 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:2502 classid 1:643 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:2502 classid 1:644 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 25030 fw classid 1:63c
-tc filter add dev eth0 protocol ip parent 1: handle 25031 fw classid 1:63d
-tc filter add dev eth0 protocol ip parent 1: handle 25032 fw classid 1:63e
-tc filter add dev eth0 protocol ip parent 1: handle 25033 fw classid 1:63f
-tc filter add dev eth0 protocol ip parent 1: handle 25034 fw classid 1:640
-tc filter add dev eth0 protocol ip parent 1: handle 25035 fw classid 1:641
-tc filter add dev eth0 protocol ip parent 1: handle 25036 fw classid 1:642
-tc filter add dev eth0 protocol ip parent 1: handle 25037 fw classid 1:643
-tc filter add dev eth0 protocol ip parent 1: handle 25038 fw classid 1:644
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.129 -p udp --sport 10000:30000 -j MARK --set-mark 25020
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.129 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.129 -p udp --dport 10000:30000 -j MARK --set-mark 25030
@@ -10041,56 +5591,6 @@ iptables -F 172.16.0.130_i
 iptables -F 172.16.0.130_o
 iptables -A FORWARD -s 172.16.0.130 -j 172.16.0.130_o
 iptables -A FORWARD -d 172.16.0.130 -j 172.16.0.130_i
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:2481 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:2481 classid 1:645 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:2481 classid 1:646 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:2481 classid 1:647 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:2481 classid 1:648 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:2481 classid 1:649 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:2481 classid 1:64a htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:2481 classid 1:64b htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:2481 classid 1:64c htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:2481 classid 1:64d htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 24820 fw classid 1:645
-tc filter add dev br2 protocol ip parent 1: handle 24821 fw classid 1:646
-tc filter add dev br2 protocol ip parent 1: handle 24822 fw classid 1:647
-tc filter add dev br2 protocol ip parent 1: handle 24823 fw classid 1:648
-tc filter add dev br2 protocol ip parent 1: handle 24824 fw classid 1:649
-tc filter add dev br2 protocol ip parent 1: handle 24825 fw classid 1:64a
-tc filter add dev br2 protocol ip parent 1: handle 24826 fw classid 1:64b
-tc filter add dev br2 protocol ip parent 1: handle 24827 fw classid 1:64c
-tc filter add dev br2 protocol ip parent 1: handle 24828 fw classid 1:64d
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:2482 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:2482 classid 1:64e htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:2482 classid 1:64f htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:2482 classid 1:650 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:2482 classid 1:651 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:2482 classid 1:652 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:2482 classid 1:653 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:2482 classid 1:654 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:2482 classid 1:655 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:2482 classid 1:656 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 24830 fw classid 1:64e
-tc filter add dev eth0 protocol ip parent 1: handle 24831 fw classid 1:64f
-tc filter add dev eth0 protocol ip parent 1: handle 24832 fw classid 1:650
-tc filter add dev eth0 protocol ip parent 1: handle 24833 fw classid 1:651
-tc filter add dev eth0 protocol ip parent 1: handle 24834 fw classid 1:652
-tc filter add dev eth0 protocol ip parent 1: handle 24835 fw classid 1:653
-tc filter add dev eth0 protocol ip parent 1: handle 24836 fw classid 1:654
-tc filter add dev eth0 protocol ip parent 1: handle 24837 fw classid 1:655
-tc filter add dev eth0 protocol ip parent 1: handle 24838 fw classid 1:656
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.130 -p udp --sport 10000:30000 -j MARK --set-mark 24820
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.130 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.130 -p udp --dport 10000:30000 -j MARK --set-mark 24830
@@ -10151,56 +5651,6 @@ iptables -F 172.16.0.131_i
 iptables -F 172.16.0.131_o
 iptables -A FORWARD -s 172.16.0.131 -j 172.16.0.131_o
 iptables -A FORWARD -d 172.16.0.131 -j 172.16.0.131_i
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:2431 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:2431 classid 1:657 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:2431 classid 1:658 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:2431 classid 1:659 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:2431 classid 1:65a htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:2431 classid 1:65b htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:2431 classid 1:65c htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:2431 classid 1:65d htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:2431 classid 1:65e htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:2431 classid 1:65f htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 24320 fw classid 1:657
-tc filter add dev br2 protocol ip parent 1: handle 24321 fw classid 1:658
-tc filter add dev br2 protocol ip parent 1: handle 24322 fw classid 1:659
-tc filter add dev br2 protocol ip parent 1: handle 24323 fw classid 1:65a
-tc filter add dev br2 protocol ip parent 1: handle 24324 fw classid 1:65b
-tc filter add dev br2 protocol ip parent 1: handle 24325 fw classid 1:65c
-tc filter add dev br2 protocol ip parent 1: handle 24326 fw classid 1:65d
-tc filter add dev br2 protocol ip parent 1: handle 24327 fw classid 1:65e
-tc filter add dev br2 protocol ip parent 1: handle 24328 fw classid 1:65f
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:2432 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:2432 classid 1:660 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:2432 classid 1:661 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:2432 classid 1:662 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:2432 classid 1:663 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:2432 classid 1:664 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:2432 classid 1:665 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:2432 classid 1:666 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:2432 classid 1:667 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:2432 classid 1:668 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 24330 fw classid 1:660
-tc filter add dev eth0 protocol ip parent 1: handle 24331 fw classid 1:661
-tc filter add dev eth0 protocol ip parent 1: handle 24332 fw classid 1:662
-tc filter add dev eth0 protocol ip parent 1: handle 24333 fw classid 1:663
-tc filter add dev eth0 protocol ip parent 1: handle 24334 fw classid 1:664
-tc filter add dev eth0 protocol ip parent 1: handle 24335 fw classid 1:665
-tc filter add dev eth0 protocol ip parent 1: handle 24336 fw classid 1:666
-tc filter add dev eth0 protocol ip parent 1: handle 24337 fw classid 1:667
-tc filter add dev eth0 protocol ip parent 1: handle 24338 fw classid 1:668
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.131 -p udp --sport 10000:30000 -j MARK --set-mark 24320
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.131 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.131 -p udp --dport 10000:30000 -j MARK --set-mark 24330
@@ -10261,56 +5711,6 @@ iptables -F 172.16.0.132_i
 iptables -F 172.16.0.132_o
 iptables -A FORWARD -s 172.16.0.132 -j 172.16.0.132_o
 iptables -A FORWARD -d 172.16.0.132 -j 172.16.0.132_i
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:2511 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:2511 classid 1:669 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:2511 classid 1:66a htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:2511 classid 1:66b htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:2511 classid 1:66c htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:2511 classid 1:66d htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:2511 classid 1:66e htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:2511 classid 1:66f htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:2511 classid 1:670 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:2511 classid 1:671 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 25120 fw classid 1:669
-tc filter add dev br2 protocol ip parent 1: handle 25121 fw classid 1:66a
-tc filter add dev br2 protocol ip parent 1: handle 25122 fw classid 1:66b
-tc filter add dev br2 protocol ip parent 1: handle 25123 fw classid 1:66c
-tc filter add dev br2 protocol ip parent 1: handle 25124 fw classid 1:66d
-tc filter add dev br2 protocol ip parent 1: handle 25125 fw classid 1:66e
-tc filter add dev br2 protocol ip parent 1: handle 25126 fw classid 1:66f
-tc filter add dev br2 protocol ip parent 1: handle 25127 fw classid 1:670
-tc filter add dev br2 protocol ip parent 1: handle 25128 fw classid 1:671
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:2512 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:2512 classid 1:672 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:2512 classid 1:673 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:2512 classid 1:674 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:2512 classid 1:675 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:2512 classid 1:676 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:2512 classid 1:677 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:2512 classid 1:678 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:2512 classid 1:679 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:2512 classid 1:67a htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 25130 fw classid 1:672
-tc filter add dev eth0 protocol ip parent 1: handle 25131 fw classid 1:673
-tc filter add dev eth0 protocol ip parent 1: handle 25132 fw classid 1:674
-tc filter add dev eth0 protocol ip parent 1: handle 25133 fw classid 1:675
-tc filter add dev eth0 protocol ip parent 1: handle 25134 fw classid 1:676
-tc filter add dev eth0 protocol ip parent 1: handle 25135 fw classid 1:677
-tc filter add dev eth0 protocol ip parent 1: handle 25136 fw classid 1:678
-tc filter add dev eth0 protocol ip parent 1: handle 25137 fw classid 1:679
-tc filter add dev eth0 protocol ip parent 1: handle 25138 fw classid 1:67a
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.132 -p udp --sport 10000:30000 -j MARK --set-mark 25120
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.132 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.132 -p udp --dport 10000:30000 -j MARK --set-mark 25130
@@ -10371,56 +5771,6 @@ iptables -F 172.16.0.133_i
 iptables -F 172.16.0.133_o
 iptables -A FORWARD -s 172.16.0.133 -j 172.16.0.133_o
 iptables -A FORWARD -d 172.16.0.133 -j 172.16.0.133_i
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:2471 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:2471 classid 1:67b htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:2471 classid 1:67c htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:2471 classid 1:67d htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:2471 classid 1:67e htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:2471 classid 1:67f htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:2471 classid 1:680 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:2471 classid 1:681 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:2471 classid 1:682 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:2471 classid 1:683 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 24720 fw classid 1:67b
-tc filter add dev br2 protocol ip parent 1: handle 24721 fw classid 1:67c
-tc filter add dev br2 protocol ip parent 1: handle 24722 fw classid 1:67d
-tc filter add dev br2 protocol ip parent 1: handle 24723 fw classid 1:67e
-tc filter add dev br2 protocol ip parent 1: handle 24724 fw classid 1:67f
-tc filter add dev br2 protocol ip parent 1: handle 24725 fw classid 1:680
-tc filter add dev br2 protocol ip parent 1: handle 24726 fw classid 1:681
-tc filter add dev br2 protocol ip parent 1: handle 24727 fw classid 1:682
-tc filter add dev br2 protocol ip parent 1: handle 24728 fw classid 1:683
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:2472 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:2472 classid 1:684 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:2472 classid 1:685 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:2472 classid 1:686 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:2472 classid 1:687 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:2472 classid 1:688 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:2472 classid 1:689 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:2472 classid 1:68a htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:2472 classid 1:68b htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:2472 classid 1:68c htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 24730 fw classid 1:684
-tc filter add dev eth0 protocol ip parent 1: handle 24731 fw classid 1:685
-tc filter add dev eth0 protocol ip parent 1: handle 24732 fw classid 1:686
-tc filter add dev eth0 protocol ip parent 1: handle 24733 fw classid 1:687
-tc filter add dev eth0 protocol ip parent 1: handle 24734 fw classid 1:688
-tc filter add dev eth0 protocol ip parent 1: handle 24735 fw classid 1:689
-tc filter add dev eth0 protocol ip parent 1: handle 24736 fw classid 1:68a
-tc filter add dev eth0 protocol ip parent 1: handle 24737 fw classid 1:68b
-tc filter add dev eth0 protocol ip parent 1: handle 24738 fw classid 1:68c
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.133 -p udp --sport 10000:30000 -j MARK --set-mark 24720
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.133 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.133 -p udp --dport 10000:30000 -j MARK --set-mark 24730
@@ -10481,56 +5831,6 @@ iptables -F 172.16.0.134_i
 iptables -F 172.16.0.134_o
 iptables -A FORWARD -s 172.16.0.134 -j 172.16.0.134_o
 iptables -A FORWARD -d 172.16.0.134 -j 172.16.0.134_i
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:2651 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:2651 classid 1:68d htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:2651 classid 1:68e htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:2651 classid 1:68f htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:2651 classid 1:690 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:2651 classid 1:691 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:2651 classid 1:692 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:2651 classid 1:693 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:2651 classid 1:694 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:2651 classid 1:695 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 26520 fw classid 1:68d
-tc filter add dev br2 protocol ip parent 1: handle 26521 fw classid 1:68e
-tc filter add dev br2 protocol ip parent 1: handle 26522 fw classid 1:68f
-tc filter add dev br2 protocol ip parent 1: handle 26523 fw classid 1:690
-tc filter add dev br2 protocol ip parent 1: handle 26524 fw classid 1:691
-tc filter add dev br2 protocol ip parent 1: handle 26525 fw classid 1:692
-tc filter add dev br2 protocol ip parent 1: handle 26526 fw classid 1:693
-tc filter add dev br2 protocol ip parent 1: handle 26527 fw classid 1:694
-tc filter add dev br2 protocol ip parent 1: handle 26528 fw classid 1:695
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:2652 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:2652 classid 1:696 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:2652 classid 1:697 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:2652 classid 1:698 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:2652 classid 1:699 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:2652 classid 1:69a htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:2652 classid 1:69b htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:2652 classid 1:69c htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:2652 classid 1:69d htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:2652 classid 1:69e htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 26530 fw classid 1:696
-tc filter add dev eth0 protocol ip parent 1: handle 26531 fw classid 1:697
-tc filter add dev eth0 protocol ip parent 1: handle 26532 fw classid 1:698
-tc filter add dev eth0 protocol ip parent 1: handle 26533 fw classid 1:699
-tc filter add dev eth0 protocol ip parent 1: handle 26534 fw classid 1:69a
-tc filter add dev eth0 protocol ip parent 1: handle 26535 fw classid 1:69b
-tc filter add dev eth0 protocol ip parent 1: handle 26536 fw classid 1:69c
-tc filter add dev eth0 protocol ip parent 1: handle 26537 fw classid 1:69d
-tc filter add dev eth0 protocol ip parent 1: handle 26538 fw classid 1:69e
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.134 -p udp --sport 10000:30000 -j MARK --set-mark 26520
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.134 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.134 -p udp --dport 10000:30000 -j MARK --set-mark 26530
@@ -10591,56 +5891,6 @@ iptables -F 172.16.0.135_i
 iptables -F 172.16.0.135_o
 iptables -A FORWARD -s 172.16.0.135 -j 172.16.0.135_o
 iptables -A FORWARD -d 172.16.0.135 -j 172.16.0.135_i
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:2721 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:2721 classid 1:69f htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:2721 classid 1:6a0 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:2721 classid 1:6a1 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:2721 classid 1:6a2 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:2721 classid 1:6a3 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:2721 classid 1:6a4 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:2721 classid 1:6a5 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:2721 classid 1:6a6 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:2721 classid 1:6a7 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 27220 fw classid 1:69f
-tc filter add dev br2 protocol ip parent 1: handle 27221 fw classid 1:6a0
-tc filter add dev br2 protocol ip parent 1: handle 27222 fw classid 1:6a1
-tc filter add dev br2 protocol ip parent 1: handle 27223 fw classid 1:6a2
-tc filter add dev br2 protocol ip parent 1: handle 27224 fw classid 1:6a3
-tc filter add dev br2 protocol ip parent 1: handle 27225 fw classid 1:6a4
-tc filter add dev br2 protocol ip parent 1: handle 27226 fw classid 1:6a5
-tc filter add dev br2 protocol ip parent 1: handle 27227 fw classid 1:6a6
-tc filter add dev br2 protocol ip parent 1: handle 27228 fw classid 1:6a7
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:2722 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:2722 classid 1:6a8 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:2722 classid 1:6a9 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:2722 classid 1:6aa htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:2722 classid 1:6ab htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:2722 classid 1:6ac htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:2722 classid 1:6ad htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:2722 classid 1:6ae htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:2722 classid 1:6af htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:2722 classid 1:6b0 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 27230 fw classid 1:6a8
-tc filter add dev eth0 protocol ip parent 1: handle 27231 fw classid 1:6a9
-tc filter add dev eth0 protocol ip parent 1: handle 27232 fw classid 1:6aa
-tc filter add dev eth0 protocol ip parent 1: handle 27233 fw classid 1:6ab
-tc filter add dev eth0 protocol ip parent 1: handle 27234 fw classid 1:6ac
-tc filter add dev eth0 protocol ip parent 1: handle 27235 fw classid 1:6ad
-tc filter add dev eth0 protocol ip parent 1: handle 27236 fw classid 1:6ae
-tc filter add dev eth0 protocol ip parent 1: handle 27237 fw classid 1:6af
-tc filter add dev eth0 protocol ip parent 1: handle 27238 fw classid 1:6b0
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.135 -p udp --sport 10000:30000 -j MARK --set-mark 27220
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.135 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.135 -p udp --dport 10000:30000 -j MARK --set-mark 27230
@@ -10701,56 +5951,6 @@ iptables -F 172.16.0.136_i
 iptables -F 172.16.0.136_o
 iptables -A FORWARD -s 172.16.0.136 -j 172.16.0.136_o
 iptables -A FORWARD -d 172.16.0.136 -j 172.16.0.136_i
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:2741 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:2741 classid 1:6b1 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:2741 classid 1:6b2 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:2741 classid 1:6b3 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:2741 classid 1:6b4 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:2741 classid 1:6b5 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:2741 classid 1:6b6 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:2741 classid 1:6b7 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:2741 classid 1:6b8 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:2741 classid 1:6b9 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 27420 fw classid 1:6b1
-tc filter add dev br2 protocol ip parent 1: handle 27421 fw classid 1:6b2
-tc filter add dev br2 protocol ip parent 1: handle 27422 fw classid 1:6b3
-tc filter add dev br2 protocol ip parent 1: handle 27423 fw classid 1:6b4
-tc filter add dev br2 protocol ip parent 1: handle 27424 fw classid 1:6b5
-tc filter add dev br2 protocol ip parent 1: handle 27425 fw classid 1:6b6
-tc filter add dev br2 protocol ip parent 1: handle 27426 fw classid 1:6b7
-tc filter add dev br2 protocol ip parent 1: handle 27427 fw classid 1:6b8
-tc filter add dev br2 protocol ip parent 1: handle 27428 fw classid 1:6b9
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:2742 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:2742 classid 1:6ba htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:2742 classid 1:6bb htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:2742 classid 1:6bc htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:2742 classid 1:6bd htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:2742 classid 1:6be htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:2742 classid 1:6bf htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:2742 classid 1:6c0 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:2742 classid 1:6c1 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:2742 classid 1:6c2 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 27430 fw classid 1:6ba
-tc filter add dev eth0 protocol ip parent 1: handle 27431 fw classid 1:6bb
-tc filter add dev eth0 protocol ip parent 1: handle 27432 fw classid 1:6bc
-tc filter add dev eth0 protocol ip parent 1: handle 27433 fw classid 1:6bd
-tc filter add dev eth0 protocol ip parent 1: handle 27434 fw classid 1:6be
-tc filter add dev eth0 protocol ip parent 1: handle 27435 fw classid 1:6bf
-tc filter add dev eth0 protocol ip parent 1: handle 27436 fw classid 1:6c0
-tc filter add dev eth0 protocol ip parent 1: handle 27437 fw classid 1:6c1
-tc filter add dev eth0 protocol ip parent 1: handle 27438 fw classid 1:6c2
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.136 -p udp --sport 10000:30000 -j MARK --set-mark 27420
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.136 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.136 -p udp --dport 10000:30000 -j MARK --set-mark 27430
@@ -10811,56 +6011,6 @@ iptables -F 172.16.0.137_i
 iptables -F 172.16.0.137_o
 iptables -A FORWARD -s 172.16.0.137 -j 172.16.0.137_o
 iptables -A FORWARD -d 172.16.0.137 -j 172.16.0.137_i
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:2731 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:2731 classid 1:6c3 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:2731 classid 1:6c4 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:2731 classid 1:6c5 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:2731 classid 1:6c6 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:2731 classid 1:6c7 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:2731 classid 1:6c8 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:2731 classid 1:6c9 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:2731 classid 1:6ca htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:2731 classid 1:6cb htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 27320 fw classid 1:6c3
-tc filter add dev br2 protocol ip parent 1: handle 27321 fw classid 1:6c4
-tc filter add dev br2 protocol ip parent 1: handle 27322 fw classid 1:6c5
-tc filter add dev br2 protocol ip parent 1: handle 27323 fw classid 1:6c6
-tc filter add dev br2 protocol ip parent 1: handle 27324 fw classid 1:6c7
-tc filter add dev br2 protocol ip parent 1: handle 27325 fw classid 1:6c8
-tc filter add dev br2 protocol ip parent 1: handle 27326 fw classid 1:6c9
-tc filter add dev br2 protocol ip parent 1: handle 27327 fw classid 1:6ca
-tc filter add dev br2 protocol ip parent 1: handle 27328 fw classid 1:6cb
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:2732 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:2732 classid 1:6cc htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:2732 classid 1:6cd htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:2732 classid 1:6ce htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:2732 classid 1:6cf htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:2732 classid 1:6d0 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:2732 classid 1:6d1 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:2732 classid 1:6d2 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:2732 classid 1:6d3 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:2732 classid 1:6d4 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 27330 fw classid 1:6cc
-tc filter add dev eth0 protocol ip parent 1: handle 27331 fw classid 1:6cd
-tc filter add dev eth0 protocol ip parent 1: handle 27332 fw classid 1:6ce
-tc filter add dev eth0 protocol ip parent 1: handle 27333 fw classid 1:6cf
-tc filter add dev eth0 protocol ip parent 1: handle 27334 fw classid 1:6d0
-tc filter add dev eth0 protocol ip parent 1: handle 27335 fw classid 1:6d1
-tc filter add dev eth0 protocol ip parent 1: handle 27336 fw classid 1:6d2
-tc filter add dev eth0 protocol ip parent 1: handle 27337 fw classid 1:6d3
-tc filter add dev eth0 protocol ip parent 1: handle 27338 fw classid 1:6d4
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.137 -p udp --sport 10000:30000 -j MARK --set-mark 27320
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.137 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.137 -p udp --dport 10000:30000 -j MARK --set-mark 27330
@@ -10921,56 +6071,6 @@ iptables -F 172.16.0.138_i
 iptables -F 172.16.0.138_o
 iptables -A FORWARD -s 172.16.0.138 -j 172.16.0.138_o
 iptables -A FORWARD -d 172.16.0.138 -j 172.16.0.138_i
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:2711 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:2711 classid 1:6d5 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:2711 classid 1:6d6 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:2711 classid 1:6d7 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:2711 classid 1:6d8 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:2711 classid 1:6d9 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:2711 classid 1:6da htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:2711 classid 1:6db htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:2711 classid 1:6dc htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:2711 classid 1:6dd htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 27120 fw classid 1:6d5
-tc filter add dev br2 protocol ip parent 1: handle 27121 fw classid 1:6d6
-tc filter add dev br2 protocol ip parent 1: handle 27122 fw classid 1:6d7
-tc filter add dev br2 protocol ip parent 1: handle 27123 fw classid 1:6d8
-tc filter add dev br2 protocol ip parent 1: handle 27124 fw classid 1:6d9
-tc filter add dev br2 protocol ip parent 1: handle 27125 fw classid 1:6da
-tc filter add dev br2 protocol ip parent 1: handle 27126 fw classid 1:6db
-tc filter add dev br2 protocol ip parent 1: handle 27127 fw classid 1:6dc
-tc filter add dev br2 protocol ip parent 1: handle 27128 fw classid 1:6dd
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:2712 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:2712 classid 1:6de htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:2712 classid 1:6df htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:2712 classid 1:6e0 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:2712 classid 1:6e1 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:2712 classid 1:6e2 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:2712 classid 1:6e3 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:2712 classid 1:6e4 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:2712 classid 1:6e5 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:2712 classid 1:6e6 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 27130 fw classid 1:6de
-tc filter add dev eth0 protocol ip parent 1: handle 27131 fw classid 1:6df
-tc filter add dev eth0 protocol ip parent 1: handle 27132 fw classid 1:6e0
-tc filter add dev eth0 protocol ip parent 1: handle 27133 fw classid 1:6e1
-tc filter add dev eth0 protocol ip parent 1: handle 27134 fw classid 1:6e2
-tc filter add dev eth0 protocol ip parent 1: handle 27135 fw classid 1:6e3
-tc filter add dev eth0 protocol ip parent 1: handle 27136 fw classid 1:6e4
-tc filter add dev eth0 protocol ip parent 1: handle 27137 fw classid 1:6e5
-tc filter add dev eth0 protocol ip parent 1: handle 27138 fw classid 1:6e6
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.138 -p udp --sport 10000:30000 -j MARK --set-mark 27120
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.138 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.138 -p udp --dport 10000:30000 -j MARK --set-mark 27130
@@ -11031,56 +6131,6 @@ iptables -F 172.16.0.139_i
 iptables -F 172.16.0.139_o
 iptables -A FORWARD -s 172.16.0.139 -j 172.16.0.139_o
 iptables -A FORWARD -d 172.16.0.139 -j 172.16.0.139_i
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:2691 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:2691 classid 1:6e7 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:2691 classid 1:6e8 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:2691 classid 1:6e9 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:2691 classid 1:6ea htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:2691 classid 1:6eb htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:2691 classid 1:6ec htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:2691 classid 1:6ed htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:2691 classid 1:6ee htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:2691 classid 1:6ef htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 26920 fw classid 1:6e7
-tc filter add dev br2 protocol ip parent 1: handle 26921 fw classid 1:6e8
-tc filter add dev br2 protocol ip parent 1: handle 26922 fw classid 1:6e9
-tc filter add dev br2 protocol ip parent 1: handle 26923 fw classid 1:6ea
-tc filter add dev br2 protocol ip parent 1: handle 26924 fw classid 1:6eb
-tc filter add dev br2 protocol ip parent 1: handle 26925 fw classid 1:6ec
-tc filter add dev br2 protocol ip parent 1: handle 26926 fw classid 1:6ed
-tc filter add dev br2 protocol ip parent 1: handle 26927 fw classid 1:6ee
-tc filter add dev br2 protocol ip parent 1: handle 26928 fw classid 1:6ef
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:2692 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:2692 classid 1:6f0 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:2692 classid 1:6f1 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:2692 classid 1:6f2 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:2692 classid 1:6f3 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:2692 classid 1:6f4 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:2692 classid 1:6f5 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:2692 classid 1:6f6 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:2692 classid 1:6f7 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:2692 classid 1:6f8 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 26930 fw classid 1:6f0
-tc filter add dev eth0 protocol ip parent 1: handle 26931 fw classid 1:6f1
-tc filter add dev eth0 protocol ip parent 1: handle 26932 fw classid 1:6f2
-tc filter add dev eth0 protocol ip parent 1: handle 26933 fw classid 1:6f3
-tc filter add dev eth0 protocol ip parent 1: handle 26934 fw classid 1:6f4
-tc filter add dev eth0 protocol ip parent 1: handle 26935 fw classid 1:6f5
-tc filter add dev eth0 protocol ip parent 1: handle 26936 fw classid 1:6f6
-tc filter add dev eth0 protocol ip parent 1: handle 26937 fw classid 1:6f7
-tc filter add dev eth0 protocol ip parent 1: handle 26938 fw classid 1:6f8
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.139 -p udp --sport 10000:30000 -j MARK --set-mark 26920
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.139 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.139 -p udp --dport 10000:30000 -j MARK --set-mark 26930
@@ -11141,56 +6191,6 @@ iptables -F 172.16.0.140_i
 iptables -F 172.16.0.140_o
 iptables -A FORWARD -s 172.16.0.140 -j 172.16.0.140_o
 iptables -A FORWARD -d 172.16.0.140 -j 172.16.0.140_i
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:2451 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:2451 classid 1:6f9 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:2451 classid 1:6fa htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:2451 classid 1:6fb htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:2451 classid 1:6fc htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:2451 classid 1:6fd htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:2451 classid 1:6fe htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:2451 classid 1:6ff htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:2451 classid 1:700 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:2451 classid 1:701 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 24520 fw classid 1:6f9
-tc filter add dev br2 protocol ip parent 1: handle 24521 fw classid 1:6fa
-tc filter add dev br2 protocol ip parent 1: handle 24522 fw classid 1:6fb
-tc filter add dev br2 protocol ip parent 1: handle 24523 fw classid 1:6fc
-tc filter add dev br2 protocol ip parent 1: handle 24524 fw classid 1:6fd
-tc filter add dev br2 protocol ip parent 1: handle 24525 fw classid 1:6fe
-tc filter add dev br2 protocol ip parent 1: handle 24526 fw classid 1:6ff
-tc filter add dev br2 protocol ip parent 1: handle 24527 fw classid 1:700
-tc filter add dev br2 protocol ip parent 1: handle 24528 fw classid 1:701
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:2452 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:2452 classid 1:702 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:2452 classid 1:703 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:2452 classid 1:704 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:2452 classid 1:705 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:2452 classid 1:706 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:2452 classid 1:707 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:2452 classid 1:708 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:2452 classid 1:709 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:2452 classid 1:70a htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 24530 fw classid 1:702
-tc filter add dev eth0 protocol ip parent 1: handle 24531 fw classid 1:703
-tc filter add dev eth0 protocol ip parent 1: handle 24532 fw classid 1:704
-tc filter add dev eth0 protocol ip parent 1: handle 24533 fw classid 1:705
-tc filter add dev eth0 protocol ip parent 1: handle 24534 fw classid 1:706
-tc filter add dev eth0 protocol ip parent 1: handle 24535 fw classid 1:707
-tc filter add dev eth0 protocol ip parent 1: handle 24536 fw classid 1:708
-tc filter add dev eth0 protocol ip parent 1: handle 24537 fw classid 1:709
-tc filter add dev eth0 protocol ip parent 1: handle 24538 fw classid 1:70a
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.140 -p udp --sport 10000:30000 -j MARK --set-mark 24520
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.140 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.140 -p udp --dport 10000:30000 -j MARK --set-mark 24530
@@ -11251,56 +6251,6 @@ iptables -F 172.16.0.141_i
 iptables -F 172.16.0.141_o
 iptables -A FORWARD -s 172.16.0.141 -j 172.16.0.141_o
 iptables -A FORWARD -d 172.16.0.141 -j 172.16.0.141_i
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:2951 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:2951 classid 1:70b htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:2951 classid 1:70c htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:2951 classid 1:70d htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:2951 classid 1:70e htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:2951 classid 1:70f htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:2951 classid 1:710 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:2951 classid 1:711 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:2951 classid 1:712 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:2951 classid 1:713 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 29520 fw classid 1:70b
-tc filter add dev br2 protocol ip parent 1: handle 29521 fw classid 1:70c
-tc filter add dev br2 protocol ip parent 1: handle 29522 fw classid 1:70d
-tc filter add dev br2 protocol ip parent 1: handle 29523 fw classid 1:70e
-tc filter add dev br2 protocol ip parent 1: handle 29524 fw classid 1:70f
-tc filter add dev br2 protocol ip parent 1: handle 29525 fw classid 1:710
-tc filter add dev br2 protocol ip parent 1: handle 29526 fw classid 1:711
-tc filter add dev br2 protocol ip parent 1: handle 29527 fw classid 1:712
-tc filter add dev br2 protocol ip parent 1: handle 29528 fw classid 1:713
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:2952 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:2952 classid 1:714 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:2952 classid 1:715 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:2952 classid 1:716 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:2952 classid 1:717 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:2952 classid 1:718 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:2952 classid 1:719 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:2952 classid 1:71a htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:2952 classid 1:71b htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:2952 classid 1:71c htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 29530 fw classid 1:714
-tc filter add dev eth0 protocol ip parent 1: handle 29531 fw classid 1:715
-tc filter add dev eth0 protocol ip parent 1: handle 29532 fw classid 1:716
-tc filter add dev eth0 protocol ip parent 1: handle 29533 fw classid 1:717
-tc filter add dev eth0 protocol ip parent 1: handle 29534 fw classid 1:718
-tc filter add dev eth0 protocol ip parent 1: handle 29535 fw classid 1:719
-tc filter add dev eth0 protocol ip parent 1: handle 29536 fw classid 1:71a
-tc filter add dev eth0 protocol ip parent 1: handle 29537 fw classid 1:71b
-tc filter add dev eth0 protocol ip parent 1: handle 29538 fw classid 1:71c
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.141 -p udp --sport 10000:30000 -j MARK --set-mark 29520
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.141 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.141 -p udp --dport 10000:30000 -j MARK --set-mark 29530
@@ -11361,56 +6311,6 @@ iptables -F 172.16.0.142_i
 iptables -F 172.16.0.142_o
 iptables -A FORWARD -s 172.16.0.142 -j 172.16.0.142_o
 iptables -A FORWARD -d 172.16.0.142 -j 172.16.0.142_i
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:3941 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:3941 classid 1:71d htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:3941 classid 1:71e htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:3941 classid 1:71f htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:3941 classid 1:720 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:3941 classid 1:721 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:3941 classid 1:722 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:3941 classid 1:723 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:3941 classid 1:724 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:3941 classid 1:725 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 39420 fw classid 1:71d
-tc filter add dev br2 protocol ip parent 1: handle 39421 fw classid 1:71e
-tc filter add dev br2 protocol ip parent 1: handle 39422 fw classid 1:71f
-tc filter add dev br2 protocol ip parent 1: handle 39423 fw classid 1:720
-tc filter add dev br2 protocol ip parent 1: handle 39424 fw classid 1:721
-tc filter add dev br2 protocol ip parent 1: handle 39425 fw classid 1:722
-tc filter add dev br2 protocol ip parent 1: handle 39426 fw classid 1:723
-tc filter add dev br2 protocol ip parent 1: handle 39427 fw classid 1:724
-tc filter add dev br2 protocol ip parent 1: handle 39428 fw classid 1:725
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:3942 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:3942 classid 1:726 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:3942 classid 1:727 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:3942 classid 1:728 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:3942 classid 1:729 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:3942 classid 1:72a htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:3942 classid 1:72b htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:3942 classid 1:72c htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:3942 classid 1:72d htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:3942 classid 1:72e htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 39430 fw classid 1:726
-tc filter add dev eth0 protocol ip parent 1: handle 39431 fw classid 1:727
-tc filter add dev eth0 protocol ip parent 1: handle 39432 fw classid 1:728
-tc filter add dev eth0 protocol ip parent 1: handle 39433 fw classid 1:729
-tc filter add dev eth0 protocol ip parent 1: handle 39434 fw classid 1:72a
-tc filter add dev eth0 protocol ip parent 1: handle 39435 fw classid 1:72b
-tc filter add dev eth0 protocol ip parent 1: handle 39436 fw classid 1:72c
-tc filter add dev eth0 protocol ip parent 1: handle 39437 fw classid 1:72d
-tc filter add dev eth0 protocol ip parent 1: handle 39438 fw classid 1:72e
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.142 -p udp --sport 10000:30000 -j MARK --set-mark 39420
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.142 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.142 -p udp --dport 10000:30000 -j MARK --set-mark 39430
@@ -11471,56 +6371,6 @@ iptables -F 172.16.0.143_i
 iptables -F 172.16.0.143_o
 iptables -A FORWARD -s 172.16.0.143 -j 172.16.0.143_o
 iptables -A FORWARD -d 172.16.0.143 -j 172.16.0.143_i
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:3431 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:3431 classid 1:72f htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:3431 classid 1:730 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:3431 classid 1:731 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:3431 classid 1:732 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:3431 classid 1:733 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:3431 classid 1:734 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:3431 classid 1:735 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:3431 classid 1:736 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:3431 classid 1:737 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 34320 fw classid 1:72f
-tc filter add dev br2 protocol ip parent 1: handle 34321 fw classid 1:730
-tc filter add dev br2 protocol ip parent 1: handle 34322 fw classid 1:731
-tc filter add dev br2 protocol ip parent 1: handle 34323 fw classid 1:732
-tc filter add dev br2 protocol ip parent 1: handle 34324 fw classid 1:733
-tc filter add dev br2 protocol ip parent 1: handle 34325 fw classid 1:734
-tc filter add dev br2 protocol ip parent 1: handle 34326 fw classid 1:735
-tc filter add dev br2 protocol ip parent 1: handle 34327 fw classid 1:736
-tc filter add dev br2 protocol ip parent 1: handle 34328 fw classid 1:737
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:3432 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:3432 classid 1:738 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:3432 classid 1:739 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:3432 classid 1:73a htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:3432 classid 1:73b htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:3432 classid 1:73c htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:3432 classid 1:73d htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:3432 classid 1:73e htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:3432 classid 1:73f htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:3432 classid 1:740 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 34330 fw classid 1:738
-tc filter add dev eth0 protocol ip parent 1: handle 34331 fw classid 1:739
-tc filter add dev eth0 protocol ip parent 1: handle 34332 fw classid 1:73a
-tc filter add dev eth0 protocol ip parent 1: handle 34333 fw classid 1:73b
-tc filter add dev eth0 protocol ip parent 1: handle 34334 fw classid 1:73c
-tc filter add dev eth0 protocol ip parent 1: handle 34335 fw classid 1:73d
-tc filter add dev eth0 protocol ip parent 1: handle 34336 fw classid 1:73e
-tc filter add dev eth0 protocol ip parent 1: handle 34337 fw classid 1:73f
-tc filter add dev eth0 protocol ip parent 1: handle 34338 fw classid 1:740
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.143 -p udp --sport 10000:30000 -j MARK --set-mark 34320
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.143 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.143 -p udp --dport 10000:30000 -j MARK --set-mark 34330
@@ -11583,56 +6433,6 @@ iptables -A FORWARD -s 172.16.0.144 -j 172.16.0.144_o
 iptables -A FORWARD -d 172.16.0.144 -j 172.16.0.144_i
 iptables -A FORWARD -s 172.16.0.144 -m mac --mac-source 44:87:fc:eb:8f:6f -j ACCEPT
 iptables -A FORWARD -d 172.16.0.144 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:2261 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:2261 classid 1:741 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:2261 classid 1:742 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:2261 classid 1:743 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:2261 classid 1:744 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:2261 classid 1:745 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:2261 classid 1:746 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:2261 classid 1:747 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:2261 classid 1:748 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:2261 classid 1:749 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 22620 fw classid 1:741
-tc filter add dev br2 protocol ip parent 1: handle 22621 fw classid 1:742
-tc filter add dev br2 protocol ip parent 1: handle 22622 fw classid 1:743
-tc filter add dev br2 protocol ip parent 1: handle 22623 fw classid 1:744
-tc filter add dev br2 protocol ip parent 1: handle 22624 fw classid 1:745
-tc filter add dev br2 protocol ip parent 1: handle 22625 fw classid 1:746
-tc filter add dev br2 protocol ip parent 1: handle 22626 fw classid 1:747
-tc filter add dev br2 protocol ip parent 1: handle 22627 fw classid 1:748
-tc filter add dev br2 protocol ip parent 1: handle 22628 fw classid 1:749
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:2262 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:2262 classid 1:74a htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:2262 classid 1:74b htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:2262 classid 1:74c htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:2262 classid 1:74d htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:2262 classid 1:74e htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:2262 classid 1:74f htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:2262 classid 1:750 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:2262 classid 1:751 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:2262 classid 1:752 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 22630 fw classid 1:74a
-tc filter add dev eth0 protocol ip parent 1: handle 22631 fw classid 1:74b
-tc filter add dev eth0 protocol ip parent 1: handle 22632 fw classid 1:74c
-tc filter add dev eth0 protocol ip parent 1: handle 22633 fw classid 1:74d
-tc filter add dev eth0 protocol ip parent 1: handle 22634 fw classid 1:74e
-tc filter add dev eth0 protocol ip parent 1: handle 22635 fw classid 1:74f
-tc filter add dev eth0 protocol ip parent 1: handle 22636 fw classid 1:750
-tc filter add dev eth0 protocol ip parent 1: handle 22637 fw classid 1:751
-tc filter add dev eth0 protocol ip parent 1: handle 22638 fw classid 1:752
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.144 -p udp --sport 10000:30000 -j MARK --set-mark 22620
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.144 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.144 -p udp --dport 10000:30000 -j MARK --set-mark 22630
@@ -11692,56 +6492,6 @@ iptables -F 172.16.0.145_i
 iptables -F 172.16.0.145_o
 iptables -A FORWARD -s 172.16.0.145 -j 172.16.0.145_o
 iptables -A FORWARD -d 172.16.0.145 -j 172.16.0.145_i
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:3651 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:3651 classid 1:753 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:3651 classid 1:754 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:3651 classid 1:755 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:3651 classid 1:756 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:3651 classid 1:757 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:3651 classid 1:758 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:3651 classid 1:759 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:3651 classid 1:75a htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:3651 classid 1:75b htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 36520 fw classid 1:753
-tc filter add dev br2 protocol ip parent 1: handle 36521 fw classid 1:754
-tc filter add dev br2 protocol ip parent 1: handle 36522 fw classid 1:755
-tc filter add dev br2 protocol ip parent 1: handle 36523 fw classid 1:756
-tc filter add dev br2 protocol ip parent 1: handle 36524 fw classid 1:757
-tc filter add dev br2 protocol ip parent 1: handle 36525 fw classid 1:758
-tc filter add dev br2 protocol ip parent 1: handle 36526 fw classid 1:759
-tc filter add dev br2 protocol ip parent 1: handle 36527 fw classid 1:75a
-tc filter add dev br2 protocol ip parent 1: handle 36528 fw classid 1:75b
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:3652 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:3652 classid 1:75c htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:3652 classid 1:75d htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:3652 classid 1:75e htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:3652 classid 1:75f htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:3652 classid 1:760 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:3652 classid 1:761 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:3652 classid 1:762 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:3652 classid 1:763 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:3652 classid 1:764 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 36530 fw classid 1:75c
-tc filter add dev eth0 protocol ip parent 1: handle 36531 fw classid 1:75d
-tc filter add dev eth0 protocol ip parent 1: handle 36532 fw classid 1:75e
-tc filter add dev eth0 protocol ip parent 1: handle 36533 fw classid 1:75f
-tc filter add dev eth0 protocol ip parent 1: handle 36534 fw classid 1:760
-tc filter add dev eth0 protocol ip parent 1: handle 36535 fw classid 1:761
-tc filter add dev eth0 protocol ip parent 1: handle 36536 fw classid 1:762
-tc filter add dev eth0 protocol ip parent 1: handle 36537 fw classid 1:763
-tc filter add dev eth0 protocol ip parent 1: handle 36538 fw classid 1:764
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.145 -p udp --sport 10000:30000 -j MARK --set-mark 36520
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.145 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.145 -p udp --dport 10000:30000 -j MARK --set-mark 36530
@@ -11802,56 +6552,6 @@ iptables -F 172.16.0.146_i
 iptables -F 172.16.0.146_o
 iptables -A FORWARD -s 172.16.0.146 -j 172.16.0.146_o
 iptables -A FORWARD -d 172.16.0.146 -j 172.16.0.146_i
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:3841 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:3841 classid 1:765 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:3841 classid 1:766 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:3841 classid 1:767 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:3841 classid 1:768 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:3841 classid 1:769 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:3841 classid 1:76a htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:3841 classid 1:76b htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:3841 classid 1:76c htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:3841 classid 1:76d htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 38420 fw classid 1:765
-tc filter add dev br2 protocol ip parent 1: handle 38421 fw classid 1:766
-tc filter add dev br2 protocol ip parent 1: handle 38422 fw classid 1:767
-tc filter add dev br2 protocol ip parent 1: handle 38423 fw classid 1:768
-tc filter add dev br2 protocol ip parent 1: handle 38424 fw classid 1:769
-tc filter add dev br2 protocol ip parent 1: handle 38425 fw classid 1:76a
-tc filter add dev br2 protocol ip parent 1: handle 38426 fw classid 1:76b
-tc filter add dev br2 protocol ip parent 1: handle 38427 fw classid 1:76c
-tc filter add dev br2 protocol ip parent 1: handle 38428 fw classid 1:76d
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:3842 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:3842 classid 1:76e htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:3842 classid 1:76f htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:3842 classid 1:770 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:3842 classid 1:771 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:3842 classid 1:772 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:3842 classid 1:773 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:3842 classid 1:774 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:3842 classid 1:775 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:3842 classid 1:776 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 38430 fw classid 1:76e
-tc filter add dev eth0 protocol ip parent 1: handle 38431 fw classid 1:76f
-tc filter add dev eth0 protocol ip parent 1: handle 38432 fw classid 1:770
-tc filter add dev eth0 protocol ip parent 1: handle 38433 fw classid 1:771
-tc filter add dev eth0 protocol ip parent 1: handle 38434 fw classid 1:772
-tc filter add dev eth0 protocol ip parent 1: handle 38435 fw classid 1:773
-tc filter add dev eth0 protocol ip parent 1: handle 38436 fw classid 1:774
-tc filter add dev eth0 protocol ip parent 1: handle 38437 fw classid 1:775
-tc filter add dev eth0 protocol ip parent 1: handle 38438 fw classid 1:776
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.146 -p udp --sport 10000:30000 -j MARK --set-mark 38420
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.146 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.146 -p udp --dport 10000:30000 -j MARK --set-mark 38430
@@ -11912,56 +6612,6 @@ iptables -F 172.16.0.147_i
 iptables -F 172.16.0.147_o
 iptables -A FORWARD -s 172.16.0.147 -j 172.16.0.147_o
 iptables -A FORWARD -d 172.16.0.147 -j 172.16.0.147_i
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:3531 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:3531 classid 1:777 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:3531 classid 1:778 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:3531 classid 1:779 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:3531 classid 1:77a htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:3531 classid 1:77b htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:3531 classid 1:77c htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:3531 classid 1:77d htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:3531 classid 1:77e htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:3531 classid 1:77f htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 35320 fw classid 1:777
-tc filter add dev br2 protocol ip parent 1: handle 35321 fw classid 1:778
-tc filter add dev br2 protocol ip parent 1: handle 35322 fw classid 1:779
-tc filter add dev br2 protocol ip parent 1: handle 35323 fw classid 1:77a
-tc filter add dev br2 protocol ip parent 1: handle 35324 fw classid 1:77b
-tc filter add dev br2 protocol ip parent 1: handle 35325 fw classid 1:77c
-tc filter add dev br2 protocol ip parent 1: handle 35326 fw classid 1:77d
-tc filter add dev br2 protocol ip parent 1: handle 35327 fw classid 1:77e
-tc filter add dev br2 protocol ip parent 1: handle 35328 fw classid 1:77f
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:3532 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:3532 classid 1:780 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:3532 classid 1:781 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:3532 classid 1:782 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:3532 classid 1:783 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:3532 classid 1:784 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:3532 classid 1:785 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:3532 classid 1:786 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:3532 classid 1:787 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:3532 classid 1:788 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 35330 fw classid 1:780
-tc filter add dev eth0 protocol ip parent 1: handle 35331 fw classid 1:781
-tc filter add dev eth0 protocol ip parent 1: handle 35332 fw classid 1:782
-tc filter add dev eth0 protocol ip parent 1: handle 35333 fw classid 1:783
-tc filter add dev eth0 protocol ip parent 1: handle 35334 fw classid 1:784
-tc filter add dev eth0 protocol ip parent 1: handle 35335 fw classid 1:785
-tc filter add dev eth0 protocol ip parent 1: handle 35336 fw classid 1:786
-tc filter add dev eth0 protocol ip parent 1: handle 35337 fw classid 1:787
-tc filter add dev eth0 protocol ip parent 1: handle 35338 fw classid 1:788
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.147 -p udp --sport 10000:30000 -j MARK --set-mark 35320
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.147 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.147 -p udp --dport 10000:30000 -j MARK --set-mark 35330
@@ -12022,56 +6672,6 @@ iptables -F 172.16.0.148_i
 iptables -F 172.16.0.148_o
 iptables -A FORWARD -s 172.16.0.148 -j 172.16.0.148_o
 iptables -A FORWARD -d 172.16.0.148 -j 172.16.0.148_i
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:3411 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:3411 classid 1:789 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:3411 classid 1:78a htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:3411 classid 1:78b htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:3411 classid 1:78c htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:3411 classid 1:78d htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:3411 classid 1:78e htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:3411 classid 1:78f htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:3411 classid 1:790 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:3411 classid 1:791 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 34120 fw classid 1:789
-tc filter add dev br2 protocol ip parent 1: handle 34121 fw classid 1:78a
-tc filter add dev br2 protocol ip parent 1: handle 34122 fw classid 1:78b
-tc filter add dev br2 protocol ip parent 1: handle 34123 fw classid 1:78c
-tc filter add dev br2 protocol ip parent 1: handle 34124 fw classid 1:78d
-tc filter add dev br2 protocol ip parent 1: handle 34125 fw classid 1:78e
-tc filter add dev br2 protocol ip parent 1: handle 34126 fw classid 1:78f
-tc filter add dev br2 protocol ip parent 1: handle 34127 fw classid 1:790
-tc filter add dev br2 protocol ip parent 1: handle 34128 fw classid 1:791
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:3412 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:3412 classid 1:792 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:3412 classid 1:793 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:3412 classid 1:794 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:3412 classid 1:795 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:3412 classid 1:796 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:3412 classid 1:797 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:3412 classid 1:798 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:3412 classid 1:799 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:3412 classid 1:79a htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 34130 fw classid 1:792
-tc filter add dev eth0 protocol ip parent 1: handle 34131 fw classid 1:793
-tc filter add dev eth0 protocol ip parent 1: handle 34132 fw classid 1:794
-tc filter add dev eth0 protocol ip parent 1: handle 34133 fw classid 1:795
-tc filter add dev eth0 protocol ip parent 1: handle 34134 fw classid 1:796
-tc filter add dev eth0 protocol ip parent 1: handle 34135 fw classid 1:797
-tc filter add dev eth0 protocol ip parent 1: handle 34136 fw classid 1:798
-tc filter add dev eth0 protocol ip parent 1: handle 34137 fw classid 1:799
-tc filter add dev eth0 protocol ip parent 1: handle 34138 fw classid 1:79a
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.148 -p udp --sport 10000:30000 -j MARK --set-mark 34120
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.148 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.148 -p udp --dport 10000:30000 -j MARK --set-mark 34130
@@ -12132,56 +6732,6 @@ iptables -F 172.16.0.149_i
 iptables -F 172.16.0.149_o
 iptables -A FORWARD -s 172.16.0.149 -j 172.16.0.149_o
 iptables -A FORWARD -d 172.16.0.149 -j 172.16.0.149_i
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:4351 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4351 classid 1:79b htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4351 classid 1:79c htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4351 classid 1:79d htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4351 classid 1:79e htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4351 classid 1:79f htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4351 classid 1:7a0 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4351 classid 1:7a1 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4351 classid 1:7a2 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4351 classid 1:7a3 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 43520 fw classid 1:79b
-tc filter add dev br2 protocol ip parent 1: handle 43521 fw classid 1:79c
-tc filter add dev br2 protocol ip parent 1: handle 43522 fw classid 1:79d
-tc filter add dev br2 protocol ip parent 1: handle 43523 fw classid 1:79e
-tc filter add dev br2 protocol ip parent 1: handle 43524 fw classid 1:79f
-tc filter add dev br2 protocol ip parent 1: handle 43525 fw classid 1:7a0
-tc filter add dev br2 protocol ip parent 1: handle 43526 fw classid 1:7a1
-tc filter add dev br2 protocol ip parent 1: handle 43527 fw classid 1:7a2
-tc filter add dev br2 protocol ip parent 1: handle 43528 fw classid 1:7a3
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:4352 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4352 classid 1:7a4 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4352 classid 1:7a5 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4352 classid 1:7a6 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4352 classid 1:7a7 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4352 classid 1:7a8 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4352 classid 1:7a9 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4352 classid 1:7aa htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4352 classid 1:7ab htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4352 classid 1:7ac htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 43530 fw classid 1:7a4
-tc filter add dev eth0 protocol ip parent 1: handle 43531 fw classid 1:7a5
-tc filter add dev eth0 protocol ip parent 1: handle 43532 fw classid 1:7a6
-tc filter add dev eth0 protocol ip parent 1: handle 43533 fw classid 1:7a7
-tc filter add dev eth0 protocol ip parent 1: handle 43534 fw classid 1:7a8
-tc filter add dev eth0 protocol ip parent 1: handle 43535 fw classid 1:7a9
-tc filter add dev eth0 protocol ip parent 1: handle 43536 fw classid 1:7aa
-tc filter add dev eth0 protocol ip parent 1: handle 43537 fw classid 1:7ab
-tc filter add dev eth0 protocol ip parent 1: handle 43538 fw classid 1:7ac
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.149 -p udp --sport 10000:30000 -j MARK --set-mark 43520
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.149 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.149 -p udp --dport 10000:30000 -j MARK --set-mark 43530
@@ -12242,56 +6792,6 @@ iptables -F 172.16.0.150_i
 iptables -F 172.16.0.150_o
 iptables -A FORWARD -s 172.16.0.150 -j 172.16.0.150_o
 iptables -A FORWARD -d 172.16.0.150 -j 172.16.0.150_i
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:2251 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:2251 classid 1:7ad htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:2251 classid 1:7ae htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:2251 classid 1:7af htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:2251 classid 1:7b0 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:2251 classid 1:7b1 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:2251 classid 1:7b2 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:2251 classid 1:7b3 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:2251 classid 1:7b4 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:2251 classid 1:7b5 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 22520 fw classid 1:7ad
-tc filter add dev br2 protocol ip parent 1: handle 22521 fw classid 1:7ae
-tc filter add dev br2 protocol ip parent 1: handle 22522 fw classid 1:7af
-tc filter add dev br2 protocol ip parent 1: handle 22523 fw classid 1:7b0
-tc filter add dev br2 protocol ip parent 1: handle 22524 fw classid 1:7b1
-tc filter add dev br2 protocol ip parent 1: handle 22525 fw classid 1:7b2
-tc filter add dev br2 protocol ip parent 1: handle 22526 fw classid 1:7b3
-tc filter add dev br2 protocol ip parent 1: handle 22527 fw classid 1:7b4
-tc filter add dev br2 protocol ip parent 1: handle 22528 fw classid 1:7b5
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:2252 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:2252 classid 1:7b6 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:2252 classid 1:7b7 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:2252 classid 1:7b8 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:2252 classid 1:7b9 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:2252 classid 1:7ba htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:2252 classid 1:7bb htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:2252 classid 1:7bc htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:2252 classid 1:7bd htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:2252 classid 1:7be htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 22530 fw classid 1:7b6
-tc filter add dev eth0 protocol ip parent 1: handle 22531 fw classid 1:7b7
-tc filter add dev eth0 protocol ip parent 1: handle 22532 fw classid 1:7b8
-tc filter add dev eth0 protocol ip parent 1: handle 22533 fw classid 1:7b9
-tc filter add dev eth0 protocol ip parent 1: handle 22534 fw classid 1:7ba
-tc filter add dev eth0 protocol ip parent 1: handle 22535 fw classid 1:7bb
-tc filter add dev eth0 protocol ip parent 1: handle 22536 fw classid 1:7bc
-tc filter add dev eth0 protocol ip parent 1: handle 22537 fw classid 1:7bd
-tc filter add dev eth0 protocol ip parent 1: handle 22538 fw classid 1:7be
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.150 -p udp --sport 10000:30000 -j MARK --set-mark 22520
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.150 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.150 -p udp --dport 10000:30000 -j MARK --set-mark 22530
@@ -12352,56 +6852,6 @@ iptables -F 172.16.0.151_i
 iptables -F 172.16.0.151_o
 iptables -A FORWARD -s 172.16.0.151 -j 172.16.0.151_o
 iptables -A FORWARD -d 172.16.0.151 -j 172.16.0.151_i
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:1801 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:1801 classid 1:7bf htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:1801 classid 1:7c0 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:1801 classid 1:7c1 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:1801 classid 1:7c2 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:1801 classid 1:7c3 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:1801 classid 1:7c4 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:1801 classid 1:7c5 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:1801 classid 1:7c6 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:1801 classid 1:7c7 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 18020 fw classid 1:7bf
-tc filter add dev br2 protocol ip parent 1: handle 18021 fw classid 1:7c0
-tc filter add dev br2 protocol ip parent 1: handle 18022 fw classid 1:7c1
-tc filter add dev br2 protocol ip parent 1: handle 18023 fw classid 1:7c2
-tc filter add dev br2 protocol ip parent 1: handle 18024 fw classid 1:7c3
-tc filter add dev br2 protocol ip parent 1: handle 18025 fw classid 1:7c4
-tc filter add dev br2 protocol ip parent 1: handle 18026 fw classid 1:7c5
-tc filter add dev br2 protocol ip parent 1: handle 18027 fw classid 1:7c6
-tc filter add dev br2 protocol ip parent 1: handle 18028 fw classid 1:7c7
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:1802 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:1802 classid 1:7c8 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:1802 classid 1:7c9 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:1802 classid 1:7ca htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:1802 classid 1:7cb htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:1802 classid 1:7cc htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:1802 classid 1:7cd htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:1802 classid 1:7ce htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:1802 classid 1:7cf htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:1802 classid 1:7d0 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 18030 fw classid 1:7c8
-tc filter add dev eth0 protocol ip parent 1: handle 18031 fw classid 1:7c9
-tc filter add dev eth0 protocol ip parent 1: handle 18032 fw classid 1:7ca
-tc filter add dev eth0 protocol ip parent 1: handle 18033 fw classid 1:7cb
-tc filter add dev eth0 protocol ip parent 1: handle 18034 fw classid 1:7cc
-tc filter add dev eth0 protocol ip parent 1: handle 18035 fw classid 1:7cd
-tc filter add dev eth0 protocol ip parent 1: handle 18036 fw classid 1:7ce
-tc filter add dev eth0 protocol ip parent 1: handle 18037 fw classid 1:7cf
-tc filter add dev eth0 protocol ip parent 1: handle 18038 fw classid 1:7d0
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.151 -p udp --sport 10000:30000 -j MARK --set-mark 18020
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.151 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.151 -p udp --dport 10000:30000 -j MARK --set-mark 18030
@@ -12462,56 +6912,6 @@ iptables -F 172.16.0.152_i
 iptables -F 172.16.0.152_o
 iptables -A FORWARD -s 172.16.0.152 -j 172.16.0.152_o
 iptables -A FORWARD -d 172.16.0.152 -j 172.16.0.152_i
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:2981 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:2981 classid 1:7d1 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:2981 classid 1:7d2 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:2981 classid 1:7d3 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:2981 classid 1:7d4 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:2981 classid 1:7d5 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:2981 classid 1:7d6 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:2981 classid 1:7d7 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:2981 classid 1:7d8 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:2981 classid 1:7d9 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 29820 fw classid 1:7d1
-tc filter add dev br2 protocol ip parent 1: handle 29821 fw classid 1:7d2
-tc filter add dev br2 protocol ip parent 1: handle 29822 fw classid 1:7d3
-tc filter add dev br2 protocol ip parent 1: handle 29823 fw classid 1:7d4
-tc filter add dev br2 protocol ip parent 1: handle 29824 fw classid 1:7d5
-tc filter add dev br2 protocol ip parent 1: handle 29825 fw classid 1:7d6
-tc filter add dev br2 protocol ip parent 1: handle 29826 fw classid 1:7d7
-tc filter add dev br2 protocol ip parent 1: handle 29827 fw classid 1:7d8
-tc filter add dev br2 protocol ip parent 1: handle 29828 fw classid 1:7d9
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:2982 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:2982 classid 1:7da htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:2982 classid 1:7db htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:2982 classid 1:7dc htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:2982 classid 1:7dd htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:2982 classid 1:7de htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:2982 classid 1:7df htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:2982 classid 1:7e0 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:2982 classid 1:7e1 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:2982 classid 1:7e2 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 29830 fw classid 1:7da
-tc filter add dev eth0 protocol ip parent 1: handle 29831 fw classid 1:7db
-tc filter add dev eth0 protocol ip parent 1: handle 29832 fw classid 1:7dc
-tc filter add dev eth0 protocol ip parent 1: handle 29833 fw classid 1:7dd
-tc filter add dev eth0 protocol ip parent 1: handle 29834 fw classid 1:7de
-tc filter add dev eth0 protocol ip parent 1: handle 29835 fw classid 1:7df
-tc filter add dev eth0 protocol ip parent 1: handle 29836 fw classid 1:7e0
-tc filter add dev eth0 protocol ip parent 1: handle 29837 fw classid 1:7e1
-tc filter add dev eth0 protocol ip parent 1: handle 29838 fw classid 1:7e2
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.152 -p udp --sport 10000:30000 -j MARK --set-mark 29820
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.152 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.152 -p udp --dport 10000:30000 -j MARK --set-mark 29830
@@ -12572,56 +6972,6 @@ iptables -F 172.16.0.66_i
 iptables -F 172.16.0.66_o
 iptables -A FORWARD -s 172.16.0.66 -j 172.16.0.66_o
 iptables -A FORWARD -d 172.16.0.66 -j 172.16.0.66_i
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:5001 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:5001 classid 1:7e3 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:5001 classid 1:7e4 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:5001 classid 1:7e5 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:5001 classid 1:7e6 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:5001 classid 1:7e7 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:5001 classid 1:7e8 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:5001 classid 1:7e9 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:5001 classid 1:7ea htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:5001 classid 1:7eb htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 50020 fw classid 1:7e3
-tc filter add dev br2 protocol ip parent 1: handle 50021 fw classid 1:7e4
-tc filter add dev br2 protocol ip parent 1: handle 50022 fw classid 1:7e5
-tc filter add dev br2 protocol ip parent 1: handle 50023 fw classid 1:7e6
-tc filter add dev br2 protocol ip parent 1: handle 50024 fw classid 1:7e7
-tc filter add dev br2 protocol ip parent 1: handle 50025 fw classid 1:7e8
-tc filter add dev br2 protocol ip parent 1: handle 50026 fw classid 1:7e9
-tc filter add dev br2 protocol ip parent 1: handle 50027 fw classid 1:7ea
-tc filter add dev br2 protocol ip parent 1: handle 50028 fw classid 1:7eb
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:5002 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:5002 classid 1:7ec htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:5002 classid 1:7ed htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:5002 classid 1:7ee htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:5002 classid 1:7ef htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:5002 classid 1:7f0 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:5002 classid 1:7f1 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:5002 classid 1:7f2 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:5002 classid 1:7f3 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:5002 classid 1:7f4 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 50030 fw classid 1:7ec
-tc filter add dev eth0 protocol ip parent 1: handle 50031 fw classid 1:7ed
-tc filter add dev eth0 protocol ip parent 1: handle 50032 fw classid 1:7ee
-tc filter add dev eth0 protocol ip parent 1: handle 50033 fw classid 1:7ef
-tc filter add dev eth0 protocol ip parent 1: handle 50034 fw classid 1:7f0
-tc filter add dev eth0 protocol ip parent 1: handle 50035 fw classid 1:7f1
-tc filter add dev eth0 protocol ip parent 1: handle 50036 fw classid 1:7f2
-tc filter add dev eth0 protocol ip parent 1: handle 50037 fw classid 1:7f3
-tc filter add dev eth0 protocol ip parent 1: handle 50038 fw classid 1:7f4
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.66 -p udp --sport 10000:30000 -j MARK --set-mark 50020
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.66 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.66 -p udp --dport 10000:30000 -j MARK --set-mark 50030
@@ -12682,56 +7032,6 @@ iptables -F 172.16.0.153_i
 iptables -F 172.16.0.153_o
 iptables -A FORWARD -s 172.16.0.153 -j 172.16.0.153_o
 iptables -A FORWARD -d 172.16.0.153 -j 172.16.0.153_i
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:4641 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4641 classid 1:7f5 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4641 classid 1:7f6 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4641 classid 1:7f7 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4641 classid 1:7f8 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4641 classid 1:7f9 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4641 classid 1:7fa htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4641 classid 1:7fb htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4641 classid 1:7fc htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4641 classid 1:7fd htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 46420 fw classid 1:7f5
-tc filter add dev br2 protocol ip parent 1: handle 46421 fw classid 1:7f6
-tc filter add dev br2 protocol ip parent 1: handle 46422 fw classid 1:7f7
-tc filter add dev br2 protocol ip parent 1: handle 46423 fw classid 1:7f8
-tc filter add dev br2 protocol ip parent 1: handle 46424 fw classid 1:7f9
-tc filter add dev br2 protocol ip parent 1: handle 46425 fw classid 1:7fa
-tc filter add dev br2 protocol ip parent 1: handle 46426 fw classid 1:7fb
-tc filter add dev br2 protocol ip parent 1: handle 46427 fw classid 1:7fc
-tc filter add dev br2 protocol ip parent 1: handle 46428 fw classid 1:7fd
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:4642 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4642 classid 1:7fe htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4642 classid 1:7ff htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4642 classid 1:800 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4642 classid 1:801 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4642 classid 1:802 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4642 classid 1:803 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4642 classid 1:804 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4642 classid 1:805 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4642 classid 1:806 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 46430 fw classid 1:7fe
-tc filter add dev eth0 protocol ip parent 1: handle 46431 fw classid 1:7ff
-tc filter add dev eth0 protocol ip parent 1: handle 46432 fw classid 1:800
-tc filter add dev eth0 protocol ip parent 1: handle 46433 fw classid 1:801
-tc filter add dev eth0 protocol ip parent 1: handle 46434 fw classid 1:802
-tc filter add dev eth0 protocol ip parent 1: handle 46435 fw classid 1:803
-tc filter add dev eth0 protocol ip parent 1: handle 46436 fw classid 1:804
-tc filter add dev eth0 protocol ip parent 1: handle 46437 fw classid 1:805
-tc filter add dev eth0 protocol ip parent 1: handle 46438 fw classid 1:806
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.153 -p udp --sport 10000:30000 -j MARK --set-mark 46420
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.153 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.153 -p udp --dport 10000:30000 -j MARK --set-mark 46430
@@ -12792,56 +7092,6 @@ iptables -F 172.16.0.154_i
 iptables -F 172.16.0.154_o
 iptables -A FORWARD -s 172.16.0.154 -j 172.16.0.154_o
 iptables -A FORWARD -d 172.16.0.154 -j 172.16.0.154_i
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:4601 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4601 classid 1:807 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4601 classid 1:808 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4601 classid 1:809 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4601 classid 1:80a htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4601 classid 1:80b htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4601 classid 1:80c htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4601 classid 1:80d htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4601 classid 1:80e htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4601 classid 1:80f htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 46020 fw classid 1:807
-tc filter add dev br2 protocol ip parent 1: handle 46021 fw classid 1:808
-tc filter add dev br2 protocol ip parent 1: handle 46022 fw classid 1:809
-tc filter add dev br2 protocol ip parent 1: handle 46023 fw classid 1:80a
-tc filter add dev br2 protocol ip parent 1: handle 46024 fw classid 1:80b
-tc filter add dev br2 protocol ip parent 1: handle 46025 fw classid 1:80c
-tc filter add dev br2 protocol ip parent 1: handle 46026 fw classid 1:80d
-tc filter add dev br2 protocol ip parent 1: handle 46027 fw classid 1:80e
-tc filter add dev br2 protocol ip parent 1: handle 46028 fw classid 1:80f
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:4602 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4602 classid 1:810 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4602 classid 1:811 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4602 classid 1:812 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4602 classid 1:813 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4602 classid 1:814 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4602 classid 1:815 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4602 classid 1:816 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4602 classid 1:817 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4602 classid 1:818 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 46030 fw classid 1:810
-tc filter add dev eth0 protocol ip parent 1: handle 46031 fw classid 1:811
-tc filter add dev eth0 protocol ip parent 1: handle 46032 fw classid 1:812
-tc filter add dev eth0 protocol ip parent 1: handle 46033 fw classid 1:813
-tc filter add dev eth0 protocol ip parent 1: handle 46034 fw classid 1:814
-tc filter add dev eth0 protocol ip parent 1: handle 46035 fw classid 1:815
-tc filter add dev eth0 protocol ip parent 1: handle 46036 fw classid 1:816
-tc filter add dev eth0 protocol ip parent 1: handle 46037 fw classid 1:817
-tc filter add dev eth0 protocol ip parent 1: handle 46038 fw classid 1:818
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.154 -p udp --sport 10000:30000 -j MARK --set-mark 46020
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.154 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.154 -p udp --dport 10000:30000 -j MARK --set-mark 46030
@@ -12904,56 +7154,6 @@ iptables -A FORWARD -s 172.16.0.11 -j 172.16.0.11_o
 iptables -A FORWARD -d 172.16.0.11 -j 172.16.0.11_i
 iptables -A FORWARD -s 172.16.0.11 -m mac --mac-source 00:80:f0:d1:d2:3b -j ACCEPT
 iptables -A FORWARD -d 172.16.0.11 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:4941 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4941 classid 1:819 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4941 classid 1:81a htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4941 classid 1:81b htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4941 classid 1:81c htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4941 classid 1:81d htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4941 classid 1:81e htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4941 classid 1:81f htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4941 classid 1:820 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4941 classid 1:821 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 49420 fw classid 1:819
-tc filter add dev br2 protocol ip parent 1: handle 49421 fw classid 1:81a
-tc filter add dev br2 protocol ip parent 1: handle 49422 fw classid 1:81b
-tc filter add dev br2 protocol ip parent 1: handle 49423 fw classid 1:81c
-tc filter add dev br2 protocol ip parent 1: handle 49424 fw classid 1:81d
-tc filter add dev br2 protocol ip parent 1: handle 49425 fw classid 1:81e
-tc filter add dev br2 protocol ip parent 1: handle 49426 fw classid 1:81f
-tc filter add dev br2 protocol ip parent 1: handle 49427 fw classid 1:820
-tc filter add dev br2 protocol ip parent 1: handle 49428 fw classid 1:821
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:4942 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4942 classid 1:822 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4942 classid 1:823 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4942 classid 1:824 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4942 classid 1:825 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4942 classid 1:826 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4942 classid 1:827 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4942 classid 1:828 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4942 classid 1:829 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4942 classid 1:82a htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 49430 fw classid 1:822
-tc filter add dev eth0 protocol ip parent 1: handle 49431 fw classid 1:823
-tc filter add dev eth0 protocol ip parent 1: handle 49432 fw classid 1:824
-tc filter add dev eth0 protocol ip parent 1: handle 49433 fw classid 1:825
-tc filter add dev eth0 protocol ip parent 1: handle 49434 fw classid 1:826
-tc filter add dev eth0 protocol ip parent 1: handle 49435 fw classid 1:827
-tc filter add dev eth0 protocol ip parent 1: handle 49436 fw classid 1:828
-tc filter add dev eth0 protocol ip parent 1: handle 49437 fw classid 1:829
-tc filter add dev eth0 protocol ip parent 1: handle 49438 fw classid 1:82a
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.11 -p udp --sport 10000:30000 -j MARK --set-mark 49420
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.11 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.11 -p udp --dport 10000:30000 -j MARK --set-mark 49430
@@ -13016,56 +7216,6 @@ iptables -A FORWARD -s 172.16.0.80 -j 172.16.0.80_o
 iptables -A FORWARD -d 172.16.0.80 -j 172.16.0.80_i
 iptables -A FORWARD -s 172.16.0.80 -m mac --mac-source 00:0b:82:11:b9:2d -j ACCEPT
 iptables -A FORWARD -d 172.16.0.80 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:3481 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:3481 classid 1:82b htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:3481 classid 1:82c htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:3481 classid 1:82d htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:3481 classid 1:82e htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:3481 classid 1:82f htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:3481 classid 1:830 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:3481 classid 1:831 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:3481 classid 1:832 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:3481 classid 1:833 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 34820 fw classid 1:82b
-tc filter add dev br2 protocol ip parent 1: handle 34821 fw classid 1:82c
-tc filter add dev br2 protocol ip parent 1: handle 34822 fw classid 1:82d
-tc filter add dev br2 protocol ip parent 1: handle 34823 fw classid 1:82e
-tc filter add dev br2 protocol ip parent 1: handle 34824 fw classid 1:82f
-tc filter add dev br2 protocol ip parent 1: handle 34825 fw classid 1:830
-tc filter add dev br2 protocol ip parent 1: handle 34826 fw classid 1:831
-tc filter add dev br2 protocol ip parent 1: handle 34827 fw classid 1:832
-tc filter add dev br2 protocol ip parent 1: handle 34828 fw classid 1:833
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:3482 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:3482 classid 1:834 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:3482 classid 1:835 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:3482 classid 1:836 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:3482 classid 1:837 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:3482 classid 1:838 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:3482 classid 1:839 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:3482 classid 1:83a htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:3482 classid 1:83b htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:3482 classid 1:83c htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 34830 fw classid 1:834
-tc filter add dev eth0 protocol ip parent 1: handle 34831 fw classid 1:835
-tc filter add dev eth0 protocol ip parent 1: handle 34832 fw classid 1:836
-tc filter add dev eth0 protocol ip parent 1: handle 34833 fw classid 1:837
-tc filter add dev eth0 protocol ip parent 1: handle 34834 fw classid 1:838
-tc filter add dev eth0 protocol ip parent 1: handle 34835 fw classid 1:839
-tc filter add dev eth0 protocol ip parent 1: handle 34836 fw classid 1:83a
-tc filter add dev eth0 protocol ip parent 1: handle 34837 fw classid 1:83b
-tc filter add dev eth0 protocol ip parent 1: handle 34838 fw classid 1:83c
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.80 -p udp --sport 10000:30000 -j MARK --set-mark 34820
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.80 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.80 -p udp --dport 10000:30000 -j MARK --set-mark 34830
@@ -13128,56 +7278,6 @@ iptables -A FORWARD -s 172.16.0.7 -j 172.16.0.7_o
 iptables -A FORWARD -d 172.16.0.7 -j 172.16.0.7_i
 iptables -A FORWARD -s 172.16.0.7 -m mac --mac-source 00:25:90:d8:e5:ac -j ACCEPT
 iptables -A FORWARD -d 172.16.0.7 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:4701 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4701 classid 1:83d htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4701 classid 1:83e htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4701 classid 1:83f htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4701 classid 1:840 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4701 classid 1:841 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4701 classid 1:842 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4701 classid 1:843 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4701 classid 1:844 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4701 classid 1:845 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 47020 fw classid 1:83d
-tc filter add dev br2 protocol ip parent 1: handle 47021 fw classid 1:83e
-tc filter add dev br2 protocol ip parent 1: handle 47022 fw classid 1:83f
-tc filter add dev br2 protocol ip parent 1: handle 47023 fw classid 1:840
-tc filter add dev br2 protocol ip parent 1: handle 47024 fw classid 1:841
-tc filter add dev br2 protocol ip parent 1: handle 47025 fw classid 1:842
-tc filter add dev br2 protocol ip parent 1: handle 47026 fw classid 1:843
-tc filter add dev br2 protocol ip parent 1: handle 47027 fw classid 1:844
-tc filter add dev br2 protocol ip parent 1: handle 47028 fw classid 1:845
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:4702 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4702 classid 1:846 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4702 classid 1:847 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4702 classid 1:848 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4702 classid 1:849 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4702 classid 1:84a htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4702 classid 1:84b htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4702 classid 1:84c htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4702 classid 1:84d htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4702 classid 1:84e htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 47030 fw classid 1:846
-tc filter add dev eth0 protocol ip parent 1: handle 47031 fw classid 1:847
-tc filter add dev eth0 protocol ip parent 1: handle 47032 fw classid 1:848
-tc filter add dev eth0 protocol ip parent 1: handle 47033 fw classid 1:849
-tc filter add dev eth0 protocol ip parent 1: handle 47034 fw classid 1:84a
-tc filter add dev eth0 protocol ip parent 1: handle 47035 fw classid 1:84b
-tc filter add dev eth0 protocol ip parent 1: handle 47036 fw classid 1:84c
-tc filter add dev eth0 protocol ip parent 1: handle 47037 fw classid 1:84d
-tc filter add dev eth0 protocol ip parent 1: handle 47038 fw classid 1:84e
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.7 -p udp --sport 10000:30000 -j MARK --set-mark 47020
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.7 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.7 -p udp --dport 10000:30000 -j MARK --set-mark 47030
@@ -13239,56 +7339,6 @@ iptables -A FORWARD -s 172.16.0.21 -j 172.16.0.21_o
 iptables -A FORWARD -d 172.16.0.21 -j 172.16.0.21_i
 iptables -A FORWARD -s 172.16.0.21 -m mac --mac-source 00:11:d8:f9:fd:73 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.21 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:4681 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4681 classid 1:84f htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4681 classid 1:850 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4681 classid 1:851 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4681 classid 1:852 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4681 classid 1:853 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4681 classid 1:854 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4681 classid 1:855 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4681 classid 1:856 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4681 classid 1:857 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 46820 fw classid 1:84f
-tc filter add dev br2 protocol ip parent 1: handle 46821 fw classid 1:850
-tc filter add dev br2 protocol ip parent 1: handle 46822 fw classid 1:851
-tc filter add dev br2 protocol ip parent 1: handle 46823 fw classid 1:852
-tc filter add dev br2 protocol ip parent 1: handle 46824 fw classid 1:853
-tc filter add dev br2 protocol ip parent 1: handle 46825 fw classid 1:854
-tc filter add dev br2 protocol ip parent 1: handle 46826 fw classid 1:855
-tc filter add dev br2 protocol ip parent 1: handle 46827 fw classid 1:856
-tc filter add dev br2 protocol ip parent 1: handle 46828 fw classid 1:857
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:4682 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4682 classid 1:858 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4682 classid 1:859 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4682 classid 1:85a htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4682 classid 1:85b htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4682 classid 1:85c htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4682 classid 1:85d htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4682 classid 1:85e htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4682 classid 1:85f htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4682 classid 1:860 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 46830 fw classid 1:858
-tc filter add dev eth0 protocol ip parent 1: handle 46831 fw classid 1:859
-tc filter add dev eth0 protocol ip parent 1: handle 46832 fw classid 1:85a
-tc filter add dev eth0 protocol ip parent 1: handle 46833 fw classid 1:85b
-tc filter add dev eth0 protocol ip parent 1: handle 46834 fw classid 1:85c
-tc filter add dev eth0 protocol ip parent 1: handle 46835 fw classid 1:85d
-tc filter add dev eth0 protocol ip parent 1: handle 46836 fw classid 1:85e
-tc filter add dev eth0 protocol ip parent 1: handle 46837 fw classid 1:85f
-tc filter add dev eth0 protocol ip parent 1: handle 46838 fw classid 1:860
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.21 -p udp --sport 10000:30000 -j MARK --set-mark 46820
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.21 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.21 -p udp --dport 10000:30000 -j MARK --set-mark 46830
@@ -13350,56 +7400,6 @@ iptables -A FORWARD -s 172.16.0.14 -j 172.16.0.14_o
 iptables -A FORWARD -d 172.16.0.14 -j 172.16.0.14_i
 iptables -A FORWARD -s 172.16.0.14 -m mac --mac-source 70:71:bc:72:72:c6 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.14 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:4751 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4751 classid 1:861 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4751 classid 1:862 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4751 classid 1:863 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4751 classid 1:864 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4751 classid 1:865 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4751 classid 1:866 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4751 classid 1:867 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4751 classid 1:868 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4751 classid 1:869 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 47520 fw classid 1:861
-tc filter add dev br2 protocol ip parent 1: handle 47521 fw classid 1:862
-tc filter add dev br2 protocol ip parent 1: handle 47522 fw classid 1:863
-tc filter add dev br2 protocol ip parent 1: handle 47523 fw classid 1:864
-tc filter add dev br2 protocol ip parent 1: handle 47524 fw classid 1:865
-tc filter add dev br2 protocol ip parent 1: handle 47525 fw classid 1:866
-tc filter add dev br2 protocol ip parent 1: handle 47526 fw classid 1:867
-tc filter add dev br2 protocol ip parent 1: handle 47527 fw classid 1:868
-tc filter add dev br2 protocol ip parent 1: handle 47528 fw classid 1:869
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:4752 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4752 classid 1:86a htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4752 classid 1:86b htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4752 classid 1:86c htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4752 classid 1:86d htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4752 classid 1:86e htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4752 classid 1:86f htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4752 classid 1:870 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4752 classid 1:871 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4752 classid 1:872 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 47530 fw classid 1:86a
-tc filter add dev eth0 protocol ip parent 1: handle 47531 fw classid 1:86b
-tc filter add dev eth0 protocol ip parent 1: handle 47532 fw classid 1:86c
-tc filter add dev eth0 protocol ip parent 1: handle 47533 fw classid 1:86d
-tc filter add dev eth0 protocol ip parent 1: handle 47534 fw classid 1:86e
-tc filter add dev eth0 protocol ip parent 1: handle 47535 fw classid 1:86f
-tc filter add dev eth0 protocol ip parent 1: handle 47536 fw classid 1:870
-tc filter add dev eth0 protocol ip parent 1: handle 47537 fw classid 1:871
-tc filter add dev eth0 protocol ip parent 1: handle 47538 fw classid 1:872
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.14 -p udp --sport 10000:30000 -j MARK --set-mark 47520
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.14 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.14 -p udp --dport 10000:30000 -j MARK --set-mark 47530
@@ -13461,56 +7461,6 @@ iptables -A FORWARD -s 172.16.0.24 -j 172.16.0.24_o
 iptables -A FORWARD -d 172.16.0.24 -j 172.16.0.24_i
 iptables -A FORWARD -s 172.16.0.24 -m mac --mac-source 00:24:e8:84:06:21 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.24 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:4671 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4671 classid 1:873 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4671 classid 1:874 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4671 classid 1:875 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4671 classid 1:876 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4671 classid 1:877 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4671 classid 1:878 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4671 classid 1:879 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4671 classid 1:87a htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4671 classid 1:87b htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 46720 fw classid 1:873
-tc filter add dev br2 protocol ip parent 1: handle 46721 fw classid 1:874
-tc filter add dev br2 protocol ip parent 1: handle 46722 fw classid 1:875
-tc filter add dev br2 protocol ip parent 1: handle 46723 fw classid 1:876
-tc filter add dev br2 protocol ip parent 1: handle 46724 fw classid 1:877
-tc filter add dev br2 protocol ip parent 1: handle 46725 fw classid 1:878
-tc filter add dev br2 protocol ip parent 1: handle 46726 fw classid 1:879
-tc filter add dev br2 protocol ip parent 1: handle 46727 fw classid 1:87a
-tc filter add dev br2 protocol ip parent 1: handle 46728 fw classid 1:87b
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:4672 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4672 classid 1:87c htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4672 classid 1:87d htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4672 classid 1:87e htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4672 classid 1:87f htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4672 classid 1:880 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4672 classid 1:881 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4672 classid 1:882 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4672 classid 1:883 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4672 classid 1:884 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 46730 fw classid 1:87c
-tc filter add dev eth0 protocol ip parent 1: handle 46731 fw classid 1:87d
-tc filter add dev eth0 protocol ip parent 1: handle 46732 fw classid 1:87e
-tc filter add dev eth0 protocol ip parent 1: handle 46733 fw classid 1:87f
-tc filter add dev eth0 protocol ip parent 1: handle 46734 fw classid 1:880
-tc filter add dev eth0 protocol ip parent 1: handle 46735 fw classid 1:881
-tc filter add dev eth0 protocol ip parent 1: handle 46736 fw classid 1:882
-tc filter add dev eth0 protocol ip parent 1: handle 46737 fw classid 1:883
-tc filter add dev eth0 protocol ip parent 1: handle 46738 fw classid 1:884
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.24 -p udp --sport 10000:30000 -j MARK --set-mark 46720
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.24 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.24 -p udp --dport 10000:30000 -j MARK --set-mark 46730
@@ -13573,56 +7523,6 @@ iptables -A FORWARD -s 172.16.0.38 -j 172.16.0.38_o
 iptables -A FORWARD -d 172.16.0.38 -j 172.16.0.38_i
 iptables -A FORWARD -s 172.16.0.38 -m mac --mac-source 78:e4:00:d3:ee:d5 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.38 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:3961 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:3961 classid 1:885 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:3961 classid 1:886 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:3961 classid 1:887 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:3961 classid 1:888 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:3961 classid 1:889 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:3961 classid 1:88a htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:3961 classid 1:88b htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:3961 classid 1:88c htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:3961 classid 1:88d htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 39620 fw classid 1:885
-tc filter add dev br2 protocol ip parent 1: handle 39621 fw classid 1:886
-tc filter add dev br2 protocol ip parent 1: handle 39622 fw classid 1:887
-tc filter add dev br2 protocol ip parent 1: handle 39623 fw classid 1:888
-tc filter add dev br2 protocol ip parent 1: handle 39624 fw classid 1:889
-tc filter add dev br2 protocol ip parent 1: handle 39625 fw classid 1:88a
-tc filter add dev br2 protocol ip parent 1: handle 39626 fw classid 1:88b
-tc filter add dev br2 protocol ip parent 1: handle 39627 fw classid 1:88c
-tc filter add dev br2 protocol ip parent 1: handle 39628 fw classid 1:88d
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:3962 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:3962 classid 1:88e htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:3962 classid 1:88f htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:3962 classid 1:890 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:3962 classid 1:891 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:3962 classid 1:892 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:3962 classid 1:893 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:3962 classid 1:894 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:3962 classid 1:895 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:3962 classid 1:896 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 39630 fw classid 1:88e
-tc filter add dev eth0 protocol ip parent 1: handle 39631 fw classid 1:88f
-tc filter add dev eth0 protocol ip parent 1: handle 39632 fw classid 1:890
-tc filter add dev eth0 protocol ip parent 1: handle 39633 fw classid 1:891
-tc filter add dev eth0 protocol ip parent 1: handle 39634 fw classid 1:892
-tc filter add dev eth0 protocol ip parent 1: handle 39635 fw classid 1:893
-tc filter add dev eth0 protocol ip parent 1: handle 39636 fw classid 1:894
-tc filter add dev eth0 protocol ip parent 1: handle 39637 fw classid 1:895
-tc filter add dev eth0 protocol ip parent 1: handle 39638 fw classid 1:896
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.38 -p udp --sport 10000:30000 -j MARK --set-mark 39620
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.38 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.38 -p udp --dport 10000:30000 -j MARK --set-mark 39630
@@ -13685,56 +7585,6 @@ iptables -A FORWARD -s 172.16.0.201 -j 172.16.0.201_o
 iptables -A FORWARD -d 172.16.0.201 -j 172.16.0.201_i
 iptables -A FORWARD -s 172.16.0.201 -m mac --mac-source 00:80:f0:d1:d5:4e -j ACCEPT
 iptables -A FORWARD -d 172.16.0.201 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:4081 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4081 classid 1:897 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4081 classid 1:898 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4081 classid 1:899 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4081 classid 1:89a htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4081 classid 1:89b htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4081 classid 1:89c htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4081 classid 1:89d htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4081 classid 1:89e htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4081 classid 1:89f htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 40820 fw classid 1:897
-tc filter add dev br2 protocol ip parent 1: handle 40821 fw classid 1:898
-tc filter add dev br2 protocol ip parent 1: handle 40822 fw classid 1:899
-tc filter add dev br2 protocol ip parent 1: handle 40823 fw classid 1:89a
-tc filter add dev br2 protocol ip parent 1: handle 40824 fw classid 1:89b
-tc filter add dev br2 protocol ip parent 1: handle 40825 fw classid 1:89c
-tc filter add dev br2 protocol ip parent 1: handle 40826 fw classid 1:89d
-tc filter add dev br2 protocol ip parent 1: handle 40827 fw classid 1:89e
-tc filter add dev br2 protocol ip parent 1: handle 40828 fw classid 1:89f
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:4082 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4082 classid 1:8a0 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4082 classid 1:8a1 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4082 classid 1:8a2 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4082 classid 1:8a3 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4082 classid 1:8a4 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4082 classid 1:8a5 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4082 classid 1:8a6 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4082 classid 1:8a7 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4082 classid 1:8a8 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 40830 fw classid 1:8a0
-tc filter add dev eth0 protocol ip parent 1: handle 40831 fw classid 1:8a1
-tc filter add dev eth0 protocol ip parent 1: handle 40832 fw classid 1:8a2
-tc filter add dev eth0 protocol ip parent 1: handle 40833 fw classid 1:8a3
-tc filter add dev eth0 protocol ip parent 1: handle 40834 fw classid 1:8a4
-tc filter add dev eth0 protocol ip parent 1: handle 40835 fw classid 1:8a5
-tc filter add dev eth0 protocol ip parent 1: handle 40836 fw classid 1:8a6
-tc filter add dev eth0 protocol ip parent 1: handle 40837 fw classid 1:8a7
-tc filter add dev eth0 protocol ip parent 1: handle 40838 fw classid 1:8a8
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.201 -p udp --sport 10000:30000 -j MARK --set-mark 40820
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.201 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.201 -p udp --dport 10000:30000 -j MARK --set-mark 40830
@@ -13797,56 +7647,6 @@ iptables -A FORWARD -s 172.16.0.50 -j 172.16.0.50_o
 iptables -A FORWARD -d 172.16.0.50 -j 172.16.0.50_i
 iptables -A FORWARD -s 172.16.0.50 -m mac --mac-source dc:85:de:5b:13:e1 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.50 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:4951 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4951 classid 1:8a9 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4951 classid 1:8aa htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4951 classid 1:8ab htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4951 classid 1:8ac htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4951 classid 1:8ad htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4951 classid 1:8ae htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4951 classid 1:8af htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4951 classid 1:8b0 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4951 classid 1:8b1 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 49520 fw classid 1:8a9
-tc filter add dev br2 protocol ip parent 1: handle 49521 fw classid 1:8aa
-tc filter add dev br2 protocol ip parent 1: handle 49522 fw classid 1:8ab
-tc filter add dev br2 protocol ip parent 1: handle 49523 fw classid 1:8ac
-tc filter add dev br2 protocol ip parent 1: handle 49524 fw classid 1:8ad
-tc filter add dev br2 protocol ip parent 1: handle 49525 fw classid 1:8ae
-tc filter add dev br2 protocol ip parent 1: handle 49526 fw classid 1:8af
-tc filter add dev br2 protocol ip parent 1: handle 49527 fw classid 1:8b0
-tc filter add dev br2 protocol ip parent 1: handle 49528 fw classid 1:8b1
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:4952 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4952 classid 1:8b2 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4952 classid 1:8b3 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4952 classid 1:8b4 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4952 classid 1:8b5 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4952 classid 1:8b6 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4952 classid 1:8b7 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4952 classid 1:8b8 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4952 classid 1:8b9 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4952 classid 1:8ba htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 49530 fw classid 1:8b2
-tc filter add dev eth0 protocol ip parent 1: handle 49531 fw classid 1:8b3
-tc filter add dev eth0 protocol ip parent 1: handle 49532 fw classid 1:8b4
-tc filter add dev eth0 protocol ip parent 1: handle 49533 fw classid 1:8b5
-tc filter add dev eth0 protocol ip parent 1: handle 49534 fw classid 1:8b6
-tc filter add dev eth0 protocol ip parent 1: handle 49535 fw classid 1:8b7
-tc filter add dev eth0 protocol ip parent 1: handle 49536 fw classid 1:8b8
-tc filter add dev eth0 protocol ip parent 1: handle 49537 fw classid 1:8b9
-tc filter add dev eth0 protocol ip parent 1: handle 49538 fw classid 1:8ba
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.50 -p udp --sport 10000:30000 -j MARK --set-mark 49520
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.50 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.50 -p udp --dport 10000:30000 -j MARK --set-mark 49530
@@ -13909,56 +7709,6 @@ iptables -A FORWARD -s 172.16.0.54 -j 172.16.0.54_o
 iptables -A FORWARD -d 172.16.0.54 -j 172.16.0.54_i
 iptables -A FORWARD -s 172.16.0.54 -m mac --mac-source b8:03:05:4e:e1:43 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.54 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:4341 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4341 classid 1:8bb htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4341 classid 1:8bc htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4341 classid 1:8bd htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4341 classid 1:8be htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4341 classid 1:8bf htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4341 classid 1:8c0 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4341 classid 1:8c1 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4341 classid 1:8c2 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4341 classid 1:8c3 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 43420 fw classid 1:8bb
-tc filter add dev br2 protocol ip parent 1: handle 43421 fw classid 1:8bc
-tc filter add dev br2 protocol ip parent 1: handle 43422 fw classid 1:8bd
-tc filter add dev br2 protocol ip parent 1: handle 43423 fw classid 1:8be
-tc filter add dev br2 protocol ip parent 1: handle 43424 fw classid 1:8bf
-tc filter add dev br2 protocol ip parent 1: handle 43425 fw classid 1:8c0
-tc filter add dev br2 protocol ip parent 1: handle 43426 fw classid 1:8c1
-tc filter add dev br2 protocol ip parent 1: handle 43427 fw classid 1:8c2
-tc filter add dev br2 protocol ip parent 1: handle 43428 fw classid 1:8c3
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:4342 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4342 classid 1:8c4 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4342 classid 1:8c5 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4342 classid 1:8c6 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4342 classid 1:8c7 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4342 classid 1:8c8 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4342 classid 1:8c9 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4342 classid 1:8ca htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4342 classid 1:8cb htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4342 classid 1:8cc htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 43430 fw classid 1:8c4
-tc filter add dev eth0 protocol ip parent 1: handle 43431 fw classid 1:8c5
-tc filter add dev eth0 protocol ip parent 1: handle 43432 fw classid 1:8c6
-tc filter add dev eth0 protocol ip parent 1: handle 43433 fw classid 1:8c7
-tc filter add dev eth0 protocol ip parent 1: handle 43434 fw classid 1:8c8
-tc filter add dev eth0 protocol ip parent 1: handle 43435 fw classid 1:8c9
-tc filter add dev eth0 protocol ip parent 1: handle 43436 fw classid 1:8ca
-tc filter add dev eth0 protocol ip parent 1: handle 43437 fw classid 1:8cb
-tc filter add dev eth0 protocol ip parent 1: handle 43438 fw classid 1:8cc
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.54 -p udp --sport 10000:30000 -j MARK --set-mark 43420
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.54 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.54 -p udp --dport 10000:30000 -j MARK --set-mark 43430
@@ -14021,56 +7771,6 @@ iptables -A FORWARD -s 172.16.0.100 -j 172.16.0.100_o
 iptables -A FORWARD -d 172.16.0.100 -j 172.16.0.100_i
 iptables -A FORWARD -s 172.16.0.100 -m mac --mac-source 10:78:D2:8A:43:EF -j ACCEPT
 iptables -A FORWARD -d 172.16.0.100 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:1851 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:1851 classid 1:8cd htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:1851 classid 1:8ce htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:1851 classid 1:8cf htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:1851 classid 1:8d0 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:1851 classid 1:8d1 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:1851 classid 1:8d2 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:1851 classid 1:8d3 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:1851 classid 1:8d4 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:1851 classid 1:8d5 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 18520 fw classid 1:8cd
-tc filter add dev br2 protocol ip parent 1: handle 18521 fw classid 1:8ce
-tc filter add dev br2 protocol ip parent 1: handle 18522 fw classid 1:8cf
-tc filter add dev br2 protocol ip parent 1: handle 18523 fw classid 1:8d0
-tc filter add dev br2 protocol ip parent 1: handle 18524 fw classid 1:8d1
-tc filter add dev br2 protocol ip parent 1: handle 18525 fw classid 1:8d2
-tc filter add dev br2 protocol ip parent 1: handle 18526 fw classid 1:8d3
-tc filter add dev br2 protocol ip parent 1: handle 18527 fw classid 1:8d4
-tc filter add dev br2 protocol ip parent 1: handle 18528 fw classid 1:8d5
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:1852 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:1852 classid 1:8d6 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:1852 classid 1:8d7 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:1852 classid 1:8d8 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:1852 classid 1:8d9 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:1852 classid 1:8da htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:1852 classid 1:8db htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:1852 classid 1:8dc htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:1852 classid 1:8dd htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:1852 classid 1:8de htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 18530 fw classid 1:8d6
-tc filter add dev eth0 protocol ip parent 1: handle 18531 fw classid 1:8d7
-tc filter add dev eth0 protocol ip parent 1: handle 18532 fw classid 1:8d8
-tc filter add dev eth0 protocol ip parent 1: handle 18533 fw classid 1:8d9
-tc filter add dev eth0 protocol ip parent 1: handle 18534 fw classid 1:8da
-tc filter add dev eth0 protocol ip parent 1: handle 18535 fw classid 1:8db
-tc filter add dev eth0 protocol ip parent 1: handle 18536 fw classid 1:8dc
-tc filter add dev eth0 protocol ip parent 1: handle 18537 fw classid 1:8dd
-tc filter add dev eth0 protocol ip parent 1: handle 18538 fw classid 1:8de
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.100 -p udp --sport 10000:30000 -j MARK --set-mark 18520
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.100 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.100 -p udp --dport 10000:30000 -j MARK --set-mark 18530
@@ -14133,56 +7833,6 @@ iptables -A FORWARD -s 172.16.0.42 -j 172.16.0.42_o
 iptables -A FORWARD -d 172.16.0.42 -j 172.16.0.42_i
 iptables -A FORWARD -s 172.16.0.42 -m mac --mac-source e0:b2:f1:a2:03:40 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.42 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:4871 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4871 classid 1:8df htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4871 classid 1:8e0 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4871 classid 1:8e1 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4871 classid 1:8e2 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4871 classid 1:8e3 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4871 classid 1:8e4 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4871 classid 1:8e5 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4871 classid 1:8e6 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4871 classid 1:8e7 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 48720 fw classid 1:8df
-tc filter add dev br2 protocol ip parent 1: handle 48721 fw classid 1:8e0
-tc filter add dev br2 protocol ip parent 1: handle 48722 fw classid 1:8e1
-tc filter add dev br2 protocol ip parent 1: handle 48723 fw classid 1:8e2
-tc filter add dev br2 protocol ip parent 1: handle 48724 fw classid 1:8e3
-tc filter add dev br2 protocol ip parent 1: handle 48725 fw classid 1:8e4
-tc filter add dev br2 protocol ip parent 1: handle 48726 fw classid 1:8e5
-tc filter add dev br2 protocol ip parent 1: handle 48727 fw classid 1:8e6
-tc filter add dev br2 protocol ip parent 1: handle 48728 fw classid 1:8e7
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:4872 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4872 classid 1:8e8 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4872 classid 1:8e9 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4872 classid 1:8ea htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4872 classid 1:8eb htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4872 classid 1:8ec htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4872 classid 1:8ed htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4872 classid 1:8ee htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4872 classid 1:8ef htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4872 classid 1:8f0 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 48730 fw classid 1:8e8
-tc filter add dev eth0 protocol ip parent 1: handle 48731 fw classid 1:8e9
-tc filter add dev eth0 protocol ip parent 1: handle 48732 fw classid 1:8ea
-tc filter add dev eth0 protocol ip parent 1: handle 48733 fw classid 1:8eb
-tc filter add dev eth0 protocol ip parent 1: handle 48734 fw classid 1:8ec
-tc filter add dev eth0 protocol ip parent 1: handle 48735 fw classid 1:8ed
-tc filter add dev eth0 protocol ip parent 1: handle 48736 fw classid 1:8ee
-tc filter add dev eth0 protocol ip parent 1: handle 48737 fw classid 1:8ef
-tc filter add dev eth0 protocol ip parent 1: handle 48738 fw classid 1:8f0
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.42 -p udp --sport 10000:30000 -j MARK --set-mark 48720
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.42 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.42 -p udp --dport 10000:30000 -j MARK --set-mark 48730
@@ -14245,56 +7895,6 @@ iptables -A FORWARD -s 172.16.0.53 -j 172.16.0.53_o
 iptables -A FORWARD -d 172.16.0.53 -j 172.16.0.53_i
 iptables -A FORWARD -s 172.16.0.53 -m mac --mac-source 00:80:f0:d1:d1:7b -j ACCEPT
 iptables -A FORWARD -d 172.16.0.53 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:4921 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4921 classid 1:8f1 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4921 classid 1:8f2 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4921 classid 1:8f3 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4921 classid 1:8f4 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4921 classid 1:8f5 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4921 classid 1:8f6 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4921 classid 1:8f7 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4921 classid 1:8f8 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4921 classid 1:8f9 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 49220 fw classid 1:8f1
-tc filter add dev br2 protocol ip parent 1: handle 49221 fw classid 1:8f2
-tc filter add dev br2 protocol ip parent 1: handle 49222 fw classid 1:8f3
-tc filter add dev br2 protocol ip parent 1: handle 49223 fw classid 1:8f4
-tc filter add dev br2 protocol ip parent 1: handle 49224 fw classid 1:8f5
-tc filter add dev br2 protocol ip parent 1: handle 49225 fw classid 1:8f6
-tc filter add dev br2 protocol ip parent 1: handle 49226 fw classid 1:8f7
-tc filter add dev br2 protocol ip parent 1: handle 49227 fw classid 1:8f8
-tc filter add dev br2 protocol ip parent 1: handle 49228 fw classid 1:8f9
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:4922 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4922 classid 1:8fa htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4922 classid 1:8fb htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4922 classid 1:8fc htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4922 classid 1:8fd htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4922 classid 1:8fe htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4922 classid 1:8ff htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4922 classid 1:900 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4922 classid 1:901 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4922 classid 1:902 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 49230 fw classid 1:8fa
-tc filter add dev eth0 protocol ip parent 1: handle 49231 fw classid 1:8fb
-tc filter add dev eth0 protocol ip parent 1: handle 49232 fw classid 1:8fc
-tc filter add dev eth0 protocol ip parent 1: handle 49233 fw classid 1:8fd
-tc filter add dev eth0 protocol ip parent 1: handle 49234 fw classid 1:8fe
-tc filter add dev eth0 protocol ip parent 1: handle 49235 fw classid 1:8ff
-tc filter add dev eth0 protocol ip parent 1: handle 49236 fw classid 1:900
-tc filter add dev eth0 protocol ip parent 1: handle 49237 fw classid 1:901
-tc filter add dev eth0 protocol ip parent 1: handle 49238 fw classid 1:902
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.53 -p udp --sport 10000:30000 -j MARK --set-mark 49220
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.53 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.53 -p udp --dport 10000:30000 -j MARK --set-mark 49230
@@ -14357,56 +7957,6 @@ iptables -A FORWARD -s 172.16.0.204 -j 172.16.0.204_o
 iptables -A FORWARD -d 172.16.0.204 -j 172.16.0.204_i
 iptables -A FORWARD -s 172.16.0.204 -m mac --mac-source 00:80:f0:d1:d1:dd -j ACCEPT
 iptables -A FORWARD -d 172.16.0.204 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:4151 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4151 classid 1:903 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4151 classid 1:904 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4151 classid 1:905 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4151 classid 1:906 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4151 classid 1:907 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4151 classid 1:908 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4151 classid 1:909 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4151 classid 1:90a htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4151 classid 1:90b htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 41520 fw classid 1:903
-tc filter add dev br2 protocol ip parent 1: handle 41521 fw classid 1:904
-tc filter add dev br2 protocol ip parent 1: handle 41522 fw classid 1:905
-tc filter add dev br2 protocol ip parent 1: handle 41523 fw classid 1:906
-tc filter add dev br2 protocol ip parent 1: handle 41524 fw classid 1:907
-tc filter add dev br2 protocol ip parent 1: handle 41525 fw classid 1:908
-tc filter add dev br2 protocol ip parent 1: handle 41526 fw classid 1:909
-tc filter add dev br2 protocol ip parent 1: handle 41527 fw classid 1:90a
-tc filter add dev br2 protocol ip parent 1: handle 41528 fw classid 1:90b
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:4152 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4152 classid 1:90c htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4152 classid 1:90d htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4152 classid 1:90e htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4152 classid 1:90f htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4152 classid 1:910 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4152 classid 1:911 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4152 classid 1:912 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4152 classid 1:913 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4152 classid 1:914 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 41530 fw classid 1:90c
-tc filter add dev eth0 protocol ip parent 1: handle 41531 fw classid 1:90d
-tc filter add dev eth0 protocol ip parent 1: handle 41532 fw classid 1:90e
-tc filter add dev eth0 protocol ip parent 1: handle 41533 fw classid 1:90f
-tc filter add dev eth0 protocol ip parent 1: handle 41534 fw classid 1:910
-tc filter add dev eth0 protocol ip parent 1: handle 41535 fw classid 1:911
-tc filter add dev eth0 protocol ip parent 1: handle 41536 fw classid 1:912
-tc filter add dev eth0 protocol ip parent 1: handle 41537 fw classid 1:913
-tc filter add dev eth0 protocol ip parent 1: handle 41538 fw classid 1:914
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.204 -p udp --sport 10000:30000 -j MARK --set-mark 41520
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.204 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.204 -p udp --dport 10000:30000 -j MARK --set-mark 41530
@@ -14469,56 +8019,6 @@ iptables -A FORWARD -s 172.16.0.3 -j 172.16.0.3_o
 iptables -A FORWARD -d 172.16.0.3 -j 172.16.0.3_i
 iptables -A FORWARD -s 172.16.0.3 -m mac --mac-source 00:03:7e:00:c4:ae -j ACCEPT
 iptables -A FORWARD -d 172.16.0.3 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:2211 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:2211 classid 1:915 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:2211 classid 1:916 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:2211 classid 1:917 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:2211 classid 1:918 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:2211 classid 1:919 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:2211 classid 1:91a htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:2211 classid 1:91b htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:2211 classid 1:91c htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:2211 classid 1:91d htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 22120 fw classid 1:915
-tc filter add dev br2 protocol ip parent 1: handle 22121 fw classid 1:916
-tc filter add dev br2 protocol ip parent 1: handle 22122 fw classid 1:917
-tc filter add dev br2 protocol ip parent 1: handle 22123 fw classid 1:918
-tc filter add dev br2 protocol ip parent 1: handle 22124 fw classid 1:919
-tc filter add dev br2 protocol ip parent 1: handle 22125 fw classid 1:91a
-tc filter add dev br2 protocol ip parent 1: handle 22126 fw classid 1:91b
-tc filter add dev br2 protocol ip parent 1: handle 22127 fw classid 1:91c
-tc filter add dev br2 protocol ip parent 1: handle 22128 fw classid 1:91d
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:2212 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:2212 classid 1:91e htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:2212 classid 1:91f htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:2212 classid 1:920 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:2212 classid 1:921 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:2212 classid 1:922 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:2212 classid 1:923 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:2212 classid 1:924 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:2212 classid 1:925 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:2212 classid 1:926 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 22130 fw classid 1:91e
-tc filter add dev eth0 protocol ip parent 1: handle 22131 fw classid 1:91f
-tc filter add dev eth0 protocol ip parent 1: handle 22132 fw classid 1:920
-tc filter add dev eth0 protocol ip parent 1: handle 22133 fw classid 1:921
-tc filter add dev eth0 protocol ip parent 1: handle 22134 fw classid 1:922
-tc filter add dev eth0 protocol ip parent 1: handle 22135 fw classid 1:923
-tc filter add dev eth0 protocol ip parent 1: handle 22136 fw classid 1:924
-tc filter add dev eth0 protocol ip parent 1: handle 22137 fw classid 1:925
-tc filter add dev eth0 protocol ip parent 1: handle 22138 fw classid 1:926
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.3 -p udp --sport 10000:30000 -j MARK --set-mark 22120
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.3 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.3 -p udp --dport 10000:30000 -j MARK --set-mark 22130
@@ -14581,56 +8081,6 @@ iptables -A FORWARD -s 172.16.0.6 -j 172.16.0.6_o
 iptables -A FORWARD -d 172.16.0.6 -j 172.16.0.6_i
 iptables -A FORWARD -s 172.16.0.6 -m mac --mac-source 00:03:7e:00:7e:38 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.6 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:2821 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:2821 classid 1:927 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:2821 classid 1:928 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:2821 classid 1:929 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:2821 classid 1:92a htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:2821 classid 1:92b htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:2821 classid 1:92c htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:2821 classid 1:92d htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:2821 classid 1:92e htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:2821 classid 1:92f htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 28220 fw classid 1:927
-tc filter add dev br2 protocol ip parent 1: handle 28221 fw classid 1:928
-tc filter add dev br2 protocol ip parent 1: handle 28222 fw classid 1:929
-tc filter add dev br2 protocol ip parent 1: handle 28223 fw classid 1:92a
-tc filter add dev br2 protocol ip parent 1: handle 28224 fw classid 1:92b
-tc filter add dev br2 protocol ip parent 1: handle 28225 fw classid 1:92c
-tc filter add dev br2 protocol ip parent 1: handle 28226 fw classid 1:92d
-tc filter add dev br2 protocol ip parent 1: handle 28227 fw classid 1:92e
-tc filter add dev br2 protocol ip parent 1: handle 28228 fw classid 1:92f
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:2822 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:2822 classid 1:930 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:2822 classid 1:931 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:2822 classid 1:932 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:2822 classid 1:933 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:2822 classid 1:934 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:2822 classid 1:935 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:2822 classid 1:936 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:2822 classid 1:937 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:2822 classid 1:938 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 28230 fw classid 1:930
-tc filter add dev eth0 protocol ip parent 1: handle 28231 fw classid 1:931
-tc filter add dev eth0 protocol ip parent 1: handle 28232 fw classid 1:932
-tc filter add dev eth0 protocol ip parent 1: handle 28233 fw classid 1:933
-tc filter add dev eth0 protocol ip parent 1: handle 28234 fw classid 1:934
-tc filter add dev eth0 protocol ip parent 1: handle 28235 fw classid 1:935
-tc filter add dev eth0 protocol ip parent 1: handle 28236 fw classid 1:936
-tc filter add dev eth0 protocol ip parent 1: handle 28237 fw classid 1:937
-tc filter add dev eth0 protocol ip parent 1: handle 28238 fw classid 1:938
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.6 -p udp --sport 10000:30000 -j MARK --set-mark 28220
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.6 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.6 -p udp --dport 10000:30000 -j MARK --set-mark 28230
@@ -14693,56 +8143,6 @@ iptables -A FORWARD -s 172.16.0.51 -j 172.16.0.51_o
 iptables -A FORWARD -d 172.16.0.51 -j 172.16.0.51_i
 iptables -A FORWARD -s 172.16.0.51 -m mac --mac-source 00:26:9e:d9:f6:fc -j ACCEPT
 iptables -A FORWARD -d 172.16.0.51 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:4521 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4521 classid 1:939 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4521 classid 1:93a htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4521 classid 1:93b htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4521 classid 1:93c htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4521 classid 1:93d htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4521 classid 1:93e htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4521 classid 1:93f htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4521 classid 1:940 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4521 classid 1:941 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 45220 fw classid 1:939
-tc filter add dev br2 protocol ip parent 1: handle 45221 fw classid 1:93a
-tc filter add dev br2 protocol ip parent 1: handle 45222 fw classid 1:93b
-tc filter add dev br2 protocol ip parent 1: handle 45223 fw classid 1:93c
-tc filter add dev br2 protocol ip parent 1: handle 45224 fw classid 1:93d
-tc filter add dev br2 protocol ip parent 1: handle 45225 fw classid 1:93e
-tc filter add dev br2 protocol ip parent 1: handle 45226 fw classid 1:93f
-tc filter add dev br2 protocol ip parent 1: handle 45227 fw classid 1:940
-tc filter add dev br2 protocol ip parent 1: handle 45228 fw classid 1:941
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:4522 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4522 classid 1:942 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4522 classid 1:943 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4522 classid 1:944 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4522 classid 1:945 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4522 classid 1:946 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4522 classid 1:947 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4522 classid 1:948 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4522 classid 1:949 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4522 classid 1:94a htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 45230 fw classid 1:942
-tc filter add dev eth0 protocol ip parent 1: handle 45231 fw classid 1:943
-tc filter add dev eth0 protocol ip parent 1: handle 45232 fw classid 1:944
-tc filter add dev eth0 protocol ip parent 1: handle 45233 fw classid 1:945
-tc filter add dev eth0 protocol ip parent 1: handle 45234 fw classid 1:946
-tc filter add dev eth0 protocol ip parent 1: handle 45235 fw classid 1:947
-tc filter add dev eth0 protocol ip parent 1: handle 45236 fw classid 1:948
-tc filter add dev eth0 protocol ip parent 1: handle 45237 fw classid 1:949
-tc filter add dev eth0 protocol ip parent 1: handle 45238 fw classid 1:94a
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.51 -p udp --sport 10000:30000 -j MARK --set-mark 45220
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.51 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.51 -p udp --dport 10000:30000 -j MARK --set-mark 45230
@@ -14805,56 +8205,6 @@ iptables -A FORWARD -s 172.16.0.203 -j 172.16.0.203_o
 iptables -A FORWARD -d 172.16.0.203 -j 172.16.0.203_i
 iptables -A FORWARD -s 172.16.0.203 -m mac --mac-source 00:80:f0:d1:d5:46 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.203 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:4091 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4091 classid 1:94b htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4091 classid 1:94c htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4091 classid 1:94d htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4091 classid 1:94e htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4091 classid 1:94f htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4091 classid 1:950 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4091 classid 1:951 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4091 classid 1:952 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4091 classid 1:953 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 40920 fw classid 1:94b
-tc filter add dev br2 protocol ip parent 1: handle 40921 fw classid 1:94c
-tc filter add dev br2 protocol ip parent 1: handle 40922 fw classid 1:94d
-tc filter add dev br2 protocol ip parent 1: handle 40923 fw classid 1:94e
-tc filter add dev br2 protocol ip parent 1: handle 40924 fw classid 1:94f
-tc filter add dev br2 protocol ip parent 1: handle 40925 fw classid 1:950
-tc filter add dev br2 protocol ip parent 1: handle 40926 fw classid 1:951
-tc filter add dev br2 protocol ip parent 1: handle 40927 fw classid 1:952
-tc filter add dev br2 protocol ip parent 1: handle 40928 fw classid 1:953
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:4092 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4092 classid 1:954 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4092 classid 1:955 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4092 classid 1:956 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4092 classid 1:957 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4092 classid 1:958 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4092 classid 1:959 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4092 classid 1:95a htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4092 classid 1:95b htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4092 classid 1:95c htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 40930 fw classid 1:954
-tc filter add dev eth0 protocol ip parent 1: handle 40931 fw classid 1:955
-tc filter add dev eth0 protocol ip parent 1: handle 40932 fw classid 1:956
-tc filter add dev eth0 protocol ip parent 1: handle 40933 fw classid 1:957
-tc filter add dev eth0 protocol ip parent 1: handle 40934 fw classid 1:958
-tc filter add dev eth0 protocol ip parent 1: handle 40935 fw classid 1:959
-tc filter add dev eth0 protocol ip parent 1: handle 40936 fw classid 1:95a
-tc filter add dev eth0 protocol ip parent 1: handle 40937 fw classid 1:95b
-tc filter add dev eth0 protocol ip parent 1: handle 40938 fw classid 1:95c
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.203 -p udp --sport 10000:30000 -j MARK --set-mark 40920
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.203 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.203 -p udp --dport 10000:30000 -j MARK --set-mark 40930
@@ -14917,56 +8267,6 @@ iptables -A FORWARD -s 172.16.0.13 -j 172.16.0.13_o
 iptables -A FORWARD -d 172.16.0.13 -j 172.16.0.13_i
 iptables -A FORWARD -s 172.16.0.13 -m mac --mac-source 00:19:21:19:3d:7e -j ACCEPT
 iptables -A FORWARD -d 172.16.0.13 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:3751 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:3751 classid 1:95d htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:3751 classid 1:95e htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:3751 classid 1:95f htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:3751 classid 1:960 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:3751 classid 1:961 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:3751 classid 1:962 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:3751 classid 1:963 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:3751 classid 1:964 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:3751 classid 1:965 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 37520 fw classid 1:95d
-tc filter add dev br2 protocol ip parent 1: handle 37521 fw classid 1:95e
-tc filter add dev br2 protocol ip parent 1: handle 37522 fw classid 1:95f
-tc filter add dev br2 protocol ip parent 1: handle 37523 fw classid 1:960
-tc filter add dev br2 protocol ip parent 1: handle 37524 fw classid 1:961
-tc filter add dev br2 protocol ip parent 1: handle 37525 fw classid 1:962
-tc filter add dev br2 protocol ip parent 1: handle 37526 fw classid 1:963
-tc filter add dev br2 protocol ip parent 1: handle 37527 fw classid 1:964
-tc filter add dev br2 protocol ip parent 1: handle 37528 fw classid 1:965
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:3752 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:3752 classid 1:966 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:3752 classid 1:967 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:3752 classid 1:968 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:3752 classid 1:969 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:3752 classid 1:96a htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:3752 classid 1:96b htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:3752 classid 1:96c htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:3752 classid 1:96d htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:3752 classid 1:96e htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 37530 fw classid 1:966
-tc filter add dev eth0 protocol ip parent 1: handle 37531 fw classid 1:967
-tc filter add dev eth0 protocol ip parent 1: handle 37532 fw classid 1:968
-tc filter add dev eth0 protocol ip parent 1: handle 37533 fw classid 1:969
-tc filter add dev eth0 protocol ip parent 1: handle 37534 fw classid 1:96a
-tc filter add dev eth0 protocol ip parent 1: handle 37535 fw classid 1:96b
-tc filter add dev eth0 protocol ip parent 1: handle 37536 fw classid 1:96c
-tc filter add dev eth0 protocol ip parent 1: handle 37537 fw classid 1:96d
-tc filter add dev eth0 protocol ip parent 1: handle 37538 fw classid 1:96e
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.13 -p udp --sport 10000:30000 -j MARK --set-mark 37520
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.13 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.13 -p udp --dport 10000:30000 -j MARK --set-mark 37530
@@ -15028,56 +8328,6 @@ iptables -A FORWARD -s 172.16.0.68 -j 172.16.0.68_o
 iptables -A FORWARD -d 172.16.0.68 -j 172.16.0.68_i
 iptables -A FORWARD -s 172.16.0.68 -m mac --mac-source 52:54:00:c3:33:cc -j ACCEPT
 iptables -A FORWARD -d 172.16.0.68 -j ACCEPT
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:5011 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:5011 classid 1:96f htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:5011 classid 1:970 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:5011 classid 1:971 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:5011 classid 1:972 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:5011 classid 1:973 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:5011 classid 1:974 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:5011 classid 1:975 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:5011 classid 1:976 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:5011 classid 1:977 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 50120 fw classid 1:96f
-tc filter add dev br2 protocol ip parent 1: handle 50121 fw classid 1:970
-tc filter add dev br2 protocol ip parent 1: handle 50122 fw classid 1:971
-tc filter add dev br2 protocol ip parent 1: handle 50123 fw classid 1:972
-tc filter add dev br2 protocol ip parent 1: handle 50124 fw classid 1:973
-tc filter add dev br2 protocol ip parent 1: handle 50125 fw classid 1:974
-tc filter add dev br2 protocol ip parent 1: handle 50126 fw classid 1:975
-tc filter add dev br2 protocol ip parent 1: handle 50127 fw classid 1:976
-tc filter add dev br2 protocol ip parent 1: handle 50128 fw classid 1:977
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:5012 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:5012 classid 1:978 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:5012 classid 1:979 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:5012 classid 1:97a htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:5012 classid 1:97b htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:5012 classid 1:97c htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:5012 classid 1:97d htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:5012 classid 1:97e htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:5012 classid 1:97f htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:5012 classid 1:980 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 50130 fw classid 1:978
-tc filter add dev eth0 protocol ip parent 1: handle 50131 fw classid 1:979
-tc filter add dev eth0 protocol ip parent 1: handle 50132 fw classid 1:97a
-tc filter add dev eth0 protocol ip parent 1: handle 50133 fw classid 1:97b
-tc filter add dev eth0 protocol ip parent 1: handle 50134 fw classid 1:97c
-tc filter add dev eth0 protocol ip parent 1: handle 50135 fw classid 1:97d
-tc filter add dev eth0 protocol ip parent 1: handle 50136 fw classid 1:97e
-tc filter add dev eth0 protocol ip parent 1: handle 50137 fw classid 1:97f
-tc filter add dev eth0 protocol ip parent 1: handle 50138 fw classid 1:980
-
-
-# MARCAJE DE PAQUETES
-
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.68 -p udp --sport 10000:30000 -j MARK --set-mark 50120
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.68 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.68 -p udp --dport 10000:30000 -j MARK --set-mark 50130
@@ -15131,3 +8381,6753 @@ iptables -t mangle -A PREROUTING -p tcp -j RETURN
 iptables -P INPUT DROP
 iptables -P OUTPUT DROP
 iptables -P FORWARD DROP
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:4781 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:4781 classid 1:3 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4781 classid 1:4 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4781 classid 1:5 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4781 classid 1:6 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4781 classid 1:7 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4781 classid 1:8 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4781 classid 1:9 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4781 classid 1:a htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4781 classid 1:b htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 47820 fw classid 1:3
+tc filter add dev br2 protocol ip parent 1: handle 47821 fw classid 1:4
+tc filter add dev br2 protocol ip parent 1: handle 47822 fw classid 1:5
+tc filter add dev br2 protocol ip parent 1: handle 47823 fw classid 1:6
+tc filter add dev br2 protocol ip parent 1: handle 47824 fw classid 1:7
+tc filter add dev br2 protocol ip parent 1: handle 47825 fw classid 1:8
+tc filter add dev br2 protocol ip parent 1: handle 47826 fw classid 1:9
+tc filter add dev br2 protocol ip parent 1: handle 47827 fw classid 1:a
+tc filter add dev br2 protocol ip parent 1: handle 47828 fw classid 1:b
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:4782 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:4782 classid 1:c htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4782 classid 1:d htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4782 classid 1:e htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4782 classid 1:f htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4782 classid 1:10 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4782 classid 1:11 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4782 classid 1:12 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4782 classid 1:13 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4782 classid 1:14 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 47830 fw classid 1:c
+tc filter add dev eth0 protocol ip parent 1: handle 47831 fw classid 1:d
+tc filter add dev eth0 protocol ip parent 1: handle 47832 fw classid 1:e
+tc filter add dev eth0 protocol ip parent 1: handle 47833 fw classid 1:f
+tc filter add dev eth0 protocol ip parent 1: handle 47834 fw classid 1:10
+tc filter add dev eth0 protocol ip parent 1: handle 47835 fw classid 1:11
+tc filter add dev eth0 protocol ip parent 1: handle 47836 fw classid 1:12
+tc filter add dev eth0 protocol ip parent 1: handle 47837 fw classid 1:13
+tc filter add dev eth0 protocol ip parent 1: handle 47838 fw classid 1:14
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:3581 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:3581 classid 1:15 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:3581 classid 1:16 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:3581 classid 1:17 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:3581 classid 1:18 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:3581 classid 1:19 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:3581 classid 1:1a htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:3581 classid 1:1b htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:3581 classid 1:1c htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:3581 classid 1:1d htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 35820 fw classid 1:15
+tc filter add dev br2 protocol ip parent 1: handle 35821 fw classid 1:16
+tc filter add dev br2 protocol ip parent 1: handle 35822 fw classid 1:17
+tc filter add dev br2 protocol ip parent 1: handle 35823 fw classid 1:18
+tc filter add dev br2 protocol ip parent 1: handle 35824 fw classid 1:19
+tc filter add dev br2 protocol ip parent 1: handle 35825 fw classid 1:1a
+tc filter add dev br2 protocol ip parent 1: handle 35826 fw classid 1:1b
+tc filter add dev br2 protocol ip parent 1: handle 35827 fw classid 1:1c
+tc filter add dev br2 protocol ip parent 1: handle 35828 fw classid 1:1d
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:3582 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:3582 classid 1:1e htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:3582 classid 1:1f htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:3582 classid 1:20 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:3582 classid 1:21 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:3582 classid 1:22 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:3582 classid 1:23 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:3582 classid 1:24 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:3582 classid 1:25 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:3582 classid 1:26 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 35830 fw classid 1:1e
+tc filter add dev eth0 protocol ip parent 1: handle 35831 fw classid 1:1f
+tc filter add dev eth0 protocol ip parent 1: handle 35832 fw classid 1:20
+tc filter add dev eth0 protocol ip parent 1: handle 35833 fw classid 1:21
+tc filter add dev eth0 protocol ip parent 1: handle 35834 fw classid 1:22
+tc filter add dev eth0 protocol ip parent 1: handle 35835 fw classid 1:23
+tc filter add dev eth0 protocol ip parent 1: handle 35836 fw classid 1:24
+tc filter add dev eth0 protocol ip parent 1: handle 35837 fw classid 1:25
+tc filter add dev eth0 protocol ip parent 1: handle 35838 fw classid 1:26
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:4581 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:4581 classid 1:27 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4581 classid 1:28 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4581 classid 1:29 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4581 classid 1:2a htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4581 classid 1:2b htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4581 classid 1:2c htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4581 classid 1:2d htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4581 classid 1:2e htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4581 classid 1:2f htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 45820 fw classid 1:27
+tc filter add dev br2 protocol ip parent 1: handle 45821 fw classid 1:28
+tc filter add dev br2 protocol ip parent 1: handle 45822 fw classid 1:29
+tc filter add dev br2 protocol ip parent 1: handle 45823 fw classid 1:2a
+tc filter add dev br2 protocol ip parent 1: handle 45824 fw classid 1:2b
+tc filter add dev br2 protocol ip parent 1: handle 45825 fw classid 1:2c
+tc filter add dev br2 protocol ip parent 1: handle 45826 fw classid 1:2d
+tc filter add dev br2 protocol ip parent 1: handle 45827 fw classid 1:2e
+tc filter add dev br2 protocol ip parent 1: handle 45828 fw classid 1:2f
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:4582 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:4582 classid 1:30 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4582 classid 1:31 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4582 classid 1:32 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4582 classid 1:33 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4582 classid 1:34 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4582 classid 1:35 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4582 classid 1:36 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4582 classid 1:37 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4582 classid 1:38 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 45830 fw classid 1:30
+tc filter add dev eth0 protocol ip parent 1: handle 45831 fw classid 1:31
+tc filter add dev eth0 protocol ip parent 1: handle 45832 fw classid 1:32
+tc filter add dev eth0 protocol ip parent 1: handle 45833 fw classid 1:33
+tc filter add dev eth0 protocol ip parent 1: handle 45834 fw classid 1:34
+tc filter add dev eth0 protocol ip parent 1: handle 45835 fw classid 1:35
+tc filter add dev eth0 protocol ip parent 1: handle 45836 fw classid 1:36
+tc filter add dev eth0 protocol ip parent 1: handle 45837 fw classid 1:37
+tc filter add dev eth0 protocol ip parent 1: handle 45838 fw classid 1:38
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:4761 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:4761 classid 1:39 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4761 classid 1:3a htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4761 classid 1:3b htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4761 classid 1:3c htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4761 classid 1:3d htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4761 classid 1:3e htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4761 classid 1:3f htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4761 classid 1:40 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4761 classid 1:41 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 47620 fw classid 1:39
+tc filter add dev br2 protocol ip parent 1: handle 47621 fw classid 1:3a
+tc filter add dev br2 protocol ip parent 1: handle 47622 fw classid 1:3b
+tc filter add dev br2 protocol ip parent 1: handle 47623 fw classid 1:3c
+tc filter add dev br2 protocol ip parent 1: handle 47624 fw classid 1:3d
+tc filter add dev br2 protocol ip parent 1: handle 47625 fw classid 1:3e
+tc filter add dev br2 protocol ip parent 1: handle 47626 fw classid 1:3f
+tc filter add dev br2 protocol ip parent 1: handle 47627 fw classid 1:40
+tc filter add dev br2 protocol ip parent 1: handle 47628 fw classid 1:41
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:4762 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:4762 classid 1:42 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4762 classid 1:43 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4762 classid 1:44 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4762 classid 1:45 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4762 classid 1:46 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4762 classid 1:47 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4762 classid 1:48 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4762 classid 1:49 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4762 classid 1:4a htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 47630 fw classid 1:42
+tc filter add dev eth0 protocol ip parent 1: handle 47631 fw classid 1:43
+tc filter add dev eth0 protocol ip parent 1: handle 47632 fw classid 1:44
+tc filter add dev eth0 protocol ip parent 1: handle 47633 fw classid 1:45
+tc filter add dev eth0 protocol ip parent 1: handle 47634 fw classid 1:46
+tc filter add dev eth0 protocol ip parent 1: handle 47635 fw classid 1:47
+tc filter add dev eth0 protocol ip parent 1: handle 47636 fw classid 1:48
+tc filter add dev eth0 protocol ip parent 1: handle 47637 fw classid 1:49
+tc filter add dev eth0 protocol ip parent 1: handle 47638 fw classid 1:4a
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:4541 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:4541 classid 1:4b htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4541 classid 1:4c htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4541 classid 1:4d htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4541 classid 1:4e htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4541 classid 1:4f htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4541 classid 1:50 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4541 classid 1:51 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4541 classid 1:52 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4541 classid 1:53 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 45420 fw classid 1:4b
+tc filter add dev br2 protocol ip parent 1: handle 45421 fw classid 1:4c
+tc filter add dev br2 protocol ip parent 1: handle 45422 fw classid 1:4d
+tc filter add dev br2 protocol ip parent 1: handle 45423 fw classid 1:4e
+tc filter add dev br2 protocol ip parent 1: handle 45424 fw classid 1:4f
+tc filter add dev br2 protocol ip parent 1: handle 45425 fw classid 1:50
+tc filter add dev br2 protocol ip parent 1: handle 45426 fw classid 1:51
+tc filter add dev br2 protocol ip parent 1: handle 45427 fw classid 1:52
+tc filter add dev br2 protocol ip parent 1: handle 45428 fw classid 1:53
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:4542 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:4542 classid 1:54 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4542 classid 1:55 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4542 classid 1:56 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4542 classid 1:57 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4542 classid 1:58 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4542 classid 1:59 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4542 classid 1:5a htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4542 classid 1:5b htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4542 classid 1:5c htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 45430 fw classid 1:54
+tc filter add dev eth0 protocol ip parent 1: handle 45431 fw classid 1:55
+tc filter add dev eth0 protocol ip parent 1: handle 45432 fw classid 1:56
+tc filter add dev eth0 protocol ip parent 1: handle 45433 fw classid 1:57
+tc filter add dev eth0 protocol ip parent 1: handle 45434 fw classid 1:58
+tc filter add dev eth0 protocol ip parent 1: handle 45435 fw classid 1:59
+tc filter add dev eth0 protocol ip parent 1: handle 45436 fw classid 1:5a
+tc filter add dev eth0 protocol ip parent 1: handle 45437 fw classid 1:5b
+tc filter add dev eth0 protocol ip parent 1: handle 45438 fw classid 1:5c
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:4181 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:4181 classid 1:5d htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4181 classid 1:5e htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4181 classid 1:5f htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4181 classid 1:60 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4181 classid 1:61 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4181 classid 1:62 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4181 classid 1:63 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4181 classid 1:64 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4181 classid 1:65 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 41820 fw classid 1:5d
+tc filter add dev br2 protocol ip parent 1: handle 41821 fw classid 1:5e
+tc filter add dev br2 protocol ip parent 1: handle 41822 fw classid 1:5f
+tc filter add dev br2 protocol ip parent 1: handle 41823 fw classid 1:60
+tc filter add dev br2 protocol ip parent 1: handle 41824 fw classid 1:61
+tc filter add dev br2 protocol ip parent 1: handle 41825 fw classid 1:62
+tc filter add dev br2 protocol ip parent 1: handle 41826 fw classid 1:63
+tc filter add dev br2 protocol ip parent 1: handle 41827 fw classid 1:64
+tc filter add dev br2 protocol ip parent 1: handle 41828 fw classid 1:65
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:4182 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:4182 classid 1:66 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4182 classid 1:67 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4182 classid 1:68 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4182 classid 1:69 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4182 classid 1:6a htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4182 classid 1:6b htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4182 classid 1:6c htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4182 classid 1:6d htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4182 classid 1:6e htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 41830 fw classid 1:66
+tc filter add dev eth0 protocol ip parent 1: handle 41831 fw classid 1:67
+tc filter add dev eth0 protocol ip parent 1: handle 41832 fw classid 1:68
+tc filter add dev eth0 protocol ip parent 1: handle 41833 fw classid 1:69
+tc filter add dev eth0 protocol ip parent 1: handle 41834 fw classid 1:6a
+tc filter add dev eth0 protocol ip parent 1: handle 41835 fw classid 1:6b
+tc filter add dev eth0 protocol ip parent 1: handle 41836 fw classid 1:6c
+tc filter add dev eth0 protocol ip parent 1: handle 41837 fw classid 1:6d
+tc filter add dev eth0 protocol ip parent 1: handle 41838 fw classid 1:6e
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:4691 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:4691 classid 1:6f htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4691 classid 1:70 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4691 classid 1:71 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4691 classid 1:72 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4691 classid 1:73 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4691 classid 1:74 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4691 classid 1:75 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4691 classid 1:76 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4691 classid 1:77 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 46920 fw classid 1:6f
+tc filter add dev br2 protocol ip parent 1: handle 46921 fw classid 1:70
+tc filter add dev br2 protocol ip parent 1: handle 46922 fw classid 1:71
+tc filter add dev br2 protocol ip parent 1: handle 46923 fw classid 1:72
+tc filter add dev br2 protocol ip parent 1: handle 46924 fw classid 1:73
+tc filter add dev br2 protocol ip parent 1: handle 46925 fw classid 1:74
+tc filter add dev br2 protocol ip parent 1: handle 46926 fw classid 1:75
+tc filter add dev br2 protocol ip parent 1: handle 46927 fw classid 1:76
+tc filter add dev br2 protocol ip parent 1: handle 46928 fw classid 1:77
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:4692 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:4692 classid 1:78 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4692 classid 1:79 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4692 classid 1:7a htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4692 classid 1:7b htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4692 classid 1:7c htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4692 classid 1:7d htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4692 classid 1:7e htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4692 classid 1:7f htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4692 classid 1:80 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 46930 fw classid 1:78
+tc filter add dev eth0 protocol ip parent 1: handle 46931 fw classid 1:79
+tc filter add dev eth0 protocol ip parent 1: handle 46932 fw classid 1:7a
+tc filter add dev eth0 protocol ip parent 1: handle 46933 fw classid 1:7b
+tc filter add dev eth0 protocol ip parent 1: handle 46934 fw classid 1:7c
+tc filter add dev eth0 protocol ip parent 1: handle 46935 fw classid 1:7d
+tc filter add dev eth0 protocol ip parent 1: handle 46936 fw classid 1:7e
+tc filter add dev eth0 protocol ip parent 1: handle 46937 fw classid 1:7f
+tc filter add dev eth0 protocol ip parent 1: handle 46938 fw classid 1:80
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:4911 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:4911 classid 1:81 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4911 classid 1:82 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4911 classid 1:83 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4911 classid 1:84 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4911 classid 1:85 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4911 classid 1:86 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4911 classid 1:87 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4911 classid 1:88 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4911 classid 1:89 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 49120 fw classid 1:81
+tc filter add dev br2 protocol ip parent 1: handle 49121 fw classid 1:82
+tc filter add dev br2 protocol ip parent 1: handle 49122 fw classid 1:83
+tc filter add dev br2 protocol ip parent 1: handle 49123 fw classid 1:84
+tc filter add dev br2 protocol ip parent 1: handle 49124 fw classid 1:85
+tc filter add dev br2 protocol ip parent 1: handle 49125 fw classid 1:86
+tc filter add dev br2 protocol ip parent 1: handle 49126 fw classid 1:87
+tc filter add dev br2 protocol ip parent 1: handle 49127 fw classid 1:88
+tc filter add dev br2 protocol ip parent 1: handle 49128 fw classid 1:89
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:4912 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:4912 classid 1:8a htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4912 classid 1:8b htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4912 classid 1:8c htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4912 classid 1:8d htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4912 classid 1:8e htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4912 classid 1:8f htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4912 classid 1:90 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4912 classid 1:91 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4912 classid 1:92 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 49130 fw classid 1:8a
+tc filter add dev eth0 protocol ip parent 1: handle 49131 fw classid 1:8b
+tc filter add dev eth0 protocol ip parent 1: handle 49132 fw classid 1:8c
+tc filter add dev eth0 protocol ip parent 1: handle 49133 fw classid 1:8d
+tc filter add dev eth0 protocol ip parent 1: handle 49134 fw classid 1:8e
+tc filter add dev eth0 protocol ip parent 1: handle 49135 fw classid 1:8f
+tc filter add dev eth0 protocol ip parent 1: handle 49136 fw classid 1:90
+tc filter add dev eth0 protocol ip parent 1: handle 49137 fw classid 1:91
+tc filter add dev eth0 protocol ip parent 1: handle 49138 fw classid 1:92
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:3921 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:3921 classid 1:93 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:3921 classid 1:94 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:3921 classid 1:95 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:3921 classid 1:96 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:3921 classid 1:97 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:3921 classid 1:98 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:3921 classid 1:99 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:3921 classid 1:9a htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:3921 classid 1:9b htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 39220 fw classid 1:93
+tc filter add dev br2 protocol ip parent 1: handle 39221 fw classid 1:94
+tc filter add dev br2 protocol ip parent 1: handle 39222 fw classid 1:95
+tc filter add dev br2 protocol ip parent 1: handle 39223 fw classid 1:96
+tc filter add dev br2 protocol ip parent 1: handle 39224 fw classid 1:97
+tc filter add dev br2 protocol ip parent 1: handle 39225 fw classid 1:98
+tc filter add dev br2 protocol ip parent 1: handle 39226 fw classid 1:99
+tc filter add dev br2 protocol ip parent 1: handle 39227 fw classid 1:9a
+tc filter add dev br2 protocol ip parent 1: handle 39228 fw classid 1:9b
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:3922 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:3922 classid 1:9c htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:3922 classid 1:9d htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:3922 classid 1:9e htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:3922 classid 1:9f htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:3922 classid 1:a0 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:3922 classid 1:a1 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:3922 classid 1:a2 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:3922 classid 1:a3 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:3922 classid 1:a4 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 39230 fw classid 1:9c
+tc filter add dev eth0 protocol ip parent 1: handle 39231 fw classid 1:9d
+tc filter add dev eth0 protocol ip parent 1: handle 39232 fw classid 1:9e
+tc filter add dev eth0 protocol ip parent 1: handle 39233 fw classid 1:9f
+tc filter add dev eth0 protocol ip parent 1: handle 39234 fw classid 1:a0
+tc filter add dev eth0 protocol ip parent 1: handle 39235 fw classid 1:a1
+tc filter add dev eth0 protocol ip parent 1: handle 39236 fw classid 1:a2
+tc filter add dev eth0 protocol ip parent 1: handle 39237 fw classid 1:a3
+tc filter add dev eth0 protocol ip parent 1: handle 39238 fw classid 1:a4
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:3951 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:3951 classid 1:a5 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:3951 classid 1:a6 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:3951 classid 1:a7 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:3951 classid 1:a8 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:3951 classid 1:a9 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:3951 classid 1:aa htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:3951 classid 1:ab htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:3951 classid 1:ac htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:3951 classid 1:ad htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 39520 fw classid 1:a5
+tc filter add dev br2 protocol ip parent 1: handle 39521 fw classid 1:a6
+tc filter add dev br2 protocol ip parent 1: handle 39522 fw classid 1:a7
+tc filter add dev br2 protocol ip parent 1: handle 39523 fw classid 1:a8
+tc filter add dev br2 protocol ip parent 1: handle 39524 fw classid 1:a9
+tc filter add dev br2 protocol ip parent 1: handle 39525 fw classid 1:aa
+tc filter add dev br2 protocol ip parent 1: handle 39526 fw classid 1:ab
+tc filter add dev br2 protocol ip parent 1: handle 39527 fw classid 1:ac
+tc filter add dev br2 protocol ip parent 1: handle 39528 fw classid 1:ad
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:3952 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:3952 classid 1:ae htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:3952 classid 1:af htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:3952 classid 1:b0 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:3952 classid 1:b1 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:3952 classid 1:b2 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:3952 classid 1:b3 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:3952 classid 1:b4 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:3952 classid 1:b5 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:3952 classid 1:b6 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 39530 fw classid 1:ae
+tc filter add dev eth0 protocol ip parent 1: handle 39531 fw classid 1:af
+tc filter add dev eth0 protocol ip parent 1: handle 39532 fw classid 1:b0
+tc filter add dev eth0 protocol ip parent 1: handle 39533 fw classid 1:b1
+tc filter add dev eth0 protocol ip parent 1: handle 39534 fw classid 1:b2
+tc filter add dev eth0 protocol ip parent 1: handle 39535 fw classid 1:b3
+tc filter add dev eth0 protocol ip parent 1: handle 39536 fw classid 1:b4
+tc filter add dev eth0 protocol ip parent 1: handle 39537 fw classid 1:b5
+tc filter add dev eth0 protocol ip parent 1: handle 39538 fw classid 1:b6
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:771 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:771 classid 1:b7 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:771 classid 1:b8 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:771 classid 1:b9 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:771 classid 1:ba htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:771 classid 1:bb htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:771 classid 1:bc htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:771 classid 1:bd htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:771 classid 1:be htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:771 classid 1:bf htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 7720 fw classid 1:b7
+tc filter add dev br2 protocol ip parent 1: handle 7721 fw classid 1:b8
+tc filter add dev br2 protocol ip parent 1: handle 7722 fw classid 1:b9
+tc filter add dev br2 protocol ip parent 1: handle 7723 fw classid 1:ba
+tc filter add dev br2 protocol ip parent 1: handle 7724 fw classid 1:bb
+tc filter add dev br2 protocol ip parent 1: handle 7725 fw classid 1:bc
+tc filter add dev br2 protocol ip parent 1: handle 7726 fw classid 1:bd
+tc filter add dev br2 protocol ip parent 1: handle 7727 fw classid 1:be
+tc filter add dev br2 protocol ip parent 1: handle 7728 fw classid 1:bf
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:772 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:772 classid 1:c0 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:772 classid 1:c1 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:772 classid 1:c2 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:772 classid 1:c3 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:772 classid 1:c4 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:772 classid 1:c5 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:772 classid 1:c6 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:772 classid 1:c7 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:772 classid 1:c8 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 7730 fw classid 1:c0
+tc filter add dev eth0 protocol ip parent 1: handle 7731 fw classid 1:c1
+tc filter add dev eth0 protocol ip parent 1: handle 7732 fw classid 1:c2
+tc filter add dev eth0 protocol ip parent 1: handle 7733 fw classid 1:c3
+tc filter add dev eth0 protocol ip parent 1: handle 7734 fw classid 1:c4
+tc filter add dev eth0 protocol ip parent 1: handle 7735 fw classid 1:c5
+tc filter add dev eth0 protocol ip parent 1: handle 7736 fw classid 1:c6
+tc filter add dev eth0 protocol ip parent 1: handle 7737 fw classid 1:c7
+tc filter add dev eth0 protocol ip parent 1: handle 7738 fw classid 1:c8
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:1601 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:1601 classid 1:c9 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:1601 classid 1:ca htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:1601 classid 1:cb htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:1601 classid 1:cc htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:1601 classid 1:cd htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:1601 classid 1:ce htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:1601 classid 1:cf htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:1601 classid 1:d0 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:1601 classid 1:d1 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 16020 fw classid 1:c9
+tc filter add dev br2 protocol ip parent 1: handle 16021 fw classid 1:ca
+tc filter add dev br2 protocol ip parent 1: handle 16022 fw classid 1:cb
+tc filter add dev br2 protocol ip parent 1: handle 16023 fw classid 1:cc
+tc filter add dev br2 protocol ip parent 1: handle 16024 fw classid 1:cd
+tc filter add dev br2 protocol ip parent 1: handle 16025 fw classid 1:ce
+tc filter add dev br2 protocol ip parent 1: handle 16026 fw classid 1:cf
+tc filter add dev br2 protocol ip parent 1: handle 16027 fw classid 1:d0
+tc filter add dev br2 protocol ip parent 1: handle 16028 fw classid 1:d1
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:1602 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:1602 classid 1:d2 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:1602 classid 1:d3 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:1602 classid 1:d4 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:1602 classid 1:d5 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:1602 classid 1:d6 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:1602 classid 1:d7 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:1602 classid 1:d8 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:1602 classid 1:d9 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:1602 classid 1:da htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 16030 fw classid 1:d2
+tc filter add dev eth0 protocol ip parent 1: handle 16031 fw classid 1:d3
+tc filter add dev eth0 protocol ip parent 1: handle 16032 fw classid 1:d4
+tc filter add dev eth0 protocol ip parent 1: handle 16033 fw classid 1:d5
+tc filter add dev eth0 protocol ip parent 1: handle 16034 fw classid 1:d6
+tc filter add dev eth0 protocol ip parent 1: handle 16035 fw classid 1:d7
+tc filter add dev eth0 protocol ip parent 1: handle 16036 fw classid 1:d8
+tc filter add dev eth0 protocol ip parent 1: handle 16037 fw classid 1:d9
+tc filter add dev eth0 protocol ip parent 1: handle 16038 fw classid 1:da
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:4741 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:4741 classid 1:db htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4741 classid 1:dc htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4741 classid 1:dd htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4741 classid 1:de htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4741 classid 1:df htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4741 classid 1:e0 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4741 classid 1:e1 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4741 classid 1:e2 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4741 classid 1:e3 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 47420 fw classid 1:db
+tc filter add dev br2 protocol ip parent 1: handle 47421 fw classid 1:dc
+tc filter add dev br2 protocol ip parent 1: handle 47422 fw classid 1:dd
+tc filter add dev br2 protocol ip parent 1: handle 47423 fw classid 1:de
+tc filter add dev br2 protocol ip parent 1: handle 47424 fw classid 1:df
+tc filter add dev br2 protocol ip parent 1: handle 47425 fw classid 1:e0
+tc filter add dev br2 protocol ip parent 1: handle 47426 fw classid 1:e1
+tc filter add dev br2 protocol ip parent 1: handle 47427 fw classid 1:e2
+tc filter add dev br2 protocol ip parent 1: handle 47428 fw classid 1:e3
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:4742 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:4742 classid 1:e4 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4742 classid 1:e5 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4742 classid 1:e6 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4742 classid 1:e7 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4742 classid 1:e8 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4742 classid 1:e9 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4742 classid 1:ea htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4742 classid 1:eb htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4742 classid 1:ec htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 47430 fw classid 1:e4
+tc filter add dev eth0 protocol ip parent 1: handle 47431 fw classid 1:e5
+tc filter add dev eth0 protocol ip parent 1: handle 47432 fw classid 1:e6
+tc filter add dev eth0 protocol ip parent 1: handle 47433 fw classid 1:e7
+tc filter add dev eth0 protocol ip parent 1: handle 47434 fw classid 1:e8
+tc filter add dev eth0 protocol ip parent 1: handle 47435 fw classid 1:e9
+tc filter add dev eth0 protocol ip parent 1: handle 47436 fw classid 1:ea
+tc filter add dev eth0 protocol ip parent 1: handle 47437 fw classid 1:eb
+tc filter add dev eth0 protocol ip parent 1: handle 47438 fw classid 1:ec
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:1381 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:1381 classid 1:ed htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:1381 classid 1:ee htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:1381 classid 1:ef htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:1381 classid 1:f0 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:1381 classid 1:f1 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:1381 classid 1:f2 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:1381 classid 1:f3 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:1381 classid 1:f4 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:1381 classid 1:f5 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 13820 fw classid 1:ed
+tc filter add dev br2 protocol ip parent 1: handle 13821 fw classid 1:ee
+tc filter add dev br2 protocol ip parent 1: handle 13822 fw classid 1:ef
+tc filter add dev br2 protocol ip parent 1: handle 13823 fw classid 1:f0
+tc filter add dev br2 protocol ip parent 1: handle 13824 fw classid 1:f1
+tc filter add dev br2 protocol ip parent 1: handle 13825 fw classid 1:f2
+tc filter add dev br2 protocol ip parent 1: handle 13826 fw classid 1:f3
+tc filter add dev br2 protocol ip parent 1: handle 13827 fw classid 1:f4
+tc filter add dev br2 protocol ip parent 1: handle 13828 fw classid 1:f5
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:1382 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:1382 classid 1:f6 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:1382 classid 1:f7 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:1382 classid 1:f8 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:1382 classid 1:f9 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:1382 classid 1:fa htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:1382 classid 1:fb htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:1382 classid 1:fc htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:1382 classid 1:fd htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:1382 classid 1:fe htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 13830 fw classid 1:f6
+tc filter add dev eth0 protocol ip parent 1: handle 13831 fw classid 1:f7
+tc filter add dev eth0 protocol ip parent 1: handle 13832 fw classid 1:f8
+tc filter add dev eth0 protocol ip parent 1: handle 13833 fw classid 1:f9
+tc filter add dev eth0 protocol ip parent 1: handle 13834 fw classid 1:fa
+tc filter add dev eth0 protocol ip parent 1: handle 13835 fw classid 1:fb
+tc filter add dev eth0 protocol ip parent 1: handle 13836 fw classid 1:fc
+tc filter add dev eth0 protocol ip parent 1: handle 13837 fw classid 1:fd
+tc filter add dev eth0 protocol ip parent 1: handle 13838 fw classid 1:fe
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:4721 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:4721 classid 1:ff htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4721 classid 1:100 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4721 classid 1:101 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4721 classid 1:102 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4721 classid 1:103 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4721 classid 1:104 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4721 classid 1:105 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4721 classid 1:106 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4721 classid 1:107 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 47220 fw classid 1:ff
+tc filter add dev br2 protocol ip parent 1: handle 47221 fw classid 1:100
+tc filter add dev br2 protocol ip parent 1: handle 47222 fw classid 1:101
+tc filter add dev br2 protocol ip parent 1: handle 47223 fw classid 1:102
+tc filter add dev br2 protocol ip parent 1: handle 47224 fw classid 1:103
+tc filter add dev br2 protocol ip parent 1: handle 47225 fw classid 1:104
+tc filter add dev br2 protocol ip parent 1: handle 47226 fw classid 1:105
+tc filter add dev br2 protocol ip parent 1: handle 47227 fw classid 1:106
+tc filter add dev br2 protocol ip parent 1: handle 47228 fw classid 1:107
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:4722 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:4722 classid 1:108 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4722 classid 1:109 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4722 classid 1:10a htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4722 classid 1:10b htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4722 classid 1:10c htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4722 classid 1:10d htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4722 classid 1:10e htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4722 classid 1:10f htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4722 classid 1:110 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 47230 fw classid 1:108
+tc filter add dev eth0 protocol ip parent 1: handle 47231 fw classid 1:109
+tc filter add dev eth0 protocol ip parent 1: handle 47232 fw classid 1:10a
+tc filter add dev eth0 protocol ip parent 1: handle 47233 fw classid 1:10b
+tc filter add dev eth0 protocol ip parent 1: handle 47234 fw classid 1:10c
+tc filter add dev eth0 protocol ip parent 1: handle 47235 fw classid 1:10d
+tc filter add dev eth0 protocol ip parent 1: handle 47236 fw classid 1:10e
+tc filter add dev eth0 protocol ip parent 1: handle 47237 fw classid 1:10f
+tc filter add dev eth0 protocol ip parent 1: handle 47238 fw classid 1:110
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:4041 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:4041 classid 1:111 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4041 classid 1:112 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4041 classid 1:113 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4041 classid 1:114 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4041 classid 1:115 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4041 classid 1:116 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4041 classid 1:117 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4041 classid 1:118 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4041 classid 1:119 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 40420 fw classid 1:111
+tc filter add dev br2 protocol ip parent 1: handle 40421 fw classid 1:112
+tc filter add dev br2 protocol ip parent 1: handle 40422 fw classid 1:113
+tc filter add dev br2 protocol ip parent 1: handle 40423 fw classid 1:114
+tc filter add dev br2 protocol ip parent 1: handle 40424 fw classid 1:115
+tc filter add dev br2 protocol ip parent 1: handle 40425 fw classid 1:116
+tc filter add dev br2 protocol ip parent 1: handle 40426 fw classid 1:117
+tc filter add dev br2 protocol ip parent 1: handle 40427 fw classid 1:118
+tc filter add dev br2 protocol ip parent 1: handle 40428 fw classid 1:119
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:4042 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:4042 classid 1:11a htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4042 classid 1:11b htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4042 classid 1:11c htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4042 classid 1:11d htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4042 classid 1:11e htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4042 classid 1:11f htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4042 classid 1:120 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4042 classid 1:121 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4042 classid 1:122 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 40430 fw classid 1:11a
+tc filter add dev eth0 protocol ip parent 1: handle 40431 fw classid 1:11b
+tc filter add dev eth0 protocol ip parent 1: handle 40432 fw classid 1:11c
+tc filter add dev eth0 protocol ip parent 1: handle 40433 fw classid 1:11d
+tc filter add dev eth0 protocol ip parent 1: handle 40434 fw classid 1:11e
+tc filter add dev eth0 protocol ip parent 1: handle 40435 fw classid 1:11f
+tc filter add dev eth0 protocol ip parent 1: handle 40436 fw classid 1:120
+tc filter add dev eth0 protocol ip parent 1: handle 40437 fw classid 1:121
+tc filter add dev eth0 protocol ip parent 1: handle 40438 fw classid 1:122
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:1331 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:1331 classid 1:123 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:1331 classid 1:124 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:1331 classid 1:125 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:1331 classid 1:126 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:1331 classid 1:127 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:1331 classid 1:128 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:1331 classid 1:129 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:1331 classid 1:12a htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:1331 classid 1:12b htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 13320 fw classid 1:123
+tc filter add dev br2 protocol ip parent 1: handle 13321 fw classid 1:124
+tc filter add dev br2 protocol ip parent 1: handle 13322 fw classid 1:125
+tc filter add dev br2 protocol ip parent 1: handle 13323 fw classid 1:126
+tc filter add dev br2 protocol ip parent 1: handle 13324 fw classid 1:127
+tc filter add dev br2 protocol ip parent 1: handle 13325 fw classid 1:128
+tc filter add dev br2 protocol ip parent 1: handle 13326 fw classid 1:129
+tc filter add dev br2 protocol ip parent 1: handle 13327 fw classid 1:12a
+tc filter add dev br2 protocol ip parent 1: handle 13328 fw classid 1:12b
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:1332 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:1332 classid 1:12c htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:1332 classid 1:12d htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:1332 classid 1:12e htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:1332 classid 1:12f htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:1332 classid 1:130 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:1332 classid 1:131 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:1332 classid 1:132 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:1332 classid 1:133 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:1332 classid 1:134 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 13330 fw classid 1:12c
+tc filter add dev eth0 protocol ip parent 1: handle 13331 fw classid 1:12d
+tc filter add dev eth0 protocol ip parent 1: handle 13332 fw classid 1:12e
+tc filter add dev eth0 protocol ip parent 1: handle 13333 fw classid 1:12f
+tc filter add dev eth0 protocol ip parent 1: handle 13334 fw classid 1:130
+tc filter add dev eth0 protocol ip parent 1: handle 13335 fw classid 1:131
+tc filter add dev eth0 protocol ip parent 1: handle 13336 fw classid 1:132
+tc filter add dev eth0 protocol ip parent 1: handle 13337 fw classid 1:133
+tc filter add dev eth0 protocol ip parent 1: handle 13338 fw classid 1:134
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:4661 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:4661 classid 1:135 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4661 classid 1:136 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4661 classid 1:137 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4661 classid 1:138 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4661 classid 1:139 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4661 classid 1:13a htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4661 classid 1:13b htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4661 classid 1:13c htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4661 classid 1:13d htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 46620 fw classid 1:135
+tc filter add dev br2 protocol ip parent 1: handle 46621 fw classid 1:136
+tc filter add dev br2 protocol ip parent 1: handle 46622 fw classid 1:137
+tc filter add dev br2 protocol ip parent 1: handle 46623 fw classid 1:138
+tc filter add dev br2 protocol ip parent 1: handle 46624 fw classid 1:139
+tc filter add dev br2 protocol ip parent 1: handle 46625 fw classid 1:13a
+tc filter add dev br2 protocol ip parent 1: handle 46626 fw classid 1:13b
+tc filter add dev br2 protocol ip parent 1: handle 46627 fw classid 1:13c
+tc filter add dev br2 protocol ip parent 1: handle 46628 fw classid 1:13d
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:4662 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:4662 classid 1:13e htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4662 classid 1:13f htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4662 classid 1:140 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4662 classid 1:141 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4662 classid 1:142 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4662 classid 1:143 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4662 classid 1:144 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4662 classid 1:145 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4662 classid 1:146 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 46630 fw classid 1:13e
+tc filter add dev eth0 protocol ip parent 1: handle 46631 fw classid 1:13f
+tc filter add dev eth0 protocol ip parent 1: handle 46632 fw classid 1:140
+tc filter add dev eth0 protocol ip parent 1: handle 46633 fw classid 1:141
+tc filter add dev eth0 protocol ip parent 1: handle 46634 fw classid 1:142
+tc filter add dev eth0 protocol ip parent 1: handle 46635 fw classid 1:143
+tc filter add dev eth0 protocol ip parent 1: handle 46636 fw classid 1:144
+tc filter add dev eth0 protocol ip parent 1: handle 46637 fw classid 1:145
+tc filter add dev eth0 protocol ip parent 1: handle 46638 fw classid 1:146
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:4631 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:4631 classid 1:147 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4631 classid 1:148 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4631 classid 1:149 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4631 classid 1:14a htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4631 classid 1:14b htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4631 classid 1:14c htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4631 classid 1:14d htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4631 classid 1:14e htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4631 classid 1:14f htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 46320 fw classid 1:147
+tc filter add dev br2 protocol ip parent 1: handle 46321 fw classid 1:148
+tc filter add dev br2 protocol ip parent 1: handle 46322 fw classid 1:149
+tc filter add dev br2 protocol ip parent 1: handle 46323 fw classid 1:14a
+tc filter add dev br2 protocol ip parent 1: handle 46324 fw classid 1:14b
+tc filter add dev br2 protocol ip parent 1: handle 46325 fw classid 1:14c
+tc filter add dev br2 protocol ip parent 1: handle 46326 fw classid 1:14d
+tc filter add dev br2 protocol ip parent 1: handle 46327 fw classid 1:14e
+tc filter add dev br2 protocol ip parent 1: handle 46328 fw classid 1:14f
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:4632 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:4632 classid 1:150 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4632 classid 1:151 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4632 classid 1:152 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4632 classid 1:153 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4632 classid 1:154 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4632 classid 1:155 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4632 classid 1:156 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4632 classid 1:157 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4632 classid 1:158 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 46330 fw classid 1:150
+tc filter add dev eth0 protocol ip parent 1: handle 46331 fw classid 1:151
+tc filter add dev eth0 protocol ip parent 1: handle 46332 fw classid 1:152
+tc filter add dev eth0 protocol ip parent 1: handle 46333 fw classid 1:153
+tc filter add dev eth0 protocol ip parent 1: handle 46334 fw classid 1:154
+tc filter add dev eth0 protocol ip parent 1: handle 46335 fw classid 1:155
+tc filter add dev eth0 protocol ip parent 1: handle 46336 fw classid 1:156
+tc filter add dev eth0 protocol ip parent 1: handle 46337 fw classid 1:157
+tc filter add dev eth0 protocol ip parent 1: handle 46338 fw classid 1:158
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:4441 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:4441 classid 1:159 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4441 classid 1:15a htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4441 classid 1:15b htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4441 classid 1:15c htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4441 classid 1:15d htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4441 classid 1:15e htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4441 classid 1:15f htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4441 classid 1:160 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4441 classid 1:161 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 44420 fw classid 1:159
+tc filter add dev br2 protocol ip parent 1: handle 44421 fw classid 1:15a
+tc filter add dev br2 protocol ip parent 1: handle 44422 fw classid 1:15b
+tc filter add dev br2 protocol ip parent 1: handle 44423 fw classid 1:15c
+tc filter add dev br2 protocol ip parent 1: handle 44424 fw classid 1:15d
+tc filter add dev br2 protocol ip parent 1: handle 44425 fw classid 1:15e
+tc filter add dev br2 protocol ip parent 1: handle 44426 fw classid 1:15f
+tc filter add dev br2 protocol ip parent 1: handle 44427 fw classid 1:160
+tc filter add dev br2 protocol ip parent 1: handle 44428 fw classid 1:161
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:4442 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:4442 classid 1:162 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4442 classid 1:163 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4442 classid 1:164 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4442 classid 1:165 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4442 classid 1:166 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4442 classid 1:167 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4442 classid 1:168 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4442 classid 1:169 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4442 classid 1:16a htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 44430 fw classid 1:162
+tc filter add dev eth0 protocol ip parent 1: handle 44431 fw classid 1:163
+tc filter add dev eth0 protocol ip parent 1: handle 44432 fw classid 1:164
+tc filter add dev eth0 protocol ip parent 1: handle 44433 fw classid 1:165
+tc filter add dev eth0 protocol ip parent 1: handle 44434 fw classid 1:166
+tc filter add dev eth0 protocol ip parent 1: handle 44435 fw classid 1:167
+tc filter add dev eth0 protocol ip parent 1: handle 44436 fw classid 1:168
+tc filter add dev eth0 protocol ip parent 1: handle 44437 fw classid 1:169
+tc filter add dev eth0 protocol ip parent 1: handle 44438 fw classid 1:16a
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:2311 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:2311 classid 1:16b htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:2311 classid 1:16c htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:2311 classid 1:16d htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:2311 classid 1:16e htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:2311 classid 1:16f htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:2311 classid 1:170 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:2311 classid 1:171 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:2311 classid 1:172 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:2311 classid 1:173 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 23120 fw classid 1:16b
+tc filter add dev br2 protocol ip parent 1: handle 23121 fw classid 1:16c
+tc filter add dev br2 protocol ip parent 1: handle 23122 fw classid 1:16d
+tc filter add dev br2 protocol ip parent 1: handle 23123 fw classid 1:16e
+tc filter add dev br2 protocol ip parent 1: handle 23124 fw classid 1:16f
+tc filter add dev br2 protocol ip parent 1: handle 23125 fw classid 1:170
+tc filter add dev br2 protocol ip parent 1: handle 23126 fw classid 1:171
+tc filter add dev br2 protocol ip parent 1: handle 23127 fw classid 1:172
+tc filter add dev br2 protocol ip parent 1: handle 23128 fw classid 1:173
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:2312 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:2312 classid 1:174 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:2312 classid 1:175 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:2312 classid 1:176 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:2312 classid 1:177 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:2312 classid 1:178 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:2312 classid 1:179 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:2312 classid 1:17a htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:2312 classid 1:17b htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:2312 classid 1:17c htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 23130 fw classid 1:174
+tc filter add dev eth0 protocol ip parent 1: handle 23131 fw classid 1:175
+tc filter add dev eth0 protocol ip parent 1: handle 23132 fw classid 1:176
+tc filter add dev eth0 protocol ip parent 1: handle 23133 fw classid 1:177
+tc filter add dev eth0 protocol ip parent 1: handle 23134 fw classid 1:178
+tc filter add dev eth0 protocol ip parent 1: handle 23135 fw classid 1:179
+tc filter add dev eth0 protocol ip parent 1: handle 23136 fw classid 1:17a
+tc filter add dev eth0 protocol ip parent 1: handle 23137 fw classid 1:17b
+tc filter add dev eth0 protocol ip parent 1: handle 23138 fw classid 1:17c
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:3301 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:3301 classid 1:17d htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:3301 classid 1:17e htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:3301 classid 1:17f htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:3301 classid 1:180 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:3301 classid 1:181 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:3301 classid 1:182 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:3301 classid 1:183 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:3301 classid 1:184 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:3301 classid 1:185 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 33020 fw classid 1:17d
+tc filter add dev br2 protocol ip parent 1: handle 33021 fw classid 1:17e
+tc filter add dev br2 protocol ip parent 1: handle 33022 fw classid 1:17f
+tc filter add dev br2 protocol ip parent 1: handle 33023 fw classid 1:180
+tc filter add dev br2 protocol ip parent 1: handle 33024 fw classid 1:181
+tc filter add dev br2 protocol ip parent 1: handle 33025 fw classid 1:182
+tc filter add dev br2 protocol ip parent 1: handle 33026 fw classid 1:183
+tc filter add dev br2 protocol ip parent 1: handle 33027 fw classid 1:184
+tc filter add dev br2 protocol ip parent 1: handle 33028 fw classid 1:185
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:3302 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:3302 classid 1:186 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:3302 classid 1:187 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:3302 classid 1:188 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:3302 classid 1:189 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:3302 classid 1:18a htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:3302 classid 1:18b htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:3302 classid 1:18c htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:3302 classid 1:18d htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:3302 classid 1:18e htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 33030 fw classid 1:186
+tc filter add dev eth0 protocol ip parent 1: handle 33031 fw classid 1:187
+tc filter add dev eth0 protocol ip parent 1: handle 33032 fw classid 1:188
+tc filter add dev eth0 protocol ip parent 1: handle 33033 fw classid 1:189
+tc filter add dev eth0 protocol ip parent 1: handle 33034 fw classid 1:18a
+tc filter add dev eth0 protocol ip parent 1: handle 33035 fw classid 1:18b
+tc filter add dev eth0 protocol ip parent 1: handle 33036 fw classid 1:18c
+tc filter add dev eth0 protocol ip parent 1: handle 33037 fw classid 1:18d
+tc filter add dev eth0 protocol ip parent 1: handle 33038 fw classid 1:18e
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:4141 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:4141 classid 1:18f htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4141 classid 1:190 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4141 classid 1:191 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4141 classid 1:192 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4141 classid 1:193 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4141 classid 1:194 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4141 classid 1:195 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4141 classid 1:196 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4141 classid 1:197 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 41420 fw classid 1:18f
+tc filter add dev br2 protocol ip parent 1: handle 41421 fw classid 1:190
+tc filter add dev br2 protocol ip parent 1: handle 41422 fw classid 1:191
+tc filter add dev br2 protocol ip parent 1: handle 41423 fw classid 1:192
+tc filter add dev br2 protocol ip parent 1: handle 41424 fw classid 1:193
+tc filter add dev br2 protocol ip parent 1: handle 41425 fw classid 1:194
+tc filter add dev br2 protocol ip parent 1: handle 41426 fw classid 1:195
+tc filter add dev br2 protocol ip parent 1: handle 41427 fw classid 1:196
+tc filter add dev br2 protocol ip parent 1: handle 41428 fw classid 1:197
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:4142 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:4142 classid 1:198 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4142 classid 1:199 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4142 classid 1:19a htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4142 classid 1:19b htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4142 classid 1:19c htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4142 classid 1:19d htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4142 classid 1:19e htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4142 classid 1:19f htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4142 classid 1:1a0 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 41430 fw classid 1:198
+tc filter add dev eth0 protocol ip parent 1: handle 41431 fw classid 1:199
+tc filter add dev eth0 protocol ip parent 1: handle 41432 fw classid 1:19a
+tc filter add dev eth0 protocol ip parent 1: handle 41433 fw classid 1:19b
+tc filter add dev eth0 protocol ip parent 1: handle 41434 fw classid 1:19c
+tc filter add dev eth0 protocol ip parent 1: handle 41435 fw classid 1:19d
+tc filter add dev eth0 protocol ip parent 1: handle 41436 fw classid 1:19e
+tc filter add dev eth0 protocol ip parent 1: handle 41437 fw classid 1:19f
+tc filter add dev eth0 protocol ip parent 1: handle 41438 fw classid 1:1a0
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:4471 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:4471 classid 1:1a1 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4471 classid 1:1a2 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4471 classid 1:1a3 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4471 classid 1:1a4 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4471 classid 1:1a5 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4471 classid 1:1a6 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4471 classid 1:1a7 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4471 classid 1:1a8 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4471 classid 1:1a9 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 44720 fw classid 1:1a1
+tc filter add dev br2 protocol ip parent 1: handle 44721 fw classid 1:1a2
+tc filter add dev br2 protocol ip parent 1: handle 44722 fw classid 1:1a3
+tc filter add dev br2 protocol ip parent 1: handle 44723 fw classid 1:1a4
+tc filter add dev br2 protocol ip parent 1: handle 44724 fw classid 1:1a5
+tc filter add dev br2 protocol ip parent 1: handle 44725 fw classid 1:1a6
+tc filter add dev br2 protocol ip parent 1: handle 44726 fw classid 1:1a7
+tc filter add dev br2 protocol ip parent 1: handle 44727 fw classid 1:1a8
+tc filter add dev br2 protocol ip parent 1: handle 44728 fw classid 1:1a9
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:4472 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:4472 classid 1:1aa htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4472 classid 1:1ab htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4472 classid 1:1ac htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4472 classid 1:1ad htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4472 classid 1:1ae htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4472 classid 1:1af htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4472 classid 1:1b0 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4472 classid 1:1b1 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4472 classid 1:1b2 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 44730 fw classid 1:1aa
+tc filter add dev eth0 protocol ip parent 1: handle 44731 fw classid 1:1ab
+tc filter add dev eth0 protocol ip parent 1: handle 44732 fw classid 1:1ac
+tc filter add dev eth0 protocol ip parent 1: handle 44733 fw classid 1:1ad
+tc filter add dev eth0 protocol ip parent 1: handle 44734 fw classid 1:1ae
+tc filter add dev eth0 protocol ip parent 1: handle 44735 fw classid 1:1af
+tc filter add dev eth0 protocol ip parent 1: handle 44736 fw classid 1:1b0
+tc filter add dev eth0 protocol ip parent 1: handle 44737 fw classid 1:1b1
+tc filter add dev eth0 protocol ip parent 1: handle 44738 fw classid 1:1b2
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:4561 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:4561 classid 1:1b3 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4561 classid 1:1b4 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4561 classid 1:1b5 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4561 classid 1:1b6 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4561 classid 1:1b7 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4561 classid 1:1b8 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4561 classid 1:1b9 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4561 classid 1:1ba htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4561 classid 1:1bb htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 45620 fw classid 1:1b3
+tc filter add dev br2 protocol ip parent 1: handle 45621 fw classid 1:1b4
+tc filter add dev br2 protocol ip parent 1: handle 45622 fw classid 1:1b5
+tc filter add dev br2 protocol ip parent 1: handle 45623 fw classid 1:1b6
+tc filter add dev br2 protocol ip parent 1: handle 45624 fw classid 1:1b7
+tc filter add dev br2 protocol ip parent 1: handle 45625 fw classid 1:1b8
+tc filter add dev br2 protocol ip parent 1: handle 45626 fw classid 1:1b9
+tc filter add dev br2 protocol ip parent 1: handle 45627 fw classid 1:1ba
+tc filter add dev br2 protocol ip parent 1: handle 45628 fw classid 1:1bb
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:4562 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:4562 classid 1:1bc htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4562 classid 1:1bd htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4562 classid 1:1be htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4562 classid 1:1bf htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4562 classid 1:1c0 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4562 classid 1:1c1 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4562 classid 1:1c2 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4562 classid 1:1c3 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4562 classid 1:1c4 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 45630 fw classid 1:1bc
+tc filter add dev eth0 protocol ip parent 1: handle 45631 fw classid 1:1bd
+tc filter add dev eth0 protocol ip parent 1: handle 45632 fw classid 1:1be
+tc filter add dev eth0 protocol ip parent 1: handle 45633 fw classid 1:1bf
+tc filter add dev eth0 protocol ip parent 1: handle 45634 fw classid 1:1c0
+tc filter add dev eth0 protocol ip parent 1: handle 45635 fw classid 1:1c1
+tc filter add dev eth0 protocol ip parent 1: handle 45636 fw classid 1:1c2
+tc filter add dev eth0 protocol ip parent 1: handle 45637 fw classid 1:1c3
+tc filter add dev eth0 protocol ip parent 1: handle 45638 fw classid 1:1c4
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:4451 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:4451 classid 1:1c5 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4451 classid 1:1c6 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4451 classid 1:1c7 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4451 classid 1:1c8 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4451 classid 1:1c9 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4451 classid 1:1ca htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4451 classid 1:1cb htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4451 classid 1:1cc htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4451 classid 1:1cd htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 44520 fw classid 1:1c5
+tc filter add dev br2 protocol ip parent 1: handle 44521 fw classid 1:1c6
+tc filter add dev br2 protocol ip parent 1: handle 44522 fw classid 1:1c7
+tc filter add dev br2 protocol ip parent 1: handle 44523 fw classid 1:1c8
+tc filter add dev br2 protocol ip parent 1: handle 44524 fw classid 1:1c9
+tc filter add dev br2 protocol ip parent 1: handle 44525 fw classid 1:1ca
+tc filter add dev br2 protocol ip parent 1: handle 44526 fw classid 1:1cb
+tc filter add dev br2 protocol ip parent 1: handle 44527 fw classid 1:1cc
+tc filter add dev br2 protocol ip parent 1: handle 44528 fw classid 1:1cd
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:4452 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:4452 classid 1:1ce htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4452 classid 1:1cf htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4452 classid 1:1d0 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4452 classid 1:1d1 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4452 classid 1:1d2 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4452 classid 1:1d3 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4452 classid 1:1d4 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4452 classid 1:1d5 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4452 classid 1:1d6 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 44530 fw classid 1:1ce
+tc filter add dev eth0 protocol ip parent 1: handle 44531 fw classid 1:1cf
+tc filter add dev eth0 protocol ip parent 1: handle 44532 fw classid 1:1d0
+tc filter add dev eth0 protocol ip parent 1: handle 44533 fw classid 1:1d1
+tc filter add dev eth0 protocol ip parent 1: handle 44534 fw classid 1:1d2
+tc filter add dev eth0 protocol ip parent 1: handle 44535 fw classid 1:1d3
+tc filter add dev eth0 protocol ip parent 1: handle 44536 fw classid 1:1d4
+tc filter add dev eth0 protocol ip parent 1: handle 44537 fw classid 1:1d5
+tc filter add dev eth0 protocol ip parent 1: handle 44538 fw classid 1:1d6
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:4061 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:4061 classid 1:1d7 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4061 classid 1:1d8 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4061 classid 1:1d9 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4061 classid 1:1da htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4061 classid 1:1db htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4061 classid 1:1dc htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4061 classid 1:1dd htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4061 classid 1:1de htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4061 classid 1:1df htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 40620 fw classid 1:1d7
+tc filter add dev br2 protocol ip parent 1: handle 40621 fw classid 1:1d8
+tc filter add dev br2 protocol ip parent 1: handle 40622 fw classid 1:1d9
+tc filter add dev br2 protocol ip parent 1: handle 40623 fw classid 1:1da
+tc filter add dev br2 protocol ip parent 1: handle 40624 fw classid 1:1db
+tc filter add dev br2 protocol ip parent 1: handle 40625 fw classid 1:1dc
+tc filter add dev br2 protocol ip parent 1: handle 40626 fw classid 1:1dd
+tc filter add dev br2 protocol ip parent 1: handle 40627 fw classid 1:1de
+tc filter add dev br2 protocol ip parent 1: handle 40628 fw classid 1:1df
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:4062 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:4062 classid 1:1e0 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4062 classid 1:1e1 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4062 classid 1:1e2 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4062 classid 1:1e3 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4062 classid 1:1e4 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4062 classid 1:1e5 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4062 classid 1:1e6 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4062 classid 1:1e7 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4062 classid 1:1e8 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 40630 fw classid 1:1e0
+tc filter add dev eth0 protocol ip parent 1: handle 40631 fw classid 1:1e1
+tc filter add dev eth0 protocol ip parent 1: handle 40632 fw classid 1:1e2
+tc filter add dev eth0 protocol ip parent 1: handle 40633 fw classid 1:1e3
+tc filter add dev eth0 protocol ip parent 1: handle 40634 fw classid 1:1e4
+tc filter add dev eth0 protocol ip parent 1: handle 40635 fw classid 1:1e5
+tc filter add dev eth0 protocol ip parent 1: handle 40636 fw classid 1:1e6
+tc filter add dev eth0 protocol ip parent 1: handle 40637 fw classid 1:1e7
+tc filter add dev eth0 protocol ip parent 1: handle 40638 fw classid 1:1e8
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:4851 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:4851 classid 1:1e9 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4851 classid 1:1ea htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4851 classid 1:1eb htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4851 classid 1:1ec htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4851 classid 1:1ed htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4851 classid 1:1ee htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4851 classid 1:1ef htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4851 classid 1:1f0 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4851 classid 1:1f1 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 48520 fw classid 1:1e9
+tc filter add dev br2 protocol ip parent 1: handle 48521 fw classid 1:1ea
+tc filter add dev br2 protocol ip parent 1: handle 48522 fw classid 1:1eb
+tc filter add dev br2 protocol ip parent 1: handle 48523 fw classid 1:1ec
+tc filter add dev br2 protocol ip parent 1: handle 48524 fw classid 1:1ed
+tc filter add dev br2 protocol ip parent 1: handle 48525 fw classid 1:1ee
+tc filter add dev br2 protocol ip parent 1: handle 48526 fw classid 1:1ef
+tc filter add dev br2 protocol ip parent 1: handle 48527 fw classid 1:1f0
+tc filter add dev br2 protocol ip parent 1: handle 48528 fw classid 1:1f1
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:4852 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:4852 classid 1:1f2 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4852 classid 1:1f3 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4852 classid 1:1f4 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4852 classid 1:1f5 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4852 classid 1:1f6 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4852 classid 1:1f7 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4852 classid 1:1f8 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4852 classid 1:1f9 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4852 classid 1:1fa htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 48530 fw classid 1:1f2
+tc filter add dev eth0 protocol ip parent 1: handle 48531 fw classid 1:1f3
+tc filter add dev eth0 protocol ip parent 1: handle 48532 fw classid 1:1f4
+tc filter add dev eth0 protocol ip parent 1: handle 48533 fw classid 1:1f5
+tc filter add dev eth0 protocol ip parent 1: handle 48534 fw classid 1:1f6
+tc filter add dev eth0 protocol ip parent 1: handle 48535 fw classid 1:1f7
+tc filter add dev eth0 protocol ip parent 1: handle 48536 fw classid 1:1f8
+tc filter add dev eth0 protocol ip parent 1: handle 48537 fw classid 1:1f9
+tc filter add dev eth0 protocol ip parent 1: handle 48538 fw classid 1:1fa
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:4381 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:4381 classid 1:1fb htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4381 classid 1:1fc htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4381 classid 1:1fd htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4381 classid 1:1fe htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4381 classid 1:1ff htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4381 classid 1:200 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4381 classid 1:201 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4381 classid 1:202 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4381 classid 1:203 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 43820 fw classid 1:1fb
+tc filter add dev br2 protocol ip parent 1: handle 43821 fw classid 1:1fc
+tc filter add dev br2 protocol ip parent 1: handle 43822 fw classid 1:1fd
+tc filter add dev br2 protocol ip parent 1: handle 43823 fw classid 1:1fe
+tc filter add dev br2 protocol ip parent 1: handle 43824 fw classid 1:1ff
+tc filter add dev br2 protocol ip parent 1: handle 43825 fw classid 1:200
+tc filter add dev br2 protocol ip parent 1: handle 43826 fw classid 1:201
+tc filter add dev br2 protocol ip parent 1: handle 43827 fw classid 1:202
+tc filter add dev br2 protocol ip parent 1: handle 43828 fw classid 1:203
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:4382 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:4382 classid 1:204 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4382 classid 1:205 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4382 classid 1:206 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4382 classid 1:207 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4382 classid 1:208 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4382 classid 1:209 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4382 classid 1:20a htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4382 classid 1:20b htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4382 classid 1:20c htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 43830 fw classid 1:204
+tc filter add dev eth0 protocol ip parent 1: handle 43831 fw classid 1:205
+tc filter add dev eth0 protocol ip parent 1: handle 43832 fw classid 1:206
+tc filter add dev eth0 protocol ip parent 1: handle 43833 fw classid 1:207
+tc filter add dev eth0 protocol ip parent 1: handle 43834 fw classid 1:208
+tc filter add dev eth0 protocol ip parent 1: handle 43835 fw classid 1:209
+tc filter add dev eth0 protocol ip parent 1: handle 43836 fw classid 1:20a
+tc filter add dev eth0 protocol ip parent 1: handle 43837 fw classid 1:20b
+tc filter add dev eth0 protocol ip parent 1: handle 43838 fw classid 1:20c
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:2011 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:2011 classid 1:20d htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:2011 classid 1:20e htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:2011 classid 1:20f htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:2011 classid 1:210 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:2011 classid 1:211 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:2011 classid 1:212 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:2011 classid 1:213 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:2011 classid 1:214 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:2011 classid 1:215 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 20120 fw classid 1:20d
+tc filter add dev br2 protocol ip parent 1: handle 20121 fw classid 1:20e
+tc filter add dev br2 protocol ip parent 1: handle 20122 fw classid 1:20f
+tc filter add dev br2 protocol ip parent 1: handle 20123 fw classid 1:210
+tc filter add dev br2 protocol ip parent 1: handle 20124 fw classid 1:211
+tc filter add dev br2 protocol ip parent 1: handle 20125 fw classid 1:212
+tc filter add dev br2 protocol ip parent 1: handle 20126 fw classid 1:213
+tc filter add dev br2 protocol ip parent 1: handle 20127 fw classid 1:214
+tc filter add dev br2 protocol ip parent 1: handle 20128 fw classid 1:215
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:2012 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:2012 classid 1:216 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:2012 classid 1:217 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:2012 classid 1:218 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:2012 classid 1:219 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:2012 classid 1:21a htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:2012 classid 1:21b htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:2012 classid 1:21c htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:2012 classid 1:21d htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:2012 classid 1:21e htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 20130 fw classid 1:216
+tc filter add dev eth0 protocol ip parent 1: handle 20131 fw classid 1:217
+tc filter add dev eth0 protocol ip parent 1: handle 20132 fw classid 1:218
+tc filter add dev eth0 protocol ip parent 1: handle 20133 fw classid 1:219
+tc filter add dev eth0 protocol ip parent 1: handle 20134 fw classid 1:21a
+tc filter add dev eth0 protocol ip parent 1: handle 20135 fw classid 1:21b
+tc filter add dev eth0 protocol ip parent 1: handle 20136 fw classid 1:21c
+tc filter add dev eth0 protocol ip parent 1: handle 20137 fw classid 1:21d
+tc filter add dev eth0 protocol ip parent 1: handle 20138 fw classid 1:21e
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:2001 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:2001 classid 1:21f htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:2001 classid 1:220 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:2001 classid 1:221 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:2001 classid 1:222 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:2001 classid 1:223 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:2001 classid 1:224 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:2001 classid 1:225 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:2001 classid 1:226 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:2001 classid 1:227 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 20020 fw classid 1:21f
+tc filter add dev br2 protocol ip parent 1: handle 20021 fw classid 1:220
+tc filter add dev br2 protocol ip parent 1: handle 20022 fw classid 1:221
+tc filter add dev br2 protocol ip parent 1: handle 20023 fw classid 1:222
+tc filter add dev br2 protocol ip parent 1: handle 20024 fw classid 1:223
+tc filter add dev br2 protocol ip parent 1: handle 20025 fw classid 1:224
+tc filter add dev br2 protocol ip parent 1: handle 20026 fw classid 1:225
+tc filter add dev br2 protocol ip parent 1: handle 20027 fw classid 1:226
+tc filter add dev br2 protocol ip parent 1: handle 20028 fw classid 1:227
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:2002 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:2002 classid 1:228 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:2002 classid 1:229 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:2002 classid 1:22a htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:2002 classid 1:22b htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:2002 classid 1:22c htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:2002 classid 1:22d htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:2002 classid 1:22e htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:2002 classid 1:22f htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:2002 classid 1:230 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 20030 fw classid 1:228
+tc filter add dev eth0 protocol ip parent 1: handle 20031 fw classid 1:229
+tc filter add dev eth0 protocol ip parent 1: handle 20032 fw classid 1:22a
+tc filter add dev eth0 protocol ip parent 1: handle 20033 fw classid 1:22b
+tc filter add dev eth0 protocol ip parent 1: handle 20034 fw classid 1:22c
+tc filter add dev eth0 protocol ip parent 1: handle 20035 fw classid 1:22d
+tc filter add dev eth0 protocol ip parent 1: handle 20036 fw classid 1:22e
+tc filter add dev eth0 protocol ip parent 1: handle 20037 fw classid 1:22f
+tc filter add dev eth0 protocol ip parent 1: handle 20038 fw classid 1:230
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:4101 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:4101 classid 1:231 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4101 classid 1:232 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4101 classid 1:233 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4101 classid 1:234 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4101 classid 1:235 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4101 classid 1:236 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4101 classid 1:237 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4101 classid 1:238 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4101 classid 1:239 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 41020 fw classid 1:231
+tc filter add dev br2 protocol ip parent 1: handle 41021 fw classid 1:232
+tc filter add dev br2 protocol ip parent 1: handle 41022 fw classid 1:233
+tc filter add dev br2 protocol ip parent 1: handle 41023 fw classid 1:234
+tc filter add dev br2 protocol ip parent 1: handle 41024 fw classid 1:235
+tc filter add dev br2 protocol ip parent 1: handle 41025 fw classid 1:236
+tc filter add dev br2 protocol ip parent 1: handle 41026 fw classid 1:237
+tc filter add dev br2 protocol ip parent 1: handle 41027 fw classid 1:238
+tc filter add dev br2 protocol ip parent 1: handle 41028 fw classid 1:239
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:4102 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:4102 classid 1:23a htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4102 classid 1:23b htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4102 classid 1:23c htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4102 classid 1:23d htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4102 classid 1:23e htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4102 classid 1:23f htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4102 classid 1:240 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4102 classid 1:241 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4102 classid 1:242 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 41030 fw classid 1:23a
+tc filter add dev eth0 protocol ip parent 1: handle 41031 fw classid 1:23b
+tc filter add dev eth0 protocol ip parent 1: handle 41032 fw classid 1:23c
+tc filter add dev eth0 protocol ip parent 1: handle 41033 fw classid 1:23d
+tc filter add dev eth0 protocol ip parent 1: handle 41034 fw classid 1:23e
+tc filter add dev eth0 protocol ip parent 1: handle 41035 fw classid 1:23f
+tc filter add dev eth0 protocol ip parent 1: handle 41036 fw classid 1:240
+tc filter add dev eth0 protocol ip parent 1: handle 41037 fw classid 1:241
+tc filter add dev eth0 protocol ip parent 1: handle 41038 fw classid 1:242
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:3741 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:3741 classid 1:243 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:3741 classid 1:244 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:3741 classid 1:245 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:3741 classid 1:246 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:3741 classid 1:247 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:3741 classid 1:248 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:3741 classid 1:249 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:3741 classid 1:24a htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:3741 classid 1:24b htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 37420 fw classid 1:243
+tc filter add dev br2 protocol ip parent 1: handle 37421 fw classid 1:244
+tc filter add dev br2 protocol ip parent 1: handle 37422 fw classid 1:245
+tc filter add dev br2 protocol ip parent 1: handle 37423 fw classid 1:246
+tc filter add dev br2 protocol ip parent 1: handle 37424 fw classid 1:247
+tc filter add dev br2 protocol ip parent 1: handle 37425 fw classid 1:248
+tc filter add dev br2 protocol ip parent 1: handle 37426 fw classid 1:249
+tc filter add dev br2 protocol ip parent 1: handle 37427 fw classid 1:24a
+tc filter add dev br2 protocol ip parent 1: handle 37428 fw classid 1:24b
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:3742 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:3742 classid 1:24c htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:3742 classid 1:24d htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:3742 classid 1:24e htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:3742 classid 1:24f htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:3742 classid 1:250 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:3742 classid 1:251 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:3742 classid 1:252 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:3742 classid 1:253 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:3742 classid 1:254 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 37430 fw classid 1:24c
+tc filter add dev eth0 protocol ip parent 1: handle 37431 fw classid 1:24d
+tc filter add dev eth0 protocol ip parent 1: handle 37432 fw classid 1:24e
+tc filter add dev eth0 protocol ip parent 1: handle 37433 fw classid 1:24f
+tc filter add dev eth0 protocol ip parent 1: handle 37434 fw classid 1:250
+tc filter add dev eth0 protocol ip parent 1: handle 37435 fw classid 1:251
+tc filter add dev eth0 protocol ip parent 1: handle 37436 fw classid 1:252
+tc filter add dev eth0 protocol ip parent 1: handle 37437 fw classid 1:253
+tc filter add dev eth0 protocol ip parent 1: handle 37438 fw classid 1:254
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:4831 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:4831 classid 1:255 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4831 classid 1:256 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4831 classid 1:257 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4831 classid 1:258 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4831 classid 1:259 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4831 classid 1:25a htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4831 classid 1:25b htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4831 classid 1:25c htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4831 classid 1:25d htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 48320 fw classid 1:255
+tc filter add dev br2 protocol ip parent 1: handle 48321 fw classid 1:256
+tc filter add dev br2 protocol ip parent 1: handle 48322 fw classid 1:257
+tc filter add dev br2 protocol ip parent 1: handle 48323 fw classid 1:258
+tc filter add dev br2 protocol ip parent 1: handle 48324 fw classid 1:259
+tc filter add dev br2 protocol ip parent 1: handle 48325 fw classid 1:25a
+tc filter add dev br2 protocol ip parent 1: handle 48326 fw classid 1:25b
+tc filter add dev br2 protocol ip parent 1: handle 48327 fw classid 1:25c
+tc filter add dev br2 protocol ip parent 1: handle 48328 fw classid 1:25d
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:4832 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:4832 classid 1:25e htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4832 classid 1:25f htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4832 classid 1:260 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4832 classid 1:261 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4832 classid 1:262 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4832 classid 1:263 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4832 classid 1:264 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4832 classid 1:265 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4832 classid 1:266 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 48330 fw classid 1:25e
+tc filter add dev eth0 protocol ip parent 1: handle 48331 fw classid 1:25f
+tc filter add dev eth0 protocol ip parent 1: handle 48332 fw classid 1:260
+tc filter add dev eth0 protocol ip parent 1: handle 48333 fw classid 1:261
+tc filter add dev eth0 protocol ip parent 1: handle 48334 fw classid 1:262
+tc filter add dev eth0 protocol ip parent 1: handle 48335 fw classid 1:263
+tc filter add dev eth0 protocol ip parent 1: handle 48336 fw classid 1:264
+tc filter add dev eth0 protocol ip parent 1: handle 48337 fw classid 1:265
+tc filter add dev eth0 protocol ip parent 1: handle 48338 fw classid 1:266
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:4821 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:4821 classid 1:267 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4821 classid 1:268 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4821 classid 1:269 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4821 classid 1:26a htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4821 classid 1:26b htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4821 classid 1:26c htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4821 classid 1:26d htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4821 classid 1:26e htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4821 classid 1:26f htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 48220 fw classid 1:267
+tc filter add dev br2 protocol ip parent 1: handle 48221 fw classid 1:268
+tc filter add dev br2 protocol ip parent 1: handle 48222 fw classid 1:269
+tc filter add dev br2 protocol ip parent 1: handle 48223 fw classid 1:26a
+tc filter add dev br2 protocol ip parent 1: handle 48224 fw classid 1:26b
+tc filter add dev br2 protocol ip parent 1: handle 48225 fw classid 1:26c
+tc filter add dev br2 protocol ip parent 1: handle 48226 fw classid 1:26d
+tc filter add dev br2 protocol ip parent 1: handle 48227 fw classid 1:26e
+tc filter add dev br2 protocol ip parent 1: handle 48228 fw classid 1:26f
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:4822 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:4822 classid 1:270 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4822 classid 1:271 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4822 classid 1:272 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4822 classid 1:273 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4822 classid 1:274 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4822 classid 1:275 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4822 classid 1:276 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4822 classid 1:277 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4822 classid 1:278 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 48230 fw classid 1:270
+tc filter add dev eth0 protocol ip parent 1: handle 48231 fw classid 1:271
+tc filter add dev eth0 protocol ip parent 1: handle 48232 fw classid 1:272
+tc filter add dev eth0 protocol ip parent 1: handle 48233 fw classid 1:273
+tc filter add dev eth0 protocol ip parent 1: handle 48234 fw classid 1:274
+tc filter add dev eth0 protocol ip parent 1: handle 48235 fw classid 1:275
+tc filter add dev eth0 protocol ip parent 1: handle 48236 fw classid 1:276
+tc filter add dev eth0 protocol ip parent 1: handle 48237 fw classid 1:277
+tc filter add dev eth0 protocol ip parent 1: handle 48238 fw classid 1:278
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:4811 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:4811 classid 1:279 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4811 classid 1:27a htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4811 classid 1:27b htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4811 classid 1:27c htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4811 classid 1:27d htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4811 classid 1:27e htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4811 classid 1:27f htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4811 classid 1:280 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4811 classid 1:281 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 48120 fw classid 1:279
+tc filter add dev br2 protocol ip parent 1: handle 48121 fw classid 1:27a
+tc filter add dev br2 protocol ip parent 1: handle 48122 fw classid 1:27b
+tc filter add dev br2 protocol ip parent 1: handle 48123 fw classid 1:27c
+tc filter add dev br2 protocol ip parent 1: handle 48124 fw classid 1:27d
+tc filter add dev br2 protocol ip parent 1: handle 48125 fw classid 1:27e
+tc filter add dev br2 protocol ip parent 1: handle 48126 fw classid 1:27f
+tc filter add dev br2 protocol ip parent 1: handle 48127 fw classid 1:280
+tc filter add dev br2 protocol ip parent 1: handle 48128 fw classid 1:281
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:4812 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:4812 classid 1:282 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4812 classid 1:283 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4812 classid 1:284 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4812 classid 1:285 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4812 classid 1:286 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4812 classid 1:287 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4812 classid 1:288 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4812 classid 1:289 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4812 classid 1:28a htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 48130 fw classid 1:282
+tc filter add dev eth0 protocol ip parent 1: handle 48131 fw classid 1:283
+tc filter add dev eth0 protocol ip parent 1: handle 48132 fw classid 1:284
+tc filter add dev eth0 protocol ip parent 1: handle 48133 fw classid 1:285
+tc filter add dev eth0 protocol ip parent 1: handle 48134 fw classid 1:286
+tc filter add dev eth0 protocol ip parent 1: handle 48135 fw classid 1:287
+tc filter add dev eth0 protocol ip parent 1: handle 48136 fw classid 1:288
+tc filter add dev eth0 protocol ip parent 1: handle 48137 fw classid 1:289
+tc filter add dev eth0 protocol ip parent 1: handle 48138 fw classid 1:28a
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:4001 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:4001 classid 1:28b htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4001 classid 1:28c htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4001 classid 1:28d htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4001 classid 1:28e htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4001 classid 1:28f htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4001 classid 1:290 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4001 classid 1:291 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4001 classid 1:292 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4001 classid 1:293 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 40020 fw classid 1:28b
+tc filter add dev br2 protocol ip parent 1: handle 40021 fw classid 1:28c
+tc filter add dev br2 protocol ip parent 1: handle 40022 fw classid 1:28d
+tc filter add dev br2 protocol ip parent 1: handle 40023 fw classid 1:28e
+tc filter add dev br2 protocol ip parent 1: handle 40024 fw classid 1:28f
+tc filter add dev br2 protocol ip parent 1: handle 40025 fw classid 1:290
+tc filter add dev br2 protocol ip parent 1: handle 40026 fw classid 1:291
+tc filter add dev br2 protocol ip parent 1: handle 40027 fw classid 1:292
+tc filter add dev br2 protocol ip parent 1: handle 40028 fw classid 1:293
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:4002 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:4002 classid 1:294 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4002 classid 1:295 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4002 classid 1:296 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4002 classid 1:297 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4002 classid 1:298 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4002 classid 1:299 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4002 classid 1:29a htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4002 classid 1:29b htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4002 classid 1:29c htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 40030 fw classid 1:294
+tc filter add dev eth0 protocol ip parent 1: handle 40031 fw classid 1:295
+tc filter add dev eth0 protocol ip parent 1: handle 40032 fw classid 1:296
+tc filter add dev eth0 protocol ip parent 1: handle 40033 fw classid 1:297
+tc filter add dev eth0 protocol ip parent 1: handle 40034 fw classid 1:298
+tc filter add dev eth0 protocol ip parent 1: handle 40035 fw classid 1:299
+tc filter add dev eth0 protocol ip parent 1: handle 40036 fw classid 1:29a
+tc filter add dev eth0 protocol ip parent 1: handle 40037 fw classid 1:29b
+tc filter add dev eth0 protocol ip parent 1: handle 40038 fw classid 1:29c
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:4771 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:4771 classid 1:29d htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4771 classid 1:29e htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4771 classid 1:29f htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4771 classid 1:2a0 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4771 classid 1:2a1 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4771 classid 1:2a2 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4771 classid 1:2a3 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4771 classid 1:2a4 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4771 classid 1:2a5 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 47720 fw classid 1:29d
+tc filter add dev br2 protocol ip parent 1: handle 47721 fw classid 1:29e
+tc filter add dev br2 protocol ip parent 1: handle 47722 fw classid 1:29f
+tc filter add dev br2 protocol ip parent 1: handle 47723 fw classid 1:2a0
+tc filter add dev br2 protocol ip parent 1: handle 47724 fw classid 1:2a1
+tc filter add dev br2 protocol ip parent 1: handle 47725 fw classid 1:2a2
+tc filter add dev br2 protocol ip parent 1: handle 47726 fw classid 1:2a3
+tc filter add dev br2 protocol ip parent 1: handle 47727 fw classid 1:2a4
+tc filter add dev br2 protocol ip parent 1: handle 47728 fw classid 1:2a5
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:4772 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:4772 classid 1:2a6 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4772 classid 1:2a7 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4772 classid 1:2a8 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4772 classid 1:2a9 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4772 classid 1:2aa htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4772 classid 1:2ab htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4772 classid 1:2ac htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4772 classid 1:2ad htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4772 classid 1:2ae htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 47730 fw classid 1:2a6
+tc filter add dev eth0 protocol ip parent 1: handle 47731 fw classid 1:2a7
+tc filter add dev eth0 protocol ip parent 1: handle 47732 fw classid 1:2a8
+tc filter add dev eth0 protocol ip parent 1: handle 47733 fw classid 1:2a9
+tc filter add dev eth0 protocol ip parent 1: handle 47734 fw classid 1:2aa
+tc filter add dev eth0 protocol ip parent 1: handle 47735 fw classid 1:2ab
+tc filter add dev eth0 protocol ip parent 1: handle 47736 fw classid 1:2ac
+tc filter add dev eth0 protocol ip parent 1: handle 47737 fw classid 1:2ad
+tc filter add dev eth0 protocol ip parent 1: handle 47738 fw classid 1:2ae
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:2201 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:2201 classid 1:2af htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:2201 classid 1:2b0 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:2201 classid 1:2b1 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:2201 classid 1:2b2 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:2201 classid 1:2b3 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:2201 classid 1:2b4 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:2201 classid 1:2b5 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:2201 classid 1:2b6 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:2201 classid 1:2b7 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 22020 fw classid 1:2af
+tc filter add dev br2 protocol ip parent 1: handle 22021 fw classid 1:2b0
+tc filter add dev br2 protocol ip parent 1: handle 22022 fw classid 1:2b1
+tc filter add dev br2 protocol ip parent 1: handle 22023 fw classid 1:2b2
+tc filter add dev br2 protocol ip parent 1: handle 22024 fw classid 1:2b3
+tc filter add dev br2 protocol ip parent 1: handle 22025 fw classid 1:2b4
+tc filter add dev br2 protocol ip parent 1: handle 22026 fw classid 1:2b5
+tc filter add dev br2 protocol ip parent 1: handle 22027 fw classid 1:2b6
+tc filter add dev br2 protocol ip parent 1: handle 22028 fw classid 1:2b7
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:2202 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:2202 classid 1:2b8 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:2202 classid 1:2b9 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:2202 classid 1:2ba htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:2202 classid 1:2bb htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:2202 classid 1:2bc htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:2202 classid 1:2bd htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:2202 classid 1:2be htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:2202 classid 1:2bf htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:2202 classid 1:2c0 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 22030 fw classid 1:2b8
+tc filter add dev eth0 protocol ip parent 1: handle 22031 fw classid 1:2b9
+tc filter add dev eth0 protocol ip parent 1: handle 22032 fw classid 1:2ba
+tc filter add dev eth0 protocol ip parent 1: handle 22033 fw classid 1:2bb
+tc filter add dev eth0 protocol ip parent 1: handle 22034 fw classid 1:2bc
+tc filter add dev eth0 protocol ip parent 1: handle 22035 fw classid 1:2bd
+tc filter add dev eth0 protocol ip parent 1: handle 22036 fw classid 1:2be
+tc filter add dev eth0 protocol ip parent 1: handle 22037 fw classid 1:2bf
+tc filter add dev eth0 protocol ip parent 1: handle 22038 fw classid 1:2c0
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:4171 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:4171 classid 1:2c1 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4171 classid 1:2c2 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4171 classid 1:2c3 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4171 classid 1:2c4 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4171 classid 1:2c5 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4171 classid 1:2c6 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4171 classid 1:2c7 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4171 classid 1:2c8 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4171 classid 1:2c9 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 41720 fw classid 1:2c1
+tc filter add dev br2 protocol ip parent 1: handle 41721 fw classid 1:2c2
+tc filter add dev br2 protocol ip parent 1: handle 41722 fw classid 1:2c3
+tc filter add dev br2 protocol ip parent 1: handle 41723 fw classid 1:2c4
+tc filter add dev br2 protocol ip parent 1: handle 41724 fw classid 1:2c5
+tc filter add dev br2 protocol ip parent 1: handle 41725 fw classid 1:2c6
+tc filter add dev br2 protocol ip parent 1: handle 41726 fw classid 1:2c7
+tc filter add dev br2 protocol ip parent 1: handle 41727 fw classid 1:2c8
+tc filter add dev br2 protocol ip parent 1: handle 41728 fw classid 1:2c9
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:4172 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:4172 classid 1:2ca htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4172 classid 1:2cb htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4172 classid 1:2cc htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4172 classid 1:2cd htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4172 classid 1:2ce htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4172 classid 1:2cf htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4172 classid 1:2d0 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4172 classid 1:2d1 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4172 classid 1:2d2 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 41730 fw classid 1:2ca
+tc filter add dev eth0 protocol ip parent 1: handle 41731 fw classid 1:2cb
+tc filter add dev eth0 protocol ip parent 1: handle 41732 fw classid 1:2cc
+tc filter add dev eth0 protocol ip parent 1: handle 41733 fw classid 1:2cd
+tc filter add dev eth0 protocol ip parent 1: handle 41734 fw classid 1:2ce
+tc filter add dev eth0 protocol ip parent 1: handle 41735 fw classid 1:2cf
+tc filter add dev eth0 protocol ip parent 1: handle 41736 fw classid 1:2d0
+tc filter add dev eth0 protocol ip parent 1: handle 41737 fw classid 1:2d1
+tc filter add dev eth0 protocol ip parent 1: handle 41738 fw classid 1:2d2
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:3901 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:3901 classid 1:2d3 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:3901 classid 1:2d4 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:3901 classid 1:2d5 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:3901 classid 1:2d6 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:3901 classid 1:2d7 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:3901 classid 1:2d8 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:3901 classid 1:2d9 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:3901 classid 1:2da htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:3901 classid 1:2db htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 39020 fw classid 1:2d3
+tc filter add dev br2 protocol ip parent 1: handle 39021 fw classid 1:2d4
+tc filter add dev br2 protocol ip parent 1: handle 39022 fw classid 1:2d5
+tc filter add dev br2 protocol ip parent 1: handle 39023 fw classid 1:2d6
+tc filter add dev br2 protocol ip parent 1: handle 39024 fw classid 1:2d7
+tc filter add dev br2 protocol ip parent 1: handle 39025 fw classid 1:2d8
+tc filter add dev br2 protocol ip parent 1: handle 39026 fw classid 1:2d9
+tc filter add dev br2 protocol ip parent 1: handle 39027 fw classid 1:2da
+tc filter add dev br2 protocol ip parent 1: handle 39028 fw classid 1:2db
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:3902 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:3902 classid 1:2dc htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:3902 classid 1:2dd htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:3902 classid 1:2de htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:3902 classid 1:2df htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:3902 classid 1:2e0 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:3902 classid 1:2e1 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:3902 classid 1:2e2 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:3902 classid 1:2e3 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:3902 classid 1:2e4 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 39030 fw classid 1:2dc
+tc filter add dev eth0 protocol ip parent 1: handle 39031 fw classid 1:2dd
+tc filter add dev eth0 protocol ip parent 1: handle 39032 fw classid 1:2de
+tc filter add dev eth0 protocol ip parent 1: handle 39033 fw classid 1:2df
+tc filter add dev eth0 protocol ip parent 1: handle 39034 fw classid 1:2e0
+tc filter add dev eth0 protocol ip parent 1: handle 39035 fw classid 1:2e1
+tc filter add dev eth0 protocol ip parent 1: handle 39036 fw classid 1:2e2
+tc filter add dev eth0 protocol ip parent 1: handle 39037 fw classid 1:2e3
+tc filter add dev eth0 protocol ip parent 1: handle 39038 fw classid 1:2e4
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:4971 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:4971 classid 1:2e5 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4971 classid 1:2e6 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4971 classid 1:2e7 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4971 classid 1:2e8 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4971 classid 1:2e9 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4971 classid 1:2ea htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4971 classid 1:2eb htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4971 classid 1:2ec htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4971 classid 1:2ed htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 49720 fw classid 1:2e5
+tc filter add dev br2 protocol ip parent 1: handle 49721 fw classid 1:2e6
+tc filter add dev br2 protocol ip parent 1: handle 49722 fw classid 1:2e7
+tc filter add dev br2 protocol ip parent 1: handle 49723 fw classid 1:2e8
+tc filter add dev br2 protocol ip parent 1: handle 49724 fw classid 1:2e9
+tc filter add dev br2 protocol ip parent 1: handle 49725 fw classid 1:2ea
+tc filter add dev br2 protocol ip parent 1: handle 49726 fw classid 1:2eb
+tc filter add dev br2 protocol ip parent 1: handle 49727 fw classid 1:2ec
+tc filter add dev br2 protocol ip parent 1: handle 49728 fw classid 1:2ed
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:4972 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:4972 classid 1:2ee htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4972 classid 1:2ef htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4972 classid 1:2f0 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4972 classid 1:2f1 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4972 classid 1:2f2 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4972 classid 1:2f3 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4972 classid 1:2f4 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4972 classid 1:2f5 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4972 classid 1:2f6 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 49730 fw classid 1:2ee
+tc filter add dev eth0 protocol ip parent 1: handle 49731 fw classid 1:2ef
+tc filter add dev eth0 protocol ip parent 1: handle 49732 fw classid 1:2f0
+tc filter add dev eth0 protocol ip parent 1: handle 49733 fw classid 1:2f1
+tc filter add dev eth0 protocol ip parent 1: handle 49734 fw classid 1:2f2
+tc filter add dev eth0 protocol ip parent 1: handle 49735 fw classid 1:2f3
+tc filter add dev eth0 protocol ip parent 1: handle 49736 fw classid 1:2f4
+tc filter add dev eth0 protocol ip parent 1: handle 49737 fw classid 1:2f5
+tc filter add dev eth0 protocol ip parent 1: handle 49738 fw classid 1:2f6
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:4981 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:4981 classid 1:2f7 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4981 classid 1:2f8 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4981 classid 1:2f9 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4981 classid 1:2fa htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4981 classid 1:2fb htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4981 classid 1:2fc htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4981 classid 1:2fd htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4981 classid 1:2fe htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4981 classid 1:2ff htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 49820 fw classid 1:2f7
+tc filter add dev br2 protocol ip parent 1: handle 49821 fw classid 1:2f8
+tc filter add dev br2 protocol ip parent 1: handle 49822 fw classid 1:2f9
+tc filter add dev br2 protocol ip parent 1: handle 49823 fw classid 1:2fa
+tc filter add dev br2 protocol ip parent 1: handle 49824 fw classid 1:2fb
+tc filter add dev br2 protocol ip parent 1: handle 49825 fw classid 1:2fc
+tc filter add dev br2 protocol ip parent 1: handle 49826 fw classid 1:2fd
+tc filter add dev br2 protocol ip parent 1: handle 49827 fw classid 1:2fe
+tc filter add dev br2 protocol ip parent 1: handle 49828 fw classid 1:2ff
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:4982 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:4982 classid 1:300 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4982 classid 1:301 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4982 classid 1:302 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4982 classid 1:303 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4982 classid 1:304 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4982 classid 1:305 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4982 classid 1:306 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4982 classid 1:307 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4982 classid 1:308 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 49830 fw classid 1:300
+tc filter add dev eth0 protocol ip parent 1: handle 49831 fw classid 1:301
+tc filter add dev eth0 protocol ip parent 1: handle 49832 fw classid 1:302
+tc filter add dev eth0 protocol ip parent 1: handle 49833 fw classid 1:303
+tc filter add dev eth0 protocol ip parent 1: handle 49834 fw classid 1:304
+tc filter add dev eth0 protocol ip parent 1: handle 49835 fw classid 1:305
+tc filter add dev eth0 protocol ip parent 1: handle 49836 fw classid 1:306
+tc filter add dev eth0 protocol ip parent 1: handle 49837 fw classid 1:307
+tc filter add dev eth0 protocol ip parent 1: handle 49838 fw classid 1:308
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:4961 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:4961 classid 1:309 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4961 classid 1:30a htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4961 classid 1:30b htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4961 classid 1:30c htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4961 classid 1:30d htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4961 classid 1:30e htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4961 classid 1:30f htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4961 classid 1:310 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4961 classid 1:311 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 49620 fw classid 1:309
+tc filter add dev br2 protocol ip parent 1: handle 49621 fw classid 1:30a
+tc filter add dev br2 protocol ip parent 1: handle 49622 fw classid 1:30b
+tc filter add dev br2 protocol ip parent 1: handle 49623 fw classid 1:30c
+tc filter add dev br2 protocol ip parent 1: handle 49624 fw classid 1:30d
+tc filter add dev br2 protocol ip parent 1: handle 49625 fw classid 1:30e
+tc filter add dev br2 protocol ip parent 1: handle 49626 fw classid 1:30f
+tc filter add dev br2 protocol ip parent 1: handle 49627 fw classid 1:310
+tc filter add dev br2 protocol ip parent 1: handle 49628 fw classid 1:311
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:4962 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:4962 classid 1:312 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4962 classid 1:313 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4962 classid 1:314 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4962 classid 1:315 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4962 classid 1:316 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4962 classid 1:317 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4962 classid 1:318 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4962 classid 1:319 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4962 classid 1:31a htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 49630 fw classid 1:312
+tc filter add dev eth0 protocol ip parent 1: handle 49631 fw classid 1:313
+tc filter add dev eth0 protocol ip parent 1: handle 49632 fw classid 1:314
+tc filter add dev eth0 protocol ip parent 1: handle 49633 fw classid 1:315
+tc filter add dev eth0 protocol ip parent 1: handle 49634 fw classid 1:316
+tc filter add dev eth0 protocol ip parent 1: handle 49635 fw classid 1:317
+tc filter add dev eth0 protocol ip parent 1: handle 49636 fw classid 1:318
+tc filter add dev eth0 protocol ip parent 1: handle 49637 fw classid 1:319
+tc filter add dev eth0 protocol ip parent 1: handle 49638 fw classid 1:31a
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:2611 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:2611 classid 1:31b htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:2611 classid 1:31c htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:2611 classid 1:31d htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:2611 classid 1:31e htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:2611 classid 1:31f htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:2611 classid 1:320 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:2611 classid 1:321 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:2611 classid 1:322 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:2611 classid 1:323 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 26120 fw classid 1:31b
+tc filter add dev br2 protocol ip parent 1: handle 26121 fw classid 1:31c
+tc filter add dev br2 protocol ip parent 1: handle 26122 fw classid 1:31d
+tc filter add dev br2 protocol ip parent 1: handle 26123 fw classid 1:31e
+tc filter add dev br2 protocol ip parent 1: handle 26124 fw classid 1:31f
+tc filter add dev br2 protocol ip parent 1: handle 26125 fw classid 1:320
+tc filter add dev br2 protocol ip parent 1: handle 26126 fw classid 1:321
+tc filter add dev br2 protocol ip parent 1: handle 26127 fw classid 1:322
+tc filter add dev br2 protocol ip parent 1: handle 26128 fw classid 1:323
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:2612 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:2612 classid 1:324 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:2612 classid 1:325 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:2612 classid 1:326 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:2612 classid 1:327 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:2612 classid 1:328 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:2612 classid 1:329 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:2612 classid 1:32a htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:2612 classid 1:32b htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:2612 classid 1:32c htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 26130 fw classid 1:324
+tc filter add dev eth0 protocol ip parent 1: handle 26131 fw classid 1:325
+tc filter add dev eth0 protocol ip parent 1: handle 26132 fw classid 1:326
+tc filter add dev eth0 protocol ip parent 1: handle 26133 fw classid 1:327
+tc filter add dev eth0 protocol ip parent 1: handle 26134 fw classid 1:328
+tc filter add dev eth0 protocol ip parent 1: handle 26135 fw classid 1:329
+tc filter add dev eth0 protocol ip parent 1: handle 26136 fw classid 1:32a
+tc filter add dev eth0 protocol ip parent 1: handle 26137 fw classid 1:32b
+tc filter add dev eth0 protocol ip parent 1: handle 26138 fw classid 1:32c
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:2861 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:2861 classid 1:32d htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:2861 classid 1:32e htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:2861 classid 1:32f htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:2861 classid 1:330 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:2861 classid 1:331 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:2861 classid 1:332 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:2861 classid 1:333 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:2861 classid 1:334 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:2861 classid 1:335 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 28620 fw classid 1:32d
+tc filter add dev br2 protocol ip parent 1: handle 28621 fw classid 1:32e
+tc filter add dev br2 protocol ip parent 1: handle 28622 fw classid 1:32f
+tc filter add dev br2 protocol ip parent 1: handle 28623 fw classid 1:330
+tc filter add dev br2 protocol ip parent 1: handle 28624 fw classid 1:331
+tc filter add dev br2 protocol ip parent 1: handle 28625 fw classid 1:332
+tc filter add dev br2 protocol ip parent 1: handle 28626 fw classid 1:333
+tc filter add dev br2 protocol ip parent 1: handle 28627 fw classid 1:334
+tc filter add dev br2 protocol ip parent 1: handle 28628 fw classid 1:335
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:2862 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:2862 classid 1:336 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:2862 classid 1:337 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:2862 classid 1:338 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:2862 classid 1:339 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:2862 classid 1:33a htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:2862 classid 1:33b htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:2862 classid 1:33c htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:2862 classid 1:33d htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:2862 classid 1:33e htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 28630 fw classid 1:336
+tc filter add dev eth0 protocol ip parent 1: handle 28631 fw classid 1:337
+tc filter add dev eth0 protocol ip parent 1: handle 28632 fw classid 1:338
+tc filter add dev eth0 protocol ip parent 1: handle 28633 fw classid 1:339
+tc filter add dev eth0 protocol ip parent 1: handle 28634 fw classid 1:33a
+tc filter add dev eth0 protocol ip parent 1: handle 28635 fw classid 1:33b
+tc filter add dev eth0 protocol ip parent 1: handle 28636 fw classid 1:33c
+tc filter add dev eth0 protocol ip parent 1: handle 28637 fw classid 1:33d
+tc filter add dev eth0 protocol ip parent 1: handle 28638 fw classid 1:33e
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:4861 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:4861 classid 1:33f htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4861 classid 1:340 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4861 classid 1:341 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4861 classid 1:342 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4861 classid 1:343 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4861 classid 1:344 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4861 classid 1:345 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4861 classid 1:346 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4861 classid 1:347 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 48620 fw classid 1:33f
+tc filter add dev br2 protocol ip parent 1: handle 48621 fw classid 1:340
+tc filter add dev br2 protocol ip parent 1: handle 48622 fw classid 1:341
+tc filter add dev br2 protocol ip parent 1: handle 48623 fw classid 1:342
+tc filter add dev br2 protocol ip parent 1: handle 48624 fw classid 1:343
+tc filter add dev br2 protocol ip parent 1: handle 48625 fw classid 1:344
+tc filter add dev br2 protocol ip parent 1: handle 48626 fw classid 1:345
+tc filter add dev br2 protocol ip parent 1: handle 48627 fw classid 1:346
+tc filter add dev br2 protocol ip parent 1: handle 48628 fw classid 1:347
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:4862 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:4862 classid 1:348 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4862 classid 1:349 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4862 classid 1:34a htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4862 classid 1:34b htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4862 classid 1:34c htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4862 classid 1:34d htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4862 classid 1:34e htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4862 classid 1:34f htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4862 classid 1:350 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 48630 fw classid 1:348
+tc filter add dev eth0 protocol ip parent 1: handle 48631 fw classid 1:349
+tc filter add dev eth0 protocol ip parent 1: handle 48632 fw classid 1:34a
+tc filter add dev eth0 protocol ip parent 1: handle 48633 fw classid 1:34b
+tc filter add dev eth0 protocol ip parent 1: handle 48634 fw classid 1:34c
+tc filter add dev eth0 protocol ip parent 1: handle 48635 fw classid 1:34d
+tc filter add dev eth0 protocol ip parent 1: handle 48636 fw classid 1:34e
+tc filter add dev eth0 protocol ip parent 1: handle 48637 fw classid 1:34f
+tc filter add dev eth0 protocol ip parent 1: handle 48638 fw classid 1:350
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:4931 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:4931 classid 1:351 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4931 classid 1:352 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4931 classid 1:353 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4931 classid 1:354 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4931 classid 1:355 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4931 classid 1:356 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4931 classid 1:357 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4931 classid 1:358 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4931 classid 1:359 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 49320 fw classid 1:351
+tc filter add dev br2 protocol ip parent 1: handle 49321 fw classid 1:352
+tc filter add dev br2 protocol ip parent 1: handle 49322 fw classid 1:353
+tc filter add dev br2 protocol ip parent 1: handle 49323 fw classid 1:354
+tc filter add dev br2 protocol ip parent 1: handle 49324 fw classid 1:355
+tc filter add dev br2 protocol ip parent 1: handle 49325 fw classid 1:356
+tc filter add dev br2 protocol ip parent 1: handle 49326 fw classid 1:357
+tc filter add dev br2 protocol ip parent 1: handle 49327 fw classid 1:358
+tc filter add dev br2 protocol ip parent 1: handle 49328 fw classid 1:359
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:4932 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:4932 classid 1:35a htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4932 classid 1:35b htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4932 classid 1:35c htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4932 classid 1:35d htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4932 classid 1:35e htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4932 classid 1:35f htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4932 classid 1:360 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4932 classid 1:361 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4932 classid 1:362 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 49330 fw classid 1:35a
+tc filter add dev eth0 protocol ip parent 1: handle 49331 fw classid 1:35b
+tc filter add dev eth0 protocol ip parent 1: handle 49332 fw classid 1:35c
+tc filter add dev eth0 protocol ip parent 1: handle 49333 fw classid 1:35d
+tc filter add dev eth0 protocol ip parent 1: handle 49334 fw classid 1:35e
+tc filter add dev eth0 protocol ip parent 1: handle 49335 fw classid 1:35f
+tc filter add dev eth0 protocol ip parent 1: handle 49336 fw classid 1:360
+tc filter add dev eth0 protocol ip parent 1: handle 49337 fw classid 1:361
+tc filter add dev eth0 protocol ip parent 1: handle 49338 fw classid 1:362
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:4461 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:4461 classid 1:363 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4461 classid 1:364 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4461 classid 1:365 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4461 classid 1:366 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4461 classid 1:367 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4461 classid 1:368 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4461 classid 1:369 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4461 classid 1:36a htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4461 classid 1:36b htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 44620 fw classid 1:363
+tc filter add dev br2 protocol ip parent 1: handle 44621 fw classid 1:364
+tc filter add dev br2 protocol ip parent 1: handle 44622 fw classid 1:365
+tc filter add dev br2 protocol ip parent 1: handle 44623 fw classid 1:366
+tc filter add dev br2 protocol ip parent 1: handle 44624 fw classid 1:367
+tc filter add dev br2 protocol ip parent 1: handle 44625 fw classid 1:368
+tc filter add dev br2 protocol ip parent 1: handle 44626 fw classid 1:369
+tc filter add dev br2 protocol ip parent 1: handle 44627 fw classid 1:36a
+tc filter add dev br2 protocol ip parent 1: handle 44628 fw classid 1:36b
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:4462 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:4462 classid 1:36c htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4462 classid 1:36d htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4462 classid 1:36e htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4462 classid 1:36f htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4462 classid 1:370 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4462 classid 1:371 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4462 classid 1:372 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4462 classid 1:373 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4462 classid 1:374 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 44630 fw classid 1:36c
+tc filter add dev eth0 protocol ip parent 1: handle 44631 fw classid 1:36d
+tc filter add dev eth0 protocol ip parent 1: handle 44632 fw classid 1:36e
+tc filter add dev eth0 protocol ip parent 1: handle 44633 fw classid 1:36f
+tc filter add dev eth0 protocol ip parent 1: handle 44634 fw classid 1:370
+tc filter add dev eth0 protocol ip parent 1: handle 44635 fw classid 1:371
+tc filter add dev eth0 protocol ip parent 1: handle 44636 fw classid 1:372
+tc filter add dev eth0 protocol ip parent 1: handle 44637 fw classid 1:373
+tc filter add dev eth0 protocol ip parent 1: handle 44638 fw classid 1:374
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:3231 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:3231 classid 1:375 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:3231 classid 1:376 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:3231 classid 1:377 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:3231 classid 1:378 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:3231 classid 1:379 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:3231 classid 1:37a htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:3231 classid 1:37b htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:3231 classid 1:37c htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:3231 classid 1:37d htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 32320 fw classid 1:375
+tc filter add dev br2 protocol ip parent 1: handle 32321 fw classid 1:376
+tc filter add dev br2 protocol ip parent 1: handle 32322 fw classid 1:377
+tc filter add dev br2 protocol ip parent 1: handle 32323 fw classid 1:378
+tc filter add dev br2 protocol ip parent 1: handle 32324 fw classid 1:379
+tc filter add dev br2 protocol ip parent 1: handle 32325 fw classid 1:37a
+tc filter add dev br2 protocol ip parent 1: handle 32326 fw classid 1:37b
+tc filter add dev br2 protocol ip parent 1: handle 32327 fw classid 1:37c
+tc filter add dev br2 protocol ip parent 1: handle 32328 fw classid 1:37d
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:3232 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:3232 classid 1:37e htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:3232 classid 1:37f htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:3232 classid 1:380 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:3232 classid 1:381 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:3232 classid 1:382 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:3232 classid 1:383 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:3232 classid 1:384 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:3232 classid 1:385 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:3232 classid 1:386 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 32330 fw classid 1:37e
+tc filter add dev eth0 protocol ip parent 1: handle 32331 fw classid 1:37f
+tc filter add dev eth0 protocol ip parent 1: handle 32332 fw classid 1:380
+tc filter add dev eth0 protocol ip parent 1: handle 32333 fw classid 1:381
+tc filter add dev eth0 protocol ip parent 1: handle 32334 fw classid 1:382
+tc filter add dev eth0 protocol ip parent 1: handle 32335 fw classid 1:383
+tc filter add dev eth0 protocol ip parent 1: handle 32336 fw classid 1:384
+tc filter add dev eth0 protocol ip parent 1: handle 32337 fw classid 1:385
+tc filter add dev eth0 protocol ip parent 1: handle 32338 fw classid 1:386
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:4111 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:4111 classid 1:387 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4111 classid 1:388 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4111 classid 1:389 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4111 classid 1:38a htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4111 classid 1:38b htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4111 classid 1:38c htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4111 classid 1:38d htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4111 classid 1:38e htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4111 classid 1:38f htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 41120 fw classid 1:387
+tc filter add dev br2 protocol ip parent 1: handle 41121 fw classid 1:388
+tc filter add dev br2 protocol ip parent 1: handle 41122 fw classid 1:389
+tc filter add dev br2 protocol ip parent 1: handle 41123 fw classid 1:38a
+tc filter add dev br2 protocol ip parent 1: handle 41124 fw classid 1:38b
+tc filter add dev br2 protocol ip parent 1: handle 41125 fw classid 1:38c
+tc filter add dev br2 protocol ip parent 1: handle 41126 fw classid 1:38d
+tc filter add dev br2 protocol ip parent 1: handle 41127 fw classid 1:38e
+tc filter add dev br2 protocol ip parent 1: handle 41128 fw classid 1:38f
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:4112 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:4112 classid 1:390 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4112 classid 1:391 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4112 classid 1:392 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4112 classid 1:393 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4112 classid 1:394 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4112 classid 1:395 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4112 classid 1:396 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4112 classid 1:397 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4112 classid 1:398 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 41130 fw classid 1:390
+tc filter add dev eth0 protocol ip parent 1: handle 41131 fw classid 1:391
+tc filter add dev eth0 protocol ip parent 1: handle 41132 fw classid 1:392
+tc filter add dev eth0 protocol ip parent 1: handle 41133 fw classid 1:393
+tc filter add dev eth0 protocol ip parent 1: handle 41134 fw classid 1:394
+tc filter add dev eth0 protocol ip parent 1: handle 41135 fw classid 1:395
+tc filter add dev eth0 protocol ip parent 1: handle 41136 fw classid 1:396
+tc filter add dev eth0 protocol ip parent 1: handle 41137 fw classid 1:397
+tc filter add dev eth0 protocol ip parent 1: handle 41138 fw classid 1:398
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:2811 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:2811 classid 1:399 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:2811 classid 1:39a htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:2811 classid 1:39b htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:2811 classid 1:39c htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:2811 classid 1:39d htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:2811 classid 1:39e htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:2811 classid 1:39f htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:2811 classid 1:3a0 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:2811 classid 1:3a1 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 28120 fw classid 1:399
+tc filter add dev br2 protocol ip parent 1: handle 28121 fw classid 1:39a
+tc filter add dev br2 protocol ip parent 1: handle 28122 fw classid 1:39b
+tc filter add dev br2 protocol ip parent 1: handle 28123 fw classid 1:39c
+tc filter add dev br2 protocol ip parent 1: handle 28124 fw classid 1:39d
+tc filter add dev br2 protocol ip parent 1: handle 28125 fw classid 1:39e
+tc filter add dev br2 protocol ip parent 1: handle 28126 fw classid 1:39f
+tc filter add dev br2 protocol ip parent 1: handle 28127 fw classid 1:3a0
+tc filter add dev br2 protocol ip parent 1: handle 28128 fw classid 1:3a1
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:2812 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:2812 classid 1:3a2 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:2812 classid 1:3a3 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:2812 classid 1:3a4 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:2812 classid 1:3a5 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:2812 classid 1:3a6 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:2812 classid 1:3a7 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:2812 classid 1:3a8 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:2812 classid 1:3a9 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:2812 classid 1:3aa htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 28130 fw classid 1:3a2
+tc filter add dev eth0 protocol ip parent 1: handle 28131 fw classid 1:3a3
+tc filter add dev eth0 protocol ip parent 1: handle 28132 fw classid 1:3a4
+tc filter add dev eth0 protocol ip parent 1: handle 28133 fw classid 1:3a5
+tc filter add dev eth0 protocol ip parent 1: handle 28134 fw classid 1:3a6
+tc filter add dev eth0 protocol ip parent 1: handle 28135 fw classid 1:3a7
+tc filter add dev eth0 protocol ip parent 1: handle 28136 fw classid 1:3a8
+tc filter add dev eth0 protocol ip parent 1: handle 28137 fw classid 1:3a9
+tc filter add dev eth0 protocol ip parent 1: handle 28138 fw classid 1:3aa
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:2241 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:2241 classid 1:3ab htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:2241 classid 1:3ac htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:2241 classid 1:3ad htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:2241 classid 1:3ae htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:2241 classid 1:3af htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:2241 classid 1:3b0 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:2241 classid 1:3b1 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:2241 classid 1:3b2 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:2241 classid 1:3b3 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 22420 fw classid 1:3ab
+tc filter add dev br2 protocol ip parent 1: handle 22421 fw classid 1:3ac
+tc filter add dev br2 protocol ip parent 1: handle 22422 fw classid 1:3ad
+tc filter add dev br2 protocol ip parent 1: handle 22423 fw classid 1:3ae
+tc filter add dev br2 protocol ip parent 1: handle 22424 fw classid 1:3af
+tc filter add dev br2 protocol ip parent 1: handle 22425 fw classid 1:3b0
+tc filter add dev br2 protocol ip parent 1: handle 22426 fw classid 1:3b1
+tc filter add dev br2 protocol ip parent 1: handle 22427 fw classid 1:3b2
+tc filter add dev br2 protocol ip parent 1: handle 22428 fw classid 1:3b3
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:2242 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:2242 classid 1:3b4 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:2242 classid 1:3b5 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:2242 classid 1:3b6 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:2242 classid 1:3b7 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:2242 classid 1:3b8 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:2242 classid 1:3b9 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:2242 classid 1:3ba htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:2242 classid 1:3bb htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:2242 classid 1:3bc htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 22430 fw classid 1:3b4
+tc filter add dev eth0 protocol ip parent 1: handle 22431 fw classid 1:3b5
+tc filter add dev eth0 protocol ip parent 1: handle 22432 fw classid 1:3b6
+tc filter add dev eth0 protocol ip parent 1: handle 22433 fw classid 1:3b7
+tc filter add dev eth0 protocol ip parent 1: handle 22434 fw classid 1:3b8
+tc filter add dev eth0 protocol ip parent 1: handle 22435 fw classid 1:3b9
+tc filter add dev eth0 protocol ip parent 1: handle 22436 fw classid 1:3ba
+tc filter add dev eth0 protocol ip parent 1: handle 22437 fw classid 1:3bb
+tc filter add dev eth0 protocol ip parent 1: handle 22438 fw classid 1:3bc
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:4031 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:4031 classid 1:3bd htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4031 classid 1:3be htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4031 classid 1:3bf htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4031 classid 1:3c0 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4031 classid 1:3c1 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4031 classid 1:3c2 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4031 classid 1:3c3 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4031 classid 1:3c4 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4031 classid 1:3c5 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 40320 fw classid 1:3bd
+tc filter add dev br2 protocol ip parent 1: handle 40321 fw classid 1:3be
+tc filter add dev br2 protocol ip parent 1: handle 40322 fw classid 1:3bf
+tc filter add dev br2 protocol ip parent 1: handle 40323 fw classid 1:3c0
+tc filter add dev br2 protocol ip parent 1: handle 40324 fw classid 1:3c1
+tc filter add dev br2 protocol ip parent 1: handle 40325 fw classid 1:3c2
+tc filter add dev br2 protocol ip parent 1: handle 40326 fw classid 1:3c3
+tc filter add dev br2 protocol ip parent 1: handle 40327 fw classid 1:3c4
+tc filter add dev br2 protocol ip parent 1: handle 40328 fw classid 1:3c5
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:4032 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:4032 classid 1:3c6 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4032 classid 1:3c7 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4032 classid 1:3c8 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4032 classid 1:3c9 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4032 classid 1:3ca htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4032 classid 1:3cb htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4032 classid 1:3cc htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4032 classid 1:3cd htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4032 classid 1:3ce htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 40330 fw classid 1:3c6
+tc filter add dev eth0 protocol ip parent 1: handle 40331 fw classid 1:3c7
+tc filter add dev eth0 protocol ip parent 1: handle 40332 fw classid 1:3c8
+tc filter add dev eth0 protocol ip parent 1: handle 40333 fw classid 1:3c9
+tc filter add dev eth0 protocol ip parent 1: handle 40334 fw classid 1:3ca
+tc filter add dev eth0 protocol ip parent 1: handle 40335 fw classid 1:3cb
+tc filter add dev eth0 protocol ip parent 1: handle 40336 fw classid 1:3cc
+tc filter add dev eth0 protocol ip parent 1: handle 40337 fw classid 1:3cd
+tc filter add dev eth0 protocol ip parent 1: handle 40338 fw classid 1:3ce
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:4021 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:4021 classid 1:3cf htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4021 classid 1:3d0 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4021 classid 1:3d1 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4021 classid 1:3d2 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4021 classid 1:3d3 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4021 classid 1:3d4 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4021 classid 1:3d5 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4021 classid 1:3d6 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4021 classid 1:3d7 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 40220 fw classid 1:3cf
+tc filter add dev br2 protocol ip parent 1: handle 40221 fw classid 1:3d0
+tc filter add dev br2 protocol ip parent 1: handle 40222 fw classid 1:3d1
+tc filter add dev br2 protocol ip parent 1: handle 40223 fw classid 1:3d2
+tc filter add dev br2 protocol ip parent 1: handle 40224 fw classid 1:3d3
+tc filter add dev br2 protocol ip parent 1: handle 40225 fw classid 1:3d4
+tc filter add dev br2 protocol ip parent 1: handle 40226 fw classid 1:3d5
+tc filter add dev br2 protocol ip parent 1: handle 40227 fw classid 1:3d6
+tc filter add dev br2 protocol ip parent 1: handle 40228 fw classid 1:3d7
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:4022 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:4022 classid 1:3d8 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4022 classid 1:3d9 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4022 classid 1:3da htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4022 classid 1:3db htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4022 classid 1:3dc htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4022 classid 1:3dd htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4022 classid 1:3de htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4022 classid 1:3df htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4022 classid 1:3e0 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 40230 fw classid 1:3d8
+tc filter add dev eth0 protocol ip parent 1: handle 40231 fw classid 1:3d9
+tc filter add dev eth0 protocol ip parent 1: handle 40232 fw classid 1:3da
+tc filter add dev eth0 protocol ip parent 1: handle 40233 fw classid 1:3db
+tc filter add dev eth0 protocol ip parent 1: handle 40234 fw classid 1:3dc
+tc filter add dev eth0 protocol ip parent 1: handle 40235 fw classid 1:3dd
+tc filter add dev eth0 protocol ip parent 1: handle 40236 fw classid 1:3de
+tc filter add dev eth0 protocol ip parent 1: handle 40237 fw classid 1:3df
+tc filter add dev eth0 protocol ip parent 1: handle 40238 fw classid 1:3e0
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:4801 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:4801 classid 1:3e1 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4801 classid 1:3e2 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4801 classid 1:3e3 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4801 classid 1:3e4 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4801 classid 1:3e5 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4801 classid 1:3e6 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4801 classid 1:3e7 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4801 classid 1:3e8 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4801 classid 1:3e9 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 48020 fw classid 1:3e1
+tc filter add dev br2 protocol ip parent 1: handle 48021 fw classid 1:3e2
+tc filter add dev br2 protocol ip parent 1: handle 48022 fw classid 1:3e3
+tc filter add dev br2 protocol ip parent 1: handle 48023 fw classid 1:3e4
+tc filter add dev br2 protocol ip parent 1: handle 48024 fw classid 1:3e5
+tc filter add dev br2 protocol ip parent 1: handle 48025 fw classid 1:3e6
+tc filter add dev br2 protocol ip parent 1: handle 48026 fw classid 1:3e7
+tc filter add dev br2 protocol ip parent 1: handle 48027 fw classid 1:3e8
+tc filter add dev br2 protocol ip parent 1: handle 48028 fw classid 1:3e9
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:4802 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:4802 classid 1:3ea htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4802 classid 1:3eb htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4802 classid 1:3ec htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4802 classid 1:3ed htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4802 classid 1:3ee htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4802 classid 1:3ef htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4802 classid 1:3f0 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4802 classid 1:3f1 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4802 classid 1:3f2 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 48030 fw classid 1:3ea
+tc filter add dev eth0 protocol ip parent 1: handle 48031 fw classid 1:3eb
+tc filter add dev eth0 protocol ip parent 1: handle 48032 fw classid 1:3ec
+tc filter add dev eth0 protocol ip parent 1: handle 48033 fw classid 1:3ed
+tc filter add dev eth0 protocol ip parent 1: handle 48034 fw classid 1:3ee
+tc filter add dev eth0 protocol ip parent 1: handle 48035 fw classid 1:3ef
+tc filter add dev eth0 protocol ip parent 1: handle 48036 fw classid 1:3f0
+tc filter add dev eth0 protocol ip parent 1: handle 48037 fw classid 1:3f1
+tc filter add dev eth0 protocol ip parent 1: handle 48038 fw classid 1:3f2
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:4331 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:4331 classid 1:3f3 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4331 classid 1:3f4 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4331 classid 1:3f5 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4331 classid 1:3f6 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4331 classid 1:3f7 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4331 classid 1:3f8 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4331 classid 1:3f9 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4331 classid 1:3fa htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4331 classid 1:3fb htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 43320 fw classid 1:3f3
+tc filter add dev br2 protocol ip parent 1: handle 43321 fw classid 1:3f4
+tc filter add dev br2 protocol ip parent 1: handle 43322 fw classid 1:3f5
+tc filter add dev br2 protocol ip parent 1: handle 43323 fw classid 1:3f6
+tc filter add dev br2 protocol ip parent 1: handle 43324 fw classid 1:3f7
+tc filter add dev br2 protocol ip parent 1: handle 43325 fw classid 1:3f8
+tc filter add dev br2 protocol ip parent 1: handle 43326 fw classid 1:3f9
+tc filter add dev br2 protocol ip parent 1: handle 43327 fw classid 1:3fa
+tc filter add dev br2 protocol ip parent 1: handle 43328 fw classid 1:3fb
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:4332 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:4332 classid 1:3fc htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4332 classid 1:3fd htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4332 classid 1:3fe htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4332 classid 1:3ff htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4332 classid 1:400 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4332 classid 1:401 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4332 classid 1:402 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4332 classid 1:403 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4332 classid 1:404 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 43330 fw classid 1:3fc
+tc filter add dev eth0 protocol ip parent 1: handle 43331 fw classid 1:3fd
+tc filter add dev eth0 protocol ip parent 1: handle 43332 fw classid 1:3fe
+tc filter add dev eth0 protocol ip parent 1: handle 43333 fw classid 1:3ff
+tc filter add dev eth0 protocol ip parent 1: handle 43334 fw classid 1:400
+tc filter add dev eth0 protocol ip parent 1: handle 43335 fw classid 1:401
+tc filter add dev eth0 protocol ip parent 1: handle 43336 fw classid 1:402
+tc filter add dev eth0 protocol ip parent 1: handle 43337 fw classid 1:403
+tc filter add dev eth0 protocol ip parent 1: handle 43338 fw classid 1:404
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:4611 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:4611 classid 1:405 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4611 classid 1:406 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4611 classid 1:407 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4611 classid 1:408 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4611 classid 1:409 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4611 classid 1:40a htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4611 classid 1:40b htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4611 classid 1:40c htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4611 classid 1:40d htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 46120 fw classid 1:405
+tc filter add dev br2 protocol ip parent 1: handle 46121 fw classid 1:406
+tc filter add dev br2 protocol ip parent 1: handle 46122 fw classid 1:407
+tc filter add dev br2 protocol ip parent 1: handle 46123 fw classid 1:408
+tc filter add dev br2 protocol ip parent 1: handle 46124 fw classid 1:409
+tc filter add dev br2 protocol ip parent 1: handle 46125 fw classid 1:40a
+tc filter add dev br2 protocol ip parent 1: handle 46126 fw classid 1:40b
+tc filter add dev br2 protocol ip parent 1: handle 46127 fw classid 1:40c
+tc filter add dev br2 protocol ip parent 1: handle 46128 fw classid 1:40d
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:4612 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:4612 classid 1:40e htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4612 classid 1:40f htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4612 classid 1:410 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4612 classid 1:411 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4612 classid 1:412 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4612 classid 1:413 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4612 classid 1:414 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4612 classid 1:415 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4612 classid 1:416 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 46130 fw classid 1:40e
+tc filter add dev eth0 protocol ip parent 1: handle 46131 fw classid 1:40f
+tc filter add dev eth0 protocol ip parent 1: handle 46132 fw classid 1:410
+tc filter add dev eth0 protocol ip parent 1: handle 46133 fw classid 1:411
+tc filter add dev eth0 protocol ip parent 1: handle 46134 fw classid 1:412
+tc filter add dev eth0 protocol ip parent 1: handle 46135 fw classid 1:413
+tc filter add dev eth0 protocol ip parent 1: handle 46136 fw classid 1:414
+tc filter add dev eth0 protocol ip parent 1: handle 46137 fw classid 1:415
+tc filter add dev eth0 protocol ip parent 1: handle 46138 fw classid 1:416
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:4791 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:4791 classid 1:417 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4791 classid 1:418 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4791 classid 1:419 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4791 classid 1:41a htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4791 classid 1:41b htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4791 classid 1:41c htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4791 classid 1:41d htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4791 classid 1:41e htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4791 classid 1:41f htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 47920 fw classid 1:417
+tc filter add dev br2 protocol ip parent 1: handle 47921 fw classid 1:418
+tc filter add dev br2 protocol ip parent 1: handle 47922 fw classid 1:419
+tc filter add dev br2 protocol ip parent 1: handle 47923 fw classid 1:41a
+tc filter add dev br2 protocol ip parent 1: handle 47924 fw classid 1:41b
+tc filter add dev br2 protocol ip parent 1: handle 47925 fw classid 1:41c
+tc filter add dev br2 protocol ip parent 1: handle 47926 fw classid 1:41d
+tc filter add dev br2 protocol ip parent 1: handle 47927 fw classid 1:41e
+tc filter add dev br2 protocol ip parent 1: handle 47928 fw classid 1:41f
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:4792 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:4792 classid 1:420 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4792 classid 1:421 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4792 classid 1:422 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4792 classid 1:423 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4792 classid 1:424 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4792 classid 1:425 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4792 classid 1:426 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4792 classid 1:427 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4792 classid 1:428 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 47930 fw classid 1:420
+tc filter add dev eth0 protocol ip parent 1: handle 47931 fw classid 1:421
+tc filter add dev eth0 protocol ip parent 1: handle 47932 fw classid 1:422
+tc filter add dev eth0 protocol ip parent 1: handle 47933 fw classid 1:423
+tc filter add dev eth0 protocol ip parent 1: handle 47934 fw classid 1:424
+tc filter add dev eth0 protocol ip parent 1: handle 47935 fw classid 1:425
+tc filter add dev eth0 protocol ip parent 1: handle 47936 fw classid 1:426
+tc filter add dev eth0 protocol ip parent 1: handle 47937 fw classid 1:427
+tc filter add dev eth0 protocol ip parent 1: handle 47938 fw classid 1:428
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:4051 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:4051 classid 1:429 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4051 classid 1:42a htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4051 classid 1:42b htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4051 classid 1:42c htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4051 classid 1:42d htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4051 classid 1:42e htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4051 classid 1:42f htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4051 classid 1:430 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4051 classid 1:431 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 40520 fw classid 1:429
+tc filter add dev br2 protocol ip parent 1: handle 40521 fw classid 1:42a
+tc filter add dev br2 protocol ip parent 1: handle 40522 fw classid 1:42b
+tc filter add dev br2 protocol ip parent 1: handle 40523 fw classid 1:42c
+tc filter add dev br2 protocol ip parent 1: handle 40524 fw classid 1:42d
+tc filter add dev br2 protocol ip parent 1: handle 40525 fw classid 1:42e
+tc filter add dev br2 protocol ip parent 1: handle 40526 fw classid 1:42f
+tc filter add dev br2 protocol ip parent 1: handle 40527 fw classid 1:430
+tc filter add dev br2 protocol ip parent 1: handle 40528 fw classid 1:431
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:4052 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:4052 classid 1:432 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4052 classid 1:433 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4052 classid 1:434 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4052 classid 1:435 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4052 classid 1:436 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4052 classid 1:437 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4052 classid 1:438 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4052 classid 1:439 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4052 classid 1:43a htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 40530 fw classid 1:432
+tc filter add dev eth0 protocol ip parent 1: handle 40531 fw classid 1:433
+tc filter add dev eth0 protocol ip parent 1: handle 40532 fw classid 1:434
+tc filter add dev eth0 protocol ip parent 1: handle 40533 fw classid 1:435
+tc filter add dev eth0 protocol ip parent 1: handle 40534 fw classid 1:436
+tc filter add dev eth0 protocol ip parent 1: handle 40535 fw classid 1:437
+tc filter add dev eth0 protocol ip parent 1: handle 40536 fw classid 1:438
+tc filter add dev eth0 protocol ip parent 1: handle 40537 fw classid 1:439
+tc filter add dev eth0 protocol ip parent 1: handle 40538 fw classid 1:43a
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:4991 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:4991 classid 1:43b htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4991 classid 1:43c htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4991 classid 1:43d htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4991 classid 1:43e htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4991 classid 1:43f htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4991 classid 1:440 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4991 classid 1:441 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4991 classid 1:442 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4991 classid 1:443 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 49920 fw classid 1:43b
+tc filter add dev br2 protocol ip parent 1: handle 49921 fw classid 1:43c
+tc filter add dev br2 protocol ip parent 1: handle 49922 fw classid 1:43d
+tc filter add dev br2 protocol ip parent 1: handle 49923 fw classid 1:43e
+tc filter add dev br2 protocol ip parent 1: handle 49924 fw classid 1:43f
+tc filter add dev br2 protocol ip parent 1: handle 49925 fw classid 1:440
+tc filter add dev br2 protocol ip parent 1: handle 49926 fw classid 1:441
+tc filter add dev br2 protocol ip parent 1: handle 49927 fw classid 1:442
+tc filter add dev br2 protocol ip parent 1: handle 49928 fw classid 1:443
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:4992 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:4992 classid 1:444 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4992 classid 1:445 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4992 classid 1:446 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4992 classid 1:447 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4992 classid 1:448 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4992 classid 1:449 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4992 classid 1:44a htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4992 classid 1:44b htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4992 classid 1:44c htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 49930 fw classid 1:444
+tc filter add dev eth0 protocol ip parent 1: handle 49931 fw classid 1:445
+tc filter add dev eth0 protocol ip parent 1: handle 49932 fw classid 1:446
+tc filter add dev eth0 protocol ip parent 1: handle 49933 fw classid 1:447
+tc filter add dev eth0 protocol ip parent 1: handle 49934 fw classid 1:448
+tc filter add dev eth0 protocol ip parent 1: handle 49935 fw classid 1:449
+tc filter add dev eth0 protocol ip parent 1: handle 49936 fw classid 1:44a
+tc filter add dev eth0 protocol ip parent 1: handle 49937 fw classid 1:44b
+tc filter add dev eth0 protocol ip parent 1: handle 49938 fw classid 1:44c
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:1701 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:1701 classid 1:44d htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:1701 classid 1:44e htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:1701 classid 1:44f htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:1701 classid 1:450 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:1701 classid 1:451 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:1701 classid 1:452 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:1701 classid 1:453 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:1701 classid 1:454 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:1701 classid 1:455 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 17020 fw classid 1:44d
+tc filter add dev br2 protocol ip parent 1: handle 17021 fw classid 1:44e
+tc filter add dev br2 protocol ip parent 1: handle 17022 fw classid 1:44f
+tc filter add dev br2 protocol ip parent 1: handle 17023 fw classid 1:450
+tc filter add dev br2 protocol ip parent 1: handle 17024 fw classid 1:451
+tc filter add dev br2 protocol ip parent 1: handle 17025 fw classid 1:452
+tc filter add dev br2 protocol ip parent 1: handle 17026 fw classid 1:453
+tc filter add dev br2 protocol ip parent 1: handle 17027 fw classid 1:454
+tc filter add dev br2 protocol ip parent 1: handle 17028 fw classid 1:455
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:1702 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:1702 classid 1:456 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:1702 classid 1:457 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:1702 classid 1:458 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:1702 classid 1:459 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:1702 classid 1:45a htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:1702 classid 1:45b htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:1702 classid 1:45c htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:1702 classid 1:45d htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:1702 classid 1:45e htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 17030 fw classid 1:456
+tc filter add dev eth0 protocol ip parent 1: handle 17031 fw classid 1:457
+tc filter add dev eth0 protocol ip parent 1: handle 17032 fw classid 1:458
+tc filter add dev eth0 protocol ip parent 1: handle 17033 fw classid 1:459
+tc filter add dev eth0 protocol ip parent 1: handle 17034 fw classid 1:45a
+tc filter add dev eth0 protocol ip parent 1: handle 17035 fw classid 1:45b
+tc filter add dev eth0 protocol ip parent 1: handle 17036 fw classid 1:45c
+tc filter add dev eth0 protocol ip parent 1: handle 17037 fw classid 1:45d
+tc filter add dev eth0 protocol ip parent 1: handle 17038 fw classid 1:45e
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:1681 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:1681 classid 1:45f htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:1681 classid 1:460 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:1681 classid 1:461 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:1681 classid 1:462 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:1681 classid 1:463 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:1681 classid 1:464 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:1681 classid 1:465 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:1681 classid 1:466 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:1681 classid 1:467 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 16820 fw classid 1:45f
+tc filter add dev br2 protocol ip parent 1: handle 16821 fw classid 1:460
+tc filter add dev br2 protocol ip parent 1: handle 16822 fw classid 1:461
+tc filter add dev br2 protocol ip parent 1: handle 16823 fw classid 1:462
+tc filter add dev br2 protocol ip parent 1: handle 16824 fw classid 1:463
+tc filter add dev br2 protocol ip parent 1: handle 16825 fw classid 1:464
+tc filter add dev br2 protocol ip parent 1: handle 16826 fw classid 1:465
+tc filter add dev br2 protocol ip parent 1: handle 16827 fw classid 1:466
+tc filter add dev br2 protocol ip parent 1: handle 16828 fw classid 1:467
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:1682 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:1682 classid 1:468 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:1682 classid 1:469 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:1682 classid 1:46a htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:1682 classid 1:46b htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:1682 classid 1:46c htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:1682 classid 1:46d htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:1682 classid 1:46e htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:1682 classid 1:46f htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:1682 classid 1:470 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 16830 fw classid 1:468
+tc filter add dev eth0 protocol ip parent 1: handle 16831 fw classid 1:469
+tc filter add dev eth0 protocol ip parent 1: handle 16832 fw classid 1:46a
+tc filter add dev eth0 protocol ip parent 1: handle 16833 fw classid 1:46b
+tc filter add dev eth0 protocol ip parent 1: handle 16834 fw classid 1:46c
+tc filter add dev eth0 protocol ip parent 1: handle 16835 fw classid 1:46d
+tc filter add dev eth0 protocol ip parent 1: handle 16836 fw classid 1:46e
+tc filter add dev eth0 protocol ip parent 1: handle 16837 fw classid 1:46f
+tc filter add dev eth0 protocol ip parent 1: handle 16838 fw classid 1:470
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:1241 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:1241 classid 1:471 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:1241 classid 1:472 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:1241 classid 1:473 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:1241 classid 1:474 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:1241 classid 1:475 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:1241 classid 1:476 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:1241 classid 1:477 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:1241 classid 1:478 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:1241 classid 1:479 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 12420 fw classid 1:471
+tc filter add dev br2 protocol ip parent 1: handle 12421 fw classid 1:472
+tc filter add dev br2 protocol ip parent 1: handle 12422 fw classid 1:473
+tc filter add dev br2 protocol ip parent 1: handle 12423 fw classid 1:474
+tc filter add dev br2 protocol ip parent 1: handle 12424 fw classid 1:475
+tc filter add dev br2 protocol ip parent 1: handle 12425 fw classid 1:476
+tc filter add dev br2 protocol ip parent 1: handle 12426 fw classid 1:477
+tc filter add dev br2 protocol ip parent 1: handle 12427 fw classid 1:478
+tc filter add dev br2 protocol ip parent 1: handle 12428 fw classid 1:479
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:1242 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:1242 classid 1:47a htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:1242 classid 1:47b htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:1242 classid 1:47c htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:1242 classid 1:47d htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:1242 classid 1:47e htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:1242 classid 1:47f htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:1242 classid 1:480 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:1242 classid 1:481 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:1242 classid 1:482 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 12430 fw classid 1:47a
+tc filter add dev eth0 protocol ip parent 1: handle 12431 fw classid 1:47b
+tc filter add dev eth0 protocol ip parent 1: handle 12432 fw classid 1:47c
+tc filter add dev eth0 protocol ip parent 1: handle 12433 fw classid 1:47d
+tc filter add dev eth0 protocol ip parent 1: handle 12434 fw classid 1:47e
+tc filter add dev eth0 protocol ip parent 1: handle 12435 fw classid 1:47f
+tc filter add dev eth0 protocol ip parent 1: handle 12436 fw classid 1:480
+tc filter add dev eth0 protocol ip parent 1: handle 12437 fw classid 1:481
+tc filter add dev eth0 protocol ip parent 1: handle 12438 fw classid 1:482
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:1411 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:1411 classid 1:483 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:1411 classid 1:484 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:1411 classid 1:485 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:1411 classid 1:486 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:1411 classid 1:487 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:1411 classid 1:488 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:1411 classid 1:489 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:1411 classid 1:48a htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:1411 classid 1:48b htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 14120 fw classid 1:483
+tc filter add dev br2 protocol ip parent 1: handle 14121 fw classid 1:484
+tc filter add dev br2 protocol ip parent 1: handle 14122 fw classid 1:485
+tc filter add dev br2 protocol ip parent 1: handle 14123 fw classid 1:486
+tc filter add dev br2 protocol ip parent 1: handle 14124 fw classid 1:487
+tc filter add dev br2 protocol ip parent 1: handle 14125 fw classid 1:488
+tc filter add dev br2 protocol ip parent 1: handle 14126 fw classid 1:489
+tc filter add dev br2 protocol ip parent 1: handle 14127 fw classid 1:48a
+tc filter add dev br2 protocol ip parent 1: handle 14128 fw classid 1:48b
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:1412 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:1412 classid 1:48c htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:1412 classid 1:48d htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:1412 classid 1:48e htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:1412 classid 1:48f htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:1412 classid 1:490 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:1412 classid 1:491 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:1412 classid 1:492 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:1412 classid 1:493 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:1412 classid 1:494 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 14130 fw classid 1:48c
+tc filter add dev eth0 protocol ip parent 1: handle 14131 fw classid 1:48d
+tc filter add dev eth0 protocol ip parent 1: handle 14132 fw classid 1:48e
+tc filter add dev eth0 protocol ip parent 1: handle 14133 fw classid 1:48f
+tc filter add dev eth0 protocol ip parent 1: handle 14134 fw classid 1:490
+tc filter add dev eth0 protocol ip parent 1: handle 14135 fw classid 1:491
+tc filter add dev eth0 protocol ip parent 1: handle 14136 fw classid 1:492
+tc filter add dev eth0 protocol ip parent 1: handle 14137 fw classid 1:493
+tc filter add dev eth0 protocol ip parent 1: handle 14138 fw classid 1:494
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:1161 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:1161 classid 1:495 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:1161 classid 1:496 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:1161 classid 1:497 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:1161 classid 1:498 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:1161 classid 1:499 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:1161 classid 1:49a htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:1161 classid 1:49b htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:1161 classid 1:49c htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:1161 classid 1:49d htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 11620 fw classid 1:495
+tc filter add dev br2 protocol ip parent 1: handle 11621 fw classid 1:496
+tc filter add dev br2 protocol ip parent 1: handle 11622 fw classid 1:497
+tc filter add dev br2 protocol ip parent 1: handle 11623 fw classid 1:498
+tc filter add dev br2 protocol ip parent 1: handle 11624 fw classid 1:499
+tc filter add dev br2 protocol ip parent 1: handle 11625 fw classid 1:49a
+tc filter add dev br2 protocol ip parent 1: handle 11626 fw classid 1:49b
+tc filter add dev br2 protocol ip parent 1: handle 11627 fw classid 1:49c
+tc filter add dev br2 protocol ip parent 1: handle 11628 fw classid 1:49d
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:1162 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:1162 classid 1:49e htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:1162 classid 1:49f htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:1162 classid 1:4a0 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:1162 classid 1:4a1 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:1162 classid 1:4a2 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:1162 classid 1:4a3 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:1162 classid 1:4a4 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:1162 classid 1:4a5 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:1162 classid 1:4a6 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 11630 fw classid 1:49e
+tc filter add dev eth0 protocol ip parent 1: handle 11631 fw classid 1:49f
+tc filter add dev eth0 protocol ip parent 1: handle 11632 fw classid 1:4a0
+tc filter add dev eth0 protocol ip parent 1: handle 11633 fw classid 1:4a1
+tc filter add dev eth0 protocol ip parent 1: handle 11634 fw classid 1:4a2
+tc filter add dev eth0 protocol ip parent 1: handle 11635 fw classid 1:4a3
+tc filter add dev eth0 protocol ip parent 1: handle 11636 fw classid 1:4a4
+tc filter add dev eth0 protocol ip parent 1: handle 11637 fw classid 1:4a5
+tc filter add dev eth0 protocol ip parent 1: handle 11638 fw classid 1:4a6
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:1691 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:1691 classid 1:4a7 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:1691 classid 1:4a8 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:1691 classid 1:4a9 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:1691 classid 1:4aa htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:1691 classid 1:4ab htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:1691 classid 1:4ac htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:1691 classid 1:4ad htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:1691 classid 1:4ae htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:1691 classid 1:4af htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 16920 fw classid 1:4a7
+tc filter add dev br2 protocol ip parent 1: handle 16921 fw classid 1:4a8
+tc filter add dev br2 protocol ip parent 1: handle 16922 fw classid 1:4a9
+tc filter add dev br2 protocol ip parent 1: handle 16923 fw classid 1:4aa
+tc filter add dev br2 protocol ip parent 1: handle 16924 fw classid 1:4ab
+tc filter add dev br2 protocol ip parent 1: handle 16925 fw classid 1:4ac
+tc filter add dev br2 protocol ip parent 1: handle 16926 fw classid 1:4ad
+tc filter add dev br2 protocol ip parent 1: handle 16927 fw classid 1:4ae
+tc filter add dev br2 protocol ip parent 1: handle 16928 fw classid 1:4af
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:1692 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:1692 classid 1:4b0 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:1692 classid 1:4b1 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:1692 classid 1:4b2 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:1692 classid 1:4b3 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:1692 classid 1:4b4 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:1692 classid 1:4b5 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:1692 classid 1:4b6 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:1692 classid 1:4b7 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:1692 classid 1:4b8 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 16930 fw classid 1:4b0
+tc filter add dev eth0 protocol ip parent 1: handle 16931 fw classid 1:4b1
+tc filter add dev eth0 protocol ip parent 1: handle 16932 fw classid 1:4b2
+tc filter add dev eth0 protocol ip parent 1: handle 16933 fw classid 1:4b3
+tc filter add dev eth0 protocol ip parent 1: handle 16934 fw classid 1:4b4
+tc filter add dev eth0 protocol ip parent 1: handle 16935 fw classid 1:4b5
+tc filter add dev eth0 protocol ip parent 1: handle 16936 fw classid 1:4b6
+tc filter add dev eth0 protocol ip parent 1: handle 16937 fw classid 1:4b7
+tc filter add dev eth0 protocol ip parent 1: handle 16938 fw classid 1:4b8
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:31 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:31 classid 1:4b9 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:31 classid 1:4ba htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:31 classid 1:4bb htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:31 classid 1:4bc htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:31 classid 1:4bd htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:31 classid 1:4be htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:31 classid 1:4bf htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:31 classid 1:4c0 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:31 classid 1:4c1 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 320 fw classid 1:4b9
+tc filter add dev br2 protocol ip parent 1: handle 321 fw classid 1:4ba
+tc filter add dev br2 protocol ip parent 1: handle 322 fw classid 1:4bb
+tc filter add dev br2 protocol ip parent 1: handle 323 fw classid 1:4bc
+tc filter add dev br2 protocol ip parent 1: handle 324 fw classid 1:4bd
+tc filter add dev br2 protocol ip parent 1: handle 325 fw classid 1:4be
+tc filter add dev br2 protocol ip parent 1: handle 326 fw classid 1:4bf
+tc filter add dev br2 protocol ip parent 1: handle 327 fw classid 1:4c0
+tc filter add dev br2 protocol ip parent 1: handle 328 fw classid 1:4c1
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:32 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:32 classid 1:4c2 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:32 classid 1:4c3 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:32 classid 1:4c4 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:32 classid 1:4c5 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:32 classid 1:4c6 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:32 classid 1:4c7 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:32 classid 1:4c8 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:32 classid 1:4c9 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:32 classid 1:4ca htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 330 fw classid 1:4c2
+tc filter add dev eth0 protocol ip parent 1: handle 331 fw classid 1:4c3
+tc filter add dev eth0 protocol ip parent 1: handle 332 fw classid 1:4c4
+tc filter add dev eth0 protocol ip parent 1: handle 333 fw classid 1:4c5
+tc filter add dev eth0 protocol ip parent 1: handle 334 fw classid 1:4c6
+tc filter add dev eth0 protocol ip parent 1: handle 335 fw classid 1:4c7
+tc filter add dev eth0 protocol ip parent 1: handle 336 fw classid 1:4c8
+tc filter add dev eth0 protocol ip parent 1: handle 337 fw classid 1:4c9
+tc filter add dev eth0 protocol ip parent 1: handle 338 fw classid 1:4ca
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:1231 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:1231 classid 1:4cb htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:1231 classid 1:4cc htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:1231 classid 1:4cd htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:1231 classid 1:4ce htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:1231 classid 1:4cf htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:1231 classid 1:4d0 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:1231 classid 1:4d1 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:1231 classid 1:4d2 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:1231 classid 1:4d3 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 12320 fw classid 1:4cb
+tc filter add dev br2 protocol ip parent 1: handle 12321 fw classid 1:4cc
+tc filter add dev br2 protocol ip parent 1: handle 12322 fw classid 1:4cd
+tc filter add dev br2 protocol ip parent 1: handle 12323 fw classid 1:4ce
+tc filter add dev br2 protocol ip parent 1: handle 12324 fw classid 1:4cf
+tc filter add dev br2 protocol ip parent 1: handle 12325 fw classid 1:4d0
+tc filter add dev br2 protocol ip parent 1: handle 12326 fw classid 1:4d1
+tc filter add dev br2 protocol ip parent 1: handle 12327 fw classid 1:4d2
+tc filter add dev br2 protocol ip parent 1: handle 12328 fw classid 1:4d3
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:1232 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:1232 classid 1:4d4 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:1232 classid 1:4d5 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:1232 classid 1:4d6 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:1232 classid 1:4d7 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:1232 classid 1:4d8 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:1232 classid 1:4d9 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:1232 classid 1:4da htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:1232 classid 1:4db htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:1232 classid 1:4dc htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 12330 fw classid 1:4d4
+tc filter add dev eth0 protocol ip parent 1: handle 12331 fw classid 1:4d5
+tc filter add dev eth0 protocol ip parent 1: handle 12332 fw classid 1:4d6
+tc filter add dev eth0 protocol ip parent 1: handle 12333 fw classid 1:4d7
+tc filter add dev eth0 protocol ip parent 1: handle 12334 fw classid 1:4d8
+tc filter add dev eth0 protocol ip parent 1: handle 12335 fw classid 1:4d9
+tc filter add dev eth0 protocol ip parent 1: handle 12336 fw classid 1:4da
+tc filter add dev eth0 protocol ip parent 1: handle 12337 fw classid 1:4db
+tc filter add dev eth0 protocol ip parent 1: handle 12338 fw classid 1:4dc
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:1591 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:1591 classid 1:4dd htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:1591 classid 1:4de htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:1591 classid 1:4df htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:1591 classid 1:4e0 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:1591 classid 1:4e1 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:1591 classid 1:4e2 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:1591 classid 1:4e3 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:1591 classid 1:4e4 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:1591 classid 1:4e5 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 15920 fw classid 1:4dd
+tc filter add dev br2 protocol ip parent 1: handle 15921 fw classid 1:4de
+tc filter add dev br2 protocol ip parent 1: handle 15922 fw classid 1:4df
+tc filter add dev br2 protocol ip parent 1: handle 15923 fw classid 1:4e0
+tc filter add dev br2 protocol ip parent 1: handle 15924 fw classid 1:4e1
+tc filter add dev br2 protocol ip parent 1: handle 15925 fw classid 1:4e2
+tc filter add dev br2 protocol ip parent 1: handle 15926 fw classid 1:4e3
+tc filter add dev br2 protocol ip parent 1: handle 15927 fw classid 1:4e4
+tc filter add dev br2 protocol ip parent 1: handle 15928 fw classid 1:4e5
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:1592 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:1592 classid 1:4e6 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:1592 classid 1:4e7 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:1592 classid 1:4e8 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:1592 classid 1:4e9 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:1592 classid 1:4ea htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:1592 classid 1:4eb htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:1592 classid 1:4ec htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:1592 classid 1:4ed htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:1592 classid 1:4ee htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 15930 fw classid 1:4e6
+tc filter add dev eth0 protocol ip parent 1: handle 15931 fw classid 1:4e7
+tc filter add dev eth0 protocol ip parent 1: handle 15932 fw classid 1:4e8
+tc filter add dev eth0 protocol ip parent 1: handle 15933 fw classid 1:4e9
+tc filter add dev eth0 protocol ip parent 1: handle 15934 fw classid 1:4ea
+tc filter add dev eth0 protocol ip parent 1: handle 15935 fw classid 1:4eb
+tc filter add dev eth0 protocol ip parent 1: handle 15936 fw classid 1:4ec
+tc filter add dev eth0 protocol ip parent 1: handle 15937 fw classid 1:4ed
+tc filter add dev eth0 protocol ip parent 1: handle 15938 fw classid 1:4ee
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:2071 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:2071 classid 1:4ef htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:2071 classid 1:4f0 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:2071 classid 1:4f1 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:2071 classid 1:4f2 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:2071 classid 1:4f3 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:2071 classid 1:4f4 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:2071 classid 1:4f5 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:2071 classid 1:4f6 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:2071 classid 1:4f7 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 20720 fw classid 1:4ef
+tc filter add dev br2 protocol ip parent 1: handle 20721 fw classid 1:4f0
+tc filter add dev br2 protocol ip parent 1: handle 20722 fw classid 1:4f1
+tc filter add dev br2 protocol ip parent 1: handle 20723 fw classid 1:4f2
+tc filter add dev br2 protocol ip parent 1: handle 20724 fw classid 1:4f3
+tc filter add dev br2 protocol ip parent 1: handle 20725 fw classid 1:4f4
+tc filter add dev br2 protocol ip parent 1: handle 20726 fw classid 1:4f5
+tc filter add dev br2 protocol ip parent 1: handle 20727 fw classid 1:4f6
+tc filter add dev br2 protocol ip parent 1: handle 20728 fw classid 1:4f7
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:2072 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:2072 classid 1:4f8 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:2072 classid 1:4f9 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:2072 classid 1:4fa htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:2072 classid 1:4fb htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:2072 classid 1:4fc htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:2072 classid 1:4fd htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:2072 classid 1:4fe htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:2072 classid 1:4ff htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:2072 classid 1:500 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 20730 fw classid 1:4f8
+tc filter add dev eth0 protocol ip parent 1: handle 20731 fw classid 1:4f9
+tc filter add dev eth0 protocol ip parent 1: handle 20732 fw classid 1:4fa
+tc filter add dev eth0 protocol ip parent 1: handle 20733 fw classid 1:4fb
+tc filter add dev eth0 protocol ip parent 1: handle 20734 fw classid 1:4fc
+tc filter add dev eth0 protocol ip parent 1: handle 20735 fw classid 1:4fd
+tc filter add dev eth0 protocol ip parent 1: handle 20736 fw classid 1:4fe
+tc filter add dev eth0 protocol ip parent 1: handle 20737 fw classid 1:4ff
+tc filter add dev eth0 protocol ip parent 1: handle 20738 fw classid 1:500
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:2231 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:2231 classid 1:501 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:2231 classid 1:502 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:2231 classid 1:503 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:2231 classid 1:504 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:2231 classid 1:505 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:2231 classid 1:506 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:2231 classid 1:507 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:2231 classid 1:508 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:2231 classid 1:509 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 22320 fw classid 1:501
+tc filter add dev br2 protocol ip parent 1: handle 22321 fw classid 1:502
+tc filter add dev br2 protocol ip parent 1: handle 22322 fw classid 1:503
+tc filter add dev br2 protocol ip parent 1: handle 22323 fw classid 1:504
+tc filter add dev br2 protocol ip parent 1: handle 22324 fw classid 1:505
+tc filter add dev br2 protocol ip parent 1: handle 22325 fw classid 1:506
+tc filter add dev br2 protocol ip parent 1: handle 22326 fw classid 1:507
+tc filter add dev br2 protocol ip parent 1: handle 22327 fw classid 1:508
+tc filter add dev br2 protocol ip parent 1: handle 22328 fw classid 1:509
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:2232 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:2232 classid 1:50a htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:2232 classid 1:50b htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:2232 classid 1:50c htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:2232 classid 1:50d htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:2232 classid 1:50e htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:2232 classid 1:50f htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:2232 classid 1:510 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:2232 classid 1:511 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:2232 classid 1:512 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 22330 fw classid 1:50a
+tc filter add dev eth0 protocol ip parent 1: handle 22331 fw classid 1:50b
+tc filter add dev eth0 protocol ip parent 1: handle 22332 fw classid 1:50c
+tc filter add dev eth0 protocol ip parent 1: handle 22333 fw classid 1:50d
+tc filter add dev eth0 protocol ip parent 1: handle 22334 fw classid 1:50e
+tc filter add dev eth0 protocol ip parent 1: handle 22335 fw classid 1:50f
+tc filter add dev eth0 protocol ip parent 1: handle 22336 fw classid 1:510
+tc filter add dev eth0 protocol ip parent 1: handle 22337 fw classid 1:511
+tc filter add dev eth0 protocol ip parent 1: handle 22338 fw classid 1:512
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:1361 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:1361 classid 1:513 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:1361 classid 1:514 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:1361 classid 1:515 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:1361 classid 1:516 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:1361 classid 1:517 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:1361 classid 1:518 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:1361 classid 1:519 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:1361 classid 1:51a htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:1361 classid 1:51b htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 13620 fw classid 1:513
+tc filter add dev br2 protocol ip parent 1: handle 13621 fw classid 1:514
+tc filter add dev br2 protocol ip parent 1: handle 13622 fw classid 1:515
+tc filter add dev br2 protocol ip parent 1: handle 13623 fw classid 1:516
+tc filter add dev br2 protocol ip parent 1: handle 13624 fw classid 1:517
+tc filter add dev br2 protocol ip parent 1: handle 13625 fw classid 1:518
+tc filter add dev br2 protocol ip parent 1: handle 13626 fw classid 1:519
+tc filter add dev br2 protocol ip parent 1: handle 13627 fw classid 1:51a
+tc filter add dev br2 protocol ip parent 1: handle 13628 fw classid 1:51b
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:1362 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:1362 classid 1:51c htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:1362 classid 1:51d htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:1362 classid 1:51e htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:1362 classid 1:51f htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:1362 classid 1:520 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:1362 classid 1:521 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:1362 classid 1:522 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:1362 classid 1:523 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:1362 classid 1:524 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 13630 fw classid 1:51c
+tc filter add dev eth0 protocol ip parent 1: handle 13631 fw classid 1:51d
+tc filter add dev eth0 protocol ip parent 1: handle 13632 fw classid 1:51e
+tc filter add dev eth0 protocol ip parent 1: handle 13633 fw classid 1:51f
+tc filter add dev eth0 protocol ip parent 1: handle 13634 fw classid 1:520
+tc filter add dev eth0 protocol ip parent 1: handle 13635 fw classid 1:521
+tc filter add dev eth0 protocol ip parent 1: handle 13636 fw classid 1:522
+tc filter add dev eth0 protocol ip parent 1: handle 13637 fw classid 1:523
+tc filter add dev eth0 protocol ip parent 1: handle 13638 fw classid 1:524
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:1611 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:1611 classid 1:525 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:1611 classid 1:526 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:1611 classid 1:527 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:1611 classid 1:528 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:1611 classid 1:529 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:1611 classid 1:52a htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:1611 classid 1:52b htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:1611 classid 1:52c htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:1611 classid 1:52d htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 16120 fw classid 1:525
+tc filter add dev br2 protocol ip parent 1: handle 16121 fw classid 1:526
+tc filter add dev br2 protocol ip parent 1: handle 16122 fw classid 1:527
+tc filter add dev br2 protocol ip parent 1: handle 16123 fw classid 1:528
+tc filter add dev br2 protocol ip parent 1: handle 16124 fw classid 1:529
+tc filter add dev br2 protocol ip parent 1: handle 16125 fw classid 1:52a
+tc filter add dev br2 protocol ip parent 1: handle 16126 fw classid 1:52b
+tc filter add dev br2 protocol ip parent 1: handle 16127 fw classid 1:52c
+tc filter add dev br2 protocol ip parent 1: handle 16128 fw classid 1:52d
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:1612 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:1612 classid 1:52e htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:1612 classid 1:52f htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:1612 classid 1:530 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:1612 classid 1:531 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:1612 classid 1:532 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:1612 classid 1:533 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:1612 classid 1:534 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:1612 classid 1:535 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:1612 classid 1:536 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 16130 fw classid 1:52e
+tc filter add dev eth0 protocol ip parent 1: handle 16131 fw classid 1:52f
+tc filter add dev eth0 protocol ip parent 1: handle 16132 fw classid 1:530
+tc filter add dev eth0 protocol ip parent 1: handle 16133 fw classid 1:531
+tc filter add dev eth0 protocol ip parent 1: handle 16134 fw classid 1:532
+tc filter add dev eth0 protocol ip parent 1: handle 16135 fw classid 1:533
+tc filter add dev eth0 protocol ip parent 1: handle 16136 fw classid 1:534
+tc filter add dev eth0 protocol ip parent 1: handle 16137 fw classid 1:535
+tc filter add dev eth0 protocol ip parent 1: handle 16138 fw classid 1:536
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:1561 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:1561 classid 1:537 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:1561 classid 1:538 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:1561 classid 1:539 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:1561 classid 1:53a htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:1561 classid 1:53b htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:1561 classid 1:53c htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:1561 classid 1:53d htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:1561 classid 1:53e htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:1561 classid 1:53f htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 15620 fw classid 1:537
+tc filter add dev br2 protocol ip parent 1: handle 15621 fw classid 1:538
+tc filter add dev br2 protocol ip parent 1: handle 15622 fw classid 1:539
+tc filter add dev br2 protocol ip parent 1: handle 15623 fw classid 1:53a
+tc filter add dev br2 protocol ip parent 1: handle 15624 fw classid 1:53b
+tc filter add dev br2 protocol ip parent 1: handle 15625 fw classid 1:53c
+tc filter add dev br2 protocol ip parent 1: handle 15626 fw classid 1:53d
+tc filter add dev br2 protocol ip parent 1: handle 15627 fw classid 1:53e
+tc filter add dev br2 protocol ip parent 1: handle 15628 fw classid 1:53f
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:1562 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:1562 classid 1:540 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:1562 classid 1:541 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:1562 classid 1:542 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:1562 classid 1:543 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:1562 classid 1:544 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:1562 classid 1:545 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:1562 classid 1:546 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:1562 classid 1:547 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:1562 classid 1:548 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 15630 fw classid 1:540
+tc filter add dev eth0 protocol ip parent 1: handle 15631 fw classid 1:541
+tc filter add dev eth0 protocol ip parent 1: handle 15632 fw classid 1:542
+tc filter add dev eth0 protocol ip parent 1: handle 15633 fw classid 1:543
+tc filter add dev eth0 protocol ip parent 1: handle 15634 fw classid 1:544
+tc filter add dev eth0 protocol ip parent 1: handle 15635 fw classid 1:545
+tc filter add dev eth0 protocol ip parent 1: handle 15636 fw classid 1:546
+tc filter add dev eth0 protocol ip parent 1: handle 15637 fw classid 1:547
+tc filter add dev eth0 protocol ip parent 1: handle 15638 fw classid 1:548
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:1531 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:1531 classid 1:549 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:1531 classid 1:54a htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:1531 classid 1:54b htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:1531 classid 1:54c htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:1531 classid 1:54d htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:1531 classid 1:54e htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:1531 classid 1:54f htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:1531 classid 1:550 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:1531 classid 1:551 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 15320 fw classid 1:549
+tc filter add dev br2 protocol ip parent 1: handle 15321 fw classid 1:54a
+tc filter add dev br2 protocol ip parent 1: handle 15322 fw classid 1:54b
+tc filter add dev br2 protocol ip parent 1: handle 15323 fw classid 1:54c
+tc filter add dev br2 protocol ip parent 1: handle 15324 fw classid 1:54d
+tc filter add dev br2 protocol ip parent 1: handle 15325 fw classid 1:54e
+tc filter add dev br2 protocol ip parent 1: handle 15326 fw classid 1:54f
+tc filter add dev br2 protocol ip parent 1: handle 15327 fw classid 1:550
+tc filter add dev br2 protocol ip parent 1: handle 15328 fw classid 1:551
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:1532 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:1532 classid 1:552 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:1532 classid 1:553 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:1532 classid 1:554 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:1532 classid 1:555 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:1532 classid 1:556 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:1532 classid 1:557 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:1532 classid 1:558 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:1532 classid 1:559 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:1532 classid 1:55a htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 15330 fw classid 1:552
+tc filter add dev eth0 protocol ip parent 1: handle 15331 fw classid 1:553
+tc filter add dev eth0 protocol ip parent 1: handle 15332 fw classid 1:554
+tc filter add dev eth0 protocol ip parent 1: handle 15333 fw classid 1:555
+tc filter add dev eth0 protocol ip parent 1: handle 15334 fw classid 1:556
+tc filter add dev eth0 protocol ip parent 1: handle 15335 fw classid 1:557
+tc filter add dev eth0 protocol ip parent 1: handle 15336 fw classid 1:558
+tc filter add dev eth0 protocol ip parent 1: handle 15337 fw classid 1:559
+tc filter add dev eth0 protocol ip parent 1: handle 15338 fw classid 1:55a
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:1641 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:1641 classid 1:55b htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:1641 classid 1:55c htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:1641 classid 1:55d htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:1641 classid 1:55e htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:1641 classid 1:55f htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:1641 classid 1:560 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:1641 classid 1:561 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:1641 classid 1:562 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:1641 classid 1:563 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 16420 fw classid 1:55b
+tc filter add dev br2 protocol ip parent 1: handle 16421 fw classid 1:55c
+tc filter add dev br2 protocol ip parent 1: handle 16422 fw classid 1:55d
+tc filter add dev br2 protocol ip parent 1: handle 16423 fw classid 1:55e
+tc filter add dev br2 protocol ip parent 1: handle 16424 fw classid 1:55f
+tc filter add dev br2 protocol ip parent 1: handle 16425 fw classid 1:560
+tc filter add dev br2 protocol ip parent 1: handle 16426 fw classid 1:561
+tc filter add dev br2 protocol ip parent 1: handle 16427 fw classid 1:562
+tc filter add dev br2 protocol ip parent 1: handle 16428 fw classid 1:563
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:1642 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:1642 classid 1:564 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:1642 classid 1:565 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:1642 classid 1:566 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:1642 classid 1:567 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:1642 classid 1:568 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:1642 classid 1:569 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:1642 classid 1:56a htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:1642 classid 1:56b htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:1642 classid 1:56c htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 16430 fw classid 1:564
+tc filter add dev eth0 protocol ip parent 1: handle 16431 fw classid 1:565
+tc filter add dev eth0 protocol ip parent 1: handle 16432 fw classid 1:566
+tc filter add dev eth0 protocol ip parent 1: handle 16433 fw classid 1:567
+tc filter add dev eth0 protocol ip parent 1: handle 16434 fw classid 1:568
+tc filter add dev eth0 protocol ip parent 1: handle 16435 fw classid 1:569
+tc filter add dev eth0 protocol ip parent 1: handle 16436 fw classid 1:56a
+tc filter add dev eth0 protocol ip parent 1: handle 16437 fw classid 1:56b
+tc filter add dev eth0 protocol ip parent 1: handle 16438 fw classid 1:56c
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:1671 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:1671 classid 1:56d htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:1671 classid 1:56e htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:1671 classid 1:56f htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:1671 classid 1:570 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:1671 classid 1:571 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:1671 classid 1:572 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:1671 classid 1:573 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:1671 classid 1:574 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:1671 classid 1:575 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 16720 fw classid 1:56d
+tc filter add dev br2 protocol ip parent 1: handle 16721 fw classid 1:56e
+tc filter add dev br2 protocol ip parent 1: handle 16722 fw classid 1:56f
+tc filter add dev br2 protocol ip parent 1: handle 16723 fw classid 1:570
+tc filter add dev br2 protocol ip parent 1: handle 16724 fw classid 1:571
+tc filter add dev br2 protocol ip parent 1: handle 16725 fw classid 1:572
+tc filter add dev br2 protocol ip parent 1: handle 16726 fw classid 1:573
+tc filter add dev br2 protocol ip parent 1: handle 16727 fw classid 1:574
+tc filter add dev br2 protocol ip parent 1: handle 16728 fw classid 1:575
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:1672 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:1672 classid 1:576 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:1672 classid 1:577 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:1672 classid 1:578 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:1672 classid 1:579 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:1672 classid 1:57a htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:1672 classid 1:57b htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:1672 classid 1:57c htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:1672 classid 1:57d htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:1672 classid 1:57e htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 16730 fw classid 1:576
+tc filter add dev eth0 protocol ip parent 1: handle 16731 fw classid 1:577
+tc filter add dev eth0 protocol ip parent 1: handle 16732 fw classid 1:578
+tc filter add dev eth0 protocol ip parent 1: handle 16733 fw classid 1:579
+tc filter add dev eth0 protocol ip parent 1: handle 16734 fw classid 1:57a
+tc filter add dev eth0 protocol ip parent 1: handle 16735 fw classid 1:57b
+tc filter add dev eth0 protocol ip parent 1: handle 16736 fw classid 1:57c
+tc filter add dev eth0 protocol ip parent 1: handle 16737 fw classid 1:57d
+tc filter add dev eth0 protocol ip parent 1: handle 16738 fw classid 1:57e
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:2521 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:2521 classid 1:57f htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:2521 classid 1:580 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:2521 classid 1:581 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:2521 classid 1:582 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:2521 classid 1:583 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:2521 classid 1:584 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:2521 classid 1:585 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:2521 classid 1:586 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:2521 classid 1:587 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 25220 fw classid 1:57f
+tc filter add dev br2 protocol ip parent 1: handle 25221 fw classid 1:580
+tc filter add dev br2 protocol ip parent 1: handle 25222 fw classid 1:581
+tc filter add dev br2 protocol ip parent 1: handle 25223 fw classid 1:582
+tc filter add dev br2 protocol ip parent 1: handle 25224 fw classid 1:583
+tc filter add dev br2 protocol ip parent 1: handle 25225 fw classid 1:584
+tc filter add dev br2 protocol ip parent 1: handle 25226 fw classid 1:585
+tc filter add dev br2 protocol ip parent 1: handle 25227 fw classid 1:586
+tc filter add dev br2 protocol ip parent 1: handle 25228 fw classid 1:587
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:2522 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:2522 classid 1:588 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:2522 classid 1:589 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:2522 classid 1:58a htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:2522 classid 1:58b htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:2522 classid 1:58c htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:2522 classid 1:58d htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:2522 classid 1:58e htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:2522 classid 1:58f htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:2522 classid 1:590 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 25230 fw classid 1:588
+tc filter add dev eth0 protocol ip parent 1: handle 25231 fw classid 1:589
+tc filter add dev eth0 protocol ip parent 1: handle 25232 fw classid 1:58a
+tc filter add dev eth0 protocol ip parent 1: handle 25233 fw classid 1:58b
+tc filter add dev eth0 protocol ip parent 1: handle 25234 fw classid 1:58c
+tc filter add dev eth0 protocol ip parent 1: handle 25235 fw classid 1:58d
+tc filter add dev eth0 protocol ip parent 1: handle 25236 fw classid 1:58e
+tc filter add dev eth0 protocol ip parent 1: handle 25237 fw classid 1:58f
+tc filter add dev eth0 protocol ip parent 1: handle 25238 fw classid 1:590
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:2061 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:2061 classid 1:591 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:2061 classid 1:592 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:2061 classid 1:593 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:2061 classid 1:594 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:2061 classid 1:595 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:2061 classid 1:596 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:2061 classid 1:597 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:2061 classid 1:598 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:2061 classid 1:599 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 20620 fw classid 1:591
+tc filter add dev br2 protocol ip parent 1: handle 20621 fw classid 1:592
+tc filter add dev br2 protocol ip parent 1: handle 20622 fw classid 1:593
+tc filter add dev br2 protocol ip parent 1: handle 20623 fw classid 1:594
+tc filter add dev br2 protocol ip parent 1: handle 20624 fw classid 1:595
+tc filter add dev br2 protocol ip parent 1: handle 20625 fw classid 1:596
+tc filter add dev br2 protocol ip parent 1: handle 20626 fw classid 1:597
+tc filter add dev br2 protocol ip parent 1: handle 20627 fw classid 1:598
+tc filter add dev br2 protocol ip parent 1: handle 20628 fw classid 1:599
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:2062 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:2062 classid 1:59a htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:2062 classid 1:59b htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:2062 classid 1:59c htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:2062 classid 1:59d htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:2062 classid 1:59e htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:2062 classid 1:59f htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:2062 classid 1:5a0 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:2062 classid 1:5a1 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:2062 classid 1:5a2 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 20630 fw classid 1:59a
+tc filter add dev eth0 protocol ip parent 1: handle 20631 fw classid 1:59b
+tc filter add dev eth0 protocol ip parent 1: handle 20632 fw classid 1:59c
+tc filter add dev eth0 protocol ip parent 1: handle 20633 fw classid 1:59d
+tc filter add dev eth0 protocol ip parent 1: handle 20634 fw classid 1:59e
+tc filter add dev eth0 protocol ip parent 1: handle 20635 fw classid 1:59f
+tc filter add dev eth0 protocol ip parent 1: handle 20636 fw classid 1:5a0
+tc filter add dev eth0 protocol ip parent 1: handle 20637 fw classid 1:5a1
+tc filter add dev eth0 protocol ip parent 1: handle 20638 fw classid 1:5a2
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:2101 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:2101 classid 1:5a3 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:2101 classid 1:5a4 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:2101 classid 1:5a5 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:2101 classid 1:5a6 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:2101 classid 1:5a7 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:2101 classid 1:5a8 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:2101 classid 1:5a9 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:2101 classid 1:5aa htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:2101 classid 1:5ab htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 21020 fw classid 1:5a3
+tc filter add dev br2 protocol ip parent 1: handle 21021 fw classid 1:5a4
+tc filter add dev br2 protocol ip parent 1: handle 21022 fw classid 1:5a5
+tc filter add dev br2 protocol ip parent 1: handle 21023 fw classid 1:5a6
+tc filter add dev br2 protocol ip parent 1: handle 21024 fw classid 1:5a7
+tc filter add dev br2 protocol ip parent 1: handle 21025 fw classid 1:5a8
+tc filter add dev br2 protocol ip parent 1: handle 21026 fw classid 1:5a9
+tc filter add dev br2 protocol ip parent 1: handle 21027 fw classid 1:5aa
+tc filter add dev br2 protocol ip parent 1: handle 21028 fw classid 1:5ab
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:2102 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:2102 classid 1:5ac htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:2102 classid 1:5ad htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:2102 classid 1:5ae htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:2102 classid 1:5af htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:2102 classid 1:5b0 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:2102 classid 1:5b1 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:2102 classid 1:5b2 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:2102 classid 1:5b3 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:2102 classid 1:5b4 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 21030 fw classid 1:5ac
+tc filter add dev eth0 protocol ip parent 1: handle 21031 fw classid 1:5ad
+tc filter add dev eth0 protocol ip parent 1: handle 21032 fw classid 1:5ae
+tc filter add dev eth0 protocol ip parent 1: handle 21033 fw classid 1:5af
+tc filter add dev eth0 protocol ip parent 1: handle 21034 fw classid 1:5b0
+tc filter add dev eth0 protocol ip parent 1: handle 21035 fw classid 1:5b1
+tc filter add dev eth0 protocol ip parent 1: handle 21036 fw classid 1:5b2
+tc filter add dev eth0 protocol ip parent 1: handle 21037 fw classid 1:5b3
+tc filter add dev eth0 protocol ip parent 1: handle 21038 fw classid 1:5b4
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:2191 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:2191 classid 1:5b5 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:2191 classid 1:5b6 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:2191 classid 1:5b7 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:2191 classid 1:5b8 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:2191 classid 1:5b9 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:2191 classid 1:5ba htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:2191 classid 1:5bb htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:2191 classid 1:5bc htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:2191 classid 1:5bd htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 21920 fw classid 1:5b5
+tc filter add dev br2 protocol ip parent 1: handle 21921 fw classid 1:5b6
+tc filter add dev br2 protocol ip parent 1: handle 21922 fw classid 1:5b7
+tc filter add dev br2 protocol ip parent 1: handle 21923 fw classid 1:5b8
+tc filter add dev br2 protocol ip parent 1: handle 21924 fw classid 1:5b9
+tc filter add dev br2 protocol ip parent 1: handle 21925 fw classid 1:5ba
+tc filter add dev br2 protocol ip parent 1: handle 21926 fw classid 1:5bb
+tc filter add dev br2 protocol ip parent 1: handle 21927 fw classid 1:5bc
+tc filter add dev br2 protocol ip parent 1: handle 21928 fw classid 1:5bd
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:2192 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:2192 classid 1:5be htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:2192 classid 1:5bf htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:2192 classid 1:5c0 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:2192 classid 1:5c1 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:2192 classid 1:5c2 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:2192 classid 1:5c3 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:2192 classid 1:5c4 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:2192 classid 1:5c5 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:2192 classid 1:5c6 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 21930 fw classid 1:5be
+tc filter add dev eth0 protocol ip parent 1: handle 21931 fw classid 1:5bf
+tc filter add dev eth0 protocol ip parent 1: handle 21932 fw classid 1:5c0
+tc filter add dev eth0 protocol ip parent 1: handle 21933 fw classid 1:5c1
+tc filter add dev eth0 protocol ip parent 1: handle 21934 fw classid 1:5c2
+tc filter add dev eth0 protocol ip parent 1: handle 21935 fw classid 1:5c3
+tc filter add dev eth0 protocol ip parent 1: handle 21936 fw classid 1:5c4
+tc filter add dev eth0 protocol ip parent 1: handle 21937 fw classid 1:5c5
+tc filter add dev eth0 protocol ip parent 1: handle 21938 fw classid 1:5c6
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:1771 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:1771 classid 1:5c7 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:1771 classid 1:5c8 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:1771 classid 1:5c9 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:1771 classid 1:5ca htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:1771 classid 1:5cb htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:1771 classid 1:5cc htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:1771 classid 1:5cd htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:1771 classid 1:5ce htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:1771 classid 1:5cf htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 17720 fw classid 1:5c7
+tc filter add dev br2 protocol ip parent 1: handle 17721 fw classid 1:5c8
+tc filter add dev br2 protocol ip parent 1: handle 17722 fw classid 1:5c9
+tc filter add dev br2 protocol ip parent 1: handle 17723 fw classid 1:5ca
+tc filter add dev br2 protocol ip parent 1: handle 17724 fw classid 1:5cb
+tc filter add dev br2 protocol ip parent 1: handle 17725 fw classid 1:5cc
+tc filter add dev br2 protocol ip parent 1: handle 17726 fw classid 1:5cd
+tc filter add dev br2 protocol ip parent 1: handle 17727 fw classid 1:5ce
+tc filter add dev br2 protocol ip parent 1: handle 17728 fw classid 1:5cf
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:1772 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:1772 classid 1:5d0 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:1772 classid 1:5d1 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:1772 classid 1:5d2 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:1772 classid 1:5d3 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:1772 classid 1:5d4 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:1772 classid 1:5d5 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:1772 classid 1:5d6 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:1772 classid 1:5d7 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:1772 classid 1:5d8 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 17730 fw classid 1:5d0
+tc filter add dev eth0 protocol ip parent 1: handle 17731 fw classid 1:5d1
+tc filter add dev eth0 protocol ip parent 1: handle 17732 fw classid 1:5d2
+tc filter add dev eth0 protocol ip parent 1: handle 17733 fw classid 1:5d3
+tc filter add dev eth0 protocol ip parent 1: handle 17734 fw classid 1:5d4
+tc filter add dev eth0 protocol ip parent 1: handle 17735 fw classid 1:5d5
+tc filter add dev eth0 protocol ip parent 1: handle 17736 fw classid 1:5d6
+tc filter add dev eth0 protocol ip parent 1: handle 17737 fw classid 1:5d7
+tc filter add dev eth0 protocol ip parent 1: handle 17738 fw classid 1:5d8
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:2091 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:2091 classid 1:5d9 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:2091 classid 1:5da htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:2091 classid 1:5db htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:2091 classid 1:5dc htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:2091 classid 1:5dd htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:2091 classid 1:5de htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:2091 classid 1:5df htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:2091 classid 1:5e0 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:2091 classid 1:5e1 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 20920 fw classid 1:5d9
+tc filter add dev br2 protocol ip parent 1: handle 20921 fw classid 1:5da
+tc filter add dev br2 protocol ip parent 1: handle 20922 fw classid 1:5db
+tc filter add dev br2 protocol ip parent 1: handle 20923 fw classid 1:5dc
+tc filter add dev br2 protocol ip parent 1: handle 20924 fw classid 1:5dd
+tc filter add dev br2 protocol ip parent 1: handle 20925 fw classid 1:5de
+tc filter add dev br2 protocol ip parent 1: handle 20926 fw classid 1:5df
+tc filter add dev br2 protocol ip parent 1: handle 20927 fw classid 1:5e0
+tc filter add dev br2 protocol ip parent 1: handle 20928 fw classid 1:5e1
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:2092 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:2092 classid 1:5e2 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:2092 classid 1:5e3 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:2092 classid 1:5e4 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:2092 classid 1:5e5 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:2092 classid 1:5e6 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:2092 classid 1:5e7 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:2092 classid 1:5e8 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:2092 classid 1:5e9 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:2092 classid 1:5ea htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 20930 fw classid 1:5e2
+tc filter add dev eth0 protocol ip parent 1: handle 20931 fw classid 1:5e3
+tc filter add dev eth0 protocol ip parent 1: handle 20932 fw classid 1:5e4
+tc filter add dev eth0 protocol ip parent 1: handle 20933 fw classid 1:5e5
+tc filter add dev eth0 protocol ip parent 1: handle 20934 fw classid 1:5e6
+tc filter add dev eth0 protocol ip parent 1: handle 20935 fw classid 1:5e7
+tc filter add dev eth0 protocol ip parent 1: handle 20936 fw classid 1:5e8
+tc filter add dev eth0 protocol ip parent 1: handle 20937 fw classid 1:5e9
+tc filter add dev eth0 protocol ip parent 1: handle 20938 fw classid 1:5ea
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:3981 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:3981 classid 1:5eb htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:3981 classid 1:5ec htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:3981 classid 1:5ed htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:3981 classid 1:5ee htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:3981 classid 1:5ef htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:3981 classid 1:5f0 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:3981 classid 1:5f1 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:3981 classid 1:5f2 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:3981 classid 1:5f3 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 39820 fw classid 1:5eb
+tc filter add dev br2 protocol ip parent 1: handle 39821 fw classid 1:5ec
+tc filter add dev br2 protocol ip parent 1: handle 39822 fw classid 1:5ed
+tc filter add dev br2 protocol ip parent 1: handle 39823 fw classid 1:5ee
+tc filter add dev br2 protocol ip parent 1: handle 39824 fw classid 1:5ef
+tc filter add dev br2 protocol ip parent 1: handle 39825 fw classid 1:5f0
+tc filter add dev br2 protocol ip parent 1: handle 39826 fw classid 1:5f1
+tc filter add dev br2 protocol ip parent 1: handle 39827 fw classid 1:5f2
+tc filter add dev br2 protocol ip parent 1: handle 39828 fw classid 1:5f3
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:3982 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:3982 classid 1:5f4 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:3982 classid 1:5f5 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:3982 classid 1:5f6 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:3982 classid 1:5f7 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:3982 classid 1:5f8 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:3982 classid 1:5f9 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:3982 classid 1:5fa htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:3982 classid 1:5fb htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:3982 classid 1:5fc htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 39830 fw classid 1:5f4
+tc filter add dev eth0 protocol ip parent 1: handle 39831 fw classid 1:5f5
+tc filter add dev eth0 protocol ip parent 1: handle 39832 fw classid 1:5f6
+tc filter add dev eth0 protocol ip parent 1: handle 39833 fw classid 1:5f7
+tc filter add dev eth0 protocol ip parent 1: handle 39834 fw classid 1:5f8
+tc filter add dev eth0 protocol ip parent 1: handle 39835 fw classid 1:5f9
+tc filter add dev eth0 protocol ip parent 1: handle 39836 fw classid 1:5fa
+tc filter add dev eth0 protocol ip parent 1: handle 39837 fw classid 1:5fb
+tc filter add dev eth0 protocol ip parent 1: handle 39838 fw classid 1:5fc
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:1961 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:1961 classid 1:5fd htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:1961 classid 1:5fe htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:1961 classid 1:5ff htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:1961 classid 1:600 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:1961 classid 1:601 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:1961 classid 1:602 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:1961 classid 1:603 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:1961 classid 1:604 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:1961 classid 1:605 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 19620 fw classid 1:5fd
+tc filter add dev br2 protocol ip parent 1: handle 19621 fw classid 1:5fe
+tc filter add dev br2 protocol ip parent 1: handle 19622 fw classid 1:5ff
+tc filter add dev br2 protocol ip parent 1: handle 19623 fw classid 1:600
+tc filter add dev br2 protocol ip parent 1: handle 19624 fw classid 1:601
+tc filter add dev br2 protocol ip parent 1: handle 19625 fw classid 1:602
+tc filter add dev br2 protocol ip parent 1: handle 19626 fw classid 1:603
+tc filter add dev br2 protocol ip parent 1: handle 19627 fw classid 1:604
+tc filter add dev br2 protocol ip parent 1: handle 19628 fw classid 1:605
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:1962 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:1962 classid 1:606 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:1962 classid 1:607 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:1962 classid 1:608 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:1962 classid 1:609 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:1962 classid 1:60a htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:1962 classid 1:60b htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:1962 classid 1:60c htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:1962 classid 1:60d htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:1962 classid 1:60e htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 19630 fw classid 1:606
+tc filter add dev eth0 protocol ip parent 1: handle 19631 fw classid 1:607
+tc filter add dev eth0 protocol ip parent 1: handle 19632 fw classid 1:608
+tc filter add dev eth0 protocol ip parent 1: handle 19633 fw classid 1:609
+tc filter add dev eth0 protocol ip parent 1: handle 19634 fw classid 1:60a
+tc filter add dev eth0 protocol ip parent 1: handle 19635 fw classid 1:60b
+tc filter add dev eth0 protocol ip parent 1: handle 19636 fw classid 1:60c
+tc filter add dev eth0 protocol ip parent 1: handle 19637 fw classid 1:60d
+tc filter add dev eth0 protocol ip parent 1: handle 19638 fw classid 1:60e
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:2441 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:2441 classid 1:60f htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:2441 classid 1:610 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:2441 classid 1:611 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:2441 classid 1:612 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:2441 classid 1:613 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:2441 classid 1:614 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:2441 classid 1:615 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:2441 classid 1:616 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:2441 classid 1:617 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 24420 fw classid 1:60f
+tc filter add dev br2 protocol ip parent 1: handle 24421 fw classid 1:610
+tc filter add dev br2 protocol ip parent 1: handle 24422 fw classid 1:611
+tc filter add dev br2 protocol ip parent 1: handle 24423 fw classid 1:612
+tc filter add dev br2 protocol ip parent 1: handle 24424 fw classid 1:613
+tc filter add dev br2 protocol ip parent 1: handle 24425 fw classid 1:614
+tc filter add dev br2 protocol ip parent 1: handle 24426 fw classid 1:615
+tc filter add dev br2 protocol ip parent 1: handle 24427 fw classid 1:616
+tc filter add dev br2 protocol ip parent 1: handle 24428 fw classid 1:617
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:2442 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:2442 classid 1:618 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:2442 classid 1:619 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:2442 classid 1:61a htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:2442 classid 1:61b htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:2442 classid 1:61c htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:2442 classid 1:61d htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:2442 classid 1:61e htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:2442 classid 1:61f htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:2442 classid 1:620 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 24430 fw classid 1:618
+tc filter add dev eth0 protocol ip parent 1: handle 24431 fw classid 1:619
+tc filter add dev eth0 protocol ip parent 1: handle 24432 fw classid 1:61a
+tc filter add dev eth0 protocol ip parent 1: handle 24433 fw classid 1:61b
+tc filter add dev eth0 protocol ip parent 1: handle 24434 fw classid 1:61c
+tc filter add dev eth0 protocol ip parent 1: handle 24435 fw classid 1:61d
+tc filter add dev eth0 protocol ip parent 1: handle 24436 fw classid 1:61e
+tc filter add dev eth0 protocol ip parent 1: handle 24437 fw classid 1:61f
+tc filter add dev eth0 protocol ip parent 1: handle 24438 fw classid 1:620
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:2461 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:2461 classid 1:621 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:2461 classid 1:622 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:2461 classid 1:623 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:2461 classid 1:624 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:2461 classid 1:625 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:2461 classid 1:626 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:2461 classid 1:627 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:2461 classid 1:628 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:2461 classid 1:629 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 24620 fw classid 1:621
+tc filter add dev br2 protocol ip parent 1: handle 24621 fw classid 1:622
+tc filter add dev br2 protocol ip parent 1: handle 24622 fw classid 1:623
+tc filter add dev br2 protocol ip parent 1: handle 24623 fw classid 1:624
+tc filter add dev br2 protocol ip parent 1: handle 24624 fw classid 1:625
+tc filter add dev br2 protocol ip parent 1: handle 24625 fw classid 1:626
+tc filter add dev br2 protocol ip parent 1: handle 24626 fw classid 1:627
+tc filter add dev br2 protocol ip parent 1: handle 24627 fw classid 1:628
+tc filter add dev br2 protocol ip parent 1: handle 24628 fw classid 1:629
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:2462 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:2462 classid 1:62a htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:2462 classid 1:62b htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:2462 classid 1:62c htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:2462 classid 1:62d htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:2462 classid 1:62e htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:2462 classid 1:62f htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:2462 classid 1:630 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:2462 classid 1:631 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:2462 classid 1:632 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 24630 fw classid 1:62a
+tc filter add dev eth0 protocol ip parent 1: handle 24631 fw classid 1:62b
+tc filter add dev eth0 protocol ip parent 1: handle 24632 fw classid 1:62c
+tc filter add dev eth0 protocol ip parent 1: handle 24633 fw classid 1:62d
+tc filter add dev eth0 protocol ip parent 1: handle 24634 fw classid 1:62e
+tc filter add dev eth0 protocol ip parent 1: handle 24635 fw classid 1:62f
+tc filter add dev eth0 protocol ip parent 1: handle 24636 fw classid 1:630
+tc filter add dev eth0 protocol ip parent 1: handle 24637 fw classid 1:631
+tc filter add dev eth0 protocol ip parent 1: handle 24638 fw classid 1:632
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:2501 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:2501 classid 1:633 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:2501 classid 1:634 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:2501 classid 1:635 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:2501 classid 1:636 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:2501 classid 1:637 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:2501 classid 1:638 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:2501 classid 1:639 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:2501 classid 1:63a htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:2501 classid 1:63b htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 25020 fw classid 1:633
+tc filter add dev br2 protocol ip parent 1: handle 25021 fw classid 1:634
+tc filter add dev br2 protocol ip parent 1: handle 25022 fw classid 1:635
+tc filter add dev br2 protocol ip parent 1: handle 25023 fw classid 1:636
+tc filter add dev br2 protocol ip parent 1: handle 25024 fw classid 1:637
+tc filter add dev br2 protocol ip parent 1: handle 25025 fw classid 1:638
+tc filter add dev br2 protocol ip parent 1: handle 25026 fw classid 1:639
+tc filter add dev br2 protocol ip parent 1: handle 25027 fw classid 1:63a
+tc filter add dev br2 protocol ip parent 1: handle 25028 fw classid 1:63b
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:2502 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:2502 classid 1:63c htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:2502 classid 1:63d htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:2502 classid 1:63e htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:2502 classid 1:63f htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:2502 classid 1:640 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:2502 classid 1:641 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:2502 classid 1:642 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:2502 classid 1:643 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:2502 classid 1:644 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 25030 fw classid 1:63c
+tc filter add dev eth0 protocol ip parent 1: handle 25031 fw classid 1:63d
+tc filter add dev eth0 protocol ip parent 1: handle 25032 fw classid 1:63e
+tc filter add dev eth0 protocol ip parent 1: handle 25033 fw classid 1:63f
+tc filter add dev eth0 protocol ip parent 1: handle 25034 fw classid 1:640
+tc filter add dev eth0 protocol ip parent 1: handle 25035 fw classid 1:641
+tc filter add dev eth0 protocol ip parent 1: handle 25036 fw classid 1:642
+tc filter add dev eth0 protocol ip parent 1: handle 25037 fw classid 1:643
+tc filter add dev eth0 protocol ip parent 1: handle 25038 fw classid 1:644
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:2481 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:2481 classid 1:645 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:2481 classid 1:646 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:2481 classid 1:647 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:2481 classid 1:648 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:2481 classid 1:649 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:2481 classid 1:64a htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:2481 classid 1:64b htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:2481 classid 1:64c htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:2481 classid 1:64d htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 24820 fw classid 1:645
+tc filter add dev br2 protocol ip parent 1: handle 24821 fw classid 1:646
+tc filter add dev br2 protocol ip parent 1: handle 24822 fw classid 1:647
+tc filter add dev br2 protocol ip parent 1: handle 24823 fw classid 1:648
+tc filter add dev br2 protocol ip parent 1: handle 24824 fw classid 1:649
+tc filter add dev br2 protocol ip parent 1: handle 24825 fw classid 1:64a
+tc filter add dev br2 protocol ip parent 1: handle 24826 fw classid 1:64b
+tc filter add dev br2 protocol ip parent 1: handle 24827 fw classid 1:64c
+tc filter add dev br2 protocol ip parent 1: handle 24828 fw classid 1:64d
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:2482 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:2482 classid 1:64e htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:2482 classid 1:64f htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:2482 classid 1:650 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:2482 classid 1:651 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:2482 classid 1:652 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:2482 classid 1:653 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:2482 classid 1:654 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:2482 classid 1:655 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:2482 classid 1:656 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 24830 fw classid 1:64e
+tc filter add dev eth0 protocol ip parent 1: handle 24831 fw classid 1:64f
+tc filter add dev eth0 protocol ip parent 1: handle 24832 fw classid 1:650
+tc filter add dev eth0 protocol ip parent 1: handle 24833 fw classid 1:651
+tc filter add dev eth0 protocol ip parent 1: handle 24834 fw classid 1:652
+tc filter add dev eth0 protocol ip parent 1: handle 24835 fw classid 1:653
+tc filter add dev eth0 protocol ip parent 1: handle 24836 fw classid 1:654
+tc filter add dev eth0 protocol ip parent 1: handle 24837 fw classid 1:655
+tc filter add dev eth0 protocol ip parent 1: handle 24838 fw classid 1:656
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:2431 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:2431 classid 1:657 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:2431 classid 1:658 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:2431 classid 1:659 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:2431 classid 1:65a htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:2431 classid 1:65b htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:2431 classid 1:65c htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:2431 classid 1:65d htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:2431 classid 1:65e htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:2431 classid 1:65f htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 24320 fw classid 1:657
+tc filter add dev br2 protocol ip parent 1: handle 24321 fw classid 1:658
+tc filter add dev br2 protocol ip parent 1: handle 24322 fw classid 1:659
+tc filter add dev br2 protocol ip parent 1: handle 24323 fw classid 1:65a
+tc filter add dev br2 protocol ip parent 1: handle 24324 fw classid 1:65b
+tc filter add dev br2 protocol ip parent 1: handle 24325 fw classid 1:65c
+tc filter add dev br2 protocol ip parent 1: handle 24326 fw classid 1:65d
+tc filter add dev br2 protocol ip parent 1: handle 24327 fw classid 1:65e
+tc filter add dev br2 protocol ip parent 1: handle 24328 fw classid 1:65f
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:2432 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:2432 classid 1:660 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:2432 classid 1:661 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:2432 classid 1:662 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:2432 classid 1:663 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:2432 classid 1:664 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:2432 classid 1:665 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:2432 classid 1:666 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:2432 classid 1:667 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:2432 classid 1:668 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 24330 fw classid 1:660
+tc filter add dev eth0 protocol ip parent 1: handle 24331 fw classid 1:661
+tc filter add dev eth0 protocol ip parent 1: handle 24332 fw classid 1:662
+tc filter add dev eth0 protocol ip parent 1: handle 24333 fw classid 1:663
+tc filter add dev eth0 protocol ip parent 1: handle 24334 fw classid 1:664
+tc filter add dev eth0 protocol ip parent 1: handle 24335 fw classid 1:665
+tc filter add dev eth0 protocol ip parent 1: handle 24336 fw classid 1:666
+tc filter add dev eth0 protocol ip parent 1: handle 24337 fw classid 1:667
+tc filter add dev eth0 protocol ip parent 1: handle 24338 fw classid 1:668
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:2511 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:2511 classid 1:669 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:2511 classid 1:66a htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:2511 classid 1:66b htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:2511 classid 1:66c htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:2511 classid 1:66d htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:2511 classid 1:66e htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:2511 classid 1:66f htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:2511 classid 1:670 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:2511 classid 1:671 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 25120 fw classid 1:669
+tc filter add dev br2 protocol ip parent 1: handle 25121 fw classid 1:66a
+tc filter add dev br2 protocol ip parent 1: handle 25122 fw classid 1:66b
+tc filter add dev br2 protocol ip parent 1: handle 25123 fw classid 1:66c
+tc filter add dev br2 protocol ip parent 1: handle 25124 fw classid 1:66d
+tc filter add dev br2 protocol ip parent 1: handle 25125 fw classid 1:66e
+tc filter add dev br2 protocol ip parent 1: handle 25126 fw classid 1:66f
+tc filter add dev br2 protocol ip parent 1: handle 25127 fw classid 1:670
+tc filter add dev br2 protocol ip parent 1: handle 25128 fw classid 1:671
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:2512 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:2512 classid 1:672 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:2512 classid 1:673 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:2512 classid 1:674 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:2512 classid 1:675 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:2512 classid 1:676 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:2512 classid 1:677 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:2512 classid 1:678 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:2512 classid 1:679 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:2512 classid 1:67a htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 25130 fw classid 1:672
+tc filter add dev eth0 protocol ip parent 1: handle 25131 fw classid 1:673
+tc filter add dev eth0 protocol ip parent 1: handle 25132 fw classid 1:674
+tc filter add dev eth0 protocol ip parent 1: handle 25133 fw classid 1:675
+tc filter add dev eth0 protocol ip parent 1: handle 25134 fw classid 1:676
+tc filter add dev eth0 protocol ip parent 1: handle 25135 fw classid 1:677
+tc filter add dev eth0 protocol ip parent 1: handle 25136 fw classid 1:678
+tc filter add dev eth0 protocol ip parent 1: handle 25137 fw classid 1:679
+tc filter add dev eth0 protocol ip parent 1: handle 25138 fw classid 1:67a
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:2471 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:2471 classid 1:67b htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:2471 classid 1:67c htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:2471 classid 1:67d htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:2471 classid 1:67e htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:2471 classid 1:67f htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:2471 classid 1:680 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:2471 classid 1:681 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:2471 classid 1:682 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:2471 classid 1:683 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 24720 fw classid 1:67b
+tc filter add dev br2 protocol ip parent 1: handle 24721 fw classid 1:67c
+tc filter add dev br2 protocol ip parent 1: handle 24722 fw classid 1:67d
+tc filter add dev br2 protocol ip parent 1: handle 24723 fw classid 1:67e
+tc filter add dev br2 protocol ip parent 1: handle 24724 fw classid 1:67f
+tc filter add dev br2 protocol ip parent 1: handle 24725 fw classid 1:680
+tc filter add dev br2 protocol ip parent 1: handle 24726 fw classid 1:681
+tc filter add dev br2 protocol ip parent 1: handle 24727 fw classid 1:682
+tc filter add dev br2 protocol ip parent 1: handle 24728 fw classid 1:683
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:2472 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:2472 classid 1:684 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:2472 classid 1:685 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:2472 classid 1:686 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:2472 classid 1:687 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:2472 classid 1:688 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:2472 classid 1:689 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:2472 classid 1:68a htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:2472 classid 1:68b htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:2472 classid 1:68c htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 24730 fw classid 1:684
+tc filter add dev eth0 protocol ip parent 1: handle 24731 fw classid 1:685
+tc filter add dev eth0 protocol ip parent 1: handle 24732 fw classid 1:686
+tc filter add dev eth0 protocol ip parent 1: handle 24733 fw classid 1:687
+tc filter add dev eth0 protocol ip parent 1: handle 24734 fw classid 1:688
+tc filter add dev eth0 protocol ip parent 1: handle 24735 fw classid 1:689
+tc filter add dev eth0 protocol ip parent 1: handle 24736 fw classid 1:68a
+tc filter add dev eth0 protocol ip parent 1: handle 24737 fw classid 1:68b
+tc filter add dev eth0 protocol ip parent 1: handle 24738 fw classid 1:68c
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:2651 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:2651 classid 1:68d htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:2651 classid 1:68e htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:2651 classid 1:68f htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:2651 classid 1:690 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:2651 classid 1:691 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:2651 classid 1:692 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:2651 classid 1:693 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:2651 classid 1:694 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:2651 classid 1:695 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 26520 fw classid 1:68d
+tc filter add dev br2 protocol ip parent 1: handle 26521 fw classid 1:68e
+tc filter add dev br2 protocol ip parent 1: handle 26522 fw classid 1:68f
+tc filter add dev br2 protocol ip parent 1: handle 26523 fw classid 1:690
+tc filter add dev br2 protocol ip parent 1: handle 26524 fw classid 1:691
+tc filter add dev br2 protocol ip parent 1: handle 26525 fw classid 1:692
+tc filter add dev br2 protocol ip parent 1: handle 26526 fw classid 1:693
+tc filter add dev br2 protocol ip parent 1: handle 26527 fw classid 1:694
+tc filter add dev br2 protocol ip parent 1: handle 26528 fw classid 1:695
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:2652 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:2652 classid 1:696 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:2652 classid 1:697 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:2652 classid 1:698 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:2652 classid 1:699 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:2652 classid 1:69a htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:2652 classid 1:69b htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:2652 classid 1:69c htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:2652 classid 1:69d htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:2652 classid 1:69e htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 26530 fw classid 1:696
+tc filter add dev eth0 protocol ip parent 1: handle 26531 fw classid 1:697
+tc filter add dev eth0 protocol ip parent 1: handle 26532 fw classid 1:698
+tc filter add dev eth0 protocol ip parent 1: handle 26533 fw classid 1:699
+tc filter add dev eth0 protocol ip parent 1: handle 26534 fw classid 1:69a
+tc filter add dev eth0 protocol ip parent 1: handle 26535 fw classid 1:69b
+tc filter add dev eth0 protocol ip parent 1: handle 26536 fw classid 1:69c
+tc filter add dev eth0 protocol ip parent 1: handle 26537 fw classid 1:69d
+tc filter add dev eth0 protocol ip parent 1: handle 26538 fw classid 1:69e
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:2721 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:2721 classid 1:69f htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:2721 classid 1:6a0 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:2721 classid 1:6a1 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:2721 classid 1:6a2 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:2721 classid 1:6a3 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:2721 classid 1:6a4 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:2721 classid 1:6a5 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:2721 classid 1:6a6 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:2721 classid 1:6a7 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 27220 fw classid 1:69f
+tc filter add dev br2 protocol ip parent 1: handle 27221 fw classid 1:6a0
+tc filter add dev br2 protocol ip parent 1: handle 27222 fw classid 1:6a1
+tc filter add dev br2 protocol ip parent 1: handle 27223 fw classid 1:6a2
+tc filter add dev br2 protocol ip parent 1: handle 27224 fw classid 1:6a3
+tc filter add dev br2 protocol ip parent 1: handle 27225 fw classid 1:6a4
+tc filter add dev br2 protocol ip parent 1: handle 27226 fw classid 1:6a5
+tc filter add dev br2 protocol ip parent 1: handle 27227 fw classid 1:6a6
+tc filter add dev br2 protocol ip parent 1: handle 27228 fw classid 1:6a7
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:2722 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:2722 classid 1:6a8 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:2722 classid 1:6a9 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:2722 classid 1:6aa htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:2722 classid 1:6ab htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:2722 classid 1:6ac htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:2722 classid 1:6ad htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:2722 classid 1:6ae htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:2722 classid 1:6af htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:2722 classid 1:6b0 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 27230 fw classid 1:6a8
+tc filter add dev eth0 protocol ip parent 1: handle 27231 fw classid 1:6a9
+tc filter add dev eth0 protocol ip parent 1: handle 27232 fw classid 1:6aa
+tc filter add dev eth0 protocol ip parent 1: handle 27233 fw classid 1:6ab
+tc filter add dev eth0 protocol ip parent 1: handle 27234 fw classid 1:6ac
+tc filter add dev eth0 protocol ip parent 1: handle 27235 fw classid 1:6ad
+tc filter add dev eth0 protocol ip parent 1: handle 27236 fw classid 1:6ae
+tc filter add dev eth0 protocol ip parent 1: handle 27237 fw classid 1:6af
+tc filter add dev eth0 protocol ip parent 1: handle 27238 fw classid 1:6b0
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:2741 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:2741 classid 1:6b1 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:2741 classid 1:6b2 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:2741 classid 1:6b3 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:2741 classid 1:6b4 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:2741 classid 1:6b5 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:2741 classid 1:6b6 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:2741 classid 1:6b7 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:2741 classid 1:6b8 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:2741 classid 1:6b9 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 27420 fw classid 1:6b1
+tc filter add dev br2 protocol ip parent 1: handle 27421 fw classid 1:6b2
+tc filter add dev br2 protocol ip parent 1: handle 27422 fw classid 1:6b3
+tc filter add dev br2 protocol ip parent 1: handle 27423 fw classid 1:6b4
+tc filter add dev br2 protocol ip parent 1: handle 27424 fw classid 1:6b5
+tc filter add dev br2 protocol ip parent 1: handle 27425 fw classid 1:6b6
+tc filter add dev br2 protocol ip parent 1: handle 27426 fw classid 1:6b7
+tc filter add dev br2 protocol ip parent 1: handle 27427 fw classid 1:6b8
+tc filter add dev br2 protocol ip parent 1: handle 27428 fw classid 1:6b9
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:2742 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:2742 classid 1:6ba htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:2742 classid 1:6bb htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:2742 classid 1:6bc htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:2742 classid 1:6bd htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:2742 classid 1:6be htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:2742 classid 1:6bf htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:2742 classid 1:6c0 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:2742 classid 1:6c1 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:2742 classid 1:6c2 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 27430 fw classid 1:6ba
+tc filter add dev eth0 protocol ip parent 1: handle 27431 fw classid 1:6bb
+tc filter add dev eth0 protocol ip parent 1: handle 27432 fw classid 1:6bc
+tc filter add dev eth0 protocol ip parent 1: handle 27433 fw classid 1:6bd
+tc filter add dev eth0 protocol ip parent 1: handle 27434 fw classid 1:6be
+tc filter add dev eth0 protocol ip parent 1: handle 27435 fw classid 1:6bf
+tc filter add dev eth0 protocol ip parent 1: handle 27436 fw classid 1:6c0
+tc filter add dev eth0 protocol ip parent 1: handle 27437 fw classid 1:6c1
+tc filter add dev eth0 protocol ip parent 1: handle 27438 fw classid 1:6c2
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:2731 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:2731 classid 1:6c3 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:2731 classid 1:6c4 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:2731 classid 1:6c5 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:2731 classid 1:6c6 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:2731 classid 1:6c7 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:2731 classid 1:6c8 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:2731 classid 1:6c9 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:2731 classid 1:6ca htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:2731 classid 1:6cb htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 27320 fw classid 1:6c3
+tc filter add dev br2 protocol ip parent 1: handle 27321 fw classid 1:6c4
+tc filter add dev br2 protocol ip parent 1: handle 27322 fw classid 1:6c5
+tc filter add dev br2 protocol ip parent 1: handle 27323 fw classid 1:6c6
+tc filter add dev br2 protocol ip parent 1: handle 27324 fw classid 1:6c7
+tc filter add dev br2 protocol ip parent 1: handle 27325 fw classid 1:6c8
+tc filter add dev br2 protocol ip parent 1: handle 27326 fw classid 1:6c9
+tc filter add dev br2 protocol ip parent 1: handle 27327 fw classid 1:6ca
+tc filter add dev br2 protocol ip parent 1: handle 27328 fw classid 1:6cb
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:2732 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:2732 classid 1:6cc htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:2732 classid 1:6cd htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:2732 classid 1:6ce htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:2732 classid 1:6cf htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:2732 classid 1:6d0 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:2732 classid 1:6d1 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:2732 classid 1:6d2 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:2732 classid 1:6d3 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:2732 classid 1:6d4 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 27330 fw classid 1:6cc
+tc filter add dev eth0 protocol ip parent 1: handle 27331 fw classid 1:6cd
+tc filter add dev eth0 protocol ip parent 1: handle 27332 fw classid 1:6ce
+tc filter add dev eth0 protocol ip parent 1: handle 27333 fw classid 1:6cf
+tc filter add dev eth0 protocol ip parent 1: handle 27334 fw classid 1:6d0
+tc filter add dev eth0 protocol ip parent 1: handle 27335 fw classid 1:6d1
+tc filter add dev eth0 protocol ip parent 1: handle 27336 fw classid 1:6d2
+tc filter add dev eth0 protocol ip parent 1: handle 27337 fw classid 1:6d3
+tc filter add dev eth0 protocol ip parent 1: handle 27338 fw classid 1:6d4
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:2711 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:2711 classid 1:6d5 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:2711 classid 1:6d6 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:2711 classid 1:6d7 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:2711 classid 1:6d8 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:2711 classid 1:6d9 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:2711 classid 1:6da htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:2711 classid 1:6db htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:2711 classid 1:6dc htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:2711 classid 1:6dd htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 27120 fw classid 1:6d5
+tc filter add dev br2 protocol ip parent 1: handle 27121 fw classid 1:6d6
+tc filter add dev br2 protocol ip parent 1: handle 27122 fw classid 1:6d7
+tc filter add dev br2 protocol ip parent 1: handle 27123 fw classid 1:6d8
+tc filter add dev br2 protocol ip parent 1: handle 27124 fw classid 1:6d9
+tc filter add dev br2 protocol ip parent 1: handle 27125 fw classid 1:6da
+tc filter add dev br2 protocol ip parent 1: handle 27126 fw classid 1:6db
+tc filter add dev br2 protocol ip parent 1: handle 27127 fw classid 1:6dc
+tc filter add dev br2 protocol ip parent 1: handle 27128 fw classid 1:6dd
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:2712 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:2712 classid 1:6de htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:2712 classid 1:6df htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:2712 classid 1:6e0 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:2712 classid 1:6e1 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:2712 classid 1:6e2 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:2712 classid 1:6e3 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:2712 classid 1:6e4 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:2712 classid 1:6e5 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:2712 classid 1:6e6 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 27130 fw classid 1:6de
+tc filter add dev eth0 protocol ip parent 1: handle 27131 fw classid 1:6df
+tc filter add dev eth0 protocol ip parent 1: handle 27132 fw classid 1:6e0
+tc filter add dev eth0 protocol ip parent 1: handle 27133 fw classid 1:6e1
+tc filter add dev eth0 protocol ip parent 1: handle 27134 fw classid 1:6e2
+tc filter add dev eth0 protocol ip parent 1: handle 27135 fw classid 1:6e3
+tc filter add dev eth0 protocol ip parent 1: handle 27136 fw classid 1:6e4
+tc filter add dev eth0 protocol ip parent 1: handle 27137 fw classid 1:6e5
+tc filter add dev eth0 protocol ip parent 1: handle 27138 fw classid 1:6e6
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:2691 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:2691 classid 1:6e7 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:2691 classid 1:6e8 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:2691 classid 1:6e9 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:2691 classid 1:6ea htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:2691 classid 1:6eb htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:2691 classid 1:6ec htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:2691 classid 1:6ed htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:2691 classid 1:6ee htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:2691 classid 1:6ef htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 26920 fw classid 1:6e7
+tc filter add dev br2 protocol ip parent 1: handle 26921 fw classid 1:6e8
+tc filter add dev br2 protocol ip parent 1: handle 26922 fw classid 1:6e9
+tc filter add dev br2 protocol ip parent 1: handle 26923 fw classid 1:6ea
+tc filter add dev br2 protocol ip parent 1: handle 26924 fw classid 1:6eb
+tc filter add dev br2 protocol ip parent 1: handle 26925 fw classid 1:6ec
+tc filter add dev br2 protocol ip parent 1: handle 26926 fw classid 1:6ed
+tc filter add dev br2 protocol ip parent 1: handle 26927 fw classid 1:6ee
+tc filter add dev br2 protocol ip parent 1: handle 26928 fw classid 1:6ef
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:2692 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:2692 classid 1:6f0 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:2692 classid 1:6f1 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:2692 classid 1:6f2 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:2692 classid 1:6f3 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:2692 classid 1:6f4 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:2692 classid 1:6f5 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:2692 classid 1:6f6 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:2692 classid 1:6f7 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:2692 classid 1:6f8 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 26930 fw classid 1:6f0
+tc filter add dev eth0 protocol ip parent 1: handle 26931 fw classid 1:6f1
+tc filter add dev eth0 protocol ip parent 1: handle 26932 fw classid 1:6f2
+tc filter add dev eth0 protocol ip parent 1: handle 26933 fw classid 1:6f3
+tc filter add dev eth0 protocol ip parent 1: handle 26934 fw classid 1:6f4
+tc filter add dev eth0 protocol ip parent 1: handle 26935 fw classid 1:6f5
+tc filter add dev eth0 protocol ip parent 1: handle 26936 fw classid 1:6f6
+tc filter add dev eth0 protocol ip parent 1: handle 26937 fw classid 1:6f7
+tc filter add dev eth0 protocol ip parent 1: handle 26938 fw classid 1:6f8
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:2451 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:2451 classid 1:6f9 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:2451 classid 1:6fa htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:2451 classid 1:6fb htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:2451 classid 1:6fc htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:2451 classid 1:6fd htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:2451 classid 1:6fe htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:2451 classid 1:6ff htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:2451 classid 1:700 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:2451 classid 1:701 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 24520 fw classid 1:6f9
+tc filter add dev br2 protocol ip parent 1: handle 24521 fw classid 1:6fa
+tc filter add dev br2 protocol ip parent 1: handle 24522 fw classid 1:6fb
+tc filter add dev br2 protocol ip parent 1: handle 24523 fw classid 1:6fc
+tc filter add dev br2 protocol ip parent 1: handle 24524 fw classid 1:6fd
+tc filter add dev br2 protocol ip parent 1: handle 24525 fw classid 1:6fe
+tc filter add dev br2 protocol ip parent 1: handle 24526 fw classid 1:6ff
+tc filter add dev br2 protocol ip parent 1: handle 24527 fw classid 1:700
+tc filter add dev br2 protocol ip parent 1: handle 24528 fw classid 1:701
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:2452 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:2452 classid 1:702 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:2452 classid 1:703 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:2452 classid 1:704 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:2452 classid 1:705 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:2452 classid 1:706 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:2452 classid 1:707 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:2452 classid 1:708 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:2452 classid 1:709 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:2452 classid 1:70a htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 24530 fw classid 1:702
+tc filter add dev eth0 protocol ip parent 1: handle 24531 fw classid 1:703
+tc filter add dev eth0 protocol ip parent 1: handle 24532 fw classid 1:704
+tc filter add dev eth0 protocol ip parent 1: handle 24533 fw classid 1:705
+tc filter add dev eth0 protocol ip parent 1: handle 24534 fw classid 1:706
+tc filter add dev eth0 protocol ip parent 1: handle 24535 fw classid 1:707
+tc filter add dev eth0 protocol ip parent 1: handle 24536 fw classid 1:708
+tc filter add dev eth0 protocol ip parent 1: handle 24537 fw classid 1:709
+tc filter add dev eth0 protocol ip parent 1: handle 24538 fw classid 1:70a
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:2951 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:2951 classid 1:70b htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:2951 classid 1:70c htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:2951 classid 1:70d htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:2951 classid 1:70e htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:2951 classid 1:70f htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:2951 classid 1:710 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:2951 classid 1:711 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:2951 classid 1:712 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:2951 classid 1:713 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 29520 fw classid 1:70b
+tc filter add dev br2 protocol ip parent 1: handle 29521 fw classid 1:70c
+tc filter add dev br2 protocol ip parent 1: handle 29522 fw classid 1:70d
+tc filter add dev br2 protocol ip parent 1: handle 29523 fw classid 1:70e
+tc filter add dev br2 protocol ip parent 1: handle 29524 fw classid 1:70f
+tc filter add dev br2 protocol ip parent 1: handle 29525 fw classid 1:710
+tc filter add dev br2 protocol ip parent 1: handle 29526 fw classid 1:711
+tc filter add dev br2 protocol ip parent 1: handle 29527 fw classid 1:712
+tc filter add dev br2 protocol ip parent 1: handle 29528 fw classid 1:713
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:2952 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:2952 classid 1:714 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:2952 classid 1:715 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:2952 classid 1:716 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:2952 classid 1:717 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:2952 classid 1:718 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:2952 classid 1:719 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:2952 classid 1:71a htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:2952 classid 1:71b htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:2952 classid 1:71c htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 29530 fw classid 1:714
+tc filter add dev eth0 protocol ip parent 1: handle 29531 fw classid 1:715
+tc filter add dev eth0 protocol ip parent 1: handle 29532 fw classid 1:716
+tc filter add dev eth0 protocol ip parent 1: handle 29533 fw classid 1:717
+tc filter add dev eth0 protocol ip parent 1: handle 29534 fw classid 1:718
+tc filter add dev eth0 protocol ip parent 1: handle 29535 fw classid 1:719
+tc filter add dev eth0 protocol ip parent 1: handle 29536 fw classid 1:71a
+tc filter add dev eth0 protocol ip parent 1: handle 29537 fw classid 1:71b
+tc filter add dev eth0 protocol ip parent 1: handle 29538 fw classid 1:71c
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:3941 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:3941 classid 1:71d htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:3941 classid 1:71e htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:3941 classid 1:71f htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:3941 classid 1:720 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:3941 classid 1:721 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:3941 classid 1:722 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:3941 classid 1:723 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:3941 classid 1:724 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:3941 classid 1:725 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 39420 fw classid 1:71d
+tc filter add dev br2 protocol ip parent 1: handle 39421 fw classid 1:71e
+tc filter add dev br2 protocol ip parent 1: handle 39422 fw classid 1:71f
+tc filter add dev br2 protocol ip parent 1: handle 39423 fw classid 1:720
+tc filter add dev br2 protocol ip parent 1: handle 39424 fw classid 1:721
+tc filter add dev br2 protocol ip parent 1: handle 39425 fw classid 1:722
+tc filter add dev br2 protocol ip parent 1: handle 39426 fw classid 1:723
+tc filter add dev br2 protocol ip parent 1: handle 39427 fw classid 1:724
+tc filter add dev br2 protocol ip parent 1: handle 39428 fw classid 1:725
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:3942 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:3942 classid 1:726 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:3942 classid 1:727 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:3942 classid 1:728 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:3942 classid 1:729 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:3942 classid 1:72a htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:3942 classid 1:72b htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:3942 classid 1:72c htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:3942 classid 1:72d htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:3942 classid 1:72e htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 39430 fw classid 1:726
+tc filter add dev eth0 protocol ip parent 1: handle 39431 fw classid 1:727
+tc filter add dev eth0 protocol ip parent 1: handle 39432 fw classid 1:728
+tc filter add dev eth0 protocol ip parent 1: handle 39433 fw classid 1:729
+tc filter add dev eth0 protocol ip parent 1: handle 39434 fw classid 1:72a
+tc filter add dev eth0 protocol ip parent 1: handle 39435 fw classid 1:72b
+tc filter add dev eth0 protocol ip parent 1: handle 39436 fw classid 1:72c
+tc filter add dev eth0 protocol ip parent 1: handle 39437 fw classid 1:72d
+tc filter add dev eth0 protocol ip parent 1: handle 39438 fw classid 1:72e
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:3431 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:3431 classid 1:72f htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:3431 classid 1:730 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:3431 classid 1:731 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:3431 classid 1:732 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:3431 classid 1:733 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:3431 classid 1:734 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:3431 classid 1:735 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:3431 classid 1:736 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:3431 classid 1:737 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 34320 fw classid 1:72f
+tc filter add dev br2 protocol ip parent 1: handle 34321 fw classid 1:730
+tc filter add dev br2 protocol ip parent 1: handle 34322 fw classid 1:731
+tc filter add dev br2 protocol ip parent 1: handle 34323 fw classid 1:732
+tc filter add dev br2 protocol ip parent 1: handle 34324 fw classid 1:733
+tc filter add dev br2 protocol ip parent 1: handle 34325 fw classid 1:734
+tc filter add dev br2 protocol ip parent 1: handle 34326 fw classid 1:735
+tc filter add dev br2 protocol ip parent 1: handle 34327 fw classid 1:736
+tc filter add dev br2 protocol ip parent 1: handle 34328 fw classid 1:737
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:3432 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:3432 classid 1:738 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:3432 classid 1:739 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:3432 classid 1:73a htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:3432 classid 1:73b htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:3432 classid 1:73c htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:3432 classid 1:73d htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:3432 classid 1:73e htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:3432 classid 1:73f htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:3432 classid 1:740 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 34330 fw classid 1:738
+tc filter add dev eth0 protocol ip parent 1: handle 34331 fw classid 1:739
+tc filter add dev eth0 protocol ip parent 1: handle 34332 fw classid 1:73a
+tc filter add dev eth0 protocol ip parent 1: handle 34333 fw classid 1:73b
+tc filter add dev eth0 protocol ip parent 1: handle 34334 fw classid 1:73c
+tc filter add dev eth0 protocol ip parent 1: handle 34335 fw classid 1:73d
+tc filter add dev eth0 protocol ip parent 1: handle 34336 fw classid 1:73e
+tc filter add dev eth0 protocol ip parent 1: handle 34337 fw classid 1:73f
+tc filter add dev eth0 protocol ip parent 1: handle 34338 fw classid 1:740
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:2261 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:2261 classid 1:741 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:2261 classid 1:742 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:2261 classid 1:743 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:2261 classid 1:744 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:2261 classid 1:745 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:2261 classid 1:746 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:2261 classid 1:747 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:2261 classid 1:748 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:2261 classid 1:749 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 22620 fw classid 1:741
+tc filter add dev br2 protocol ip parent 1: handle 22621 fw classid 1:742
+tc filter add dev br2 protocol ip parent 1: handle 22622 fw classid 1:743
+tc filter add dev br2 protocol ip parent 1: handle 22623 fw classid 1:744
+tc filter add dev br2 protocol ip parent 1: handle 22624 fw classid 1:745
+tc filter add dev br2 protocol ip parent 1: handle 22625 fw classid 1:746
+tc filter add dev br2 protocol ip parent 1: handle 22626 fw classid 1:747
+tc filter add dev br2 protocol ip parent 1: handle 22627 fw classid 1:748
+tc filter add dev br2 protocol ip parent 1: handle 22628 fw classid 1:749
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:2262 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:2262 classid 1:74a htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:2262 classid 1:74b htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:2262 classid 1:74c htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:2262 classid 1:74d htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:2262 classid 1:74e htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:2262 classid 1:74f htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:2262 classid 1:750 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:2262 classid 1:751 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:2262 classid 1:752 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 22630 fw classid 1:74a
+tc filter add dev eth0 protocol ip parent 1: handle 22631 fw classid 1:74b
+tc filter add dev eth0 protocol ip parent 1: handle 22632 fw classid 1:74c
+tc filter add dev eth0 protocol ip parent 1: handle 22633 fw classid 1:74d
+tc filter add dev eth0 protocol ip parent 1: handle 22634 fw classid 1:74e
+tc filter add dev eth0 protocol ip parent 1: handle 22635 fw classid 1:74f
+tc filter add dev eth0 protocol ip parent 1: handle 22636 fw classid 1:750
+tc filter add dev eth0 protocol ip parent 1: handle 22637 fw classid 1:751
+tc filter add dev eth0 protocol ip parent 1: handle 22638 fw classid 1:752
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:3651 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:3651 classid 1:753 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:3651 classid 1:754 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:3651 classid 1:755 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:3651 classid 1:756 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:3651 classid 1:757 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:3651 classid 1:758 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:3651 classid 1:759 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:3651 classid 1:75a htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:3651 classid 1:75b htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 36520 fw classid 1:753
+tc filter add dev br2 protocol ip parent 1: handle 36521 fw classid 1:754
+tc filter add dev br2 protocol ip parent 1: handle 36522 fw classid 1:755
+tc filter add dev br2 protocol ip parent 1: handle 36523 fw classid 1:756
+tc filter add dev br2 protocol ip parent 1: handle 36524 fw classid 1:757
+tc filter add dev br2 protocol ip parent 1: handle 36525 fw classid 1:758
+tc filter add dev br2 protocol ip parent 1: handle 36526 fw classid 1:759
+tc filter add dev br2 protocol ip parent 1: handle 36527 fw classid 1:75a
+tc filter add dev br2 protocol ip parent 1: handle 36528 fw classid 1:75b
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:3652 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:3652 classid 1:75c htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:3652 classid 1:75d htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:3652 classid 1:75e htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:3652 classid 1:75f htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:3652 classid 1:760 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:3652 classid 1:761 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:3652 classid 1:762 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:3652 classid 1:763 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:3652 classid 1:764 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 36530 fw classid 1:75c
+tc filter add dev eth0 protocol ip parent 1: handle 36531 fw classid 1:75d
+tc filter add dev eth0 protocol ip parent 1: handle 36532 fw classid 1:75e
+tc filter add dev eth0 protocol ip parent 1: handle 36533 fw classid 1:75f
+tc filter add dev eth0 protocol ip parent 1: handle 36534 fw classid 1:760
+tc filter add dev eth0 protocol ip parent 1: handle 36535 fw classid 1:761
+tc filter add dev eth0 protocol ip parent 1: handle 36536 fw classid 1:762
+tc filter add dev eth0 protocol ip parent 1: handle 36537 fw classid 1:763
+tc filter add dev eth0 protocol ip parent 1: handle 36538 fw classid 1:764
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:3841 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:3841 classid 1:765 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:3841 classid 1:766 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:3841 classid 1:767 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:3841 classid 1:768 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:3841 classid 1:769 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:3841 classid 1:76a htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:3841 classid 1:76b htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:3841 classid 1:76c htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:3841 classid 1:76d htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 38420 fw classid 1:765
+tc filter add dev br2 protocol ip parent 1: handle 38421 fw classid 1:766
+tc filter add dev br2 protocol ip parent 1: handle 38422 fw classid 1:767
+tc filter add dev br2 protocol ip parent 1: handle 38423 fw classid 1:768
+tc filter add dev br2 protocol ip parent 1: handle 38424 fw classid 1:769
+tc filter add dev br2 protocol ip parent 1: handle 38425 fw classid 1:76a
+tc filter add dev br2 protocol ip parent 1: handle 38426 fw classid 1:76b
+tc filter add dev br2 protocol ip parent 1: handle 38427 fw classid 1:76c
+tc filter add dev br2 protocol ip parent 1: handle 38428 fw classid 1:76d
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:3842 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:3842 classid 1:76e htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:3842 classid 1:76f htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:3842 classid 1:770 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:3842 classid 1:771 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:3842 classid 1:772 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:3842 classid 1:773 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:3842 classid 1:774 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:3842 classid 1:775 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:3842 classid 1:776 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 38430 fw classid 1:76e
+tc filter add dev eth0 protocol ip parent 1: handle 38431 fw classid 1:76f
+tc filter add dev eth0 protocol ip parent 1: handle 38432 fw classid 1:770
+tc filter add dev eth0 protocol ip parent 1: handle 38433 fw classid 1:771
+tc filter add dev eth0 protocol ip parent 1: handle 38434 fw classid 1:772
+tc filter add dev eth0 protocol ip parent 1: handle 38435 fw classid 1:773
+tc filter add dev eth0 protocol ip parent 1: handle 38436 fw classid 1:774
+tc filter add dev eth0 protocol ip parent 1: handle 38437 fw classid 1:775
+tc filter add dev eth0 protocol ip parent 1: handle 38438 fw classid 1:776
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:3531 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:3531 classid 1:777 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:3531 classid 1:778 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:3531 classid 1:779 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:3531 classid 1:77a htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:3531 classid 1:77b htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:3531 classid 1:77c htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:3531 classid 1:77d htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:3531 classid 1:77e htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:3531 classid 1:77f htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 35320 fw classid 1:777
+tc filter add dev br2 protocol ip parent 1: handle 35321 fw classid 1:778
+tc filter add dev br2 protocol ip parent 1: handle 35322 fw classid 1:779
+tc filter add dev br2 protocol ip parent 1: handle 35323 fw classid 1:77a
+tc filter add dev br2 protocol ip parent 1: handle 35324 fw classid 1:77b
+tc filter add dev br2 protocol ip parent 1: handle 35325 fw classid 1:77c
+tc filter add dev br2 protocol ip parent 1: handle 35326 fw classid 1:77d
+tc filter add dev br2 protocol ip parent 1: handle 35327 fw classid 1:77e
+tc filter add dev br2 protocol ip parent 1: handle 35328 fw classid 1:77f
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:3532 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:3532 classid 1:780 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:3532 classid 1:781 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:3532 classid 1:782 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:3532 classid 1:783 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:3532 classid 1:784 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:3532 classid 1:785 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:3532 classid 1:786 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:3532 classid 1:787 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:3532 classid 1:788 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 35330 fw classid 1:780
+tc filter add dev eth0 protocol ip parent 1: handle 35331 fw classid 1:781
+tc filter add dev eth0 protocol ip parent 1: handle 35332 fw classid 1:782
+tc filter add dev eth0 protocol ip parent 1: handle 35333 fw classid 1:783
+tc filter add dev eth0 protocol ip parent 1: handle 35334 fw classid 1:784
+tc filter add dev eth0 protocol ip parent 1: handle 35335 fw classid 1:785
+tc filter add dev eth0 protocol ip parent 1: handle 35336 fw classid 1:786
+tc filter add dev eth0 protocol ip parent 1: handle 35337 fw classid 1:787
+tc filter add dev eth0 protocol ip parent 1: handle 35338 fw classid 1:788
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:3411 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:3411 classid 1:789 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:3411 classid 1:78a htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:3411 classid 1:78b htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:3411 classid 1:78c htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:3411 classid 1:78d htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:3411 classid 1:78e htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:3411 classid 1:78f htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:3411 classid 1:790 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:3411 classid 1:791 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 34120 fw classid 1:789
+tc filter add dev br2 protocol ip parent 1: handle 34121 fw classid 1:78a
+tc filter add dev br2 protocol ip parent 1: handle 34122 fw classid 1:78b
+tc filter add dev br2 protocol ip parent 1: handle 34123 fw classid 1:78c
+tc filter add dev br2 protocol ip parent 1: handle 34124 fw classid 1:78d
+tc filter add dev br2 protocol ip parent 1: handle 34125 fw classid 1:78e
+tc filter add dev br2 protocol ip parent 1: handle 34126 fw classid 1:78f
+tc filter add dev br2 protocol ip parent 1: handle 34127 fw classid 1:790
+tc filter add dev br2 protocol ip parent 1: handle 34128 fw classid 1:791
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:3412 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:3412 classid 1:792 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:3412 classid 1:793 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:3412 classid 1:794 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:3412 classid 1:795 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:3412 classid 1:796 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:3412 classid 1:797 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:3412 classid 1:798 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:3412 classid 1:799 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:3412 classid 1:79a htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 34130 fw classid 1:792
+tc filter add dev eth0 protocol ip parent 1: handle 34131 fw classid 1:793
+tc filter add dev eth0 protocol ip parent 1: handle 34132 fw classid 1:794
+tc filter add dev eth0 protocol ip parent 1: handle 34133 fw classid 1:795
+tc filter add dev eth0 protocol ip parent 1: handle 34134 fw classid 1:796
+tc filter add dev eth0 protocol ip parent 1: handle 34135 fw classid 1:797
+tc filter add dev eth0 protocol ip parent 1: handle 34136 fw classid 1:798
+tc filter add dev eth0 protocol ip parent 1: handle 34137 fw classid 1:799
+tc filter add dev eth0 protocol ip parent 1: handle 34138 fw classid 1:79a
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:4351 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:4351 classid 1:79b htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4351 classid 1:79c htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4351 classid 1:79d htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4351 classid 1:79e htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4351 classid 1:79f htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4351 classid 1:7a0 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4351 classid 1:7a1 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4351 classid 1:7a2 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4351 classid 1:7a3 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 43520 fw classid 1:79b
+tc filter add dev br2 protocol ip parent 1: handle 43521 fw classid 1:79c
+tc filter add dev br2 protocol ip parent 1: handle 43522 fw classid 1:79d
+tc filter add dev br2 protocol ip parent 1: handle 43523 fw classid 1:79e
+tc filter add dev br2 protocol ip parent 1: handle 43524 fw classid 1:79f
+tc filter add dev br2 protocol ip parent 1: handle 43525 fw classid 1:7a0
+tc filter add dev br2 protocol ip parent 1: handle 43526 fw classid 1:7a1
+tc filter add dev br2 protocol ip parent 1: handle 43527 fw classid 1:7a2
+tc filter add dev br2 protocol ip parent 1: handle 43528 fw classid 1:7a3
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:4352 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:4352 classid 1:7a4 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4352 classid 1:7a5 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4352 classid 1:7a6 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4352 classid 1:7a7 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4352 classid 1:7a8 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4352 classid 1:7a9 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4352 classid 1:7aa htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4352 classid 1:7ab htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4352 classid 1:7ac htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 43530 fw classid 1:7a4
+tc filter add dev eth0 protocol ip parent 1: handle 43531 fw classid 1:7a5
+tc filter add dev eth0 protocol ip parent 1: handle 43532 fw classid 1:7a6
+tc filter add dev eth0 protocol ip parent 1: handle 43533 fw classid 1:7a7
+tc filter add dev eth0 protocol ip parent 1: handle 43534 fw classid 1:7a8
+tc filter add dev eth0 protocol ip parent 1: handle 43535 fw classid 1:7a9
+tc filter add dev eth0 protocol ip parent 1: handle 43536 fw classid 1:7aa
+tc filter add dev eth0 protocol ip parent 1: handle 43537 fw classid 1:7ab
+tc filter add dev eth0 protocol ip parent 1: handle 43538 fw classid 1:7ac
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:2251 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:2251 classid 1:7ad htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:2251 classid 1:7ae htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:2251 classid 1:7af htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:2251 classid 1:7b0 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:2251 classid 1:7b1 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:2251 classid 1:7b2 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:2251 classid 1:7b3 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:2251 classid 1:7b4 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:2251 classid 1:7b5 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 22520 fw classid 1:7ad
+tc filter add dev br2 protocol ip parent 1: handle 22521 fw classid 1:7ae
+tc filter add dev br2 protocol ip parent 1: handle 22522 fw classid 1:7af
+tc filter add dev br2 protocol ip parent 1: handle 22523 fw classid 1:7b0
+tc filter add dev br2 protocol ip parent 1: handle 22524 fw classid 1:7b1
+tc filter add dev br2 protocol ip parent 1: handle 22525 fw classid 1:7b2
+tc filter add dev br2 protocol ip parent 1: handle 22526 fw classid 1:7b3
+tc filter add dev br2 protocol ip parent 1: handle 22527 fw classid 1:7b4
+tc filter add dev br2 protocol ip parent 1: handle 22528 fw classid 1:7b5
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:2252 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:2252 classid 1:7b6 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:2252 classid 1:7b7 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:2252 classid 1:7b8 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:2252 classid 1:7b9 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:2252 classid 1:7ba htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:2252 classid 1:7bb htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:2252 classid 1:7bc htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:2252 classid 1:7bd htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:2252 classid 1:7be htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 22530 fw classid 1:7b6
+tc filter add dev eth0 protocol ip parent 1: handle 22531 fw classid 1:7b7
+tc filter add dev eth0 protocol ip parent 1: handle 22532 fw classid 1:7b8
+tc filter add dev eth0 protocol ip parent 1: handle 22533 fw classid 1:7b9
+tc filter add dev eth0 protocol ip parent 1: handle 22534 fw classid 1:7ba
+tc filter add dev eth0 protocol ip parent 1: handle 22535 fw classid 1:7bb
+tc filter add dev eth0 protocol ip parent 1: handle 22536 fw classid 1:7bc
+tc filter add dev eth0 protocol ip parent 1: handle 22537 fw classid 1:7bd
+tc filter add dev eth0 protocol ip parent 1: handle 22538 fw classid 1:7be
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:1801 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:1801 classid 1:7bf htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:1801 classid 1:7c0 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:1801 classid 1:7c1 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:1801 classid 1:7c2 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:1801 classid 1:7c3 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:1801 classid 1:7c4 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:1801 classid 1:7c5 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:1801 classid 1:7c6 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:1801 classid 1:7c7 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 18020 fw classid 1:7bf
+tc filter add dev br2 protocol ip parent 1: handle 18021 fw classid 1:7c0
+tc filter add dev br2 protocol ip parent 1: handle 18022 fw classid 1:7c1
+tc filter add dev br2 protocol ip parent 1: handle 18023 fw classid 1:7c2
+tc filter add dev br2 protocol ip parent 1: handle 18024 fw classid 1:7c3
+tc filter add dev br2 protocol ip parent 1: handle 18025 fw classid 1:7c4
+tc filter add dev br2 protocol ip parent 1: handle 18026 fw classid 1:7c5
+tc filter add dev br2 protocol ip parent 1: handle 18027 fw classid 1:7c6
+tc filter add dev br2 protocol ip parent 1: handle 18028 fw classid 1:7c7
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:1802 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:1802 classid 1:7c8 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:1802 classid 1:7c9 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:1802 classid 1:7ca htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:1802 classid 1:7cb htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:1802 classid 1:7cc htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:1802 classid 1:7cd htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:1802 classid 1:7ce htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:1802 classid 1:7cf htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:1802 classid 1:7d0 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 18030 fw classid 1:7c8
+tc filter add dev eth0 protocol ip parent 1: handle 18031 fw classid 1:7c9
+tc filter add dev eth0 protocol ip parent 1: handle 18032 fw classid 1:7ca
+tc filter add dev eth0 protocol ip parent 1: handle 18033 fw classid 1:7cb
+tc filter add dev eth0 protocol ip parent 1: handle 18034 fw classid 1:7cc
+tc filter add dev eth0 protocol ip parent 1: handle 18035 fw classid 1:7cd
+tc filter add dev eth0 protocol ip parent 1: handle 18036 fw classid 1:7ce
+tc filter add dev eth0 protocol ip parent 1: handle 18037 fw classid 1:7cf
+tc filter add dev eth0 protocol ip parent 1: handle 18038 fw classid 1:7d0
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:2981 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:2981 classid 1:7d1 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:2981 classid 1:7d2 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:2981 classid 1:7d3 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:2981 classid 1:7d4 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:2981 classid 1:7d5 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:2981 classid 1:7d6 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:2981 classid 1:7d7 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:2981 classid 1:7d8 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:2981 classid 1:7d9 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 29820 fw classid 1:7d1
+tc filter add dev br2 protocol ip parent 1: handle 29821 fw classid 1:7d2
+tc filter add dev br2 protocol ip parent 1: handle 29822 fw classid 1:7d3
+tc filter add dev br2 protocol ip parent 1: handle 29823 fw classid 1:7d4
+tc filter add dev br2 protocol ip parent 1: handle 29824 fw classid 1:7d5
+tc filter add dev br2 protocol ip parent 1: handle 29825 fw classid 1:7d6
+tc filter add dev br2 protocol ip parent 1: handle 29826 fw classid 1:7d7
+tc filter add dev br2 protocol ip parent 1: handle 29827 fw classid 1:7d8
+tc filter add dev br2 protocol ip parent 1: handle 29828 fw classid 1:7d9
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:2982 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:2982 classid 1:7da htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:2982 classid 1:7db htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:2982 classid 1:7dc htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:2982 classid 1:7dd htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:2982 classid 1:7de htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:2982 classid 1:7df htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:2982 classid 1:7e0 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:2982 classid 1:7e1 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:2982 classid 1:7e2 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 29830 fw classid 1:7da
+tc filter add dev eth0 protocol ip parent 1: handle 29831 fw classid 1:7db
+tc filter add dev eth0 protocol ip parent 1: handle 29832 fw classid 1:7dc
+tc filter add dev eth0 protocol ip parent 1: handle 29833 fw classid 1:7dd
+tc filter add dev eth0 protocol ip parent 1: handle 29834 fw classid 1:7de
+tc filter add dev eth0 protocol ip parent 1: handle 29835 fw classid 1:7df
+tc filter add dev eth0 protocol ip parent 1: handle 29836 fw classid 1:7e0
+tc filter add dev eth0 protocol ip parent 1: handle 29837 fw classid 1:7e1
+tc filter add dev eth0 protocol ip parent 1: handle 29838 fw classid 1:7e2
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:5001 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:5001 classid 1:7e3 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:5001 classid 1:7e4 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:5001 classid 1:7e5 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:5001 classid 1:7e6 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:5001 classid 1:7e7 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:5001 classid 1:7e8 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:5001 classid 1:7e9 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:5001 classid 1:7ea htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:5001 classid 1:7eb htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 50020 fw classid 1:7e3
+tc filter add dev br2 protocol ip parent 1: handle 50021 fw classid 1:7e4
+tc filter add dev br2 protocol ip parent 1: handle 50022 fw classid 1:7e5
+tc filter add dev br2 protocol ip parent 1: handle 50023 fw classid 1:7e6
+tc filter add dev br2 protocol ip parent 1: handle 50024 fw classid 1:7e7
+tc filter add dev br2 protocol ip parent 1: handle 50025 fw classid 1:7e8
+tc filter add dev br2 protocol ip parent 1: handle 50026 fw classid 1:7e9
+tc filter add dev br2 protocol ip parent 1: handle 50027 fw classid 1:7ea
+tc filter add dev br2 protocol ip parent 1: handle 50028 fw classid 1:7eb
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:5002 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:5002 classid 1:7ec htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:5002 classid 1:7ed htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:5002 classid 1:7ee htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:5002 classid 1:7ef htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:5002 classid 1:7f0 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:5002 classid 1:7f1 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:5002 classid 1:7f2 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:5002 classid 1:7f3 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:5002 classid 1:7f4 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 50030 fw classid 1:7ec
+tc filter add dev eth0 protocol ip parent 1: handle 50031 fw classid 1:7ed
+tc filter add dev eth0 protocol ip parent 1: handle 50032 fw classid 1:7ee
+tc filter add dev eth0 protocol ip parent 1: handle 50033 fw classid 1:7ef
+tc filter add dev eth0 protocol ip parent 1: handle 50034 fw classid 1:7f0
+tc filter add dev eth0 protocol ip parent 1: handle 50035 fw classid 1:7f1
+tc filter add dev eth0 protocol ip parent 1: handle 50036 fw classid 1:7f2
+tc filter add dev eth0 protocol ip parent 1: handle 50037 fw classid 1:7f3
+tc filter add dev eth0 protocol ip parent 1: handle 50038 fw classid 1:7f4
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:4641 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:4641 classid 1:7f5 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4641 classid 1:7f6 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4641 classid 1:7f7 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4641 classid 1:7f8 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4641 classid 1:7f9 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4641 classid 1:7fa htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4641 classid 1:7fb htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4641 classid 1:7fc htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4641 classid 1:7fd htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 46420 fw classid 1:7f5
+tc filter add dev br2 protocol ip parent 1: handle 46421 fw classid 1:7f6
+tc filter add dev br2 protocol ip parent 1: handle 46422 fw classid 1:7f7
+tc filter add dev br2 protocol ip parent 1: handle 46423 fw classid 1:7f8
+tc filter add dev br2 protocol ip parent 1: handle 46424 fw classid 1:7f9
+tc filter add dev br2 protocol ip parent 1: handle 46425 fw classid 1:7fa
+tc filter add dev br2 protocol ip parent 1: handle 46426 fw classid 1:7fb
+tc filter add dev br2 protocol ip parent 1: handle 46427 fw classid 1:7fc
+tc filter add dev br2 protocol ip parent 1: handle 46428 fw classid 1:7fd
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:4642 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:4642 classid 1:7fe htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4642 classid 1:7ff htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4642 classid 1:800 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4642 classid 1:801 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4642 classid 1:802 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4642 classid 1:803 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4642 classid 1:804 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4642 classid 1:805 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4642 classid 1:806 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 46430 fw classid 1:7fe
+tc filter add dev eth0 protocol ip parent 1: handle 46431 fw classid 1:7ff
+tc filter add dev eth0 protocol ip parent 1: handle 46432 fw classid 1:800
+tc filter add dev eth0 protocol ip parent 1: handle 46433 fw classid 1:801
+tc filter add dev eth0 protocol ip parent 1: handle 46434 fw classid 1:802
+tc filter add dev eth0 protocol ip parent 1: handle 46435 fw classid 1:803
+tc filter add dev eth0 protocol ip parent 1: handle 46436 fw classid 1:804
+tc filter add dev eth0 protocol ip parent 1: handle 46437 fw classid 1:805
+tc filter add dev eth0 protocol ip parent 1: handle 46438 fw classid 1:806
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:4601 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:4601 classid 1:807 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4601 classid 1:808 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4601 classid 1:809 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4601 classid 1:80a htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4601 classid 1:80b htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4601 classid 1:80c htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4601 classid 1:80d htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4601 classid 1:80e htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4601 classid 1:80f htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 46020 fw classid 1:807
+tc filter add dev br2 protocol ip parent 1: handle 46021 fw classid 1:808
+tc filter add dev br2 protocol ip parent 1: handle 46022 fw classid 1:809
+tc filter add dev br2 protocol ip parent 1: handle 46023 fw classid 1:80a
+tc filter add dev br2 protocol ip parent 1: handle 46024 fw classid 1:80b
+tc filter add dev br2 protocol ip parent 1: handle 46025 fw classid 1:80c
+tc filter add dev br2 protocol ip parent 1: handle 46026 fw classid 1:80d
+tc filter add dev br2 protocol ip parent 1: handle 46027 fw classid 1:80e
+tc filter add dev br2 protocol ip parent 1: handle 46028 fw classid 1:80f
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:4602 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:4602 classid 1:810 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4602 classid 1:811 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4602 classid 1:812 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4602 classid 1:813 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4602 classid 1:814 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4602 classid 1:815 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4602 classid 1:816 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4602 classid 1:817 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4602 classid 1:818 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 46030 fw classid 1:810
+tc filter add dev eth0 protocol ip parent 1: handle 46031 fw classid 1:811
+tc filter add dev eth0 protocol ip parent 1: handle 46032 fw classid 1:812
+tc filter add dev eth0 protocol ip parent 1: handle 46033 fw classid 1:813
+tc filter add dev eth0 protocol ip parent 1: handle 46034 fw classid 1:814
+tc filter add dev eth0 protocol ip parent 1: handle 46035 fw classid 1:815
+tc filter add dev eth0 protocol ip parent 1: handle 46036 fw classid 1:816
+tc filter add dev eth0 protocol ip parent 1: handle 46037 fw classid 1:817
+tc filter add dev eth0 protocol ip parent 1: handle 46038 fw classid 1:818
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:4941 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:4941 classid 1:819 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4941 classid 1:81a htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4941 classid 1:81b htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4941 classid 1:81c htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4941 classid 1:81d htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4941 classid 1:81e htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4941 classid 1:81f htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4941 classid 1:820 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4941 classid 1:821 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 49420 fw classid 1:819
+tc filter add dev br2 protocol ip parent 1: handle 49421 fw classid 1:81a
+tc filter add dev br2 protocol ip parent 1: handle 49422 fw classid 1:81b
+tc filter add dev br2 protocol ip parent 1: handle 49423 fw classid 1:81c
+tc filter add dev br2 protocol ip parent 1: handle 49424 fw classid 1:81d
+tc filter add dev br2 protocol ip parent 1: handle 49425 fw classid 1:81e
+tc filter add dev br2 protocol ip parent 1: handle 49426 fw classid 1:81f
+tc filter add dev br2 protocol ip parent 1: handle 49427 fw classid 1:820
+tc filter add dev br2 protocol ip parent 1: handle 49428 fw classid 1:821
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:4942 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:4942 classid 1:822 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4942 classid 1:823 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4942 classid 1:824 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4942 classid 1:825 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4942 classid 1:826 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4942 classid 1:827 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4942 classid 1:828 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4942 classid 1:829 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4942 classid 1:82a htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 49430 fw classid 1:822
+tc filter add dev eth0 protocol ip parent 1: handle 49431 fw classid 1:823
+tc filter add dev eth0 protocol ip parent 1: handle 49432 fw classid 1:824
+tc filter add dev eth0 protocol ip parent 1: handle 49433 fw classid 1:825
+tc filter add dev eth0 protocol ip parent 1: handle 49434 fw classid 1:826
+tc filter add dev eth0 protocol ip parent 1: handle 49435 fw classid 1:827
+tc filter add dev eth0 protocol ip parent 1: handle 49436 fw classid 1:828
+tc filter add dev eth0 protocol ip parent 1: handle 49437 fw classid 1:829
+tc filter add dev eth0 protocol ip parent 1: handle 49438 fw classid 1:82a
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:3481 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:3481 classid 1:82b htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:3481 classid 1:82c htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:3481 classid 1:82d htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:3481 classid 1:82e htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:3481 classid 1:82f htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:3481 classid 1:830 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:3481 classid 1:831 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:3481 classid 1:832 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:3481 classid 1:833 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 34820 fw classid 1:82b
+tc filter add dev br2 protocol ip parent 1: handle 34821 fw classid 1:82c
+tc filter add dev br2 protocol ip parent 1: handle 34822 fw classid 1:82d
+tc filter add dev br2 protocol ip parent 1: handle 34823 fw classid 1:82e
+tc filter add dev br2 protocol ip parent 1: handle 34824 fw classid 1:82f
+tc filter add dev br2 protocol ip parent 1: handle 34825 fw classid 1:830
+tc filter add dev br2 protocol ip parent 1: handle 34826 fw classid 1:831
+tc filter add dev br2 protocol ip parent 1: handle 34827 fw classid 1:832
+tc filter add dev br2 protocol ip parent 1: handle 34828 fw classid 1:833
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:3482 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:3482 classid 1:834 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:3482 classid 1:835 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:3482 classid 1:836 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:3482 classid 1:837 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:3482 classid 1:838 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:3482 classid 1:839 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:3482 classid 1:83a htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:3482 classid 1:83b htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:3482 classid 1:83c htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 34830 fw classid 1:834
+tc filter add dev eth0 protocol ip parent 1: handle 34831 fw classid 1:835
+tc filter add dev eth0 protocol ip parent 1: handle 34832 fw classid 1:836
+tc filter add dev eth0 protocol ip parent 1: handle 34833 fw classid 1:837
+tc filter add dev eth0 protocol ip parent 1: handle 34834 fw classid 1:838
+tc filter add dev eth0 protocol ip parent 1: handle 34835 fw classid 1:839
+tc filter add dev eth0 protocol ip parent 1: handle 34836 fw classid 1:83a
+tc filter add dev eth0 protocol ip parent 1: handle 34837 fw classid 1:83b
+tc filter add dev eth0 protocol ip parent 1: handle 34838 fw classid 1:83c
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:4701 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:4701 classid 1:83d htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4701 classid 1:83e htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4701 classid 1:83f htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4701 classid 1:840 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4701 classid 1:841 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4701 classid 1:842 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4701 classid 1:843 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4701 classid 1:844 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4701 classid 1:845 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 47020 fw classid 1:83d
+tc filter add dev br2 protocol ip parent 1: handle 47021 fw classid 1:83e
+tc filter add dev br2 protocol ip parent 1: handle 47022 fw classid 1:83f
+tc filter add dev br2 protocol ip parent 1: handle 47023 fw classid 1:840
+tc filter add dev br2 protocol ip parent 1: handle 47024 fw classid 1:841
+tc filter add dev br2 protocol ip parent 1: handle 47025 fw classid 1:842
+tc filter add dev br2 protocol ip parent 1: handle 47026 fw classid 1:843
+tc filter add dev br2 protocol ip parent 1: handle 47027 fw classid 1:844
+tc filter add dev br2 protocol ip parent 1: handle 47028 fw classid 1:845
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:4702 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:4702 classid 1:846 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4702 classid 1:847 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4702 classid 1:848 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4702 classid 1:849 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4702 classid 1:84a htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4702 classid 1:84b htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4702 classid 1:84c htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4702 classid 1:84d htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4702 classid 1:84e htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 47030 fw classid 1:846
+tc filter add dev eth0 protocol ip parent 1: handle 47031 fw classid 1:847
+tc filter add dev eth0 protocol ip parent 1: handle 47032 fw classid 1:848
+tc filter add dev eth0 protocol ip parent 1: handle 47033 fw classid 1:849
+tc filter add dev eth0 protocol ip parent 1: handle 47034 fw classid 1:84a
+tc filter add dev eth0 protocol ip parent 1: handle 47035 fw classid 1:84b
+tc filter add dev eth0 protocol ip parent 1: handle 47036 fw classid 1:84c
+tc filter add dev eth0 protocol ip parent 1: handle 47037 fw classid 1:84d
+tc filter add dev eth0 protocol ip parent 1: handle 47038 fw classid 1:84e
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:4681 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:4681 classid 1:84f htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4681 classid 1:850 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4681 classid 1:851 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4681 classid 1:852 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4681 classid 1:853 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4681 classid 1:854 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4681 classid 1:855 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4681 classid 1:856 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4681 classid 1:857 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 46820 fw classid 1:84f
+tc filter add dev br2 protocol ip parent 1: handle 46821 fw classid 1:850
+tc filter add dev br2 protocol ip parent 1: handle 46822 fw classid 1:851
+tc filter add dev br2 protocol ip parent 1: handle 46823 fw classid 1:852
+tc filter add dev br2 protocol ip parent 1: handle 46824 fw classid 1:853
+tc filter add dev br2 protocol ip parent 1: handle 46825 fw classid 1:854
+tc filter add dev br2 protocol ip parent 1: handle 46826 fw classid 1:855
+tc filter add dev br2 protocol ip parent 1: handle 46827 fw classid 1:856
+tc filter add dev br2 protocol ip parent 1: handle 46828 fw classid 1:857
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:4682 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:4682 classid 1:858 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4682 classid 1:859 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4682 classid 1:85a htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4682 classid 1:85b htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4682 classid 1:85c htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4682 classid 1:85d htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4682 classid 1:85e htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4682 classid 1:85f htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4682 classid 1:860 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 46830 fw classid 1:858
+tc filter add dev eth0 protocol ip parent 1: handle 46831 fw classid 1:859
+tc filter add dev eth0 protocol ip parent 1: handle 46832 fw classid 1:85a
+tc filter add dev eth0 protocol ip parent 1: handle 46833 fw classid 1:85b
+tc filter add dev eth0 protocol ip parent 1: handle 46834 fw classid 1:85c
+tc filter add dev eth0 protocol ip parent 1: handle 46835 fw classid 1:85d
+tc filter add dev eth0 protocol ip parent 1: handle 46836 fw classid 1:85e
+tc filter add dev eth0 protocol ip parent 1: handle 46837 fw classid 1:85f
+tc filter add dev eth0 protocol ip parent 1: handle 46838 fw classid 1:860
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:4751 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:4751 classid 1:861 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4751 classid 1:862 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4751 classid 1:863 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4751 classid 1:864 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4751 classid 1:865 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4751 classid 1:866 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4751 classid 1:867 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4751 classid 1:868 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4751 classid 1:869 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 47520 fw classid 1:861
+tc filter add dev br2 protocol ip parent 1: handle 47521 fw classid 1:862
+tc filter add dev br2 protocol ip parent 1: handle 47522 fw classid 1:863
+tc filter add dev br2 protocol ip parent 1: handle 47523 fw classid 1:864
+tc filter add dev br2 protocol ip parent 1: handle 47524 fw classid 1:865
+tc filter add dev br2 protocol ip parent 1: handle 47525 fw classid 1:866
+tc filter add dev br2 protocol ip parent 1: handle 47526 fw classid 1:867
+tc filter add dev br2 protocol ip parent 1: handle 47527 fw classid 1:868
+tc filter add dev br2 protocol ip parent 1: handle 47528 fw classid 1:869
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:4752 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:4752 classid 1:86a htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4752 classid 1:86b htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4752 classid 1:86c htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4752 classid 1:86d htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4752 classid 1:86e htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4752 classid 1:86f htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4752 classid 1:870 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4752 classid 1:871 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4752 classid 1:872 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 47530 fw classid 1:86a
+tc filter add dev eth0 protocol ip parent 1: handle 47531 fw classid 1:86b
+tc filter add dev eth0 protocol ip parent 1: handle 47532 fw classid 1:86c
+tc filter add dev eth0 protocol ip parent 1: handle 47533 fw classid 1:86d
+tc filter add dev eth0 protocol ip parent 1: handle 47534 fw classid 1:86e
+tc filter add dev eth0 protocol ip parent 1: handle 47535 fw classid 1:86f
+tc filter add dev eth0 protocol ip parent 1: handle 47536 fw classid 1:870
+tc filter add dev eth0 protocol ip parent 1: handle 47537 fw classid 1:871
+tc filter add dev eth0 protocol ip parent 1: handle 47538 fw classid 1:872
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:4671 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:4671 classid 1:873 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4671 classid 1:874 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4671 classid 1:875 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4671 classid 1:876 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4671 classid 1:877 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4671 classid 1:878 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4671 classid 1:879 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4671 classid 1:87a htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4671 classid 1:87b htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 46720 fw classid 1:873
+tc filter add dev br2 protocol ip parent 1: handle 46721 fw classid 1:874
+tc filter add dev br2 protocol ip parent 1: handle 46722 fw classid 1:875
+tc filter add dev br2 protocol ip parent 1: handle 46723 fw classid 1:876
+tc filter add dev br2 protocol ip parent 1: handle 46724 fw classid 1:877
+tc filter add dev br2 protocol ip parent 1: handle 46725 fw classid 1:878
+tc filter add dev br2 protocol ip parent 1: handle 46726 fw classid 1:879
+tc filter add dev br2 protocol ip parent 1: handle 46727 fw classid 1:87a
+tc filter add dev br2 protocol ip parent 1: handle 46728 fw classid 1:87b
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:4672 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:4672 classid 1:87c htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4672 classid 1:87d htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4672 classid 1:87e htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4672 classid 1:87f htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4672 classid 1:880 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4672 classid 1:881 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4672 classid 1:882 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4672 classid 1:883 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4672 classid 1:884 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 46730 fw classid 1:87c
+tc filter add dev eth0 protocol ip parent 1: handle 46731 fw classid 1:87d
+tc filter add dev eth0 protocol ip parent 1: handle 46732 fw classid 1:87e
+tc filter add dev eth0 protocol ip parent 1: handle 46733 fw classid 1:87f
+tc filter add dev eth0 protocol ip parent 1: handle 46734 fw classid 1:880
+tc filter add dev eth0 protocol ip parent 1: handle 46735 fw classid 1:881
+tc filter add dev eth0 protocol ip parent 1: handle 46736 fw classid 1:882
+tc filter add dev eth0 protocol ip parent 1: handle 46737 fw classid 1:883
+tc filter add dev eth0 protocol ip parent 1: handle 46738 fw classid 1:884
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:3961 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:3961 classid 1:885 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:3961 classid 1:886 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:3961 classid 1:887 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:3961 classid 1:888 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:3961 classid 1:889 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:3961 classid 1:88a htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:3961 classid 1:88b htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:3961 classid 1:88c htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:3961 classid 1:88d htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 39620 fw classid 1:885
+tc filter add dev br2 protocol ip parent 1: handle 39621 fw classid 1:886
+tc filter add dev br2 protocol ip parent 1: handle 39622 fw classid 1:887
+tc filter add dev br2 protocol ip parent 1: handle 39623 fw classid 1:888
+tc filter add dev br2 protocol ip parent 1: handle 39624 fw classid 1:889
+tc filter add dev br2 protocol ip parent 1: handle 39625 fw classid 1:88a
+tc filter add dev br2 protocol ip parent 1: handle 39626 fw classid 1:88b
+tc filter add dev br2 protocol ip parent 1: handle 39627 fw classid 1:88c
+tc filter add dev br2 protocol ip parent 1: handle 39628 fw classid 1:88d
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:3962 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:3962 classid 1:88e htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:3962 classid 1:88f htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:3962 classid 1:890 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:3962 classid 1:891 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:3962 classid 1:892 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:3962 classid 1:893 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:3962 classid 1:894 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:3962 classid 1:895 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:3962 classid 1:896 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 39630 fw classid 1:88e
+tc filter add dev eth0 protocol ip parent 1: handle 39631 fw classid 1:88f
+tc filter add dev eth0 protocol ip parent 1: handle 39632 fw classid 1:890
+tc filter add dev eth0 protocol ip parent 1: handle 39633 fw classid 1:891
+tc filter add dev eth0 protocol ip parent 1: handle 39634 fw classid 1:892
+tc filter add dev eth0 protocol ip parent 1: handle 39635 fw classid 1:893
+tc filter add dev eth0 protocol ip parent 1: handle 39636 fw classid 1:894
+tc filter add dev eth0 protocol ip parent 1: handle 39637 fw classid 1:895
+tc filter add dev eth0 protocol ip parent 1: handle 39638 fw classid 1:896
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:4081 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:4081 classid 1:897 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4081 classid 1:898 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4081 classid 1:899 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4081 classid 1:89a htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4081 classid 1:89b htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4081 classid 1:89c htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4081 classid 1:89d htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4081 classid 1:89e htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4081 classid 1:89f htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 40820 fw classid 1:897
+tc filter add dev br2 protocol ip parent 1: handle 40821 fw classid 1:898
+tc filter add dev br2 protocol ip parent 1: handle 40822 fw classid 1:899
+tc filter add dev br2 protocol ip parent 1: handle 40823 fw classid 1:89a
+tc filter add dev br2 protocol ip parent 1: handle 40824 fw classid 1:89b
+tc filter add dev br2 protocol ip parent 1: handle 40825 fw classid 1:89c
+tc filter add dev br2 protocol ip parent 1: handle 40826 fw classid 1:89d
+tc filter add dev br2 protocol ip parent 1: handle 40827 fw classid 1:89e
+tc filter add dev br2 protocol ip parent 1: handle 40828 fw classid 1:89f
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:4082 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:4082 classid 1:8a0 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4082 classid 1:8a1 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4082 classid 1:8a2 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4082 classid 1:8a3 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4082 classid 1:8a4 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4082 classid 1:8a5 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4082 classid 1:8a6 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4082 classid 1:8a7 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4082 classid 1:8a8 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 40830 fw classid 1:8a0
+tc filter add dev eth0 protocol ip parent 1: handle 40831 fw classid 1:8a1
+tc filter add dev eth0 protocol ip parent 1: handle 40832 fw classid 1:8a2
+tc filter add dev eth0 protocol ip parent 1: handle 40833 fw classid 1:8a3
+tc filter add dev eth0 protocol ip parent 1: handle 40834 fw classid 1:8a4
+tc filter add dev eth0 protocol ip parent 1: handle 40835 fw classid 1:8a5
+tc filter add dev eth0 protocol ip parent 1: handle 40836 fw classid 1:8a6
+tc filter add dev eth0 protocol ip parent 1: handle 40837 fw classid 1:8a7
+tc filter add dev eth0 protocol ip parent 1: handle 40838 fw classid 1:8a8
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:4951 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:4951 classid 1:8a9 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4951 classid 1:8aa htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4951 classid 1:8ab htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4951 classid 1:8ac htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4951 classid 1:8ad htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4951 classid 1:8ae htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4951 classid 1:8af htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4951 classid 1:8b0 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4951 classid 1:8b1 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 49520 fw classid 1:8a9
+tc filter add dev br2 protocol ip parent 1: handle 49521 fw classid 1:8aa
+tc filter add dev br2 protocol ip parent 1: handle 49522 fw classid 1:8ab
+tc filter add dev br2 protocol ip parent 1: handle 49523 fw classid 1:8ac
+tc filter add dev br2 protocol ip parent 1: handle 49524 fw classid 1:8ad
+tc filter add dev br2 protocol ip parent 1: handle 49525 fw classid 1:8ae
+tc filter add dev br2 protocol ip parent 1: handle 49526 fw classid 1:8af
+tc filter add dev br2 protocol ip parent 1: handle 49527 fw classid 1:8b0
+tc filter add dev br2 protocol ip parent 1: handle 49528 fw classid 1:8b1
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:4952 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:4952 classid 1:8b2 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4952 classid 1:8b3 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4952 classid 1:8b4 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4952 classid 1:8b5 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4952 classid 1:8b6 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4952 classid 1:8b7 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4952 classid 1:8b8 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4952 classid 1:8b9 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4952 classid 1:8ba htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 49530 fw classid 1:8b2
+tc filter add dev eth0 protocol ip parent 1: handle 49531 fw classid 1:8b3
+tc filter add dev eth0 protocol ip parent 1: handle 49532 fw classid 1:8b4
+tc filter add dev eth0 protocol ip parent 1: handle 49533 fw classid 1:8b5
+tc filter add dev eth0 protocol ip parent 1: handle 49534 fw classid 1:8b6
+tc filter add dev eth0 protocol ip parent 1: handle 49535 fw classid 1:8b7
+tc filter add dev eth0 protocol ip parent 1: handle 49536 fw classid 1:8b8
+tc filter add dev eth0 protocol ip parent 1: handle 49537 fw classid 1:8b9
+tc filter add dev eth0 protocol ip parent 1: handle 49538 fw classid 1:8ba
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:4341 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:4341 classid 1:8bb htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4341 classid 1:8bc htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4341 classid 1:8bd htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4341 classid 1:8be htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4341 classid 1:8bf htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4341 classid 1:8c0 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4341 classid 1:8c1 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4341 classid 1:8c2 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4341 classid 1:8c3 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 43420 fw classid 1:8bb
+tc filter add dev br2 protocol ip parent 1: handle 43421 fw classid 1:8bc
+tc filter add dev br2 protocol ip parent 1: handle 43422 fw classid 1:8bd
+tc filter add dev br2 protocol ip parent 1: handle 43423 fw classid 1:8be
+tc filter add dev br2 protocol ip parent 1: handle 43424 fw classid 1:8bf
+tc filter add dev br2 protocol ip parent 1: handle 43425 fw classid 1:8c0
+tc filter add dev br2 protocol ip parent 1: handle 43426 fw classid 1:8c1
+tc filter add dev br2 protocol ip parent 1: handle 43427 fw classid 1:8c2
+tc filter add dev br2 protocol ip parent 1: handle 43428 fw classid 1:8c3
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:4342 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:4342 classid 1:8c4 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4342 classid 1:8c5 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4342 classid 1:8c6 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4342 classid 1:8c7 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4342 classid 1:8c8 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4342 classid 1:8c9 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4342 classid 1:8ca htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4342 classid 1:8cb htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4342 classid 1:8cc htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 43430 fw classid 1:8c4
+tc filter add dev eth0 protocol ip parent 1: handle 43431 fw classid 1:8c5
+tc filter add dev eth0 protocol ip parent 1: handle 43432 fw classid 1:8c6
+tc filter add dev eth0 protocol ip parent 1: handle 43433 fw classid 1:8c7
+tc filter add dev eth0 protocol ip parent 1: handle 43434 fw classid 1:8c8
+tc filter add dev eth0 protocol ip parent 1: handle 43435 fw classid 1:8c9
+tc filter add dev eth0 protocol ip parent 1: handle 43436 fw classid 1:8ca
+tc filter add dev eth0 protocol ip parent 1: handle 43437 fw classid 1:8cb
+tc filter add dev eth0 protocol ip parent 1: handle 43438 fw classid 1:8cc
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:1851 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:1851 classid 1:8cd htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:1851 classid 1:8ce htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:1851 classid 1:8cf htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:1851 classid 1:8d0 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:1851 classid 1:8d1 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:1851 classid 1:8d2 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:1851 classid 1:8d3 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:1851 classid 1:8d4 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:1851 classid 1:8d5 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 18520 fw classid 1:8cd
+tc filter add dev br2 protocol ip parent 1: handle 18521 fw classid 1:8ce
+tc filter add dev br2 protocol ip parent 1: handle 18522 fw classid 1:8cf
+tc filter add dev br2 protocol ip parent 1: handle 18523 fw classid 1:8d0
+tc filter add dev br2 protocol ip parent 1: handle 18524 fw classid 1:8d1
+tc filter add dev br2 protocol ip parent 1: handle 18525 fw classid 1:8d2
+tc filter add dev br2 protocol ip parent 1: handle 18526 fw classid 1:8d3
+tc filter add dev br2 protocol ip parent 1: handle 18527 fw classid 1:8d4
+tc filter add dev br2 protocol ip parent 1: handle 18528 fw classid 1:8d5
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:1852 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:1852 classid 1:8d6 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:1852 classid 1:8d7 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:1852 classid 1:8d8 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:1852 classid 1:8d9 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:1852 classid 1:8da htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:1852 classid 1:8db htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:1852 classid 1:8dc htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:1852 classid 1:8dd htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:1852 classid 1:8de htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 18530 fw classid 1:8d6
+tc filter add dev eth0 protocol ip parent 1: handle 18531 fw classid 1:8d7
+tc filter add dev eth0 protocol ip parent 1: handle 18532 fw classid 1:8d8
+tc filter add dev eth0 protocol ip parent 1: handle 18533 fw classid 1:8d9
+tc filter add dev eth0 protocol ip parent 1: handle 18534 fw classid 1:8da
+tc filter add dev eth0 protocol ip parent 1: handle 18535 fw classid 1:8db
+tc filter add dev eth0 protocol ip parent 1: handle 18536 fw classid 1:8dc
+tc filter add dev eth0 protocol ip parent 1: handle 18537 fw classid 1:8dd
+tc filter add dev eth0 protocol ip parent 1: handle 18538 fw classid 1:8de
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:4871 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:4871 classid 1:8df htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4871 classid 1:8e0 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4871 classid 1:8e1 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4871 classid 1:8e2 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4871 classid 1:8e3 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4871 classid 1:8e4 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4871 classid 1:8e5 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4871 classid 1:8e6 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4871 classid 1:8e7 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 48720 fw classid 1:8df
+tc filter add dev br2 protocol ip parent 1: handle 48721 fw classid 1:8e0
+tc filter add dev br2 protocol ip parent 1: handle 48722 fw classid 1:8e1
+tc filter add dev br2 protocol ip parent 1: handle 48723 fw classid 1:8e2
+tc filter add dev br2 protocol ip parent 1: handle 48724 fw classid 1:8e3
+tc filter add dev br2 protocol ip parent 1: handle 48725 fw classid 1:8e4
+tc filter add dev br2 protocol ip parent 1: handle 48726 fw classid 1:8e5
+tc filter add dev br2 protocol ip parent 1: handle 48727 fw classid 1:8e6
+tc filter add dev br2 protocol ip parent 1: handle 48728 fw classid 1:8e7
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:4872 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:4872 classid 1:8e8 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4872 classid 1:8e9 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4872 classid 1:8ea htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4872 classid 1:8eb htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4872 classid 1:8ec htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4872 classid 1:8ed htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4872 classid 1:8ee htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4872 classid 1:8ef htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4872 classid 1:8f0 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 48730 fw classid 1:8e8
+tc filter add dev eth0 protocol ip parent 1: handle 48731 fw classid 1:8e9
+tc filter add dev eth0 protocol ip parent 1: handle 48732 fw classid 1:8ea
+tc filter add dev eth0 protocol ip parent 1: handle 48733 fw classid 1:8eb
+tc filter add dev eth0 protocol ip parent 1: handle 48734 fw classid 1:8ec
+tc filter add dev eth0 protocol ip parent 1: handle 48735 fw classid 1:8ed
+tc filter add dev eth0 protocol ip parent 1: handle 48736 fw classid 1:8ee
+tc filter add dev eth0 protocol ip parent 1: handle 48737 fw classid 1:8ef
+tc filter add dev eth0 protocol ip parent 1: handle 48738 fw classid 1:8f0
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:4921 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:4921 classid 1:8f1 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4921 classid 1:8f2 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4921 classid 1:8f3 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4921 classid 1:8f4 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4921 classid 1:8f5 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4921 classid 1:8f6 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4921 classid 1:8f7 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4921 classid 1:8f8 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4921 classid 1:8f9 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 49220 fw classid 1:8f1
+tc filter add dev br2 protocol ip parent 1: handle 49221 fw classid 1:8f2
+tc filter add dev br2 protocol ip parent 1: handle 49222 fw classid 1:8f3
+tc filter add dev br2 protocol ip parent 1: handle 49223 fw classid 1:8f4
+tc filter add dev br2 protocol ip parent 1: handle 49224 fw classid 1:8f5
+tc filter add dev br2 protocol ip parent 1: handle 49225 fw classid 1:8f6
+tc filter add dev br2 protocol ip parent 1: handle 49226 fw classid 1:8f7
+tc filter add dev br2 protocol ip parent 1: handle 49227 fw classid 1:8f8
+tc filter add dev br2 protocol ip parent 1: handle 49228 fw classid 1:8f9
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:4922 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:4922 classid 1:8fa htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4922 classid 1:8fb htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4922 classid 1:8fc htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4922 classid 1:8fd htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4922 classid 1:8fe htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4922 classid 1:8ff htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4922 classid 1:900 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4922 classid 1:901 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4922 classid 1:902 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 49230 fw classid 1:8fa
+tc filter add dev eth0 protocol ip parent 1: handle 49231 fw classid 1:8fb
+tc filter add dev eth0 protocol ip parent 1: handle 49232 fw classid 1:8fc
+tc filter add dev eth0 protocol ip parent 1: handle 49233 fw classid 1:8fd
+tc filter add dev eth0 protocol ip parent 1: handle 49234 fw classid 1:8fe
+tc filter add dev eth0 protocol ip parent 1: handle 49235 fw classid 1:8ff
+tc filter add dev eth0 protocol ip parent 1: handle 49236 fw classid 1:900
+tc filter add dev eth0 protocol ip parent 1: handle 49237 fw classid 1:901
+tc filter add dev eth0 protocol ip parent 1: handle 49238 fw classid 1:902
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:4151 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:4151 classid 1:903 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4151 classid 1:904 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4151 classid 1:905 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4151 classid 1:906 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4151 classid 1:907 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4151 classid 1:908 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4151 classid 1:909 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4151 classid 1:90a htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4151 classid 1:90b htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 41520 fw classid 1:903
+tc filter add dev br2 protocol ip parent 1: handle 41521 fw classid 1:904
+tc filter add dev br2 protocol ip parent 1: handle 41522 fw classid 1:905
+tc filter add dev br2 protocol ip parent 1: handle 41523 fw classid 1:906
+tc filter add dev br2 protocol ip parent 1: handle 41524 fw classid 1:907
+tc filter add dev br2 protocol ip parent 1: handle 41525 fw classid 1:908
+tc filter add dev br2 protocol ip parent 1: handle 41526 fw classid 1:909
+tc filter add dev br2 protocol ip parent 1: handle 41527 fw classid 1:90a
+tc filter add dev br2 protocol ip parent 1: handle 41528 fw classid 1:90b
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:4152 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:4152 classid 1:90c htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4152 classid 1:90d htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4152 classid 1:90e htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4152 classid 1:90f htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4152 classid 1:910 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4152 classid 1:911 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4152 classid 1:912 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4152 classid 1:913 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4152 classid 1:914 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 41530 fw classid 1:90c
+tc filter add dev eth0 protocol ip parent 1: handle 41531 fw classid 1:90d
+tc filter add dev eth0 protocol ip parent 1: handle 41532 fw classid 1:90e
+tc filter add dev eth0 protocol ip parent 1: handle 41533 fw classid 1:90f
+tc filter add dev eth0 protocol ip parent 1: handle 41534 fw classid 1:910
+tc filter add dev eth0 protocol ip parent 1: handle 41535 fw classid 1:911
+tc filter add dev eth0 protocol ip parent 1: handle 41536 fw classid 1:912
+tc filter add dev eth0 protocol ip parent 1: handle 41537 fw classid 1:913
+tc filter add dev eth0 protocol ip parent 1: handle 41538 fw classid 1:914
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:2211 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:2211 classid 1:915 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:2211 classid 1:916 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:2211 classid 1:917 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:2211 classid 1:918 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:2211 classid 1:919 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:2211 classid 1:91a htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:2211 classid 1:91b htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:2211 classid 1:91c htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:2211 classid 1:91d htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 22120 fw classid 1:915
+tc filter add dev br2 protocol ip parent 1: handle 22121 fw classid 1:916
+tc filter add dev br2 protocol ip parent 1: handle 22122 fw classid 1:917
+tc filter add dev br2 protocol ip parent 1: handle 22123 fw classid 1:918
+tc filter add dev br2 protocol ip parent 1: handle 22124 fw classid 1:919
+tc filter add dev br2 protocol ip parent 1: handle 22125 fw classid 1:91a
+tc filter add dev br2 protocol ip parent 1: handle 22126 fw classid 1:91b
+tc filter add dev br2 protocol ip parent 1: handle 22127 fw classid 1:91c
+tc filter add dev br2 protocol ip parent 1: handle 22128 fw classid 1:91d
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:2212 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:2212 classid 1:91e htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:2212 classid 1:91f htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:2212 classid 1:920 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:2212 classid 1:921 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:2212 classid 1:922 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:2212 classid 1:923 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:2212 classid 1:924 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:2212 classid 1:925 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:2212 classid 1:926 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 22130 fw classid 1:91e
+tc filter add dev eth0 protocol ip parent 1: handle 22131 fw classid 1:91f
+tc filter add dev eth0 protocol ip parent 1: handle 22132 fw classid 1:920
+tc filter add dev eth0 protocol ip parent 1: handle 22133 fw classid 1:921
+tc filter add dev eth0 protocol ip parent 1: handle 22134 fw classid 1:922
+tc filter add dev eth0 protocol ip parent 1: handle 22135 fw classid 1:923
+tc filter add dev eth0 protocol ip parent 1: handle 22136 fw classid 1:924
+tc filter add dev eth0 protocol ip parent 1: handle 22137 fw classid 1:925
+tc filter add dev eth0 protocol ip parent 1: handle 22138 fw classid 1:926
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:2821 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:2821 classid 1:927 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:2821 classid 1:928 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:2821 classid 1:929 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:2821 classid 1:92a htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:2821 classid 1:92b htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:2821 classid 1:92c htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:2821 classid 1:92d htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:2821 classid 1:92e htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:2821 classid 1:92f htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 28220 fw classid 1:927
+tc filter add dev br2 protocol ip parent 1: handle 28221 fw classid 1:928
+tc filter add dev br2 protocol ip parent 1: handle 28222 fw classid 1:929
+tc filter add dev br2 protocol ip parent 1: handle 28223 fw classid 1:92a
+tc filter add dev br2 protocol ip parent 1: handle 28224 fw classid 1:92b
+tc filter add dev br2 protocol ip parent 1: handle 28225 fw classid 1:92c
+tc filter add dev br2 protocol ip parent 1: handle 28226 fw classid 1:92d
+tc filter add dev br2 protocol ip parent 1: handle 28227 fw classid 1:92e
+tc filter add dev br2 protocol ip parent 1: handle 28228 fw classid 1:92f
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:2822 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:2822 classid 1:930 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:2822 classid 1:931 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:2822 classid 1:932 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:2822 classid 1:933 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:2822 classid 1:934 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:2822 classid 1:935 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:2822 classid 1:936 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:2822 classid 1:937 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:2822 classid 1:938 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 28230 fw classid 1:930
+tc filter add dev eth0 protocol ip parent 1: handle 28231 fw classid 1:931
+tc filter add dev eth0 protocol ip parent 1: handle 28232 fw classid 1:932
+tc filter add dev eth0 protocol ip parent 1: handle 28233 fw classid 1:933
+tc filter add dev eth0 protocol ip parent 1: handle 28234 fw classid 1:934
+tc filter add dev eth0 protocol ip parent 1: handle 28235 fw classid 1:935
+tc filter add dev eth0 protocol ip parent 1: handle 28236 fw classid 1:936
+tc filter add dev eth0 protocol ip parent 1: handle 28237 fw classid 1:937
+tc filter add dev eth0 protocol ip parent 1: handle 28238 fw classid 1:938
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:4521 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:4521 classid 1:939 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4521 classid 1:93a htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4521 classid 1:93b htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4521 classid 1:93c htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4521 classid 1:93d htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4521 classid 1:93e htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4521 classid 1:93f htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4521 classid 1:940 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4521 classid 1:941 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 45220 fw classid 1:939
+tc filter add dev br2 protocol ip parent 1: handle 45221 fw classid 1:93a
+tc filter add dev br2 protocol ip parent 1: handle 45222 fw classid 1:93b
+tc filter add dev br2 protocol ip parent 1: handle 45223 fw classid 1:93c
+tc filter add dev br2 protocol ip parent 1: handle 45224 fw classid 1:93d
+tc filter add dev br2 protocol ip parent 1: handle 45225 fw classid 1:93e
+tc filter add dev br2 protocol ip parent 1: handle 45226 fw classid 1:93f
+tc filter add dev br2 protocol ip parent 1: handle 45227 fw classid 1:940
+tc filter add dev br2 protocol ip parent 1: handle 45228 fw classid 1:941
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:4522 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:4522 classid 1:942 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4522 classid 1:943 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4522 classid 1:944 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4522 classid 1:945 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4522 classid 1:946 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4522 classid 1:947 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4522 classid 1:948 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4522 classid 1:949 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4522 classid 1:94a htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 45230 fw classid 1:942
+tc filter add dev eth0 protocol ip parent 1: handle 45231 fw classid 1:943
+tc filter add dev eth0 protocol ip parent 1: handle 45232 fw classid 1:944
+tc filter add dev eth0 protocol ip parent 1: handle 45233 fw classid 1:945
+tc filter add dev eth0 protocol ip parent 1: handle 45234 fw classid 1:946
+tc filter add dev eth0 protocol ip parent 1: handle 45235 fw classid 1:947
+tc filter add dev eth0 protocol ip parent 1: handle 45236 fw classid 1:948
+tc filter add dev eth0 protocol ip parent 1: handle 45237 fw classid 1:949
+tc filter add dev eth0 protocol ip parent 1: handle 45238 fw classid 1:94a
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:4091 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:4091 classid 1:94b htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4091 classid 1:94c htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4091 classid 1:94d htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4091 classid 1:94e htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4091 classid 1:94f htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4091 classid 1:950 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4091 classid 1:951 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4091 classid 1:952 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4091 classid 1:953 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 40920 fw classid 1:94b
+tc filter add dev br2 protocol ip parent 1: handle 40921 fw classid 1:94c
+tc filter add dev br2 protocol ip parent 1: handle 40922 fw classid 1:94d
+tc filter add dev br2 protocol ip parent 1: handle 40923 fw classid 1:94e
+tc filter add dev br2 protocol ip parent 1: handle 40924 fw classid 1:94f
+tc filter add dev br2 protocol ip parent 1: handle 40925 fw classid 1:950
+tc filter add dev br2 protocol ip parent 1: handle 40926 fw classid 1:951
+tc filter add dev br2 protocol ip parent 1: handle 40927 fw classid 1:952
+tc filter add dev br2 protocol ip parent 1: handle 40928 fw classid 1:953
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:4092 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:4092 classid 1:954 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4092 classid 1:955 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4092 classid 1:956 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4092 classid 1:957 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4092 classid 1:958 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4092 classid 1:959 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4092 classid 1:95a htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4092 classid 1:95b htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4092 classid 1:95c htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 40930 fw classid 1:954
+tc filter add dev eth0 protocol ip parent 1: handle 40931 fw classid 1:955
+tc filter add dev eth0 protocol ip parent 1: handle 40932 fw classid 1:956
+tc filter add dev eth0 protocol ip parent 1: handle 40933 fw classid 1:957
+tc filter add dev eth0 protocol ip parent 1: handle 40934 fw classid 1:958
+tc filter add dev eth0 protocol ip parent 1: handle 40935 fw classid 1:959
+tc filter add dev eth0 protocol ip parent 1: handle 40936 fw classid 1:95a
+tc filter add dev eth0 protocol ip parent 1: handle 40937 fw classid 1:95b
+tc filter add dev eth0 protocol ip parent 1: handle 40938 fw classid 1:95c
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:3751 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:3751 classid 1:95d htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:3751 classid 1:95e htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:3751 classid 1:95f htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:3751 classid 1:960 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:3751 classid 1:961 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:3751 classid 1:962 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:3751 classid 1:963 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:3751 classid 1:964 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:3751 classid 1:965 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 37520 fw classid 1:95d
+tc filter add dev br2 protocol ip parent 1: handle 37521 fw classid 1:95e
+tc filter add dev br2 protocol ip parent 1: handle 37522 fw classid 1:95f
+tc filter add dev br2 protocol ip parent 1: handle 37523 fw classid 1:960
+tc filter add dev br2 protocol ip parent 1: handle 37524 fw classid 1:961
+tc filter add dev br2 protocol ip parent 1: handle 37525 fw classid 1:962
+tc filter add dev br2 protocol ip parent 1: handle 37526 fw classid 1:963
+tc filter add dev br2 protocol ip parent 1: handle 37527 fw classid 1:964
+tc filter add dev br2 protocol ip parent 1: handle 37528 fw classid 1:965
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:3752 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:3752 classid 1:966 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:3752 classid 1:967 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:3752 classid 1:968 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:3752 classid 1:969 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:3752 classid 1:96a htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:3752 classid 1:96b htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:3752 classid 1:96c htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:3752 classid 1:96d htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:3752 classid 1:96e htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 37530 fw classid 1:966
+tc filter add dev eth0 protocol ip parent 1: handle 37531 fw classid 1:967
+tc filter add dev eth0 protocol ip parent 1: handle 37532 fw classid 1:968
+tc filter add dev eth0 protocol ip parent 1: handle 37533 fw classid 1:969
+tc filter add dev eth0 protocol ip parent 1: handle 37534 fw classid 1:96a
+tc filter add dev eth0 protocol ip parent 1: handle 37535 fw classid 1:96b
+tc filter add dev eth0 protocol ip parent 1: handle 37536 fw classid 1:96c
+tc filter add dev eth0 protocol ip parent 1: handle 37537 fw classid 1:96d
+tc filter add dev eth0 protocol ip parent 1: handle 37538 fw classid 1:96e
+
+
+# MARCAJE DE PAQUETES
+
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:5011 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:5011 classid 1:96f htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:5011 classid 1:970 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:5011 classid 1:971 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:5011 classid 1:972 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:5011 classid 1:973 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:5011 classid 1:974 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:5011 classid 1:975 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:5011 classid 1:976 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:5011 classid 1:977 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 50120 fw classid 1:96f
+tc filter add dev br2 protocol ip parent 1: handle 50121 fw classid 1:970
+tc filter add dev br2 protocol ip parent 1: handle 50122 fw classid 1:971
+tc filter add dev br2 protocol ip parent 1: handle 50123 fw classid 1:972
+tc filter add dev br2 protocol ip parent 1: handle 50124 fw classid 1:973
+tc filter add dev br2 protocol ip parent 1: handle 50125 fw classid 1:974
+tc filter add dev br2 protocol ip parent 1: handle 50126 fw classid 1:975
+tc filter add dev br2 protocol ip parent 1: handle 50127 fw classid 1:976
+tc filter add dev br2 protocol ip parent 1: handle 50128 fw classid 1:977
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:5012 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:5012 classid 1:978 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:5012 classid 1:979 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:5012 classid 1:97a htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:5012 classid 1:97b htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:5012 classid 1:97c htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:5012 classid 1:97d htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:5012 classid 1:97e htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:5012 classid 1:97f htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:5012 classid 1:980 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 50130 fw classid 1:978
+tc filter add dev eth0 protocol ip parent 1: handle 50131 fw classid 1:979
+tc filter add dev eth0 protocol ip parent 1: handle 50132 fw classid 1:97a
+tc filter add dev eth0 protocol ip parent 1: handle 50133 fw classid 1:97b
+tc filter add dev eth0 protocol ip parent 1: handle 50134 fw classid 1:97c
+tc filter add dev eth0 protocol ip parent 1: handle 50135 fw classid 1:97d
+tc filter add dev eth0 protocol ip parent 1: handle 50136 fw classid 1:97e
+tc filter add dev eth0 protocol ip parent 1: handle 50137 fw classid 1:97f
+tc filter add dev eth0 protocol ip parent 1: handle 50138 fw classid 1:980
+
+
+# MARCAJE DE PAQUETES
+

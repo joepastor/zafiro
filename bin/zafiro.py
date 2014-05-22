@@ -32,9 +32,12 @@ try:
 	if getEjecutar():
 		idtmp=2 # Seteamos nuevamente el valor del ID temporal en 0
 
+		#Iniciamos variables
 		sasa=""
-		# Firewall basico
 		iptables=""
+		shaping=""
+
+		# Firewall basico
 		iptables+="iptables -F\n"
 		iptables+="iptables -t nat -F\n"
 		iptables+="iptables -t mangle -F\n"
@@ -275,54 +278,54 @@ try:
 				# OTROS
 				# 25,143,110
 
-				iptables+="\n# CLASES DE BAJADA\n"
-				iptables+="tc class add dev %s parent 1: classid 1:%s htb rate %skbit ceil %skbit burst 15k\n" % (devpri,clasebajada,bkbits,bkbits)
-				iptables+="tc class add dev %s parent 1:%s classid 1:%s htb rate %skbit ceil %skbit burst 15k prio 0\n" % (devpri,clasebajada,DC1,pb1,bkbits)
-				iptables+="tc class add dev %s parent 1:%s classid 1:%s htb rate %skbit ceil %skbit burst 15k prio 1\n" % (devpri,clasebajada,DC2,pb1,bkbits)
-				iptables+="tc class add dev %s parent 1:%s classid 1:%s htb rate %skbit ceil %skbit burst 15k prio 2\n" % (devpri,clasebajada,DC3,pb1,bkbits)
-				iptables+="tc class add dev %s parent 1:%s classid 1:%s htb rate %skbit ceil %skbit burst 15k prio 3\n" % (devpri,clasebajada,DC4,pb2,bkbits)
-				iptables+="tc class add dev %s parent 1:%s classid 1:%s htb rate %skbit ceil %skbit burst 15k prio 4\n" % (devpri,clasebajada,DC5,pb2,bkbits)
-				iptables+="tc class add dev %s parent 1:%s classid 1:%s htb rate %skbit ceil %skbit burst 15k prio 5\n" % (devpri,clasebajada,DC6,pb2,bkbits)
-				iptables+="tc class add dev %s parent 1:%s classid 1:%s htb rate %skbit ceil %skbit burst 15k prio 6\n" % (devpri,clasebajada,DC7,pb3,bkbits)
-				iptables+="tc class add dev %s parent 1:%s classid 1:%s htb rate %skbit ceil %skbit burst 15k prio 7\n" % (devpri,clasebajada,DC8,pb3,bkbits)
-				iptables+="tc class add dev %s parent 1:%s classid 1:%s htb rate %skbit ceil %skbit burst 15k prio 8\n" % (devpri,clasebajada,DC9,pb3,bkbits)
+				shaping+="\n# CLASES DE BAJADA\n"
+				shaping+="tc class add dev %s parent 1: classid 1:%s htb rate %skbit ceil %skbit burst 15k\n" % (devpri,clasebajada,bkbits,bkbits)
+				shaping+="tc class add dev %s parent 1:%s classid 1:%s htb rate %skbit ceil %skbit burst 15k prio 0\n" % (devpri,clasebajada,DC1,pb1,bkbits)
+				shaping+="tc class add dev %s parent 1:%s classid 1:%s htb rate %skbit ceil %skbit burst 15k prio 1\n" % (devpri,clasebajada,DC2,pb1,bkbits)
+				shaping+="tc class add dev %s parent 1:%s classid 1:%s htb rate %skbit ceil %skbit burst 15k prio 2\n" % (devpri,clasebajada,DC3,pb1,bkbits)
+				shaping+="tc class add dev %s parent 1:%s classid 1:%s htb rate %skbit ceil %skbit burst 15k prio 3\n" % (devpri,clasebajada,DC4,pb2,bkbits)
+				shaping+="tc class add dev %s parent 1:%s classid 1:%s htb rate %skbit ceil %skbit burst 15k prio 4\n" % (devpri,clasebajada,DC5,pb2,bkbits)
+				shaping+="tc class add dev %s parent 1:%s classid 1:%s htb rate %skbit ceil %skbit burst 15k prio 5\n" % (devpri,clasebajada,DC6,pb2,bkbits)
+				shaping+="tc class add dev %s parent 1:%s classid 1:%s htb rate %skbit ceil %skbit burst 15k prio 6\n" % (devpri,clasebajada,DC7,pb3,bkbits)
+				shaping+="tc class add dev %s parent 1:%s classid 1:%s htb rate %skbit ceil %skbit burst 15k prio 7\n" % (devpri,clasebajada,DC8,pb3,bkbits)
+				shaping+="tc class add dev %s parent 1:%s classid 1:%s htb rate %skbit ceil %skbit burst 15k prio 8\n" % (devpri,clasebajada,DC9,pb3,bkbits)
 
-				iptables+="\n# HANDLERS DE BAJADA\n"
-				iptables+="tc filter add dev %s protocol ip parent 1: handle %s fw classid 1:%s\n" % (devpri,DH1,DC1)
-				iptables+="tc filter add dev %s protocol ip parent 1: handle %s fw classid 1:%s\n" % (devpri,DH2,DC2)
-				iptables+="tc filter add dev %s protocol ip parent 1: handle %s fw classid 1:%s\n" % (devpri,DH3,DC3)
-				iptables+="tc filter add dev %s protocol ip parent 1: handle %s fw classid 1:%s\n" % (devpri,DH4,DC4)
-				iptables+="tc filter add dev %s protocol ip parent 1: handle %s fw classid 1:%s\n" % (devpri,DH5,DC5)
-				iptables+="tc filter add dev %s protocol ip parent 1: handle %s fw classid 1:%s\n" % (devpri,DH6,DC6)
-				iptables+="tc filter add dev %s protocol ip parent 1: handle %s fw classid 1:%s\n" % (devpri,DH7,DC7)
-				iptables+="tc filter add dev %s protocol ip parent 1: handle %s fw classid 1:%s\n" % (devpri,DH8,DC8)
-				iptables+="tc filter add dev %s protocol ip parent 1: handle %s fw classid 1:%s\n" % (devpri,DH9,DC9)
+				shaping+="\n# HANDLERS DE BAJADA\n"
+				shaping+="tc filter add dev %s protocol ip parent 1: handle %s fw classid 1:%s\n" % (devpri,DH1,DC1)
+				shaping+="tc filter add dev %s protocol ip parent 1: handle %s fw classid 1:%s\n" % (devpri,DH2,DC2)
+				shaping+="tc filter add dev %s protocol ip parent 1: handle %s fw classid 1:%s\n" % (devpri,DH3,DC3)
+				shaping+="tc filter add dev %s protocol ip parent 1: handle %s fw classid 1:%s\n" % (devpri,DH4,DC4)
+				shaping+="tc filter add dev %s protocol ip parent 1: handle %s fw classid 1:%s\n" % (devpri,DH5,DC5)
+				shaping+="tc filter add dev %s protocol ip parent 1: handle %s fw classid 1:%s\n" % (devpri,DH6,DC6)
+				shaping+="tc filter add dev %s protocol ip parent 1: handle %s fw classid 1:%s\n" % (devpri,DH7,DC7)
+				shaping+="tc filter add dev %s protocol ip parent 1: handle %s fw classid 1:%s\n" % (devpri,DH8,DC8)
+				shaping+="tc filter add dev %s protocol ip parent 1: handle %s fw classid 1:%s\n" % (devpri,DH9,DC9)
 
-				iptables+="\n# CLASES DE SUBIDA\n"
-				iptables+="tc class add dev %s parent 1: classid 1:%s htb rate %skbit ceil %skbit burst 15k\n" % (devenm,clasesubida,skbits,skbits)
-				iptables+="tc class add dev %s parent 1:%s classid 1:%s htb rate %skbit ceil %skbit burst 15k prio 0\n" % (devenm,clasesubida,UC1,ps1,skbits)
-				iptables+="tc class add dev %s parent 1:%s classid 1:%s htb rate %skbit ceil %skbit burst 15k prio 1\n" % (devenm,clasesubida,UC2,ps1,skbits)
-				iptables+="tc class add dev %s parent 1:%s classid 1:%s htb rate %skbit ceil %skbit burst 15k prio 2\n" % (devenm,clasesubida,UC3,ps1,skbits)
-				iptables+="tc class add dev %s parent 1:%s classid 1:%s htb rate %skbit ceil %skbit burst 15k prio 3\n" % (devenm,clasesubida,UC4,ps2,skbits)
-				iptables+="tc class add dev %s parent 1:%s classid 1:%s htb rate %skbit ceil %skbit burst 15k prio 4\n" % (devenm,clasesubida,UC5,ps2,skbits)
-				iptables+="tc class add dev %s parent 1:%s classid 1:%s htb rate %skbit ceil %skbit burst 15k prio 5\n" % (devenm,clasesubida,UC6,ps2,skbits)
-				iptables+="tc class add dev %s parent 1:%s classid 1:%s htb rate %skbit ceil %skbit burst 15k prio 6\n" % (devenm,clasesubida,UC7,ps3,skbits)
-				iptables+="tc class add dev %s parent 1:%s classid 1:%s htb rate %skbit ceil %skbit burst 15k prio 7\n" % (devenm,clasesubida,UC8,ps3,skbits)
-				iptables+="tc class add dev %s parent 1:%s classid 1:%s htb rate %skbit ceil %skbit burst 15k prio 8\n" % (devenm,clasesubida,UC9,ps3,skbits)
+				shaping+="\n# CLASES DE SUBIDA\n"
+				shaping+="tc class add dev %s parent 1: classid 1:%s htb rate %skbit ceil %skbit burst 15k\n" % (devenm,clasesubida,skbits,skbits)
+				shaping+="tc class add dev %s parent 1:%s classid 1:%s htb rate %skbit ceil %skbit burst 15k prio 0\n" % (devenm,clasesubida,UC1,ps1,skbits)
+				shaping+="tc class add dev %s parent 1:%s classid 1:%s htb rate %skbit ceil %skbit burst 15k prio 1\n" % (devenm,clasesubida,UC2,ps1,skbits)
+				shaping+="tc class add dev %s parent 1:%s classid 1:%s htb rate %skbit ceil %skbit burst 15k prio 2\n" % (devenm,clasesubida,UC3,ps1,skbits)
+				shaping+="tc class add dev %s parent 1:%s classid 1:%s htb rate %skbit ceil %skbit burst 15k prio 3\n" % (devenm,clasesubida,UC4,ps2,skbits)
+				shaping+="tc class add dev %s parent 1:%s classid 1:%s htb rate %skbit ceil %skbit burst 15k prio 4\n" % (devenm,clasesubida,UC5,ps2,skbits)
+				shaping+="tc class add dev %s parent 1:%s classid 1:%s htb rate %skbit ceil %skbit burst 15k prio 5\n" % (devenm,clasesubida,UC6,ps2,skbits)
+				shaping+="tc class add dev %s parent 1:%s classid 1:%s htb rate %skbit ceil %skbit burst 15k prio 6\n" % (devenm,clasesubida,UC7,ps3,skbits)
+				shaping+="tc class add dev %s parent 1:%s classid 1:%s htb rate %skbit ceil %skbit burst 15k prio 7\n" % (devenm,clasesubida,UC8,ps3,skbits)
+				shaping+="tc class add dev %s parent 1:%s classid 1:%s htb rate %skbit ceil %skbit burst 15k prio 8\n" % (devenm,clasesubida,UC9,ps3,skbits)
 
-				iptables+="\n# HANDLERS DE SUBIDA\n"
-				iptables+="tc filter add dev %s protocol ip parent 1: handle %s fw classid 1:%s\n" % (devenm,UH1,UC1)
-				iptables+="tc filter add dev %s protocol ip parent 1: handle %s fw classid 1:%s\n" % (devenm,UH2,UC2)
-				iptables+="tc filter add dev %s protocol ip parent 1: handle %s fw classid 1:%s\n" % (devenm,UH3,UC3)
-				iptables+="tc filter add dev %s protocol ip parent 1: handle %s fw classid 1:%s\n" % (devenm,UH4,UC4)
-				iptables+="tc filter add dev %s protocol ip parent 1: handle %s fw classid 1:%s\n" % (devenm,UH5,UC5)
-				iptables+="tc filter add dev %s protocol ip parent 1: handle %s fw classid 1:%s\n" % (devenm,UH6,UC6)
-				iptables+="tc filter add dev %s protocol ip parent 1: handle %s fw classid 1:%s\n" % (devenm,UH7,UC7)
-				iptables+="tc filter add dev %s protocol ip parent 1: handle %s fw classid 1:%s\n" % (devenm,UH8,UC8)
-				iptables+="tc filter add dev %s protocol ip parent 1: handle %s fw classid 1:%s\n" % (devenm,UH9,UC9)
-				iptables+="\n"
-				iptables+="\n# MARCAJE DE PAQUETES\n"
-				iptables+="\n"
+				shaping+="\n# HANDLERS DE SUBIDA\n"
+				shaping+="tc filter add dev %s protocol ip parent 1: handle %s fw classid 1:%s\n" % (devenm,UH1,UC1)
+				shaping+="tc filter add dev %s protocol ip parent 1: handle %s fw classid 1:%s\n" % (devenm,UH2,UC2)
+				shaping+="tc filter add dev %s protocol ip parent 1: handle %s fw classid 1:%s\n" % (devenm,UH3,UC3)
+				shaping+="tc filter add dev %s protocol ip parent 1: handle %s fw classid 1:%s\n" % (devenm,UH4,UC4)
+				shaping+="tc filter add dev %s protocol ip parent 1: handle %s fw classid 1:%s\n" % (devenm,UH5,UC5)
+				shaping+="tc filter add dev %s protocol ip parent 1: handle %s fw classid 1:%s\n" % (devenm,UH6,UC6)
+				shaping+="tc filter add dev %s protocol ip parent 1: handle %s fw classid 1:%s\n" % (devenm,UH7,UC7)
+				shaping+="tc filter add dev %s protocol ip parent 1: handle %s fw classid 1:%s\n" % (devenm,UH8,UC8)
+				shaping+="tc filter add dev %s protocol ip parent 1: handle %s fw classid 1:%s\n" % (devenm,UH9,UC9)
+				shaping+="\n"
+				shaping+="\n# MARCAJE DE PAQUETES\n"
+				shaping+="\n"
 				# SACADO VERLO LUEGO iptables+="iptables -t mangle -A FORWARD -j MARK -i %s -s %s -p ICMP --set-mark %s\n" % (devpri,ip,markh4)
 				# SACADO VERLO LUEGO iptables+="iptables -t mangle -A FORWARD -j MARK -i %s -d %s -p ICMP --set-mark %s\n" % (devenm,ip,markh1)
 
@@ -448,6 +451,8 @@ try:
 		iptables+="iptables -P OUTPUT DROP\n"
 		iptables+="iptables -P FORWARD DROP\n"
 
+		#Agrego el shaping al final del archivo
+		iptables += shaping
 		################################################# Escritura de archivos ##############################################################
 		sasa+="E:/usr/sasacct-1.0.2/lang/\n"
 		sasa+="U:en_UK\n"
