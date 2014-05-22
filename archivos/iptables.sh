@@ -156,6 +156,9 @@ iptables -A FORWARD -s 172.16.0.19 -j 172.16.0.19_o
 iptables -A FORWARD -d 172.16.0.19 -j 172.16.0.19_i
 iptables -A FORWARD -s 172.16.0.19 -m mac --mac-source e8:03:9a:53:01:65 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.19 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.19 -p udp --sport 10000:30000 -j MARK --set-mark 47820
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.19 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.19 -p udp --dport 10000:30000 -j MARK --set-mark 47830
@@ -204,192 +207,6 @@ iptables -t nat -A PREROUTING -i br2 -p tcp --dport 80 -s 172.16.0.19 -j REDIREC
 iptables -t nat -A POSTROUTING -s 172.16.0.19 -o eth0 -j MASQUERADE
 
 
-echo ID: 358	Alejandro Rogers	IP:62    
-#------------------------------------------------------------------------------
-#Cliente - Alejandro Rogers	IP:62    ID: 358
-#------------------------------------------------------------------------------
-iptables -X 172.16.0.62_i
-iptables -X 172.16.0.62_o
-iptables -N 172.16.0.62_i
-iptables -N 172.16.0.62_o
-iptables -F 172.16.0.62_i
-iptables -F 172.16.0.62_o
-iptables -A FORWARD -s 172.16.0.62 -j 172.16.0.62_o
-iptables -A FORWARD -d 172.16.0.62 -j 172.16.0.62_i
-iptables -A FORWARD -s 172.16.0.62 -m mac --mac-source f0:de:f1:87:cb:2c -j ACCEPT
-iptables -A FORWARD -d 172.16.0.62 -j ACCEPT
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.62 -p udp --sport 10000:30000 -j MARK --set-mark 35820
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.62 -p udp --sport 10000:30000 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.62 -p udp --dport 10000:30000 -j MARK --set-mark 35830
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.62 -p udp --dport 10000:30000 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.62 -p udp --sport 5060:5082 -j MARK --set-mark 35820
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.62 -p udp --sport 5060:5082 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.62 -p udp --dport 5060:5082 -j MARK --set-mark 35830
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.62 -p udp --dport 5060:5082 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.62 -p udp --sport 53 -j MARK --set-mark 35821
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.62 -p udp --sport 53 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.62 -p udp --dport 53 -j MARK --set-mark 35831
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.62 -p udp --dport 53 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.62 -p tcp --sport 22 -j MARK --set-mark 35822
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.62 -p tcp --sport 22 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.62 -p tcp --dport 22 -j MARK --set-mark 35832
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.62 -p tcp --dport 22 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.62 -p tcp --sport 443 -j MARK --set-mark 35823
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.62 -p tcp --sport 443 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.62 -p tcp --dport 443 -j MARK --set-mark 35833
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.62 -p tcp --dport 443 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.62 -p tcp --sport 80 -j MARK --set-mark 35824
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.62 -p tcp --sport 80 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.62 -p tcp --dport 80 -j MARK --set-mark 35834
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.62 -p tcp --dport 80 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.62 -p tcp --sport 25 -j MARK --set-mark 35826
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.62 -p tcp --sport 25 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.62 -p tcp --dport 25 -j MARK --set-mark 35836
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.62 -p tcp --dport 25 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.62 -p tcp --sport 110 -j MARK --set-mark 35826
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.62 -p tcp --sport 110 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.62 -p tcp --dport 110 -j MARK --set-mark 35836
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.62 -p tcp --dport 110 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.62 -p tcp --sport 143 -j MARK --set-mark 35826
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.62 -p tcp --sport 143 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.62 -p tcp --dport 143 -j MARK --set-mark 35836
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.62 -p tcp --dport 143 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.62 -p tcp --sport 21 -j MARK --set-mark 35827
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.62 -p tcp --sport 21 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.62 -p tcp --dport 21 -j MARK --set-mark 35837
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.62 -p tcp --dport 21 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.62 -j MARK --set-mark 35827
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.62 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.62 -j MARK --set-mark 35837
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.62 -j RETURN
-iptables -t nat -A PREROUTING -i br2 -p tcp --dport 80 -s 172.16.0.62 -j REDIRECT --to-port 3128
-iptables -t nat -A POSTROUTING -s 172.16.0.62 -o eth0 -j MASQUERADE
-
-
-echo ID: 458	Alejandro Rogers	IP:98    
-#------------------------------------------------------------------------------
-#Cliente - Alejandro Rogers	IP:98    ID: 458
-#------------------------------------------------------------------------------
-iptables -X 172.16.0.98_i
-iptables -X 172.16.0.98_o
-iptables -N 172.16.0.98_i
-iptables -N 172.16.0.98_o
-iptables -F 172.16.0.98_i
-iptables -F 172.16.0.98_o
-iptables -A FORWARD -s 172.16.0.98 -j 172.16.0.98_o
-iptables -A FORWARD -d 172.16.0.98 -j 172.16.0.98_i
-iptables -A FORWARD -s 172.16.0.98 -m mac --mac-source bc:3b:af:c3:21:0e -j ACCEPT
-iptables -A FORWARD -d 172.16.0.98 -j ACCEPT
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.98 -p udp --sport 10000:30000 -j MARK --set-mark 45820
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.98 -p udp --sport 10000:30000 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.98 -p udp --dport 10000:30000 -j MARK --set-mark 45830
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.98 -p udp --dport 10000:30000 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.98 -p udp --sport 5060:5082 -j MARK --set-mark 45820
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.98 -p udp --sport 5060:5082 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.98 -p udp --dport 5060:5082 -j MARK --set-mark 45830
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.98 -p udp --dport 5060:5082 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.98 -p udp --sport 53 -j MARK --set-mark 45821
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.98 -p udp --sport 53 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.98 -p udp --dport 53 -j MARK --set-mark 45831
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.98 -p udp --dport 53 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.98 -p tcp --sport 22 -j MARK --set-mark 45822
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.98 -p tcp --sport 22 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.98 -p tcp --dport 22 -j MARK --set-mark 45832
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.98 -p tcp --dport 22 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.98 -p tcp --sport 443 -j MARK --set-mark 45823
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.98 -p tcp --sport 443 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.98 -p tcp --dport 443 -j MARK --set-mark 45833
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.98 -p tcp --dport 443 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.98 -p tcp --sport 80 -j MARK --set-mark 45824
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.98 -p tcp --sport 80 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.98 -p tcp --dport 80 -j MARK --set-mark 45834
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.98 -p tcp --dport 80 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.98 -p tcp --sport 25 -j MARK --set-mark 45826
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.98 -p tcp --sport 25 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.98 -p tcp --dport 25 -j MARK --set-mark 45836
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.98 -p tcp --dport 25 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.98 -p tcp --sport 110 -j MARK --set-mark 45826
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.98 -p tcp --sport 110 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.98 -p tcp --dport 110 -j MARK --set-mark 45836
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.98 -p tcp --dport 110 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.98 -p tcp --sport 143 -j MARK --set-mark 45826
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.98 -p tcp --sport 143 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.98 -p tcp --dport 143 -j MARK --set-mark 45836
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.98 -p tcp --dport 143 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.98 -p tcp --sport 21 -j MARK --set-mark 45827
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.98 -p tcp --sport 21 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.98 -p tcp --dport 21 -j MARK --set-mark 45837
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.98 -p tcp --dport 21 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.98 -j MARK --set-mark 45827
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.98 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.98 -j MARK --set-mark 45837
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.98 -j RETURN
-iptables -t nat -A PREROUTING -i br2 -p tcp --dport 80 -s 172.16.0.98 -j REDIRECT --to-port 3128
-iptables -t nat -A POSTROUTING -s 172.16.0.98 -o eth0 -j MASQUERADE
-
-
-echo ID: 476	Alejandro Rogers	IP:49    
-#------------------------------------------------------------------------------
-#Cliente - Alejandro Rogers	IP:49    ID: 476
-#------------------------------------------------------------------------------
-iptables -X 172.16.0.49_i
-iptables -X 172.16.0.49_o
-iptables -N 172.16.0.49_i
-iptables -N 172.16.0.49_o
-iptables -F 172.16.0.49_i
-iptables -F 172.16.0.49_o
-iptables -A FORWARD -s 172.16.0.49 -j 172.16.0.49_o
-iptables -A FORWARD -d 172.16.0.49 -j 172.16.0.49_i
-iptables -A FORWARD -s 172.16.0.49 -m mac --mac-source 18:67:b0:66:5c:8b -j ACCEPT
-iptables -A FORWARD -d 172.16.0.49 -j ACCEPT
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.49 -p udp --sport 10000:30000 -j MARK --set-mark 47620
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.49 -p udp --sport 10000:30000 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.49 -p udp --dport 10000:30000 -j MARK --set-mark 47630
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.49 -p udp --dport 10000:30000 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.49 -p udp --sport 5060:5082 -j MARK --set-mark 47620
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.49 -p udp --sport 5060:5082 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.49 -p udp --dport 5060:5082 -j MARK --set-mark 47630
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.49 -p udp --dport 5060:5082 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.49 -p udp --sport 53 -j MARK --set-mark 47621
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.49 -p udp --sport 53 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.49 -p udp --dport 53 -j MARK --set-mark 47631
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.49 -p udp --dport 53 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.49 -p tcp --sport 22 -j MARK --set-mark 47622
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.49 -p tcp --sport 22 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.49 -p tcp --dport 22 -j MARK --set-mark 47632
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.49 -p tcp --dport 22 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.49 -p tcp --sport 443 -j MARK --set-mark 47623
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.49 -p tcp --sport 443 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.49 -p tcp --dport 443 -j MARK --set-mark 47633
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.49 -p tcp --dport 443 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.49 -p tcp --sport 80 -j MARK --set-mark 47624
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.49 -p tcp --sport 80 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.49 -p tcp --dport 80 -j MARK --set-mark 47634
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.49 -p tcp --dport 80 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.49 -p tcp --sport 25 -j MARK --set-mark 47626
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.49 -p tcp --sport 25 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.49 -p tcp --dport 25 -j MARK --set-mark 47636
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.49 -p tcp --dport 25 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.49 -p tcp --sport 110 -j MARK --set-mark 47626
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.49 -p tcp --sport 110 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.49 -p tcp --dport 110 -j MARK --set-mark 47636
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.49 -p tcp --dport 110 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.49 -p tcp --sport 143 -j MARK --set-mark 47626
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.49 -p tcp --sport 143 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.49 -p tcp --dport 143 -j MARK --set-mark 47636
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.49 -p tcp --dport 143 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.49 -p tcp --sport 21 -j MARK --set-mark 47627
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.49 -p tcp --sport 21 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.49 -p tcp --dport 21 -j MARK --set-mark 47637
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.49 -p tcp --dport 21 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.49 -j MARK --set-mark 47627
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.49 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.49 -j MARK --set-mark 47637
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.49 -j RETURN
-iptables -t nat -A PREROUTING -i br2 -p tcp --dport 80 -s 172.16.0.49 -j REDIRECT --to-port 3128
-iptables -t nat -A POSTROUTING -s 172.16.0.49 -o eth0 -j MASQUERADE
-
-
 echo ID: 454	Alejandro Rogers	IP:15    
 #------------------------------------------------------------------------------
 #Cliente - Alejandro Rogers	IP:15    ID: 454
@@ -404,6 +221,9 @@ iptables -A FORWARD -s 172.16.0.15 -j 172.16.0.15_o
 iptables -A FORWARD -d 172.16.0.15 -j 172.16.0.15_i
 iptables -A FORWARD -s 172.16.0.15 -m mac --mac-source 00:1b:b9:e2:51:7e -j ACCEPT
 iptables -A FORWARD -d 172.16.0.15 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.15 -p udp --sport 10000:30000 -j MARK --set-mark 45420
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.15 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.15 -p udp --dport 10000:30000 -j MARK --set-mark 45430
@@ -466,6 +286,9 @@ iptables -A FORWARD -s 172.16.0.29 -j 172.16.0.29_o
 iptables -A FORWARD -d 172.16.0.29 -j 172.16.0.29_i
 iptables -A FORWARD -s 172.16.0.29 -m mac --mac-source 94:39:e5:0e:73:15 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.29 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.29 -p udp --sport 10000:30000 -j MARK --set-mark 41820
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.29 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.29 -p udp --dport 10000:30000 -j MARK --set-mark 41830
@@ -514,6 +337,201 @@ iptables -t nat -A PREROUTING -i br2 -p tcp --dport 80 -s 172.16.0.29 -j REDIREC
 iptables -t nat -A POSTROUTING -s 172.16.0.29 -o eth0 -j MASQUERADE
 
 
+echo ID: 358	Alejandro Rogers	IP:62    
+#------------------------------------------------------------------------------
+#Cliente - Alejandro Rogers	IP:62    ID: 358
+#------------------------------------------------------------------------------
+iptables -X 172.16.0.62_i
+iptables -X 172.16.0.62_o
+iptables -N 172.16.0.62_i
+iptables -N 172.16.0.62_o
+iptables -F 172.16.0.62_i
+iptables -F 172.16.0.62_o
+iptables -A FORWARD -s 172.16.0.62 -j 172.16.0.62_o
+iptables -A FORWARD -d 172.16.0.62 -j 172.16.0.62_i
+iptables -A FORWARD -s 172.16.0.62 -m mac --mac-source f0:de:f1:87:cb:2c -j ACCEPT
+iptables -A FORWARD -d 172.16.0.62 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.62 -p udp --sport 10000:30000 -j MARK --set-mark 35820
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.62 -p udp --sport 10000:30000 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.62 -p udp --dport 10000:30000 -j MARK --set-mark 35830
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.62 -p udp --dport 10000:30000 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.62 -p udp --sport 5060:5082 -j MARK --set-mark 35820
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.62 -p udp --sport 5060:5082 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.62 -p udp --dport 5060:5082 -j MARK --set-mark 35830
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.62 -p udp --dport 5060:5082 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.62 -p udp --sport 53 -j MARK --set-mark 35821
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.62 -p udp --sport 53 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.62 -p udp --dport 53 -j MARK --set-mark 35831
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.62 -p udp --dport 53 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.62 -p tcp --sport 22 -j MARK --set-mark 35822
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.62 -p tcp --sport 22 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.62 -p tcp --dport 22 -j MARK --set-mark 35832
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.62 -p tcp --dport 22 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.62 -p tcp --sport 443 -j MARK --set-mark 35823
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.62 -p tcp --sport 443 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.62 -p tcp --dport 443 -j MARK --set-mark 35833
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.62 -p tcp --dport 443 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.62 -p tcp --sport 80 -j MARK --set-mark 35824
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.62 -p tcp --sport 80 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.62 -p tcp --dport 80 -j MARK --set-mark 35834
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.62 -p tcp --dport 80 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.62 -p tcp --sport 25 -j MARK --set-mark 35826
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.62 -p tcp --sport 25 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.62 -p tcp --dport 25 -j MARK --set-mark 35836
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.62 -p tcp --dport 25 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.62 -p tcp --sport 110 -j MARK --set-mark 35826
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.62 -p tcp --sport 110 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.62 -p tcp --dport 110 -j MARK --set-mark 35836
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.62 -p tcp --dport 110 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.62 -p tcp --sport 143 -j MARK --set-mark 35826
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.62 -p tcp --sport 143 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.62 -p tcp --dport 143 -j MARK --set-mark 35836
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.62 -p tcp --dport 143 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.62 -p tcp --sport 21 -j MARK --set-mark 35827
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.62 -p tcp --sport 21 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.62 -p tcp --dport 21 -j MARK --set-mark 35837
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.62 -p tcp --dport 21 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.62 -j MARK --set-mark 35827
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.62 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.62 -j MARK --set-mark 35837
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.62 -j RETURN
+iptables -t nat -A PREROUTING -i br2 -p tcp --dport 80 -s 172.16.0.62 -j REDIRECT --to-port 3128
+iptables -t nat -A POSTROUTING -s 172.16.0.62 -o eth0 -j MASQUERADE
+
+
+echo ID: 476	Alejandro Rogers	IP:49    
+#------------------------------------------------------------------------------
+#Cliente - Alejandro Rogers	IP:49    ID: 476
+#------------------------------------------------------------------------------
+iptables -X 172.16.0.49_i
+iptables -X 172.16.0.49_o
+iptables -N 172.16.0.49_i
+iptables -N 172.16.0.49_o
+iptables -F 172.16.0.49_i
+iptables -F 172.16.0.49_o
+iptables -A FORWARD -s 172.16.0.49 -j 172.16.0.49_o
+iptables -A FORWARD -d 172.16.0.49 -j 172.16.0.49_i
+iptables -A FORWARD -s 172.16.0.49 -m mac --mac-source 18:67:b0:66:5c:8b -j ACCEPT
+iptables -A FORWARD -d 172.16.0.49 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.49 -p udp --sport 10000:30000 -j MARK --set-mark 47620
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.49 -p udp --sport 10000:30000 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.49 -p udp --dport 10000:30000 -j MARK --set-mark 47630
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.49 -p udp --dport 10000:30000 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.49 -p udp --sport 5060:5082 -j MARK --set-mark 47620
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.49 -p udp --sport 5060:5082 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.49 -p udp --dport 5060:5082 -j MARK --set-mark 47630
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.49 -p udp --dport 5060:5082 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.49 -p udp --sport 53 -j MARK --set-mark 47621
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.49 -p udp --sport 53 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.49 -p udp --dport 53 -j MARK --set-mark 47631
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.49 -p udp --dport 53 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.49 -p tcp --sport 22 -j MARK --set-mark 47622
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.49 -p tcp --sport 22 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.49 -p tcp --dport 22 -j MARK --set-mark 47632
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.49 -p tcp --dport 22 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.49 -p tcp --sport 443 -j MARK --set-mark 47623
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.49 -p tcp --sport 443 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.49 -p tcp --dport 443 -j MARK --set-mark 47633
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.49 -p tcp --dport 443 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.49 -p tcp --sport 80 -j MARK --set-mark 47624
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.49 -p tcp --sport 80 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.49 -p tcp --dport 80 -j MARK --set-mark 47634
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.49 -p tcp --dport 80 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.49 -p tcp --sport 25 -j MARK --set-mark 47626
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.49 -p tcp --sport 25 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.49 -p tcp --dport 25 -j MARK --set-mark 47636
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.49 -p tcp --dport 25 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.49 -p tcp --sport 110 -j MARK --set-mark 47626
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.49 -p tcp --sport 110 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.49 -p tcp --dport 110 -j MARK --set-mark 47636
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.49 -p tcp --dport 110 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.49 -p tcp --sport 143 -j MARK --set-mark 47626
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.49 -p tcp --sport 143 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.49 -p tcp --dport 143 -j MARK --set-mark 47636
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.49 -p tcp --dport 143 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.49 -p tcp --sport 21 -j MARK --set-mark 47627
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.49 -p tcp --sport 21 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.49 -p tcp --dport 21 -j MARK --set-mark 47637
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.49 -p tcp --dport 21 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.49 -j MARK --set-mark 47627
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.49 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.49 -j MARK --set-mark 47637
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.49 -j RETURN
+iptables -t nat -A PREROUTING -i br2 -p tcp --dport 80 -s 172.16.0.49 -j REDIRECT --to-port 3128
+iptables -t nat -A POSTROUTING -s 172.16.0.49 -o eth0 -j MASQUERADE
+
+
+echo ID: 458	Alejandro Rogers	IP:98    
+#------------------------------------------------------------------------------
+#Cliente - Alejandro Rogers	IP:98    ID: 458
+#------------------------------------------------------------------------------
+iptables -X 172.16.0.98_i
+iptables -X 172.16.0.98_o
+iptables -N 172.16.0.98_i
+iptables -N 172.16.0.98_o
+iptables -F 172.16.0.98_i
+iptables -F 172.16.0.98_o
+iptables -A FORWARD -s 172.16.0.98 -j 172.16.0.98_o
+iptables -A FORWARD -d 172.16.0.98 -j 172.16.0.98_i
+iptables -A FORWARD -s 172.16.0.98 -m mac --mac-source bc:3b:af:c3:21:0e -j ACCEPT
+iptables -A FORWARD -d 172.16.0.98 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.98 -p udp --sport 10000:30000 -j MARK --set-mark 45820
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.98 -p udp --sport 10000:30000 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.98 -p udp --dport 10000:30000 -j MARK --set-mark 45830
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.98 -p udp --dport 10000:30000 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.98 -p udp --sport 5060:5082 -j MARK --set-mark 45820
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.98 -p udp --sport 5060:5082 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.98 -p udp --dport 5060:5082 -j MARK --set-mark 45830
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.98 -p udp --dport 5060:5082 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.98 -p udp --sport 53 -j MARK --set-mark 45821
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.98 -p udp --sport 53 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.98 -p udp --dport 53 -j MARK --set-mark 45831
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.98 -p udp --dport 53 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.98 -p tcp --sport 22 -j MARK --set-mark 45822
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.98 -p tcp --sport 22 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.98 -p tcp --dport 22 -j MARK --set-mark 45832
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.98 -p tcp --dport 22 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.98 -p tcp --sport 443 -j MARK --set-mark 45823
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.98 -p tcp --sport 443 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.98 -p tcp --dport 443 -j MARK --set-mark 45833
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.98 -p tcp --dport 443 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.98 -p tcp --sport 80 -j MARK --set-mark 45824
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.98 -p tcp --sport 80 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.98 -p tcp --dport 80 -j MARK --set-mark 45834
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.98 -p tcp --dport 80 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.98 -p tcp --sport 25 -j MARK --set-mark 45826
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.98 -p tcp --sport 25 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.98 -p tcp --dport 25 -j MARK --set-mark 45836
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.98 -p tcp --dport 25 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.98 -p tcp --sport 110 -j MARK --set-mark 45826
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.98 -p tcp --sport 110 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.98 -p tcp --dport 110 -j MARK --set-mark 45836
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.98 -p tcp --dport 110 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.98 -p tcp --sport 143 -j MARK --set-mark 45826
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.98 -p tcp --sport 143 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.98 -p tcp --dport 143 -j MARK --set-mark 45836
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.98 -p tcp --dport 143 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.98 -p tcp --sport 21 -j MARK --set-mark 45827
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.98 -p tcp --sport 21 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.98 -p tcp --dport 21 -j MARK --set-mark 45837
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.98 -p tcp --dport 21 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.98 -j MARK --set-mark 45827
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.98 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.98 -j MARK --set-mark 45837
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.98 -j RETURN
+iptables -t nat -A PREROUTING -i br2 -p tcp --dport 80 -s 172.16.0.98 -j REDIRECT --to-port 3128
+iptables -t nat -A POSTROUTING -s 172.16.0.98 -o eth0 -j MASQUERADE
+
+
 echo ID: 469	Android TV	IP:5    
 #------------------------------------------------------------------------------
 #Cliente - Android TV	IP:5    ID: 469
@@ -528,6 +546,9 @@ iptables -A FORWARD -s 172.16.0.5 -j 172.16.0.5_o
 iptables -A FORWARD -d 172.16.0.5 -j 172.16.0.5_i
 iptables -A FORWARD -s 172.16.0.5 -m mac --mac-source 48:02:2a:b4:ee:e1 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.5 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.5 -p udp --sport 10000:30000 -j MARK --set-mark 46920
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.5 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.5 -p udp --dport 10000:30000 -j MARK --set-mark 46930
@@ -590,6 +611,9 @@ iptables -A FORWARD -s 172.16.0.52 -j 172.16.0.52_o
 iptables -A FORWARD -d 172.16.0.52 -j 172.16.0.52_i
 iptables -A FORWARD -s 172.16.0.52 -m mac --mac-source 00:19:d1:10:7a:b8 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.52 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.52 -p udp --sport 10000:30000 -j MARK --set-mark 49120
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.52 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.52 -p udp --dport 10000:30000 -j MARK --set-mark 49130
@@ -650,6 +674,9 @@ iptables -F 172.16.0.205_i
 iptables -F 172.16.0.205_o
 iptables -A FORWARD -s 172.16.0.205 -j 172.16.0.205_o
 iptables -A FORWARD -d 172.16.0.205 -j 172.16.0.205_i
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.205 -p udp --sport 10000:30000 -j MARK --set-mark 39220
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.205 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.205 -p udp --dport 10000:30000 -j MARK --set-mark 39230
@@ -710,6 +737,9 @@ iptables -F 172.16.0.206_i
 iptables -F 172.16.0.206_o
 iptables -A FORWARD -s 172.16.0.206 -j 172.16.0.206_o
 iptables -A FORWARD -d 172.16.0.206 -j 172.16.0.206_i
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.206 -p udp --sport 10000:30000 -j MARK --set-mark 39520
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.206 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.206 -p udp --dport 10000:30000 -j MARK --set-mark 39530
@@ -772,6 +802,9 @@ iptables -A FORWARD -s 172.16.0.2 -j 172.16.0.2_o
 iptables -A FORWARD -d 172.16.0.2 -j 172.16.0.2_i
 iptables -A FORWARD -s 172.16.0.2 -m mac --mac-source 70:71:bc:71:98:2a -j ACCEPT
 iptables -A FORWARD -d 172.16.0.2 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.2 -p udp --sport 10000:30000 -j MARK --set-mark 7720
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.2 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.2 -p udp --dport 10000:30000 -j MARK --set-mark 7730
@@ -833,6 +866,9 @@ iptables -A FORWARD -s 172.16.0.10 -j 172.16.0.10_o
 iptables -A FORWARD -d 172.16.0.10 -j 172.16.0.10_i
 iptables -A FORWARD -s 172.16.0.10 -m mac --mac-source 00:1C:C0:B1:3B:F3 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.10 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.10 -p udp --sport 10000:30000 -j MARK --set-mark 16020
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.10 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.10 -p udp --dport 10000:30000 -j MARK --set-mark 16030
@@ -895,6 +931,9 @@ iptables -A FORWARD -s 172.16.0.34 -j 172.16.0.34_o
 iptables -A FORWARD -d 172.16.0.34 -j 172.16.0.34_i
 iptables -A FORWARD -s 172.16.0.34 -m mac --mac-source 74:de:2b:d2:2b:cf -j ACCEPT
 iptables -A FORWARD -d 172.16.0.34 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.34 -p udp --sport 10000:30000 -j MARK --set-mark 47420
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.34 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.34 -p udp --dport 10000:30000 -j MARK --set-mark 47430
@@ -957,6 +996,9 @@ iptables -A FORWARD -s 172.16.0.56 -j 172.16.0.56_o
 iptables -A FORWARD -d 172.16.0.56 -j 172.16.0.56_i
 iptables -A FORWARD -s 172.16.0.56 -m mac --mac-source 00:27:0E:16:AC:39 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.56 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.56 -p udp --sport 10000:30000 -j MARK --set-mark 13820
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.56 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.56 -p udp --dport 10000:30000 -j MARK --set-mark 13830
@@ -1019,6 +1061,9 @@ iptables -A FORWARD -s 172.16.0.12 -j 172.16.0.12_o
 iptables -A FORWARD -d 172.16.0.12 -j 172.16.0.12_i
 iptables -A FORWARD -s 172.16.0.12 -m mac --mac-source 98:0c:82:cf:59:fa -j ACCEPT
 iptables -A FORWARD -d 172.16.0.12 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.12 -p udp --sport 10000:30000 -j MARK --set-mark 47220
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.12 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.12 -p udp --dport 10000:30000 -j MARK --set-mark 47230
@@ -1081,6 +1126,9 @@ iptables -A FORWARD -s 172.16.0.45 -j 172.16.0.45_o
 iptables -A FORWARD -d 172.16.0.45 -j 172.16.0.45_i
 iptables -A FORWARD -s 172.16.0.45 -m mac --mac-source 00:0d:28:8f:9e:6f -j ACCEPT
 iptables -A FORWARD -d 172.16.0.45 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.45 -p udp --sport 10000:30000 -j MARK --set-mark 40420
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.45 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.45 -p udp --dport 10000:30000 -j MARK --set-mark 40430
@@ -1142,6 +1190,9 @@ iptables -A FORWARD -s 172.16.0.71 -j 172.16.0.71_o
 iptables -A FORWARD -d 172.16.0.71 -j 172.16.0.71_i
 iptables -A FORWARD -s 172.16.0.71 -m mac --mac-source 00:27:0e:16:27:b3 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.71 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.71 -p udp --sport 10000:30000 -j MARK --set-mark 13320
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.71 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.71 -p udp --dport 10000:30000 -j MARK --set-mark 13330
@@ -1190,68 +1241,6 @@ iptables -t nat -A PREROUTING -i br2 -p tcp --dport 80 -s 172.16.0.71 -j REDIREC
 iptables -t nat -A POSTROUTING -s 172.16.0.71 -o eth0 -j MASQUERADE
 
 
-echo ID: 466	Claudia Mattiussi	IP:60    
-#------------------------------------------------------------------------------
-#Cliente - Claudia Mattiussi	IP:60    ID: 466
-#------------------------------------------------------------------------------
-iptables -X 172.16.0.60_i
-iptables -X 172.16.0.60_o
-iptables -N 172.16.0.60_i
-iptables -N 172.16.0.60_o
-iptables -F 172.16.0.60_i
-iptables -F 172.16.0.60_o
-iptables -A FORWARD -s 172.16.0.60 -j 172.16.0.60_o
-iptables -A FORWARD -d 172.16.0.60 -j 172.16.0.60_i
-iptables -A FORWARD -s 172.16.0.60 -m mac --mac-source 00:1c:25:9f:e2:82 -j ACCEPT
-iptables -A FORWARD -d 172.16.0.60 -j ACCEPT
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.60 -p udp --sport 10000:30000 -j MARK --set-mark 46620
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.60 -p udp --sport 10000:30000 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.60 -p udp --dport 10000:30000 -j MARK --set-mark 46630
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.60 -p udp --dport 10000:30000 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.60 -p udp --sport 5060:5082 -j MARK --set-mark 46620
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.60 -p udp --sport 5060:5082 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.60 -p udp --dport 5060:5082 -j MARK --set-mark 46630
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.60 -p udp --dport 5060:5082 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.60 -p udp --sport 53 -j MARK --set-mark 46621
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.60 -p udp --sport 53 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.60 -p udp --dport 53 -j MARK --set-mark 46631
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.60 -p udp --dport 53 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.60 -p tcp --sport 22 -j MARK --set-mark 46622
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.60 -p tcp --sport 22 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.60 -p tcp --dport 22 -j MARK --set-mark 46632
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.60 -p tcp --dport 22 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.60 -p tcp --sport 443 -j MARK --set-mark 46623
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.60 -p tcp --sport 443 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.60 -p tcp --dport 443 -j MARK --set-mark 46633
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.60 -p tcp --dport 443 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.60 -p tcp --sport 80 -j MARK --set-mark 46624
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.60 -p tcp --sport 80 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.60 -p tcp --dport 80 -j MARK --set-mark 46634
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.60 -p tcp --dport 80 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.60 -p tcp --sport 25 -j MARK --set-mark 46626
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.60 -p tcp --sport 25 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.60 -p tcp --dport 25 -j MARK --set-mark 46636
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.60 -p tcp --dport 25 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.60 -p tcp --sport 110 -j MARK --set-mark 46626
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.60 -p tcp --sport 110 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.60 -p tcp --dport 110 -j MARK --set-mark 46636
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.60 -p tcp --dport 110 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.60 -p tcp --sport 143 -j MARK --set-mark 46626
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.60 -p tcp --sport 143 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.60 -p tcp --dport 143 -j MARK --set-mark 46636
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.60 -p tcp --dport 143 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.60 -p tcp --sport 21 -j MARK --set-mark 46627
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.60 -p tcp --sport 21 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.60 -p tcp --dport 21 -j MARK --set-mark 46637
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.60 -p tcp --dport 21 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.60 -j MARK --set-mark 46627
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.60 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.60 -j MARK --set-mark 46637
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.60 -j RETURN
-iptables -t nat -A PREROUTING -i br2 -p tcp --dport 80 -s 172.16.0.60 -j REDIRECT --to-port 3128
-iptables -t nat -A POSTROUTING -s 172.16.0.60 -o eth0 -j MASQUERADE
-
-
 echo ID: 463	Claudia Mattiussi	IP:90    
 #------------------------------------------------------------------------------
 #Cliente - Claudia Mattiussi	IP:90    ID: 463
@@ -1266,6 +1255,9 @@ iptables -A FORWARD -s 172.16.0.90 -j 172.16.0.90_o
 iptables -A FORWARD -d 172.16.0.90 -j 172.16.0.90_i
 iptables -A FORWARD -s 172.16.0.90 -m mac --mac-source 30:39:26:65:8b:8e -j ACCEPT
 iptables -A FORWARD -d 172.16.0.90 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.90 -p udp --sport 10000:30000 -j MARK --set-mark 46320
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.90 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.90 -p udp --dport 10000:30000 -j MARK --set-mark 46330
@@ -1328,6 +1320,9 @@ iptables -A FORWARD -s 172.16.0.17 -j 172.16.0.17_o
 iptables -A FORWARD -d 172.16.0.17 -j 172.16.0.17_i
 iptables -A FORWARD -s 172.16.0.17 -m mac --mac-source 00:22:fa:2d:c8:a6 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.17 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.17 -p udp --sport 10000:30000 -j MARK --set-mark 44420
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.17 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.17 -p udp --dport 10000:30000 -j MARK --set-mark 44430
@@ -1376,6 +1371,71 @@ iptables -t nat -A PREROUTING -i br2 -p tcp --dport 80 -s 172.16.0.17 -j REDIREC
 iptables -t nat -A POSTROUTING -s 172.16.0.17 -o eth0 -j MASQUERADE
 
 
+echo ID: 466	Claudia Mattiussi	IP:60    
+#------------------------------------------------------------------------------
+#Cliente - Claudia Mattiussi	IP:60    ID: 466
+#------------------------------------------------------------------------------
+iptables -X 172.16.0.60_i
+iptables -X 172.16.0.60_o
+iptables -N 172.16.0.60_i
+iptables -N 172.16.0.60_o
+iptables -F 172.16.0.60_i
+iptables -F 172.16.0.60_o
+iptables -A FORWARD -s 172.16.0.60 -j 172.16.0.60_o
+iptables -A FORWARD -d 172.16.0.60 -j 172.16.0.60_i
+iptables -A FORWARD -s 172.16.0.60 -m mac --mac-source 00:1c:25:9f:e2:82 -j ACCEPT
+iptables -A FORWARD -d 172.16.0.60 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.60 -p udp --sport 10000:30000 -j MARK --set-mark 46620
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.60 -p udp --sport 10000:30000 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.60 -p udp --dport 10000:30000 -j MARK --set-mark 46630
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.60 -p udp --dport 10000:30000 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.60 -p udp --sport 5060:5082 -j MARK --set-mark 46620
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.60 -p udp --sport 5060:5082 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.60 -p udp --dport 5060:5082 -j MARK --set-mark 46630
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.60 -p udp --dport 5060:5082 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.60 -p udp --sport 53 -j MARK --set-mark 46621
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.60 -p udp --sport 53 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.60 -p udp --dport 53 -j MARK --set-mark 46631
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.60 -p udp --dport 53 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.60 -p tcp --sport 22 -j MARK --set-mark 46622
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.60 -p tcp --sport 22 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.60 -p tcp --dport 22 -j MARK --set-mark 46632
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.60 -p tcp --dport 22 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.60 -p tcp --sport 443 -j MARK --set-mark 46623
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.60 -p tcp --sport 443 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.60 -p tcp --dport 443 -j MARK --set-mark 46633
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.60 -p tcp --dport 443 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.60 -p tcp --sport 80 -j MARK --set-mark 46624
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.60 -p tcp --sport 80 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.60 -p tcp --dport 80 -j MARK --set-mark 46634
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.60 -p tcp --dport 80 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.60 -p tcp --sport 25 -j MARK --set-mark 46626
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.60 -p tcp --sport 25 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.60 -p tcp --dport 25 -j MARK --set-mark 46636
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.60 -p tcp --dport 25 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.60 -p tcp --sport 110 -j MARK --set-mark 46626
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.60 -p tcp --sport 110 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.60 -p tcp --dport 110 -j MARK --set-mark 46636
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.60 -p tcp --dport 110 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.60 -p tcp --sport 143 -j MARK --set-mark 46626
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.60 -p tcp --sport 143 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.60 -p tcp --dport 143 -j MARK --set-mark 46636
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.60 -p tcp --dport 143 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.60 -p tcp --sport 21 -j MARK --set-mark 46627
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.60 -p tcp --sport 21 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.60 -p tcp --dport 21 -j MARK --set-mark 46637
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.60 -p tcp --dport 21 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.60 -j MARK --set-mark 46627
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.60 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.60 -j MARK --set-mark 46637
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.60 -j RETURN
+iptables -t nat -A PREROUTING -i br2 -p tcp --dport 80 -s 172.16.0.60 -j REDIRECT --to-port 3128
+iptables -t nat -A POSTROUTING -s 172.16.0.60 -o eth0 -j MASQUERADE
+
+
 echo ID: 231	Controlador Fiscal 1	IP:57    
 #------------------------------------------------------------------------------
 #Cliente - Controlador Fiscal 1	IP:57    ID: 231
@@ -1388,6 +1448,9 @@ iptables -F 172.16.0.57_i
 iptables -F 172.16.0.57_o
 iptables -A FORWARD -s 172.16.0.57 -j 172.16.0.57_o
 iptables -A FORWARD -d 172.16.0.57 -j 172.16.0.57_i
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.57 -p udp --sport 10000:30000 -j MARK --set-mark 23120
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.57 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.57 -p udp --dport 10000:30000 -j MARK --set-mark 23130
@@ -1448,6 +1511,9 @@ iptables -F 172.16.0.67_i
 iptables -F 172.16.0.67_o
 iptables -A FORWARD -s 172.16.0.67 -j 172.16.0.67_o
 iptables -A FORWARD -d 172.16.0.67 -j 172.16.0.67_i
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.67 -p udp --sport 10000:30000 -j MARK --set-mark 33020
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.67 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.67 -p udp --dport 10000:30000 -j MARK --set-mark 33030
@@ -1510,6 +1576,9 @@ iptables -A FORWARD -s 172.16.0.26 -j 172.16.0.26_o
 iptables -A FORWARD -d 172.16.0.26 -j 172.16.0.26_i
 iptables -A FORWARD -s 172.16.0.26 -m mac --mac-source e4:d5:3d:12:3a:db -j ACCEPT
 iptables -A FORWARD -d 172.16.0.26 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.26 -p udp --sport 10000:30000 -j MARK --set-mark 41420
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.26 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.26 -p udp --dport 10000:30000 -j MARK --set-mark 41430
@@ -1558,68 +1627,6 @@ iptables -t nat -A PREROUTING -i br2 -p tcp --dport 80 -s 172.16.0.26 -j REDIREC
 iptables -t nat -A POSTROUTING -s 172.16.0.26 -o eth0 -j MASQUERADE
 
 
-echo ID: 447	Dario Juarez	IP:99    
-#------------------------------------------------------------------------------
-#Cliente - Dario Juarez	IP:99    ID: 447
-#------------------------------------------------------------------------------
-iptables -X 172.16.0.99_i
-iptables -X 172.16.0.99_o
-iptables -N 172.16.0.99_i
-iptables -N 172.16.0.99_o
-iptables -F 172.16.0.99_i
-iptables -F 172.16.0.99_o
-iptables -A FORWARD -s 172.16.0.99 -j 172.16.0.99_o
-iptables -A FORWARD -d 172.16.0.99 -j 172.16.0.99_i
-iptables -A FORWARD -s 172.16.0.99 -m mac --mac-source 00:22:68:19:c9:96 -j ACCEPT
-iptables -A FORWARD -d 172.16.0.99 -j ACCEPT
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.99 -p udp --sport 10000:30000 -j MARK --set-mark 44720
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.99 -p udp --sport 10000:30000 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.99 -p udp --dport 10000:30000 -j MARK --set-mark 44730
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.99 -p udp --dport 10000:30000 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.99 -p udp --sport 5060:5082 -j MARK --set-mark 44720
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.99 -p udp --sport 5060:5082 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.99 -p udp --dport 5060:5082 -j MARK --set-mark 44730
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.99 -p udp --dport 5060:5082 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.99 -p udp --sport 53 -j MARK --set-mark 44721
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.99 -p udp --sport 53 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.99 -p udp --dport 53 -j MARK --set-mark 44731
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.99 -p udp --dport 53 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.99 -p tcp --sport 22 -j MARK --set-mark 44722
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.99 -p tcp --sport 22 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.99 -p tcp --dport 22 -j MARK --set-mark 44732
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.99 -p tcp --dport 22 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.99 -p tcp --sport 443 -j MARK --set-mark 44723
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.99 -p tcp --sport 443 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.99 -p tcp --dport 443 -j MARK --set-mark 44733
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.99 -p tcp --dport 443 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.99 -p tcp --sport 80 -j MARK --set-mark 44724
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.99 -p tcp --sport 80 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.99 -p tcp --dport 80 -j MARK --set-mark 44734
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.99 -p tcp --dport 80 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.99 -p tcp --sport 25 -j MARK --set-mark 44726
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.99 -p tcp --sport 25 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.99 -p tcp --dport 25 -j MARK --set-mark 44736
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.99 -p tcp --dport 25 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.99 -p tcp --sport 110 -j MARK --set-mark 44726
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.99 -p tcp --sport 110 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.99 -p tcp --dport 110 -j MARK --set-mark 44736
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.99 -p tcp --dport 110 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.99 -p tcp --sport 143 -j MARK --set-mark 44726
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.99 -p tcp --sport 143 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.99 -p tcp --dport 143 -j MARK --set-mark 44736
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.99 -p tcp --dport 143 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.99 -p tcp --sport 21 -j MARK --set-mark 44727
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.99 -p tcp --sport 21 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.99 -p tcp --dport 21 -j MARK --set-mark 44737
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.99 -p tcp --dport 21 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.99 -j MARK --set-mark 44727
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.99 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.99 -j MARK --set-mark 44737
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.99 -j RETURN
-iptables -t nat -A PREROUTING -i br2 -p tcp --dport 80 -s 172.16.0.99 -j REDIRECT --to-port 3128
-iptables -t nat -A POSTROUTING -s 172.16.0.99 -o eth0 -j MASQUERADE
-
-
 echo ID: 456	Dario Juarez	IP:59    
 #------------------------------------------------------------------------------
 #Cliente - Dario Juarez	IP:59    ID: 456
@@ -1634,6 +1641,9 @@ iptables -A FORWARD -s 172.16.0.59 -j 172.16.0.59_o
 iptables -A FORWARD -d 172.16.0.59 -j 172.16.0.59_i
 iptables -A FORWARD -s 172.16.0.59 -m mac --mac-source 80:96:b1:df:d1:77 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.59 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.59 -p udp --sport 10000:30000 -j MARK --set-mark 45620
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.59 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.59 -p udp --dport 10000:30000 -j MARK --set-mark 45630
@@ -1695,6 +1705,9 @@ iptables -A FORWARD -s 172.16.0.43 -j 172.16.0.43_o
 iptables -A FORWARD -d 172.16.0.43 -j 172.16.0.43_i
 iptables -A FORWARD -s 172.16.0.43 -m mac --mac-source 00:26:c6:c6:7e:c4 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.43 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.43 -p udp --sport 10000:30000 -j MARK --set-mark 44520
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.43 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.43 -p udp --dport 10000:30000 -j MARK --set-mark 44530
@@ -1757,6 +1770,9 @@ iptables -A FORWARD -s 172.16.0.202 -j 172.16.0.202_o
 iptables -A FORWARD -d 172.16.0.202 -j 172.16.0.202_i
 iptables -A FORWARD -s 172.16.0.202 -m mac --mac-source 00:80:f0:d1:cd:dc -j ACCEPT
 iptables -A FORWARD -d 172.16.0.202 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.202 -p udp --sport 10000:30000 -j MARK --set-mark 40620
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.202 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.202 -p udp --dport 10000:30000 -j MARK --set-mark 40630
@@ -1805,6 +1821,71 @@ iptables -t nat -A PREROUTING -i br2 -p tcp --dport 80 -s 172.16.0.202 -j REDIRE
 iptables -t nat -A POSTROUTING -s 172.16.0.202 -o eth0 -j MASQUERADE
 
 
+echo ID: 447	Dario Juarez	IP:99    
+#------------------------------------------------------------------------------
+#Cliente - Dario Juarez	IP:99    ID: 447
+#------------------------------------------------------------------------------
+iptables -X 172.16.0.99_i
+iptables -X 172.16.0.99_o
+iptables -N 172.16.0.99_i
+iptables -N 172.16.0.99_o
+iptables -F 172.16.0.99_i
+iptables -F 172.16.0.99_o
+iptables -A FORWARD -s 172.16.0.99 -j 172.16.0.99_o
+iptables -A FORWARD -d 172.16.0.99 -j 172.16.0.99_i
+iptables -A FORWARD -s 172.16.0.99 -m mac --mac-source 00:22:68:19:c9:96 -j ACCEPT
+iptables -A FORWARD -d 172.16.0.99 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.99 -p udp --sport 10000:30000 -j MARK --set-mark 44720
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.99 -p udp --sport 10000:30000 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.99 -p udp --dport 10000:30000 -j MARK --set-mark 44730
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.99 -p udp --dport 10000:30000 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.99 -p udp --sport 5060:5082 -j MARK --set-mark 44720
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.99 -p udp --sport 5060:5082 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.99 -p udp --dport 5060:5082 -j MARK --set-mark 44730
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.99 -p udp --dport 5060:5082 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.99 -p udp --sport 53 -j MARK --set-mark 44721
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.99 -p udp --sport 53 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.99 -p udp --dport 53 -j MARK --set-mark 44731
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.99 -p udp --dport 53 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.99 -p tcp --sport 22 -j MARK --set-mark 44722
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.99 -p tcp --sport 22 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.99 -p tcp --dport 22 -j MARK --set-mark 44732
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.99 -p tcp --dport 22 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.99 -p tcp --sport 443 -j MARK --set-mark 44723
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.99 -p tcp --sport 443 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.99 -p tcp --dport 443 -j MARK --set-mark 44733
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.99 -p tcp --dport 443 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.99 -p tcp --sport 80 -j MARK --set-mark 44724
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.99 -p tcp --sport 80 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.99 -p tcp --dport 80 -j MARK --set-mark 44734
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.99 -p tcp --dport 80 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.99 -p tcp --sport 25 -j MARK --set-mark 44726
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.99 -p tcp --sport 25 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.99 -p tcp --dport 25 -j MARK --set-mark 44736
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.99 -p tcp --dport 25 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.99 -p tcp --sport 110 -j MARK --set-mark 44726
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.99 -p tcp --sport 110 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.99 -p tcp --dport 110 -j MARK --set-mark 44736
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.99 -p tcp --dport 110 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.99 -p tcp --sport 143 -j MARK --set-mark 44726
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.99 -p tcp --sport 143 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.99 -p tcp --dport 143 -j MARK --set-mark 44736
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.99 -p tcp --dport 143 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.99 -p tcp --sport 21 -j MARK --set-mark 44727
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.99 -p tcp --sport 21 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.99 -p tcp --dport 21 -j MARK --set-mark 44737
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.99 -p tcp --dport 21 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.99 -j MARK --set-mark 44727
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.99 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.99 -j MARK --set-mark 44737
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.99 -j RETURN
+iptables -t nat -A PREROUTING -i br2 -p tcp --dport 80 -s 172.16.0.99 -j REDIRECT --to-port 3128
+iptables -t nat -A POSTROUTING -s 172.16.0.99 -o eth0 -j MASQUERADE
+
+
 echo ID: 485	Dell	IP:41    
 #------------------------------------------------------------------------------
 #Cliente - Dell	IP:41    ID: 485
@@ -1819,6 +1900,9 @@ iptables -A FORWARD -s 172.16.0.41 -j 172.16.0.41_o
 iptables -A FORWARD -d 172.16.0.41 -j 172.16.0.41_i
 iptables -A FORWARD -s 172.16.0.41 -m mac --mac-source 00:13:ce:20:4c:c3 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.41 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.41 -p udp --sport 10000:30000 -j MARK --set-mark 48520
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.41 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.41 -p udp --dport 10000:30000 -j MARK --set-mark 48530
@@ -1881,6 +1965,9 @@ iptables -A FORWARD -s 172.16.0.16 -j 172.16.0.16_o
 iptables -A FORWARD -d 172.16.0.16 -j 172.16.0.16_i
 iptables -A FORWARD -s 172.16.0.16 -m mac --mac-source 00:0b:6a:bf:79:58 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.16 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.16 -p udp --sport 10000:30000 -j MARK --set-mark 43820
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.16 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.16 -p udp --dport 10000:30000 -j MARK --set-mark 43830
@@ -1943,6 +2030,9 @@ iptables -A FORWARD -s 172.16.0.9 -j 172.16.0.9_o
 iptables -A FORWARD -d 172.16.0.9 -j 172.16.0.9_i
 iptables -A FORWARD -s 172.16.0.9 -m mac --mac-source 00:5e:09:07:fc:0a -j ACCEPT
 iptables -A FORWARD -d 172.16.0.9 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.9 -p udp --sport 10000:30000 -j MARK --set-mark 20120
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.9 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.9 -p udp --dport 10000:30000 -j MARK --set-mark 20130
@@ -2004,6 +2094,9 @@ iptables -A FORWARD -s 172.16.0.8 -j 172.16.0.8_o
 iptables -A FORWARD -d 172.16.0.8 -j 172.16.0.8_i
 iptables -A FORWARD -s 172.16.0.8 -m mac --mac-source 00:6b:58:2c:2c:55 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.8 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.8 -p udp --sport 10000:30000 -j MARK --set-mark 20020
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.8 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.8 -p udp --dport 10000:30000 -j MARK --set-mark 20030
@@ -2051,68 +2144,6 @@ iptables -t mangle -A FORWARD -i br2 -s 172.16.0.8 -j RETURN
 iptables -t nat -A POSTROUTING -s 172.16.0.8 -o eth0 -j MASQUERADE
 
 
-echo ID: 410	Erica Mirkouski	IP:200    
-#------------------------------------------------------------------------------
-#Cliente - Erica Mirkouski	IP:200    ID: 410
-#------------------------------------------------------------------------------
-iptables -X 172.16.0.200_i
-iptables -X 172.16.0.200_o
-iptables -N 172.16.0.200_i
-iptables -N 172.16.0.200_o
-iptables -F 172.16.0.200_i
-iptables -F 172.16.0.200_o
-iptables -A FORWARD -s 172.16.0.200 -j 172.16.0.200_o
-iptables -A FORWARD -d 172.16.0.200 -j 172.16.0.200_i
-iptables -A FORWARD -s 172.16.0.200 -m mac --mac-source 00:80:f0:d1:d1:9f -j ACCEPT
-iptables -A FORWARD -d 172.16.0.200 -j ACCEPT
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.200 -p udp --sport 10000:30000 -j MARK --set-mark 41020
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.200 -p udp --sport 10000:30000 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.200 -p udp --dport 10000:30000 -j MARK --set-mark 41030
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.200 -p udp --dport 10000:30000 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.200 -p udp --sport 5060:5082 -j MARK --set-mark 41020
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.200 -p udp --sport 5060:5082 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.200 -p udp --dport 5060:5082 -j MARK --set-mark 41030
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.200 -p udp --dport 5060:5082 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.200 -p udp --sport 53 -j MARK --set-mark 41021
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.200 -p udp --sport 53 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.200 -p udp --dport 53 -j MARK --set-mark 41031
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.200 -p udp --dport 53 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.200 -p tcp --sport 22 -j MARK --set-mark 41022
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.200 -p tcp --sport 22 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.200 -p tcp --dport 22 -j MARK --set-mark 41032
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.200 -p tcp --dport 22 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.200 -p tcp --sport 443 -j MARK --set-mark 41023
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.200 -p tcp --sport 443 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.200 -p tcp --dport 443 -j MARK --set-mark 41033
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.200 -p tcp --dport 443 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.200 -p tcp --sport 80 -j MARK --set-mark 41024
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.200 -p tcp --sport 80 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.200 -p tcp --dport 80 -j MARK --set-mark 41034
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.200 -p tcp --dport 80 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.200 -p tcp --sport 25 -j MARK --set-mark 41026
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.200 -p tcp --sport 25 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.200 -p tcp --dport 25 -j MARK --set-mark 41036
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.200 -p tcp --dport 25 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.200 -p tcp --sport 110 -j MARK --set-mark 41026
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.200 -p tcp --sport 110 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.200 -p tcp --dport 110 -j MARK --set-mark 41036
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.200 -p tcp --dport 110 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.200 -p tcp --sport 143 -j MARK --set-mark 41026
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.200 -p tcp --sport 143 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.200 -p tcp --dport 143 -j MARK --set-mark 41036
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.200 -p tcp --dport 143 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.200 -p tcp --sport 21 -j MARK --set-mark 41027
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.200 -p tcp --sport 21 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.200 -p tcp --dport 21 -j MARK --set-mark 41037
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.200 -p tcp --dport 21 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.200 -j MARK --set-mark 41027
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.200 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.200 -j MARK --set-mark 41037
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.200 -j RETURN
-iptables -t nat -A PREROUTING -i br2 -p tcp --dport 80 -s 172.16.0.200 -j REDIRECT --to-port 3128
-iptables -t nat -A POSTROUTING -s 172.16.0.200 -o eth0 -j MASQUERADE
-
-
 echo ID: 374	Erica Mirkouski	IP:61    
 #------------------------------------------------------------------------------
 #Cliente - Erica Mirkouski	IP:61    ID: 374
@@ -2127,6 +2158,9 @@ iptables -A FORWARD -s 172.16.0.61 -j 172.16.0.61_o
 iptables -A FORWARD -d 172.16.0.61 -j 172.16.0.61_i
 iptables -A FORWARD -s 172.16.0.61 -m mac --mac-source 00:27:0e:15:9d:38 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.61 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.61 -p udp --sport 10000:30000 -j MARK --set-mark 37420
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.61 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.61 -p udp --dport 10000:30000 -j MARK --set-mark 37430
@@ -2175,6 +2209,71 @@ iptables -t nat -A PREROUTING -i br2 -p tcp --dport 80 -s 172.16.0.61 -j REDIREC
 iptables -t nat -A POSTROUTING -s 172.16.0.61 -o eth0 -j MASQUERADE
 
 
+echo ID: 410	Erica Mirkouski	IP:200    
+#------------------------------------------------------------------------------
+#Cliente - Erica Mirkouski	IP:200    ID: 410
+#------------------------------------------------------------------------------
+iptables -X 172.16.0.200_i
+iptables -X 172.16.0.200_o
+iptables -N 172.16.0.200_i
+iptables -N 172.16.0.200_o
+iptables -F 172.16.0.200_i
+iptables -F 172.16.0.200_o
+iptables -A FORWARD -s 172.16.0.200 -j 172.16.0.200_o
+iptables -A FORWARD -d 172.16.0.200 -j 172.16.0.200_i
+iptables -A FORWARD -s 172.16.0.200 -m mac --mac-source 00:80:f0:d1:d1:9f -j ACCEPT
+iptables -A FORWARD -d 172.16.0.200 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.200 -p udp --sport 10000:30000 -j MARK --set-mark 41020
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.200 -p udp --sport 10000:30000 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.200 -p udp --dport 10000:30000 -j MARK --set-mark 41030
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.200 -p udp --dport 10000:30000 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.200 -p udp --sport 5060:5082 -j MARK --set-mark 41020
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.200 -p udp --sport 5060:5082 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.200 -p udp --dport 5060:5082 -j MARK --set-mark 41030
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.200 -p udp --dport 5060:5082 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.200 -p udp --sport 53 -j MARK --set-mark 41021
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.200 -p udp --sport 53 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.200 -p udp --dport 53 -j MARK --set-mark 41031
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.200 -p udp --dport 53 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.200 -p tcp --sport 22 -j MARK --set-mark 41022
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.200 -p tcp --sport 22 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.200 -p tcp --dport 22 -j MARK --set-mark 41032
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.200 -p tcp --dport 22 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.200 -p tcp --sport 443 -j MARK --set-mark 41023
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.200 -p tcp --sport 443 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.200 -p tcp --dport 443 -j MARK --set-mark 41033
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.200 -p tcp --dport 443 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.200 -p tcp --sport 80 -j MARK --set-mark 41024
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.200 -p tcp --sport 80 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.200 -p tcp --dport 80 -j MARK --set-mark 41034
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.200 -p tcp --dport 80 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.200 -p tcp --sport 25 -j MARK --set-mark 41026
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.200 -p tcp --sport 25 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.200 -p tcp --dport 25 -j MARK --set-mark 41036
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.200 -p tcp --dport 25 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.200 -p tcp --sport 110 -j MARK --set-mark 41026
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.200 -p tcp --sport 110 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.200 -p tcp --dport 110 -j MARK --set-mark 41036
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.200 -p tcp --dport 110 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.200 -p tcp --sport 143 -j MARK --set-mark 41026
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.200 -p tcp --sport 143 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.200 -p tcp --dport 143 -j MARK --set-mark 41036
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.200 -p tcp --dport 143 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.200 -p tcp --sport 21 -j MARK --set-mark 41027
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.200 -p tcp --sport 21 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.200 -p tcp --dport 21 -j MARK --set-mark 41037
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.200 -p tcp --dport 21 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.200 -j MARK --set-mark 41027
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.200 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.200 -j MARK --set-mark 41037
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.200 -j RETURN
+iptables -t nat -A PREROUTING -i br2 -p tcp --dport 80 -s 172.16.0.200 -j REDIRECT --to-port 3128
+iptables -t nat -A POSTROUTING -s 172.16.0.200 -o eth0 -j MASQUERADE
+
+
 echo ID: 483	GatewayPrueba	IP:28    
 #------------------------------------------------------------------------------
 #Cliente - GatewayPrueba	IP:28    ID: 483
@@ -2189,6 +2288,9 @@ iptables -A FORWARD -s 172.16.0.28 -j 172.16.0.28_o
 iptables -A FORWARD -d 172.16.0.28 -j 172.16.0.28_i
 iptables -A FORWARD -s 172.16.0.28 -m mac --mac-source 00:0b:82:11:b9:3f -j ACCEPT
 iptables -A FORWARD -d 172.16.0.28 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.28 -p udp --sport 10000:30000 -j MARK --set-mark 48320
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.28 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.28 -p udp --dport 10000:30000 -j MARK --set-mark 48330
@@ -2251,6 +2353,9 @@ iptables -A FORWARD -s 172.16.0.27 -j 172.16.0.27_o
 iptables -A FORWARD -d 172.16.0.27 -j 172.16.0.27_i
 iptables -A FORWARD -s 172.16.0.27 -m mac --mac-source 00:21:19:e5:91:09 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.27 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.27 -p udp --sport 10000:30000 -j MARK --set-mark 48220
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.27 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.27 -p udp --dport 10000:30000 -j MARK --set-mark 48230
@@ -2313,6 +2418,9 @@ iptables -A FORWARD -s 172.16.0.25 -j 172.16.0.25_o
 iptables -A FORWARD -d 172.16.0.25 -j 172.16.0.25_i
 iptables -A FORWARD -s 172.16.0.25 -m mac --mac-source 78:dd:08:be:7c:63 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.25 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.25 -p udp --sport 10000:30000 -j MARK --set-mark 48120
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.25 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.25 -p udp --dport 10000:30000 -j MARK --set-mark 48130
@@ -2375,6 +2483,9 @@ iptables -A FORWARD -s 172.16.0.32 -j 172.16.0.32_o
 iptables -A FORWARD -d 172.16.0.32 -j 172.16.0.32_i
 iptables -A FORWARD -s 172.16.0.32 -m mac --mac-source 28:92:4a:a6:11:7a -j ACCEPT
 iptables -A FORWARD -d 172.16.0.32 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.32 -p udp --sport 10000:30000 -j MARK --set-mark 40020
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.32 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.32 -p udp --dport 10000:30000 -j MARK --set-mark 40030
@@ -2437,6 +2548,9 @@ iptables -A FORWARD -s 172.16.0.18 -j 172.16.0.18_o
 iptables -A FORWARD -d 172.16.0.18 -j 172.16.0.18_i
 iptables -A FORWARD -s 172.16.0.18 -m mac --mac-source 00:08:54:a5:f0:8c -j ACCEPT
 iptables -A FORWARD -d 172.16.0.18 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.18 -p udp --sport 10000:30000 -j MARK --set-mark 47720
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.18 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.18 -p udp --dport 10000:30000 -j MARK --set-mark 47730
@@ -2498,6 +2612,9 @@ iptables -A FORWARD -s 172.16.0.22 -j 172.16.0.22_o
 iptables -A FORWARD -d 172.16.0.22 -j 172.16.0.22_i
 iptables -A FORWARD -s 172.16.0.22 -m mac --mac-source 00:30:4f:79:29:f9 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.22 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.22 -p udp --sport 10000:30000 -j MARK --set-mark 22020
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.22 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.22 -p udp --dport 10000:30000 -j MARK --set-mark 22030
@@ -2559,6 +2676,9 @@ iptables -A FORWARD -s 172.16.0.31 -j 172.16.0.31_o
 iptables -A FORWARD -d 172.16.0.31 -j 172.16.0.31_i
 iptables -A FORWARD -s 172.16.0.31 -m mac --mac-source 00:15:99:ac:98:99 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.31 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.31 -p udp --sport 10000:30000 -j MARK --set-mark 41720
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.31 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.31 -p udp --dport 10000:30000 -j MARK --set-mark 41730
@@ -2618,6 +2738,9 @@ iptables -F 172.16.0.30_i
 iptables -F 172.16.0.30_o
 iptables -A FORWARD -s 172.16.0.30 -j 172.16.0.30_o
 iptables -A FORWARD -d 172.16.0.30 -j 172.16.0.30_i
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.30 -p udp --sport 10000:30000 -j MARK --set-mark 39020
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.30 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.30 -p udp --dport 10000:30000 -j MARK --set-mark 39030
@@ -2679,6 +2802,9 @@ iptables -A FORWARD -s 172.16.0.63 -j 172.16.0.63_o
 iptables -A FORWARD -d 172.16.0.63 -j 172.16.0.63_i
 iptables -A FORWARD -s 172.16.0.63 -m mac --mac-source 00:0b:82:11:b9:33 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.63 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.63 -p udp --sport 10000:30000 -j MARK --set-mark 49720
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.63 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.63 -p udp --dport 10000:30000 -j MARK --set-mark 49730
@@ -2740,6 +2866,9 @@ iptables -A FORWARD -s 172.16.0.64 -j 172.16.0.64_o
 iptables -A FORWARD -d 172.16.0.64 -j 172.16.0.64_i
 iptables -A FORWARD -s 172.16.0.64 -m mac --mac-source 00:0b:82:11:b9:33 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.64 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.64 -p udp --sport 10000:30000 -j MARK --set-mark 49820
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.64 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.64 -p udp --dport 10000:30000 -j MARK --set-mark 49830
@@ -2801,6 +2930,9 @@ iptables -A FORWARD -s 172.16.0.58 -j 172.16.0.58_o
 iptables -A FORWARD -d 172.16.0.58 -j 172.16.0.58_i
 iptables -A FORWARD -s 172.16.0.58 -m mac --mac-source f0:f6:1c:eb:51:a2 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.58 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.58 -p udp --sport 10000:30000 -j MARK --set-mark 49620
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.58 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.58 -p udp --dport 10000:30000 -j MARK --set-mark 49630
@@ -2848,68 +2980,6 @@ iptables -t mangle -A FORWARD -i br2 -s 172.16.0.58 -j RETURN
 iptables -t nat -A POSTROUTING -s 172.16.0.58 -o eth0 -j MASQUERADE
 
 
-echo ID: 261	Jose Lopez	IP:36    
-#------------------------------------------------------------------------------
-#Cliente - Jose Lopez	IP:36    ID: 261
-#------------------------------------------------------------------------------
-iptables -X 172.16.0.36_i
-iptables -X 172.16.0.36_o
-iptables -N 172.16.0.36_i
-iptables -N 172.16.0.36_o
-iptables -F 172.16.0.36_i
-iptables -F 172.16.0.36_o
-iptables -A FORWARD -s 172.16.0.36 -j 172.16.0.36_o
-iptables -A FORWARD -d 172.16.0.36 -j 172.16.0.36_i
-iptables -A FORWARD -s 172.16.0.36 -m mac --mac-source e0:06:e6:07:3c:87 -j ACCEPT
-iptables -A FORWARD -d 172.16.0.36 -j ACCEPT
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.36 -p udp --sport 10000:30000 -j MARK --set-mark 26120
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.36 -p udp --sport 10000:30000 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.36 -p udp --dport 10000:30000 -j MARK --set-mark 26130
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.36 -p udp --dport 10000:30000 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.36 -p udp --sport 5060:5082 -j MARK --set-mark 26120
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.36 -p udp --sport 5060:5082 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.36 -p udp --dport 5060:5082 -j MARK --set-mark 26130
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.36 -p udp --dport 5060:5082 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.36 -p udp --sport 53 -j MARK --set-mark 26121
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.36 -p udp --sport 53 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.36 -p udp --dport 53 -j MARK --set-mark 26131
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.36 -p udp --dport 53 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.36 -p tcp --sport 22 -j MARK --set-mark 26122
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.36 -p tcp --sport 22 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.36 -p tcp --dport 22 -j MARK --set-mark 26132
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.36 -p tcp --dport 22 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.36 -p tcp --sport 443 -j MARK --set-mark 26123
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.36 -p tcp --sport 443 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.36 -p tcp --dport 443 -j MARK --set-mark 26133
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.36 -p tcp --dport 443 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.36 -p tcp --sport 80 -j MARK --set-mark 26124
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.36 -p tcp --sport 80 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.36 -p tcp --dport 80 -j MARK --set-mark 26134
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.36 -p tcp --dport 80 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.36 -p tcp --sport 25 -j MARK --set-mark 26126
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.36 -p tcp --sport 25 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.36 -p tcp --dport 25 -j MARK --set-mark 26136
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.36 -p tcp --dport 25 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.36 -p tcp --sport 110 -j MARK --set-mark 26126
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.36 -p tcp --sport 110 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.36 -p tcp --dport 110 -j MARK --set-mark 26136
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.36 -p tcp --dport 110 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.36 -p tcp --sport 143 -j MARK --set-mark 26126
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.36 -p tcp --sport 143 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.36 -p tcp --dport 143 -j MARK --set-mark 26136
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.36 -p tcp --dport 143 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.36 -p tcp --sport 21 -j MARK --set-mark 26127
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.36 -p tcp --sport 21 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.36 -p tcp --dport 21 -j MARK --set-mark 26137
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.36 -p tcp --dport 21 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.36 -j MARK --set-mark 26127
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.36 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.36 -j MARK --set-mark 26137
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.36 -j RETURN
-iptables -t nat -A PREROUTING -i br2 -p tcp --dport 80 -s 172.16.0.36 -j REDIRECT --to-port 3128
-iptables -t nat -A POSTROUTING -s 172.16.0.36 -o eth0 -j MASQUERADE
-
-
 echo ID: 286	Jose Lopez	IP:33    
 #------------------------------------------------------------------------------
 #Cliente - Jose Lopez	IP:33    ID: 286
@@ -2924,6 +2994,9 @@ iptables -A FORWARD -s 172.16.0.33 -j 172.16.0.33_o
 iptables -A FORWARD -d 172.16.0.33 -j 172.16.0.33_i
 iptables -A FORWARD -s 172.16.0.33 -m mac --mac-source 24:b6:fd:4d:ba:bc -j ACCEPT
 iptables -A FORWARD -d 172.16.0.33 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.33 -p udp --sport 10000:30000 -j MARK --set-mark 28620
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.33 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.33 -p udp --dport 10000:30000 -j MARK --set-mark 28630
@@ -2986,6 +3059,9 @@ iptables -A FORWARD -s 172.16.0.37 -j 172.16.0.37_o
 iptables -A FORWARD -d 172.16.0.37 -j 172.16.0.37_i
 iptables -A FORWARD -s 172.16.0.37 -m mac --mac-source 54:26:96:d4:71:f5 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.37 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.37 -p udp --sport 10000:30000 -j MARK --set-mark 48620
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.37 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.37 -p udp --dport 10000:30000 -j MARK --set-mark 48630
@@ -3048,6 +3124,9 @@ iptables -A FORWARD -s 172.16.0.55 -j 172.16.0.55_o
 iptables -A FORWARD -d 172.16.0.55 -j 172.16.0.55_i
 iptables -A FORWARD -s 172.16.0.55 -m mac --mac-source 84:8e:0c:68:dc:00 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.55 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.55 -p udp --sport 10000:30000 -j MARK --set-mark 49320
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.55 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.55 -p udp --dport 10000:30000 -j MARK --set-mark 49330
@@ -3095,6 +3174,71 @@ iptables -t mangle -A FORWARD -i br2 -s 172.16.0.55 -j RETURN
 iptables -t nat -A POSTROUTING -s 172.16.0.55 -o eth0 -j MASQUERADE
 
 
+echo ID: 261	Jose Lopez	IP:36    
+#------------------------------------------------------------------------------
+#Cliente - Jose Lopez	IP:36    ID: 261
+#------------------------------------------------------------------------------
+iptables -X 172.16.0.36_i
+iptables -X 172.16.0.36_o
+iptables -N 172.16.0.36_i
+iptables -N 172.16.0.36_o
+iptables -F 172.16.0.36_i
+iptables -F 172.16.0.36_o
+iptables -A FORWARD -s 172.16.0.36 -j 172.16.0.36_o
+iptables -A FORWARD -d 172.16.0.36 -j 172.16.0.36_i
+iptables -A FORWARD -s 172.16.0.36 -m mac --mac-source e0:06:e6:07:3c:87 -j ACCEPT
+iptables -A FORWARD -d 172.16.0.36 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.36 -p udp --sport 10000:30000 -j MARK --set-mark 26120
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.36 -p udp --sport 10000:30000 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.36 -p udp --dport 10000:30000 -j MARK --set-mark 26130
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.36 -p udp --dport 10000:30000 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.36 -p udp --sport 5060:5082 -j MARK --set-mark 26120
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.36 -p udp --sport 5060:5082 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.36 -p udp --dport 5060:5082 -j MARK --set-mark 26130
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.36 -p udp --dport 5060:5082 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.36 -p udp --sport 53 -j MARK --set-mark 26121
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.36 -p udp --sport 53 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.36 -p udp --dport 53 -j MARK --set-mark 26131
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.36 -p udp --dport 53 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.36 -p tcp --sport 22 -j MARK --set-mark 26122
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.36 -p tcp --sport 22 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.36 -p tcp --dport 22 -j MARK --set-mark 26132
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.36 -p tcp --dport 22 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.36 -p tcp --sport 443 -j MARK --set-mark 26123
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.36 -p tcp --sport 443 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.36 -p tcp --dport 443 -j MARK --set-mark 26133
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.36 -p tcp --dport 443 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.36 -p tcp --sport 80 -j MARK --set-mark 26124
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.36 -p tcp --sport 80 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.36 -p tcp --dport 80 -j MARK --set-mark 26134
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.36 -p tcp --dport 80 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.36 -p tcp --sport 25 -j MARK --set-mark 26126
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.36 -p tcp --sport 25 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.36 -p tcp --dport 25 -j MARK --set-mark 26136
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.36 -p tcp --dport 25 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.36 -p tcp --sport 110 -j MARK --set-mark 26126
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.36 -p tcp --sport 110 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.36 -p tcp --dport 110 -j MARK --set-mark 26136
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.36 -p tcp --dport 110 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.36 -p tcp --sport 143 -j MARK --set-mark 26126
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.36 -p tcp --sport 143 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.36 -p tcp --dport 143 -j MARK --set-mark 26136
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.36 -p tcp --dport 143 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.36 -p tcp --sport 21 -j MARK --set-mark 26127
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.36 -p tcp --sport 21 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.36 -p tcp --dport 21 -j MARK --set-mark 26137
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.36 -p tcp --dport 21 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.36 -j MARK --set-mark 26127
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.36 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.36 -j MARK --set-mark 26137
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.36 -j RETURN
+iptables -t nat -A PREROUTING -i br2 -p tcp --dport 80 -s 172.16.0.36 -j REDIRECT --to-port 3128
+iptables -t nat -A POSTROUTING -s 172.16.0.36 -o eth0 -j MASQUERADE
+
+
 echo ID: 446	Manuela Gaitto	IP:72    
 #------------------------------------------------------------------------------
 #Cliente - Manuela Gaitto	IP:72    ID: 446
@@ -3109,6 +3253,9 @@ iptables -A FORWARD -s 172.16.0.72 -j 172.16.0.72_o
 iptables -A FORWARD -d 172.16.0.72 -j 172.16.0.72_i
 iptables -A FORWARD -s 172.16.0.72 -m mac --mac-source 00:21:6b:ca:89:d0 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.72 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.72 -p udp --sport 10000:30000 -j MARK --set-mark 44620
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.72 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.72 -p udp --dport 10000:30000 -j MARK --set-mark 44630
@@ -3157,6 +3304,70 @@ iptables -t nat -A PREROUTING -i br2 -p tcp --dport 80 -s 172.16.0.72 -j REDIREC
 iptables -t nat -A POSTROUTING -s 172.16.0.72 -o eth0 -j MASQUERADE
 
 
+echo ID: 411	Mariela Rossetti	IP:46    
+#------------------------------------------------------------------------------
+#Cliente - Mariela Rossetti	IP:46    ID: 411
+#------------------------------------------------------------------------------
+iptables -X 172.16.0.46_i
+iptables -X 172.16.0.46_o
+iptables -N 172.16.0.46_i
+iptables -N 172.16.0.46_o
+iptables -F 172.16.0.46_i
+iptables -F 172.16.0.46_o
+iptables -A FORWARD -s 172.16.0.46 -j 172.16.0.46_o
+iptables -A FORWARD -d 172.16.0.46 -j 172.16.0.46_i
+iptables -A FORWARD -s 172.16.0.46 -m mac --mac-source 00:0b:82:14:dc:47 -j ACCEPT
+iptables -A FORWARD -d 172.16.0.46 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.46 -p udp --sport 10000:30000 -j MARK --set-mark 41120
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.46 -p udp --sport 10000:30000 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.46 -p udp --dport 10000:30000 -j MARK --set-mark 41130
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.46 -p udp --dport 10000:30000 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.46 -p udp --sport 5060:5082 -j MARK --set-mark 41120
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.46 -p udp --sport 5060:5082 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.46 -p udp --dport 5060:5082 -j MARK --set-mark 41130
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.46 -p udp --dport 5060:5082 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.46 -p udp --sport 53 -j MARK --set-mark 41121
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.46 -p udp --sport 53 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.46 -p udp --dport 53 -j MARK --set-mark 41131
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.46 -p udp --dport 53 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.46 -p tcp --sport 22 -j MARK --set-mark 41122
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.46 -p tcp --sport 22 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.46 -p tcp --dport 22 -j MARK --set-mark 41132
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.46 -p tcp --dport 22 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.46 -p tcp --sport 443 -j MARK --set-mark 41123
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.46 -p tcp --sport 443 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.46 -p tcp --dport 443 -j MARK --set-mark 41133
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.46 -p tcp --dport 443 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.46 -p tcp --sport 80 -j MARK --set-mark 41124
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.46 -p tcp --sport 80 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.46 -p tcp --dport 80 -j MARK --set-mark 41134
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.46 -p tcp --dport 80 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.46 -p tcp --sport 25 -j MARK --set-mark 41126
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.46 -p tcp --sport 25 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.46 -p tcp --dport 25 -j MARK --set-mark 41136
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.46 -p tcp --dport 25 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.46 -p tcp --sport 110 -j MARK --set-mark 41126
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.46 -p tcp --sport 110 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.46 -p tcp --dport 110 -j MARK --set-mark 41136
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.46 -p tcp --dport 110 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.46 -p tcp --sport 143 -j MARK --set-mark 41126
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.46 -p tcp --sport 143 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.46 -p tcp --dport 143 -j MARK --set-mark 41136
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.46 -p tcp --dport 143 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.46 -p tcp --sport 21 -j MARK --set-mark 41127
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.46 -p tcp --sport 21 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.46 -p tcp --dport 21 -j MARK --set-mark 41137
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.46 -p tcp --dport 21 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.46 -j MARK --set-mark 41127
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.46 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.46 -j MARK --set-mark 41137
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.46 -j RETURN
+iptables -t nat -A POSTROUTING -s 172.16.0.46 -o eth0 -j MASQUERADE
+
+
 echo ID: 323	Mariela Rossetti	IP:73    
 #------------------------------------------------------------------------------
 #Cliente - Mariela Rossetti	IP:73    ID: 323
@@ -3171,6 +3382,9 @@ iptables -A FORWARD -s 172.16.0.73 -j 172.16.0.73_o
 iptables -A FORWARD -d 172.16.0.73 -j 172.16.0.73_i
 iptables -A FORWARD -s 172.16.0.73 -m mac --mac-source 00:1c:c0:37:40:b7 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.73 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.73 -p udp --sport 10000:30000 -j MARK --set-mark 32320
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.73 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.73 -p udp --dport 10000:30000 -j MARK --set-mark 32330
@@ -3219,67 +3433,6 @@ iptables -t nat -A PREROUTING -i br2 -p tcp --dport 80 -s 172.16.0.73 -j REDIREC
 iptables -t nat -A POSTROUTING -s 172.16.0.73 -o eth0 -j MASQUERADE
 
 
-echo ID: 411	Mariela Rossetti	IP:46    
-#------------------------------------------------------------------------------
-#Cliente - Mariela Rossetti	IP:46    ID: 411
-#------------------------------------------------------------------------------
-iptables -X 172.16.0.46_i
-iptables -X 172.16.0.46_o
-iptables -N 172.16.0.46_i
-iptables -N 172.16.0.46_o
-iptables -F 172.16.0.46_i
-iptables -F 172.16.0.46_o
-iptables -A FORWARD -s 172.16.0.46 -j 172.16.0.46_o
-iptables -A FORWARD -d 172.16.0.46 -j 172.16.0.46_i
-iptables -A FORWARD -s 172.16.0.46 -m mac --mac-source 00:0b:82:14:dc:47 -j ACCEPT
-iptables -A FORWARD -d 172.16.0.46 -j ACCEPT
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.46 -p udp --sport 10000:30000 -j MARK --set-mark 41120
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.46 -p udp --sport 10000:30000 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.46 -p udp --dport 10000:30000 -j MARK --set-mark 41130
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.46 -p udp --dport 10000:30000 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.46 -p udp --sport 5060:5082 -j MARK --set-mark 41120
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.46 -p udp --sport 5060:5082 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.46 -p udp --dport 5060:5082 -j MARK --set-mark 41130
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.46 -p udp --dport 5060:5082 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.46 -p udp --sport 53 -j MARK --set-mark 41121
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.46 -p udp --sport 53 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.46 -p udp --dport 53 -j MARK --set-mark 41131
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.46 -p udp --dport 53 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.46 -p tcp --sport 22 -j MARK --set-mark 41122
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.46 -p tcp --sport 22 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.46 -p tcp --dport 22 -j MARK --set-mark 41132
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.46 -p tcp --dport 22 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.46 -p tcp --sport 443 -j MARK --set-mark 41123
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.46 -p tcp --sport 443 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.46 -p tcp --dport 443 -j MARK --set-mark 41133
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.46 -p tcp --dport 443 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.46 -p tcp --sport 80 -j MARK --set-mark 41124
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.46 -p tcp --sport 80 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.46 -p tcp --dport 80 -j MARK --set-mark 41134
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.46 -p tcp --dport 80 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.46 -p tcp --sport 25 -j MARK --set-mark 41126
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.46 -p tcp --sport 25 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.46 -p tcp --dport 25 -j MARK --set-mark 41136
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.46 -p tcp --dport 25 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.46 -p tcp --sport 110 -j MARK --set-mark 41126
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.46 -p tcp --sport 110 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.46 -p tcp --dport 110 -j MARK --set-mark 41136
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.46 -p tcp --dport 110 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.46 -p tcp --sport 143 -j MARK --set-mark 41126
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.46 -p tcp --sport 143 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.46 -p tcp --dport 143 -j MARK --set-mark 41136
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.46 -p tcp --dport 143 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.46 -p tcp --sport 21 -j MARK --set-mark 41127
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.46 -p tcp --sport 21 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.46 -p tcp --dport 21 -j MARK --set-mark 41137
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.46 -p tcp --dport 21 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.46 -j MARK --set-mark 41127
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.46 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.46 -j MARK --set-mark 41137
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.46 -j RETURN
-iptables -t nat -A POSTROUTING -s 172.16.0.46 -o eth0 -j MASQUERADE
-
-
 echo ID: 281	Micronet	IP:4    
 #------------------------------------------------------------------------------
 #Cliente - Micronet	IP:4    ID: 281
@@ -3294,6 +3447,9 @@ iptables -A FORWARD -s 172.16.0.4 -j 172.16.0.4_o
 iptables -A FORWARD -d 172.16.0.4 -j 172.16.0.4_i
 iptables -A FORWARD -s 172.16.0.4 -m mac --mac-source 00:11:3b:18:87:57 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.4 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.4 -p udp --sport 10000:30000 -j MARK --set-mark 28120
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.4 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.4 -p udp --dport 10000:30000 -j MARK --set-mark 28130
@@ -3356,6 +3512,9 @@ iptables -A FORWARD -s 172.16.0.40 -j 172.16.0.40_o
 iptables -A FORWARD -d 172.16.0.40 -j 172.16.0.40_i
 iptables -A FORWARD -s 172.16.0.40 -m mac --mac-source 00:40:01:2e:15:55 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.40 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.40 -p udp --sport 10000:30000 -j MARK --set-mark 22420
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.40 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.40 -p udp --dport 10000:30000 -j MARK --set-mark 22430
@@ -3404,192 +3563,6 @@ iptables -t nat -A PREROUTING -i br2 -p tcp --dport 80 -s 172.16.0.40 -j REDIREC
 iptables -t nat -A POSTROUTING -s 172.16.0.40 -o eth0 -j MASQUERADE
 
 
-echo ID: 403	Onell Lanfranco	IP:39    
-#------------------------------------------------------------------------------
-#Cliente - Onell Lanfranco	IP:39    ID: 403
-#------------------------------------------------------------------------------
-iptables -X 172.16.0.39_i
-iptables -X 172.16.0.39_o
-iptables -N 172.16.0.39_i
-iptables -N 172.16.0.39_o
-iptables -F 172.16.0.39_i
-iptables -F 172.16.0.39_o
-iptables -A FORWARD -s 172.16.0.39 -j 172.16.0.39_o
-iptables -A FORWARD -d 172.16.0.39 -j 172.16.0.39_i
-iptables -A FORWARD -s 172.16.0.39 -m mac --mac-source 4c:8d:79:e9:51:36 -j ACCEPT
-iptables -A FORWARD -d 172.16.0.39 -j ACCEPT
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.39 -p udp --sport 10000:30000 -j MARK --set-mark 40320
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.39 -p udp --sport 10000:30000 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.39 -p udp --dport 10000:30000 -j MARK --set-mark 40330
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.39 -p udp --dport 10000:30000 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.39 -p udp --sport 5060:5082 -j MARK --set-mark 40320
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.39 -p udp --sport 5060:5082 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.39 -p udp --dport 5060:5082 -j MARK --set-mark 40330
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.39 -p udp --dport 5060:5082 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.39 -p udp --sport 53 -j MARK --set-mark 40321
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.39 -p udp --sport 53 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.39 -p udp --dport 53 -j MARK --set-mark 40331
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.39 -p udp --dport 53 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.39 -p tcp --sport 22 -j MARK --set-mark 40322
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.39 -p tcp --sport 22 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.39 -p tcp --dport 22 -j MARK --set-mark 40332
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.39 -p tcp --dport 22 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.39 -p tcp --sport 443 -j MARK --set-mark 40323
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.39 -p tcp --sport 443 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.39 -p tcp --dport 443 -j MARK --set-mark 40333
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.39 -p tcp --dport 443 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.39 -p tcp --sport 80 -j MARK --set-mark 40324
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.39 -p tcp --sport 80 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.39 -p tcp --dport 80 -j MARK --set-mark 40334
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.39 -p tcp --dport 80 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.39 -p tcp --sport 25 -j MARK --set-mark 40326
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.39 -p tcp --sport 25 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.39 -p tcp --dport 25 -j MARK --set-mark 40336
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.39 -p tcp --dport 25 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.39 -p tcp --sport 110 -j MARK --set-mark 40326
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.39 -p tcp --sport 110 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.39 -p tcp --dport 110 -j MARK --set-mark 40336
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.39 -p tcp --dport 110 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.39 -p tcp --sport 143 -j MARK --set-mark 40326
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.39 -p tcp --sport 143 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.39 -p tcp --dport 143 -j MARK --set-mark 40336
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.39 -p tcp --dport 143 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.39 -p tcp --sport 21 -j MARK --set-mark 40327
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.39 -p tcp --sport 21 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.39 -p tcp --dport 21 -j MARK --set-mark 40337
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.39 -p tcp --dport 21 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.39 -j MARK --set-mark 40327
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.39 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.39 -j MARK --set-mark 40337
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.39 -j RETURN
-iptables -t nat -A PREROUTING -i br2 -p tcp --dport 80 -s 172.16.0.39 -j REDIRECT --to-port 3128
-iptables -t nat -A POSTROUTING -s 172.16.0.39 -o eth0 -j MASQUERADE
-
-
-echo ID: 402	Onell Lanfranco	IP:35    
-#------------------------------------------------------------------------------
-#Cliente - Onell Lanfranco	IP:35    ID: 402
-#------------------------------------------------------------------------------
-iptables -X 172.16.0.35_i
-iptables -X 172.16.0.35_o
-iptables -N 172.16.0.35_i
-iptables -N 172.16.0.35_o
-iptables -F 172.16.0.35_i
-iptables -F 172.16.0.35_o
-iptables -A FORWARD -s 172.16.0.35 -j 172.16.0.35_o
-iptables -A FORWARD -d 172.16.0.35 -j 172.16.0.35_i
-iptables -A FORWARD -s 172.16.0.35 -m mac --mac-source 00:27:0e:1c:28:ac -j ACCEPT
-iptables -A FORWARD -d 172.16.0.35 -j ACCEPT
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.35 -p udp --sport 10000:30000 -j MARK --set-mark 40220
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.35 -p udp --sport 10000:30000 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.35 -p udp --dport 10000:30000 -j MARK --set-mark 40230
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.35 -p udp --dport 10000:30000 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.35 -p udp --sport 5060:5082 -j MARK --set-mark 40220
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.35 -p udp --sport 5060:5082 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.35 -p udp --dport 5060:5082 -j MARK --set-mark 40230
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.35 -p udp --dport 5060:5082 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.35 -p udp --sport 53 -j MARK --set-mark 40221
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.35 -p udp --sport 53 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.35 -p udp --dport 53 -j MARK --set-mark 40231
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.35 -p udp --dport 53 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.35 -p tcp --sport 22 -j MARK --set-mark 40222
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.35 -p tcp --sport 22 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.35 -p tcp --dport 22 -j MARK --set-mark 40232
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.35 -p tcp --dport 22 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.35 -p tcp --sport 443 -j MARK --set-mark 40223
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.35 -p tcp --sport 443 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.35 -p tcp --dport 443 -j MARK --set-mark 40233
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.35 -p tcp --dport 443 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.35 -p tcp --sport 80 -j MARK --set-mark 40224
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.35 -p tcp --sport 80 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.35 -p tcp --dport 80 -j MARK --set-mark 40234
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.35 -p tcp --dport 80 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.35 -p tcp --sport 25 -j MARK --set-mark 40226
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.35 -p tcp --sport 25 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.35 -p tcp --dport 25 -j MARK --set-mark 40236
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.35 -p tcp --dport 25 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.35 -p tcp --sport 110 -j MARK --set-mark 40226
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.35 -p tcp --sport 110 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.35 -p tcp --dport 110 -j MARK --set-mark 40236
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.35 -p tcp --dport 110 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.35 -p tcp --sport 143 -j MARK --set-mark 40226
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.35 -p tcp --sport 143 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.35 -p tcp --dport 143 -j MARK --set-mark 40236
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.35 -p tcp --dport 143 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.35 -p tcp --sport 21 -j MARK --set-mark 40227
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.35 -p tcp --sport 21 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.35 -p tcp --dport 21 -j MARK --set-mark 40237
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.35 -p tcp --dport 21 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.35 -j MARK --set-mark 40227
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.35 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.35 -j MARK --set-mark 40237
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.35 -j RETURN
-iptables -t nat -A PREROUTING -i br2 -p tcp --dport 80 -s 172.16.0.35 -j REDIRECT --to-port 3128
-iptables -t nat -A POSTROUTING -s 172.16.0.35 -o eth0 -j MASQUERADE
-
-
-echo ID: 480	Onell Lanfranco	IP:23    
-#------------------------------------------------------------------------------
-#Cliente - Onell Lanfranco	IP:23    ID: 480
-#------------------------------------------------------------------------------
-iptables -X 172.16.0.23_i
-iptables -X 172.16.0.23_o
-iptables -N 172.16.0.23_i
-iptables -N 172.16.0.23_o
-iptables -F 172.16.0.23_i
-iptables -F 172.16.0.23_o
-iptables -A FORWARD -s 172.16.0.23 -j 172.16.0.23_o
-iptables -A FORWARD -d 172.16.0.23 -j 172.16.0.23_i
-iptables -A FORWARD -s 172.16.0.23 -m mac --mac-source 84:8e:0c:09:37:5e -j ACCEPT
-iptables -A FORWARD -d 172.16.0.23 -j ACCEPT
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.23 -p udp --sport 10000:30000 -j MARK --set-mark 48020
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.23 -p udp --sport 10000:30000 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.23 -p udp --dport 10000:30000 -j MARK --set-mark 48030
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.23 -p udp --dport 10000:30000 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.23 -p udp --sport 5060:5082 -j MARK --set-mark 48020
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.23 -p udp --sport 5060:5082 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.23 -p udp --dport 5060:5082 -j MARK --set-mark 48030
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.23 -p udp --dport 5060:5082 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.23 -p udp --sport 53 -j MARK --set-mark 48021
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.23 -p udp --sport 53 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.23 -p udp --dport 53 -j MARK --set-mark 48031
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.23 -p udp --dport 53 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.23 -p tcp --sport 22 -j MARK --set-mark 48022
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.23 -p tcp --sport 22 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.23 -p tcp --dport 22 -j MARK --set-mark 48032
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.23 -p tcp --dport 22 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.23 -p tcp --sport 443 -j MARK --set-mark 48023
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.23 -p tcp --sport 443 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.23 -p tcp --dport 443 -j MARK --set-mark 48033
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.23 -p tcp --dport 443 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.23 -p tcp --sport 80 -j MARK --set-mark 48024
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.23 -p tcp --sport 80 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.23 -p tcp --dport 80 -j MARK --set-mark 48034
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.23 -p tcp --dport 80 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.23 -p tcp --sport 25 -j MARK --set-mark 48026
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.23 -p tcp --sport 25 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.23 -p tcp --dport 25 -j MARK --set-mark 48036
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.23 -p tcp --dport 25 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.23 -p tcp --sport 110 -j MARK --set-mark 48026
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.23 -p tcp --sport 110 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.23 -p tcp --dport 110 -j MARK --set-mark 48036
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.23 -p tcp --dport 110 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.23 -p tcp --sport 143 -j MARK --set-mark 48026
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.23 -p tcp --sport 143 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.23 -p tcp --dport 143 -j MARK --set-mark 48036
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.23 -p tcp --dport 143 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.23 -p tcp --sport 21 -j MARK --set-mark 48027
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.23 -p tcp --sport 21 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.23 -p tcp --dport 21 -j MARK --set-mark 48037
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.23 -p tcp --dport 21 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.23 -j MARK --set-mark 48027
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.23 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.23 -j MARK --set-mark 48037
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.23 -j RETURN
-iptables -t nat -A PREROUTING -i br2 -p tcp --dport 80 -s 172.16.0.23 -j REDIRECT --to-port 3128
-iptables -t nat -A POSTROUTING -s 172.16.0.23 -o eth0 -j MASQUERADE
-
-
 echo ID: 433	Onell Lanfranco	IP:48    
 #------------------------------------------------------------------------------
 #Cliente - Onell Lanfranco	IP:48    ID: 433
@@ -3604,6 +3577,9 @@ iptables -A FORWARD -s 172.16.0.48 -j 172.16.0.48_o
 iptables -A FORWARD -d 172.16.0.48 -j 172.16.0.48_i
 iptables -A FORWARD -s 172.16.0.48 -m mac --mac-source 10:dd:b1:aa:09:3a -j ACCEPT
 iptables -A FORWARD -d 172.16.0.48 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.48 -p udp --sport 10000:30000 -j MARK --set-mark 43320
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.48 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.48 -p udp --dport 10000:30000 -j MARK --set-mark 43330
@@ -3666,6 +3642,9 @@ iptables -A FORWARD -s 172.16.0.47 -j 172.16.0.47_o
 iptables -A FORWARD -d 172.16.0.47 -j 172.16.0.47_i
 iptables -A FORWARD -s 172.16.0.47 -m mac --mac-source f4:f9:51:c8:db:ed -j ACCEPT
 iptables -A FORWARD -d 172.16.0.47 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.47 -p udp --sport 10000:30000 -j MARK --set-mark 46120
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.47 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.47 -p udp --dport 10000:30000 -j MARK --set-mark 46130
@@ -3714,6 +3693,200 @@ iptables -t nat -A PREROUTING -i br2 -p tcp --dport 80 -s 172.16.0.47 -j REDIREC
 iptables -t nat -A POSTROUTING -s 172.16.0.47 -o eth0 -j MASQUERADE
 
 
+echo ID: 405	Onell Lanfranco	IP:44    
+#------------------------------------------------------------------------------
+#Cliente - Onell Lanfranco	IP:44    ID: 405
+#------------------------------------------------------------------------------
+iptables -X 172.16.0.44_i
+iptables -X 172.16.0.44_o
+iptables -N 172.16.0.44_i
+iptables -N 172.16.0.44_o
+iptables -F 172.16.0.44_i
+iptables -F 172.16.0.44_o
+iptables -A FORWARD -s 172.16.0.44 -j 172.16.0.44_o
+iptables -A FORWARD -d 172.16.0.44 -j 172.16.0.44_i
+iptables -A FORWARD -s 172.16.0.44 -m mac --mac-source 00:80:f0:d1:ce:23 -j ACCEPT
+iptables -A FORWARD -d 172.16.0.44 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.44 -p udp --sport 10000:30000 -j MARK --set-mark 40520
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.44 -p udp --sport 10000:30000 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.44 -p udp --dport 10000:30000 -j MARK --set-mark 40530
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.44 -p udp --dport 10000:30000 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.44 -p udp --sport 5060:5082 -j MARK --set-mark 40520
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.44 -p udp --sport 5060:5082 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.44 -p udp --dport 5060:5082 -j MARK --set-mark 40530
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.44 -p udp --dport 5060:5082 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.44 -p udp --sport 53 -j MARK --set-mark 40521
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.44 -p udp --sport 53 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.44 -p udp --dport 53 -j MARK --set-mark 40531
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.44 -p udp --dport 53 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.44 -p tcp --sport 22 -j MARK --set-mark 40522
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.44 -p tcp --sport 22 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.44 -p tcp --dport 22 -j MARK --set-mark 40532
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.44 -p tcp --dport 22 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.44 -p tcp --sport 443 -j MARK --set-mark 40523
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.44 -p tcp --sport 443 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.44 -p tcp --dport 443 -j MARK --set-mark 40533
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.44 -p tcp --dport 443 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.44 -p tcp --sport 80 -j MARK --set-mark 40524
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.44 -p tcp --sport 80 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.44 -p tcp --dport 80 -j MARK --set-mark 40534
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.44 -p tcp --dport 80 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.44 -p tcp --sport 25 -j MARK --set-mark 40526
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.44 -p tcp --sport 25 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.44 -p tcp --dport 25 -j MARK --set-mark 40536
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.44 -p tcp --dport 25 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.44 -p tcp --sport 110 -j MARK --set-mark 40526
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.44 -p tcp --sport 110 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.44 -p tcp --dport 110 -j MARK --set-mark 40536
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.44 -p tcp --dport 110 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.44 -p tcp --sport 143 -j MARK --set-mark 40526
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.44 -p tcp --sport 143 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.44 -p tcp --dport 143 -j MARK --set-mark 40536
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.44 -p tcp --dport 143 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.44 -p tcp --sport 21 -j MARK --set-mark 40527
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.44 -p tcp --sport 21 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.44 -p tcp --dport 21 -j MARK --set-mark 40537
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.44 -p tcp --dport 21 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.44 -j MARK --set-mark 40527
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.44 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.44 -j MARK --set-mark 40537
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.44 -j RETURN
+iptables -t nat -A POSTROUTING -s 172.16.0.44 -o eth0 -j MASQUERADE
+
+
+echo ID: 403	Onell Lanfranco	IP:39    
+#------------------------------------------------------------------------------
+#Cliente - Onell Lanfranco	IP:39    ID: 403
+#------------------------------------------------------------------------------
+iptables -X 172.16.0.39_i
+iptables -X 172.16.0.39_o
+iptables -N 172.16.0.39_i
+iptables -N 172.16.0.39_o
+iptables -F 172.16.0.39_i
+iptables -F 172.16.0.39_o
+iptables -A FORWARD -s 172.16.0.39 -j 172.16.0.39_o
+iptables -A FORWARD -d 172.16.0.39 -j 172.16.0.39_i
+iptables -A FORWARD -s 172.16.0.39 -m mac --mac-source 4c:8d:79:e9:51:36 -j ACCEPT
+iptables -A FORWARD -d 172.16.0.39 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.39 -p udp --sport 10000:30000 -j MARK --set-mark 40320
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.39 -p udp --sport 10000:30000 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.39 -p udp --dport 10000:30000 -j MARK --set-mark 40330
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.39 -p udp --dport 10000:30000 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.39 -p udp --sport 5060:5082 -j MARK --set-mark 40320
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.39 -p udp --sport 5060:5082 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.39 -p udp --dport 5060:5082 -j MARK --set-mark 40330
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.39 -p udp --dport 5060:5082 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.39 -p udp --sport 53 -j MARK --set-mark 40321
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.39 -p udp --sport 53 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.39 -p udp --dport 53 -j MARK --set-mark 40331
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.39 -p udp --dport 53 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.39 -p tcp --sport 22 -j MARK --set-mark 40322
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.39 -p tcp --sport 22 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.39 -p tcp --dport 22 -j MARK --set-mark 40332
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.39 -p tcp --dport 22 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.39 -p tcp --sport 443 -j MARK --set-mark 40323
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.39 -p tcp --sport 443 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.39 -p tcp --dport 443 -j MARK --set-mark 40333
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.39 -p tcp --dport 443 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.39 -p tcp --sport 80 -j MARK --set-mark 40324
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.39 -p tcp --sport 80 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.39 -p tcp --dport 80 -j MARK --set-mark 40334
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.39 -p tcp --dport 80 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.39 -p tcp --sport 25 -j MARK --set-mark 40326
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.39 -p tcp --sport 25 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.39 -p tcp --dport 25 -j MARK --set-mark 40336
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.39 -p tcp --dport 25 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.39 -p tcp --sport 110 -j MARK --set-mark 40326
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.39 -p tcp --sport 110 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.39 -p tcp --dport 110 -j MARK --set-mark 40336
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.39 -p tcp --dport 110 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.39 -p tcp --sport 143 -j MARK --set-mark 40326
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.39 -p tcp --sport 143 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.39 -p tcp --dport 143 -j MARK --set-mark 40336
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.39 -p tcp --dport 143 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.39 -p tcp --sport 21 -j MARK --set-mark 40327
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.39 -p tcp --sport 21 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.39 -p tcp --dport 21 -j MARK --set-mark 40337
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.39 -p tcp --dport 21 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.39 -j MARK --set-mark 40327
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.39 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.39 -j MARK --set-mark 40337
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.39 -j RETURN
+iptables -t nat -A PREROUTING -i br2 -p tcp --dport 80 -s 172.16.0.39 -j REDIRECT --to-port 3128
+iptables -t nat -A POSTROUTING -s 172.16.0.39 -o eth0 -j MASQUERADE
+
+
+echo ID: 480	Onell Lanfranco	IP:23    
+#------------------------------------------------------------------------------
+#Cliente - Onell Lanfranco	IP:23    ID: 480
+#------------------------------------------------------------------------------
+iptables -X 172.16.0.23_i
+iptables -X 172.16.0.23_o
+iptables -N 172.16.0.23_i
+iptables -N 172.16.0.23_o
+iptables -F 172.16.0.23_i
+iptables -F 172.16.0.23_o
+iptables -A FORWARD -s 172.16.0.23 -j 172.16.0.23_o
+iptables -A FORWARD -d 172.16.0.23 -j 172.16.0.23_i
+iptables -A FORWARD -s 172.16.0.23 -m mac --mac-source 84:8e:0c:09:37:5e -j ACCEPT
+iptables -A FORWARD -d 172.16.0.23 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.23 -p udp --sport 10000:30000 -j MARK --set-mark 48020
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.23 -p udp --sport 10000:30000 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.23 -p udp --dport 10000:30000 -j MARK --set-mark 48030
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.23 -p udp --dport 10000:30000 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.23 -p udp --sport 5060:5082 -j MARK --set-mark 48020
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.23 -p udp --sport 5060:5082 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.23 -p udp --dport 5060:5082 -j MARK --set-mark 48030
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.23 -p udp --dport 5060:5082 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.23 -p udp --sport 53 -j MARK --set-mark 48021
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.23 -p udp --sport 53 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.23 -p udp --dport 53 -j MARK --set-mark 48031
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.23 -p udp --dport 53 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.23 -p tcp --sport 22 -j MARK --set-mark 48022
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.23 -p tcp --sport 22 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.23 -p tcp --dport 22 -j MARK --set-mark 48032
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.23 -p tcp --dport 22 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.23 -p tcp --sport 443 -j MARK --set-mark 48023
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.23 -p tcp --sport 443 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.23 -p tcp --dport 443 -j MARK --set-mark 48033
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.23 -p tcp --dport 443 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.23 -p tcp --sport 80 -j MARK --set-mark 48024
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.23 -p tcp --sport 80 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.23 -p tcp --dport 80 -j MARK --set-mark 48034
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.23 -p tcp --dport 80 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.23 -p tcp --sport 25 -j MARK --set-mark 48026
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.23 -p tcp --sport 25 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.23 -p tcp --dport 25 -j MARK --set-mark 48036
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.23 -p tcp --dport 25 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.23 -p tcp --sport 110 -j MARK --set-mark 48026
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.23 -p tcp --sport 110 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.23 -p tcp --dport 110 -j MARK --set-mark 48036
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.23 -p tcp --dport 110 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.23 -p tcp --sport 143 -j MARK --set-mark 48026
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.23 -p tcp --sport 143 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.23 -p tcp --dport 143 -j MARK --set-mark 48036
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.23 -p tcp --dport 143 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.23 -p tcp --sport 21 -j MARK --set-mark 48027
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.23 -p tcp --sport 21 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.23 -p tcp --dport 21 -j MARK --set-mark 48037
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.23 -p tcp --dport 21 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.23 -j MARK --set-mark 48027
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.23 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.23 -j MARK --set-mark 48037
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.23 -j RETURN
+iptables -t nat -A PREROUTING -i br2 -p tcp --dport 80 -s 172.16.0.23 -j REDIRECT --to-port 3128
+iptables -t nat -A POSTROUTING -s 172.16.0.23 -o eth0 -j MASQUERADE
+
+
 echo ID: 479	Onell Lanfranco	IP:20    
 #------------------------------------------------------------------------------
 #Cliente - Onell Lanfranco	IP:20    ID: 479
@@ -3728,6 +3901,9 @@ iptables -A FORWARD -s 172.16.0.20 -j 172.16.0.20_o
 iptables -A FORWARD -d 172.16.0.20 -j 172.16.0.20_i
 iptables -A FORWARD -s 172.16.0.20 -m mac --mac-source 60:03:08:9e:91:36 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.20 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.20 -p udp --sport 10000:30000 -j MARK --set-mark 47920
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.20 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.20 -p udp --dport 10000:30000 -j MARK --set-mark 47930
@@ -3776,65 +3952,69 @@ iptables -t nat -A PREROUTING -i br2 -p tcp --dport 80 -s 172.16.0.20 -j REDIREC
 iptables -t nat -A POSTROUTING -s 172.16.0.20 -o eth0 -j MASQUERADE
 
 
-echo ID: 405	Onell Lanfranco	IP:44    
+echo ID: 402	Onell Lanfranco	IP:35    
 #------------------------------------------------------------------------------
-#Cliente - Onell Lanfranco	IP:44    ID: 405
+#Cliente - Onell Lanfranco	IP:35    ID: 402
 #------------------------------------------------------------------------------
-iptables -X 172.16.0.44_i
-iptables -X 172.16.0.44_o
-iptables -N 172.16.0.44_i
-iptables -N 172.16.0.44_o
-iptables -F 172.16.0.44_i
-iptables -F 172.16.0.44_o
-iptables -A FORWARD -s 172.16.0.44 -j 172.16.0.44_o
-iptables -A FORWARD -d 172.16.0.44 -j 172.16.0.44_i
-iptables -A FORWARD -s 172.16.0.44 -m mac --mac-source 00:80:f0:d1:ce:23 -j ACCEPT
-iptables -A FORWARD -d 172.16.0.44 -j ACCEPT
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.44 -p udp --sport 10000:30000 -j MARK --set-mark 40520
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.44 -p udp --sport 10000:30000 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.44 -p udp --dport 10000:30000 -j MARK --set-mark 40530
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.44 -p udp --dport 10000:30000 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.44 -p udp --sport 5060:5082 -j MARK --set-mark 40520
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.44 -p udp --sport 5060:5082 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.44 -p udp --dport 5060:5082 -j MARK --set-mark 40530
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.44 -p udp --dport 5060:5082 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.44 -p udp --sport 53 -j MARK --set-mark 40521
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.44 -p udp --sport 53 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.44 -p udp --dport 53 -j MARK --set-mark 40531
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.44 -p udp --dport 53 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.44 -p tcp --sport 22 -j MARK --set-mark 40522
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.44 -p tcp --sport 22 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.44 -p tcp --dport 22 -j MARK --set-mark 40532
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.44 -p tcp --dport 22 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.44 -p tcp --sport 443 -j MARK --set-mark 40523
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.44 -p tcp --sport 443 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.44 -p tcp --dport 443 -j MARK --set-mark 40533
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.44 -p tcp --dport 443 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.44 -p tcp --sport 80 -j MARK --set-mark 40524
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.44 -p tcp --sport 80 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.44 -p tcp --dport 80 -j MARK --set-mark 40534
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.44 -p tcp --dport 80 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.44 -p tcp --sport 25 -j MARK --set-mark 40526
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.44 -p tcp --sport 25 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.44 -p tcp --dport 25 -j MARK --set-mark 40536
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.44 -p tcp --dport 25 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.44 -p tcp --sport 110 -j MARK --set-mark 40526
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.44 -p tcp --sport 110 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.44 -p tcp --dport 110 -j MARK --set-mark 40536
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.44 -p tcp --dport 110 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.44 -p tcp --sport 143 -j MARK --set-mark 40526
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.44 -p tcp --sport 143 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.44 -p tcp --dport 143 -j MARK --set-mark 40536
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.44 -p tcp --dport 143 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.44 -p tcp --sport 21 -j MARK --set-mark 40527
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.44 -p tcp --sport 21 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.44 -p tcp --dport 21 -j MARK --set-mark 40537
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.44 -p tcp --dport 21 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.44 -j MARK --set-mark 40527
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.44 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.44 -j MARK --set-mark 40537
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.44 -j RETURN
-iptables -t nat -A POSTROUTING -s 172.16.0.44 -o eth0 -j MASQUERADE
+iptables -X 172.16.0.35_i
+iptables -X 172.16.0.35_o
+iptables -N 172.16.0.35_i
+iptables -N 172.16.0.35_o
+iptables -F 172.16.0.35_i
+iptables -F 172.16.0.35_o
+iptables -A FORWARD -s 172.16.0.35 -j 172.16.0.35_o
+iptables -A FORWARD -d 172.16.0.35 -j 172.16.0.35_i
+iptables -A FORWARD -s 172.16.0.35 -m mac --mac-source 00:27:0e:1c:28:ac -j ACCEPT
+iptables -A FORWARD -d 172.16.0.35 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.35 -p udp --sport 10000:30000 -j MARK --set-mark 40220
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.35 -p udp --sport 10000:30000 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.35 -p udp --dport 10000:30000 -j MARK --set-mark 40230
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.35 -p udp --dport 10000:30000 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.35 -p udp --sport 5060:5082 -j MARK --set-mark 40220
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.35 -p udp --sport 5060:5082 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.35 -p udp --dport 5060:5082 -j MARK --set-mark 40230
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.35 -p udp --dport 5060:5082 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.35 -p udp --sport 53 -j MARK --set-mark 40221
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.35 -p udp --sport 53 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.35 -p udp --dport 53 -j MARK --set-mark 40231
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.35 -p udp --dport 53 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.35 -p tcp --sport 22 -j MARK --set-mark 40222
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.35 -p tcp --sport 22 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.35 -p tcp --dport 22 -j MARK --set-mark 40232
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.35 -p tcp --dport 22 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.35 -p tcp --sport 443 -j MARK --set-mark 40223
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.35 -p tcp --sport 443 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.35 -p tcp --dport 443 -j MARK --set-mark 40233
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.35 -p tcp --dport 443 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.35 -p tcp --sport 80 -j MARK --set-mark 40224
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.35 -p tcp --sport 80 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.35 -p tcp --dport 80 -j MARK --set-mark 40234
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.35 -p tcp --dport 80 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.35 -p tcp --sport 25 -j MARK --set-mark 40226
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.35 -p tcp --sport 25 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.35 -p tcp --dport 25 -j MARK --set-mark 40236
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.35 -p tcp --dport 25 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.35 -p tcp --sport 110 -j MARK --set-mark 40226
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.35 -p tcp --sport 110 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.35 -p tcp --dport 110 -j MARK --set-mark 40236
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.35 -p tcp --dport 110 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.35 -p tcp --sport 143 -j MARK --set-mark 40226
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.35 -p tcp --sport 143 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.35 -p tcp --dport 143 -j MARK --set-mark 40236
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.35 -p tcp --dport 143 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.35 -p tcp --sport 21 -j MARK --set-mark 40227
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.35 -p tcp --sport 21 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.35 -p tcp --dport 21 -j MARK --set-mark 40237
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.35 -p tcp --dport 21 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.35 -j MARK --set-mark 40227
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.35 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.35 -j MARK --set-mark 40237
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.35 -j RETURN
+iptables -t nat -A PREROUTING -i br2 -p tcp --dport 80 -s 172.16.0.35 -j REDIRECT --to-port 3128
+iptables -t nat -A POSTROUTING -s 172.16.0.35 -o eth0 -j MASQUERADE
 
 
 echo ID: 499	Paytoo	IP:65    
@@ -3851,6 +4031,9 @@ iptables -A FORWARD -s 172.16.0.65 -j 172.16.0.65_o
 iptables -A FORWARD -d 172.16.0.65 -j 172.16.0.65_i
 iptables -A FORWARD -s 172.16.0.65 -m mac --mac-source 52:54:00:7f:34:d5 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.65 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.65 -p udp --sport 10000:30000 -j MARK --set-mark 49920
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.65 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.65 -p udp --dport 10000:30000 -j MARK --set-mark 49930
@@ -3910,6 +4093,9 @@ iptables -F 172.16.0.101_i
 iptables -F 172.16.0.101_o
 iptables -A FORWARD -s 172.16.0.101 -j 172.16.0.101_o
 iptables -A FORWARD -d 172.16.0.101 -j 172.16.0.101_i
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.101 -p udp --sport 10000:30000 -j MARK --set-mark 17020
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.101 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.101 -p udp --dport 10000:30000 -j MARK --set-mark 17030
@@ -3970,6 +4156,9 @@ iptables -F 172.16.0.102_i
 iptables -F 172.16.0.102_o
 iptables -A FORWARD -s 172.16.0.102 -j 172.16.0.102_o
 iptables -A FORWARD -d 172.16.0.102 -j 172.16.0.102_i
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.102 -p udp --sport 10000:30000 -j MARK --set-mark 16820
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.102 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.102 -p udp --dport 10000:30000 -j MARK --set-mark 16830
@@ -4030,6 +4219,9 @@ iptables -F 172.16.0.103_i
 iptables -F 172.16.0.103_o
 iptables -A FORWARD -s 172.16.0.103 -j 172.16.0.103_o
 iptables -A FORWARD -d 172.16.0.103 -j 172.16.0.103_i
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.103 -p udp --sport 10000:30000 -j MARK --set-mark 12420
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.103 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.103 -p udp --dport 10000:30000 -j MARK --set-mark 12430
@@ -4090,6 +4282,9 @@ iptables -F 172.16.0.104_i
 iptables -F 172.16.0.104_o
 iptables -A FORWARD -s 172.16.0.104 -j 172.16.0.104_o
 iptables -A FORWARD -d 172.16.0.104 -j 172.16.0.104_i
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.104 -p udp --sport 10000:30000 -j MARK --set-mark 14120
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.104 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.104 -p udp --dport 10000:30000 -j MARK --set-mark 14130
@@ -4150,6 +4345,9 @@ iptables -F 172.16.0.105_i
 iptables -F 172.16.0.105_o
 iptables -A FORWARD -s 172.16.0.105 -j 172.16.0.105_o
 iptables -A FORWARD -d 172.16.0.105 -j 172.16.0.105_i
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.105 -p udp --sport 10000:30000 -j MARK --set-mark 11620
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.105 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.105 -p udp --dport 10000:30000 -j MARK --set-mark 11630
@@ -4210,6 +4408,9 @@ iptables -F 172.16.0.106_i
 iptables -F 172.16.0.106_o
 iptables -A FORWARD -s 172.16.0.106 -j 172.16.0.106_o
 iptables -A FORWARD -d 172.16.0.106 -j 172.16.0.106_i
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.106 -p udp --sport 10000:30000 -j MARK --set-mark 16920
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.106 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.106 -p udp --dport 10000:30000 -j MARK --set-mark 16930
@@ -4270,6 +4471,9 @@ iptables -F 172.16.0.107_i
 iptables -F 172.16.0.107_o
 iptables -A FORWARD -s 172.16.0.107 -j 172.16.0.107_o
 iptables -A FORWARD -d 172.16.0.107 -j 172.16.0.107_i
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.107 -p udp --sport 10000:30000 -j MARK --set-mark 320
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.107 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.107 -p udp --dport 10000:30000 -j MARK --set-mark 330
@@ -4330,6 +4534,9 @@ iptables -F 172.16.0.108_i
 iptables -F 172.16.0.108_o
 iptables -A FORWARD -s 172.16.0.108 -j 172.16.0.108_o
 iptables -A FORWARD -d 172.16.0.108 -j 172.16.0.108_i
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.108 -p udp --sport 10000:30000 -j MARK --set-mark 12320
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.108 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.108 -p udp --dport 10000:30000 -j MARK --set-mark 12330
@@ -4390,6 +4597,9 @@ iptables -F 172.16.0.109_i
 iptables -F 172.16.0.109_o
 iptables -A FORWARD -s 172.16.0.109 -j 172.16.0.109_o
 iptables -A FORWARD -d 172.16.0.109 -j 172.16.0.109_i
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.109 -p udp --sport 10000:30000 -j MARK --set-mark 15920
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.109 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.109 -p udp --dport 10000:30000 -j MARK --set-mark 15930
@@ -4452,6 +4662,9 @@ iptables -A FORWARD -s 172.16.0.110 -j 172.16.0.110_o
 iptables -A FORWARD -d 172.16.0.110 -j 172.16.0.110_i
 iptables -A FORWARD -s 172.16.0.110 -m mac --mac-source 44:87:fc:ef:f3:72 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.110 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.110 -p udp --sport 10000:30000 -j MARK --set-mark 20720
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.110 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.110 -p udp --dport 10000:30000 -j MARK --set-mark 20730
@@ -4511,6 +4724,9 @@ iptables -F 172.16.0.111_i
 iptables -F 172.16.0.111_o
 iptables -A FORWARD -s 172.16.0.111 -j 172.16.0.111_o
 iptables -A FORWARD -d 172.16.0.111 -j 172.16.0.111_i
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.111 -p udp --sport 10000:30000 -j MARK --set-mark 22320
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.111 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.111 -p udp --dport 10000:30000 -j MARK --set-mark 22330
@@ -4571,6 +4787,9 @@ iptables -F 172.16.0.112_i
 iptables -F 172.16.0.112_o
 iptables -A FORWARD -s 172.16.0.112 -j 172.16.0.112_o
 iptables -A FORWARD -d 172.16.0.112 -j 172.16.0.112_i
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.112 -p udp --sport 10000:30000 -j MARK --set-mark 13620
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.112 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.112 -p udp --dport 10000:30000 -j MARK --set-mark 13630
@@ -4631,6 +4850,9 @@ iptables -F 172.16.0.113_i
 iptables -F 172.16.0.113_o
 iptables -A FORWARD -s 172.16.0.113 -j 172.16.0.113_o
 iptables -A FORWARD -d 172.16.0.113 -j 172.16.0.113_i
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.113 -p udp --sport 10000:30000 -j MARK --set-mark 16120
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.113 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.113 -p udp --dport 10000:30000 -j MARK --set-mark 16130
@@ -4691,6 +4913,9 @@ iptables -F 172.16.0.114_i
 iptables -F 172.16.0.114_o
 iptables -A FORWARD -s 172.16.0.114 -j 172.16.0.114_o
 iptables -A FORWARD -d 172.16.0.114 -j 172.16.0.114_i
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.114 -p udp --sport 10000:30000 -j MARK --set-mark 15620
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.114 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.114 -p udp --dport 10000:30000 -j MARK --set-mark 15630
@@ -4751,6 +4976,9 @@ iptables -F 172.16.0.115_i
 iptables -F 172.16.0.115_o
 iptables -A FORWARD -s 172.16.0.115 -j 172.16.0.115_o
 iptables -A FORWARD -d 172.16.0.115 -j 172.16.0.115_i
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.115 -p udp --sport 10000:30000 -j MARK --set-mark 15320
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.115 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.115 -p udp --dport 10000:30000 -j MARK --set-mark 15330
@@ -4811,6 +5039,9 @@ iptables -F 172.16.0.116_i
 iptables -F 172.16.0.116_o
 iptables -A FORWARD -s 172.16.0.116 -j 172.16.0.116_o
 iptables -A FORWARD -d 172.16.0.116 -j 172.16.0.116_i
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.116 -p udp --sport 10000:30000 -j MARK --set-mark 16420
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.116 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.116 -p udp --dport 10000:30000 -j MARK --set-mark 16430
@@ -4871,6 +5102,9 @@ iptables -F 172.16.0.117_i
 iptables -F 172.16.0.117_o
 iptables -A FORWARD -s 172.16.0.117 -j 172.16.0.117_o
 iptables -A FORWARD -d 172.16.0.117 -j 172.16.0.117_i
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.117 -p udp --sport 10000:30000 -j MARK --set-mark 16720
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.117 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.117 -p udp --dport 10000:30000 -j MARK --set-mark 16730
@@ -4931,6 +5165,9 @@ iptables -F 172.16.0.118_i
 iptables -F 172.16.0.118_o
 iptables -A FORWARD -s 172.16.0.118 -j 172.16.0.118_o
 iptables -A FORWARD -d 172.16.0.118 -j 172.16.0.118_i
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.118 -p udp --sport 10000:30000 -j MARK --set-mark 25220
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.118 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.118 -p udp --dport 10000:30000 -j MARK --set-mark 25230
@@ -4991,6 +5228,9 @@ iptables -F 172.16.0.119_i
 iptables -F 172.16.0.119_o
 iptables -A FORWARD -s 172.16.0.119 -j 172.16.0.119_o
 iptables -A FORWARD -d 172.16.0.119 -j 172.16.0.119_i
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.119 -p udp --sport 10000:30000 -j MARK --set-mark 20620
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.119 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.119 -p udp --dport 10000:30000 -j MARK --set-mark 20630
@@ -5051,6 +5291,9 @@ iptables -F 172.16.0.120_i
 iptables -F 172.16.0.120_o
 iptables -A FORWARD -s 172.16.0.120 -j 172.16.0.120_o
 iptables -A FORWARD -d 172.16.0.120 -j 172.16.0.120_i
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.120 -p udp --sport 10000:30000 -j MARK --set-mark 21020
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.120 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.120 -p udp --dport 10000:30000 -j MARK --set-mark 21030
@@ -5111,6 +5354,9 @@ iptables -F 172.16.0.121_i
 iptables -F 172.16.0.121_o
 iptables -A FORWARD -s 172.16.0.121 -j 172.16.0.121_o
 iptables -A FORWARD -d 172.16.0.121 -j 172.16.0.121_i
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.121 -p udp --sport 10000:30000 -j MARK --set-mark 21920
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.121 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.121 -p udp --dport 10000:30000 -j MARK --set-mark 21930
@@ -5171,6 +5417,9 @@ iptables -F 172.16.0.122_i
 iptables -F 172.16.0.122_o
 iptables -A FORWARD -s 172.16.0.122 -j 172.16.0.122_o
 iptables -A FORWARD -d 172.16.0.122 -j 172.16.0.122_i
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.122 -p udp --sport 10000:30000 -j MARK --set-mark 17720
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.122 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.122 -p udp --dport 10000:30000 -j MARK --set-mark 17730
@@ -5231,6 +5480,9 @@ iptables -F 172.16.0.123_i
 iptables -F 172.16.0.123_o
 iptables -A FORWARD -s 172.16.0.123 -j 172.16.0.123_o
 iptables -A FORWARD -d 172.16.0.123 -j 172.16.0.123_i
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.123 -p udp --sport 10000:30000 -j MARK --set-mark 20920
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.123 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.123 -p udp --dport 10000:30000 -j MARK --set-mark 20930
@@ -5291,6 +5543,9 @@ iptables -F 172.16.0.124_i
 iptables -F 172.16.0.124_o
 iptables -A FORWARD -s 172.16.0.124 -j 172.16.0.124_o
 iptables -A FORWARD -d 172.16.0.124 -j 172.16.0.124_i
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.124 -p udp --sport 10000:30000 -j MARK --set-mark 39820
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.124 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.124 -p udp --dport 10000:30000 -j MARK --set-mark 39830
@@ -5351,6 +5606,9 @@ iptables -F 172.16.0.125_i
 iptables -F 172.16.0.125_o
 iptables -A FORWARD -s 172.16.0.125 -j 172.16.0.125_o
 iptables -A FORWARD -d 172.16.0.125 -j 172.16.0.125_i
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.125 -p udp --sport 10000:30000 -j MARK --set-mark 19620
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.125 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.125 -p udp --dport 10000:30000 -j MARK --set-mark 19630
@@ -5411,6 +5669,9 @@ iptables -F 172.16.0.127_i
 iptables -F 172.16.0.127_o
 iptables -A FORWARD -s 172.16.0.127 -j 172.16.0.127_o
 iptables -A FORWARD -d 172.16.0.127 -j 172.16.0.127_i
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.127 -p udp --sport 10000:30000 -j MARK --set-mark 24420
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.127 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.127 -p udp --dport 10000:30000 -j MARK --set-mark 24430
@@ -5471,6 +5732,9 @@ iptables -F 172.16.0.128_i
 iptables -F 172.16.0.128_o
 iptables -A FORWARD -s 172.16.0.128 -j 172.16.0.128_o
 iptables -A FORWARD -d 172.16.0.128 -j 172.16.0.128_i
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.128 -p udp --sport 10000:30000 -j MARK --set-mark 24620
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.128 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.128 -p udp --dport 10000:30000 -j MARK --set-mark 24630
@@ -5531,6 +5795,9 @@ iptables -F 172.16.0.129_i
 iptables -F 172.16.0.129_o
 iptables -A FORWARD -s 172.16.0.129 -j 172.16.0.129_o
 iptables -A FORWARD -d 172.16.0.129 -j 172.16.0.129_i
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.129 -p udp --sport 10000:30000 -j MARK --set-mark 25020
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.129 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.129 -p udp --dport 10000:30000 -j MARK --set-mark 25030
@@ -5591,6 +5858,9 @@ iptables -F 172.16.0.130_i
 iptables -F 172.16.0.130_o
 iptables -A FORWARD -s 172.16.0.130 -j 172.16.0.130_o
 iptables -A FORWARD -d 172.16.0.130 -j 172.16.0.130_i
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.130 -p udp --sport 10000:30000 -j MARK --set-mark 24820
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.130 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.130 -p udp --dport 10000:30000 -j MARK --set-mark 24830
@@ -5651,6 +5921,9 @@ iptables -F 172.16.0.131_i
 iptables -F 172.16.0.131_o
 iptables -A FORWARD -s 172.16.0.131 -j 172.16.0.131_o
 iptables -A FORWARD -d 172.16.0.131 -j 172.16.0.131_i
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.131 -p udp --sport 10000:30000 -j MARK --set-mark 24320
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.131 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.131 -p udp --dport 10000:30000 -j MARK --set-mark 24330
@@ -5711,6 +5984,9 @@ iptables -F 172.16.0.132_i
 iptables -F 172.16.0.132_o
 iptables -A FORWARD -s 172.16.0.132 -j 172.16.0.132_o
 iptables -A FORWARD -d 172.16.0.132 -j 172.16.0.132_i
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.132 -p udp --sport 10000:30000 -j MARK --set-mark 25120
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.132 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.132 -p udp --dport 10000:30000 -j MARK --set-mark 25130
@@ -5771,6 +6047,9 @@ iptables -F 172.16.0.133_i
 iptables -F 172.16.0.133_o
 iptables -A FORWARD -s 172.16.0.133 -j 172.16.0.133_o
 iptables -A FORWARD -d 172.16.0.133 -j 172.16.0.133_i
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.133 -p udp --sport 10000:30000 -j MARK --set-mark 24720
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.133 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.133 -p udp --dport 10000:30000 -j MARK --set-mark 24730
@@ -5831,6 +6110,9 @@ iptables -F 172.16.0.134_i
 iptables -F 172.16.0.134_o
 iptables -A FORWARD -s 172.16.0.134 -j 172.16.0.134_o
 iptables -A FORWARD -d 172.16.0.134 -j 172.16.0.134_i
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.134 -p udp --sport 10000:30000 -j MARK --set-mark 26520
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.134 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.134 -p udp --dport 10000:30000 -j MARK --set-mark 26530
@@ -5891,6 +6173,9 @@ iptables -F 172.16.0.135_i
 iptables -F 172.16.0.135_o
 iptables -A FORWARD -s 172.16.0.135 -j 172.16.0.135_o
 iptables -A FORWARD -d 172.16.0.135 -j 172.16.0.135_i
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.135 -p udp --sport 10000:30000 -j MARK --set-mark 27220
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.135 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.135 -p udp --dport 10000:30000 -j MARK --set-mark 27230
@@ -5951,6 +6236,9 @@ iptables -F 172.16.0.136_i
 iptables -F 172.16.0.136_o
 iptables -A FORWARD -s 172.16.0.136 -j 172.16.0.136_o
 iptables -A FORWARD -d 172.16.0.136 -j 172.16.0.136_i
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.136 -p udp --sport 10000:30000 -j MARK --set-mark 27420
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.136 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.136 -p udp --dport 10000:30000 -j MARK --set-mark 27430
@@ -6011,6 +6299,9 @@ iptables -F 172.16.0.137_i
 iptables -F 172.16.0.137_o
 iptables -A FORWARD -s 172.16.0.137 -j 172.16.0.137_o
 iptables -A FORWARD -d 172.16.0.137 -j 172.16.0.137_i
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.137 -p udp --sport 10000:30000 -j MARK --set-mark 27320
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.137 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.137 -p udp --dport 10000:30000 -j MARK --set-mark 27330
@@ -6071,6 +6362,9 @@ iptables -F 172.16.0.138_i
 iptables -F 172.16.0.138_o
 iptables -A FORWARD -s 172.16.0.138 -j 172.16.0.138_o
 iptables -A FORWARD -d 172.16.0.138 -j 172.16.0.138_i
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.138 -p udp --sport 10000:30000 -j MARK --set-mark 27120
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.138 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.138 -p udp --dport 10000:30000 -j MARK --set-mark 27130
@@ -6131,6 +6425,9 @@ iptables -F 172.16.0.139_i
 iptables -F 172.16.0.139_o
 iptables -A FORWARD -s 172.16.0.139 -j 172.16.0.139_o
 iptables -A FORWARD -d 172.16.0.139 -j 172.16.0.139_i
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.139 -p udp --sport 10000:30000 -j MARK --set-mark 26920
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.139 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.139 -p udp --dport 10000:30000 -j MARK --set-mark 26930
@@ -6191,6 +6488,9 @@ iptables -F 172.16.0.140_i
 iptables -F 172.16.0.140_o
 iptables -A FORWARD -s 172.16.0.140 -j 172.16.0.140_o
 iptables -A FORWARD -d 172.16.0.140 -j 172.16.0.140_i
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.140 -p udp --sport 10000:30000 -j MARK --set-mark 24520
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.140 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.140 -p udp --dport 10000:30000 -j MARK --set-mark 24530
@@ -6251,6 +6551,9 @@ iptables -F 172.16.0.141_i
 iptables -F 172.16.0.141_o
 iptables -A FORWARD -s 172.16.0.141 -j 172.16.0.141_o
 iptables -A FORWARD -d 172.16.0.141 -j 172.16.0.141_i
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.141 -p udp --sport 10000:30000 -j MARK --set-mark 29520
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.141 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.141 -p udp --dport 10000:30000 -j MARK --set-mark 29530
@@ -6311,6 +6614,9 @@ iptables -F 172.16.0.142_i
 iptables -F 172.16.0.142_o
 iptables -A FORWARD -s 172.16.0.142 -j 172.16.0.142_o
 iptables -A FORWARD -d 172.16.0.142 -j 172.16.0.142_i
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.142 -p udp --sport 10000:30000 -j MARK --set-mark 39420
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.142 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.142 -p udp --dport 10000:30000 -j MARK --set-mark 39430
@@ -6371,6 +6677,9 @@ iptables -F 172.16.0.143_i
 iptables -F 172.16.0.143_o
 iptables -A FORWARD -s 172.16.0.143 -j 172.16.0.143_o
 iptables -A FORWARD -d 172.16.0.143 -j 172.16.0.143_i
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.143 -p udp --sport 10000:30000 -j MARK --set-mark 34320
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.143 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.143 -p udp --dport 10000:30000 -j MARK --set-mark 34330
@@ -6433,6 +6742,9 @@ iptables -A FORWARD -s 172.16.0.144 -j 172.16.0.144_o
 iptables -A FORWARD -d 172.16.0.144 -j 172.16.0.144_i
 iptables -A FORWARD -s 172.16.0.144 -m mac --mac-source 44:87:fc:eb:8f:6f -j ACCEPT
 iptables -A FORWARD -d 172.16.0.144 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.144 -p udp --sport 10000:30000 -j MARK --set-mark 22620
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.144 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.144 -p udp --dport 10000:30000 -j MARK --set-mark 22630
@@ -6492,6 +6804,9 @@ iptables -F 172.16.0.145_i
 iptables -F 172.16.0.145_o
 iptables -A FORWARD -s 172.16.0.145 -j 172.16.0.145_o
 iptables -A FORWARD -d 172.16.0.145 -j 172.16.0.145_i
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.145 -p udp --sport 10000:30000 -j MARK --set-mark 36520
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.145 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.145 -p udp --dport 10000:30000 -j MARK --set-mark 36530
@@ -6552,6 +6867,9 @@ iptables -F 172.16.0.146_i
 iptables -F 172.16.0.146_o
 iptables -A FORWARD -s 172.16.0.146 -j 172.16.0.146_o
 iptables -A FORWARD -d 172.16.0.146 -j 172.16.0.146_i
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.146 -p udp --sport 10000:30000 -j MARK --set-mark 38420
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.146 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.146 -p udp --dport 10000:30000 -j MARK --set-mark 38430
@@ -6612,6 +6930,9 @@ iptables -F 172.16.0.147_i
 iptables -F 172.16.0.147_o
 iptables -A FORWARD -s 172.16.0.147 -j 172.16.0.147_o
 iptables -A FORWARD -d 172.16.0.147 -j 172.16.0.147_i
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.147 -p udp --sport 10000:30000 -j MARK --set-mark 35320
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.147 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.147 -p udp --dport 10000:30000 -j MARK --set-mark 35330
@@ -6672,6 +6993,9 @@ iptables -F 172.16.0.148_i
 iptables -F 172.16.0.148_o
 iptables -A FORWARD -s 172.16.0.148 -j 172.16.0.148_o
 iptables -A FORWARD -d 172.16.0.148 -j 172.16.0.148_i
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.148 -p udp --sport 10000:30000 -j MARK --set-mark 34120
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.148 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.148 -p udp --dport 10000:30000 -j MARK --set-mark 34130
@@ -6732,6 +7056,9 @@ iptables -F 172.16.0.149_i
 iptables -F 172.16.0.149_o
 iptables -A FORWARD -s 172.16.0.149 -j 172.16.0.149_o
 iptables -A FORWARD -d 172.16.0.149 -j 172.16.0.149_i
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.149 -p udp --sport 10000:30000 -j MARK --set-mark 43520
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.149 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.149 -p udp --dport 10000:30000 -j MARK --set-mark 43530
@@ -6792,6 +7119,9 @@ iptables -F 172.16.0.150_i
 iptables -F 172.16.0.150_o
 iptables -A FORWARD -s 172.16.0.150 -j 172.16.0.150_o
 iptables -A FORWARD -d 172.16.0.150 -j 172.16.0.150_i
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.150 -p udp --sport 10000:30000 -j MARK --set-mark 22520
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.150 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.150 -p udp --dport 10000:30000 -j MARK --set-mark 22530
@@ -6852,6 +7182,9 @@ iptables -F 172.16.0.151_i
 iptables -F 172.16.0.151_o
 iptables -A FORWARD -s 172.16.0.151 -j 172.16.0.151_o
 iptables -A FORWARD -d 172.16.0.151 -j 172.16.0.151_i
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.151 -p udp --sport 10000:30000 -j MARK --set-mark 18020
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.151 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.151 -p udp --dport 10000:30000 -j MARK --set-mark 18030
@@ -6912,6 +7245,9 @@ iptables -F 172.16.0.152_i
 iptables -F 172.16.0.152_o
 iptables -A FORWARD -s 172.16.0.152 -j 172.16.0.152_o
 iptables -A FORWARD -d 172.16.0.152 -j 172.16.0.152_i
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.152 -p udp --sport 10000:30000 -j MARK --set-mark 29820
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.152 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.152 -p udp --dport 10000:30000 -j MARK --set-mark 29830
@@ -6960,66 +7296,6 @@ iptables -t nat -A PREROUTING -i br2 -p tcp --dport 80 -s 172.16.0.152 -j REDIRE
 iptables -t nat -A POSTROUTING -s 172.16.0.152 -o eth0 -j MASQUERADE
 
 
-echo ID: 500	pc53	IP:66    
-#------------------------------------------------------------------------------
-#Cliente - pc53	IP:66    ID: 500
-#------------------------------------------------------------------------------
-iptables -X 172.16.0.66_i
-iptables -X 172.16.0.66_o
-iptables -N 172.16.0.66_i
-iptables -N 172.16.0.66_o
-iptables -F 172.16.0.66_i
-iptables -F 172.16.0.66_o
-iptables -A FORWARD -s 172.16.0.66 -j 172.16.0.66_o
-iptables -A FORWARD -d 172.16.0.66 -j 172.16.0.66_i
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.66 -p udp --sport 10000:30000 -j MARK --set-mark 50020
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.66 -p udp --sport 10000:30000 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.66 -p udp --dport 10000:30000 -j MARK --set-mark 50030
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.66 -p udp --dport 10000:30000 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.66 -p udp --sport 5060:5082 -j MARK --set-mark 50020
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.66 -p udp --sport 5060:5082 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.66 -p udp --dport 5060:5082 -j MARK --set-mark 50030
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.66 -p udp --dport 5060:5082 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.66 -p udp --sport 53 -j MARK --set-mark 50021
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.66 -p udp --sport 53 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.66 -p udp --dport 53 -j MARK --set-mark 50031
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.66 -p udp --dport 53 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.66 -p tcp --sport 22 -j MARK --set-mark 50022
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.66 -p tcp --sport 22 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.66 -p tcp --dport 22 -j MARK --set-mark 50032
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.66 -p tcp --dport 22 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.66 -p tcp --sport 443 -j MARK --set-mark 50023
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.66 -p tcp --sport 443 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.66 -p tcp --dport 443 -j MARK --set-mark 50033
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.66 -p tcp --dport 443 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.66 -p tcp --sport 80 -j MARK --set-mark 50024
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.66 -p tcp --sport 80 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.66 -p tcp --dport 80 -j MARK --set-mark 50034
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.66 -p tcp --dport 80 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.66 -p tcp --sport 25 -j MARK --set-mark 50026
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.66 -p tcp --sport 25 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.66 -p tcp --dport 25 -j MARK --set-mark 50036
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.66 -p tcp --dport 25 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.66 -p tcp --sport 110 -j MARK --set-mark 50026
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.66 -p tcp --sport 110 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.66 -p tcp --dport 110 -j MARK --set-mark 50036
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.66 -p tcp --dport 110 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.66 -p tcp --sport 143 -j MARK --set-mark 50026
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.66 -p tcp --sport 143 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.66 -p tcp --dport 143 -j MARK --set-mark 50036
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.66 -p tcp --dport 143 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.66 -p tcp --sport 21 -j MARK --set-mark 50027
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.66 -p tcp --sport 21 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.66 -p tcp --dport 21 -j MARK --set-mark 50037
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.66 -p tcp --dport 21 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.66 -j MARK --set-mark 50027
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.66 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.66 -j MARK --set-mark 50037
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.66 -j RETURN
-iptables -t nat -A PREROUTING -i br2 -p tcp --dport 80 -s 172.16.0.66 -j REDIRECT --to-port 3128
-iptables -t nat -A POSTROUTING -s 172.16.0.66 -o eth0 -j MASQUERADE
-
-
 echo ID: 464	PC53	IP:153    
 #------------------------------------------------------------------------------
 #Cliente - PC53	IP:153    ID: 464
@@ -7032,6 +7308,9 @@ iptables -F 172.16.0.153_i
 iptables -F 172.16.0.153_o
 iptables -A FORWARD -s 172.16.0.153 -j 172.16.0.153_o
 iptables -A FORWARD -d 172.16.0.153 -j 172.16.0.153_i
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.153 -p udp --sport 10000:30000 -j MARK --set-mark 46420
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.153 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.153 -p udp --dport 10000:30000 -j MARK --set-mark 46430
@@ -7080,6 +7359,69 @@ iptables -t nat -A PREROUTING -i br2 -p tcp --dport 80 -s 172.16.0.153 -j REDIRE
 iptables -t nat -A POSTROUTING -s 172.16.0.153 -o eth0 -j MASQUERADE
 
 
+echo ID: 500	pc53	IP:66    
+#------------------------------------------------------------------------------
+#Cliente - pc53	IP:66    ID: 500
+#------------------------------------------------------------------------------
+iptables -X 172.16.0.66_i
+iptables -X 172.16.0.66_o
+iptables -N 172.16.0.66_i
+iptables -N 172.16.0.66_o
+iptables -F 172.16.0.66_i
+iptables -F 172.16.0.66_o
+iptables -A FORWARD -s 172.16.0.66 -j 172.16.0.66_o
+iptables -A FORWARD -d 172.16.0.66 -j 172.16.0.66_i
+
+# MARCAJE DE PAQUETES
+
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.66 -p udp --sport 10000:30000 -j MARK --set-mark 50020
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.66 -p udp --sport 10000:30000 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.66 -p udp --dport 10000:30000 -j MARK --set-mark 50030
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.66 -p udp --dport 10000:30000 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.66 -p udp --sport 5060:5082 -j MARK --set-mark 50020
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.66 -p udp --sport 5060:5082 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.66 -p udp --dport 5060:5082 -j MARK --set-mark 50030
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.66 -p udp --dport 5060:5082 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.66 -p udp --sport 53 -j MARK --set-mark 50021
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.66 -p udp --sport 53 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.66 -p udp --dport 53 -j MARK --set-mark 50031
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.66 -p udp --dport 53 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.66 -p tcp --sport 22 -j MARK --set-mark 50022
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.66 -p tcp --sport 22 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.66 -p tcp --dport 22 -j MARK --set-mark 50032
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.66 -p tcp --dport 22 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.66 -p tcp --sport 443 -j MARK --set-mark 50023
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.66 -p tcp --sport 443 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.66 -p tcp --dport 443 -j MARK --set-mark 50033
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.66 -p tcp --dport 443 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.66 -p tcp --sport 80 -j MARK --set-mark 50024
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.66 -p tcp --sport 80 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.66 -p tcp --dport 80 -j MARK --set-mark 50034
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.66 -p tcp --dport 80 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.66 -p tcp --sport 25 -j MARK --set-mark 50026
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.66 -p tcp --sport 25 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.66 -p tcp --dport 25 -j MARK --set-mark 50036
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.66 -p tcp --dport 25 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.66 -p tcp --sport 110 -j MARK --set-mark 50026
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.66 -p tcp --sport 110 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.66 -p tcp --dport 110 -j MARK --set-mark 50036
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.66 -p tcp --dport 110 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.66 -p tcp --sport 143 -j MARK --set-mark 50026
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.66 -p tcp --sport 143 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.66 -p tcp --dport 143 -j MARK --set-mark 50036
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.66 -p tcp --dport 143 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.66 -p tcp --sport 21 -j MARK --set-mark 50027
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.66 -p tcp --sport 21 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.66 -p tcp --dport 21 -j MARK --set-mark 50037
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.66 -p tcp --dport 21 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.66 -j MARK --set-mark 50027
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.66 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.66 -j MARK --set-mark 50037
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.66 -j RETURN
+iptables -t nat -A PREROUTING -i br2 -p tcp --dport 80 -s 172.16.0.66 -j REDIRECT --to-port 3128
+iptables -t nat -A POSTROUTING -s 172.16.0.66 -o eth0 -j MASQUERADE
+
+
 echo ID: 460	PC54	IP:154    
 #------------------------------------------------------------------------------
 #Cliente - PC54	IP:154    ID: 460
@@ -7092,6 +7434,9 @@ iptables -F 172.16.0.154_i
 iptables -F 172.16.0.154_o
 iptables -A FORWARD -s 172.16.0.154 -j 172.16.0.154_o
 iptables -A FORWARD -d 172.16.0.154 -j 172.16.0.154_i
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.154 -p udp --sport 10000:30000 -j MARK --set-mark 46020
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.154 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.154 -p udp --dport 10000:30000 -j MARK --set-mark 46030
@@ -7154,6 +7499,9 @@ iptables -A FORWARD -s 172.16.0.11 -j 172.16.0.11_o
 iptables -A FORWARD -d 172.16.0.11 -j 172.16.0.11_i
 iptables -A FORWARD -s 172.16.0.11 -m mac --mac-source 00:80:f0:d1:d2:3b -j ACCEPT
 iptables -A FORWARD -d 172.16.0.11 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.11 -p udp --sport 10000:30000 -j MARK --set-mark 49420
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.11 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.11 -p udp --dport 10000:30000 -j MARK --set-mark 49430
@@ -7216,6 +7564,9 @@ iptables -A FORWARD -s 172.16.0.80 -j 172.16.0.80_o
 iptables -A FORWARD -d 172.16.0.80 -j 172.16.0.80_i
 iptables -A FORWARD -s 172.16.0.80 -m mac --mac-source 00:0b:82:11:b9:2d -j ACCEPT
 iptables -A FORWARD -d 172.16.0.80 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.80 -p udp --sport 10000:30000 -j MARK --set-mark 34820
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.80 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.80 -p udp --dport 10000:30000 -j MARK --set-mark 34830
@@ -7278,6 +7629,9 @@ iptables -A FORWARD -s 172.16.0.7 -j 172.16.0.7_o
 iptables -A FORWARD -d 172.16.0.7 -j 172.16.0.7_i
 iptables -A FORWARD -s 172.16.0.7 -m mac --mac-source 00:25:90:d8:e5:ac -j ACCEPT
 iptables -A FORWARD -d 172.16.0.7 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.7 -p udp --sport 10000:30000 -j MARK --set-mark 47020
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.7 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.7 -p udp --dport 10000:30000 -j MARK --set-mark 47030
@@ -7339,6 +7693,9 @@ iptables -A FORWARD -s 172.16.0.21 -j 172.16.0.21_o
 iptables -A FORWARD -d 172.16.0.21 -j 172.16.0.21_i
 iptables -A FORWARD -s 172.16.0.21 -m mac --mac-source 00:11:d8:f9:fd:73 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.21 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.21 -p udp --sport 10000:30000 -j MARK --set-mark 46820
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.21 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.21 -p udp --dport 10000:30000 -j MARK --set-mark 46830
@@ -7400,6 +7757,9 @@ iptables -A FORWARD -s 172.16.0.14 -j 172.16.0.14_o
 iptables -A FORWARD -d 172.16.0.14 -j 172.16.0.14_i
 iptables -A FORWARD -s 172.16.0.14 -m mac --mac-source 70:71:bc:72:72:c6 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.14 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.14 -p udp --sport 10000:30000 -j MARK --set-mark 47520
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.14 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.14 -p udp --dport 10000:30000 -j MARK --set-mark 47530
@@ -7447,6 +7807,71 @@ iptables -t mangle -A FORWARD -i br2 -s 172.16.0.14 -j RETURN
 iptables -t nat -A POSTROUTING -s 172.16.0.14 -o eth0 -j MASQUERADE
 
 
+echo ID: 408	Sistemas	IP:201    
+#------------------------------------------------------------------------------
+#Cliente - Sistemas	IP:201    ID: 408
+#------------------------------------------------------------------------------
+iptables -X 172.16.0.201_i
+iptables -X 172.16.0.201_o
+iptables -N 172.16.0.201_i
+iptables -N 172.16.0.201_o
+iptables -F 172.16.0.201_i
+iptables -F 172.16.0.201_o
+iptables -A FORWARD -s 172.16.0.201 -j 172.16.0.201_o
+iptables -A FORWARD -d 172.16.0.201 -j 172.16.0.201_i
+iptables -A FORWARD -s 172.16.0.201 -m mac --mac-source 00:80:f0:d1:d5:4e -j ACCEPT
+iptables -A FORWARD -d 172.16.0.201 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.201 -p udp --sport 10000:30000 -j MARK --set-mark 40820
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.201 -p udp --sport 10000:30000 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.201 -p udp --dport 10000:30000 -j MARK --set-mark 40830
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.201 -p udp --dport 10000:30000 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.201 -p udp --sport 5060:5082 -j MARK --set-mark 40820
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.201 -p udp --sport 5060:5082 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.201 -p udp --dport 5060:5082 -j MARK --set-mark 40830
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.201 -p udp --dport 5060:5082 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.201 -p udp --sport 53 -j MARK --set-mark 40821
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.201 -p udp --sport 53 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.201 -p udp --dport 53 -j MARK --set-mark 40831
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.201 -p udp --dport 53 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.201 -p tcp --sport 22 -j MARK --set-mark 40822
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.201 -p tcp --sport 22 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.201 -p tcp --dport 22 -j MARK --set-mark 40832
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.201 -p tcp --dport 22 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.201 -p tcp --sport 443 -j MARK --set-mark 40823
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.201 -p tcp --sport 443 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.201 -p tcp --dport 443 -j MARK --set-mark 40833
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.201 -p tcp --dport 443 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.201 -p tcp --sport 80 -j MARK --set-mark 40824
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.201 -p tcp --sport 80 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.201 -p tcp --dport 80 -j MARK --set-mark 40834
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.201 -p tcp --dport 80 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.201 -p tcp --sport 25 -j MARK --set-mark 40826
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.201 -p tcp --sport 25 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.201 -p tcp --dport 25 -j MARK --set-mark 40836
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.201 -p tcp --dport 25 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.201 -p tcp --sport 110 -j MARK --set-mark 40826
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.201 -p tcp --sport 110 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.201 -p tcp --dport 110 -j MARK --set-mark 40836
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.201 -p tcp --dport 110 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.201 -p tcp --sport 143 -j MARK --set-mark 40826
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.201 -p tcp --sport 143 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.201 -p tcp --dport 143 -j MARK --set-mark 40836
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.201 -p tcp --dport 143 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.201 -p tcp --sport 21 -j MARK --set-mark 40827
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.201 -p tcp --sport 21 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.201 -p tcp --dport 21 -j MARK --set-mark 40837
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.201 -p tcp --dport 21 -j RETURN
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.201 -j MARK --set-mark 40827
+iptables -t mangle -A FORWARD -o br2 -d 172.16.0.201 -j RETURN
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.201 -j MARK --set-mark 40837
+iptables -t mangle -A FORWARD -i br2 -s 172.16.0.201 -j RETURN
+iptables -t nat -A PREROUTING -i br2 -p tcp --dport 80 -s 172.16.0.201 -j REDIRECT --to-port 3128
+iptables -t nat -A POSTROUTING -s 172.16.0.201 -o eth0 -j MASQUERADE
+
+
 echo ID: 467	Sistemas	IP:24    
 #------------------------------------------------------------------------------
 #Cliente - Sistemas	IP:24    ID: 467
@@ -7461,6 +7886,9 @@ iptables -A FORWARD -s 172.16.0.24 -j 172.16.0.24_o
 iptables -A FORWARD -d 172.16.0.24 -j 172.16.0.24_i
 iptables -A FORWARD -s 172.16.0.24 -m mac --mac-source 00:24:e8:84:06:21 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.24 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.24 -p udp --sport 10000:30000 -j MARK --set-mark 46720
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.24 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.24 -p udp --dport 10000:30000 -j MARK --set-mark 46730
@@ -7523,6 +7951,9 @@ iptables -A FORWARD -s 172.16.0.38 -j 172.16.0.38_o
 iptables -A FORWARD -d 172.16.0.38 -j 172.16.0.38_i
 iptables -A FORWARD -s 172.16.0.38 -m mac --mac-source 78:e4:00:d3:ee:d5 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.38 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.38 -p udp --sport 10000:30000 -j MARK --set-mark 39620
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.38 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.38 -p udp --dport 10000:30000 -j MARK --set-mark 39630
@@ -7571,68 +8002,6 @@ iptables -t nat -A PREROUTING -i br2 -p tcp --dport 80 -s 172.16.0.38 -j REDIREC
 iptables -t nat -A POSTROUTING -s 172.16.0.38 -o eth0 -j MASQUERADE
 
 
-echo ID: 408	Sistemas	IP:201    
-#------------------------------------------------------------------------------
-#Cliente - Sistemas	IP:201    ID: 408
-#------------------------------------------------------------------------------
-iptables -X 172.16.0.201_i
-iptables -X 172.16.0.201_o
-iptables -N 172.16.0.201_i
-iptables -N 172.16.0.201_o
-iptables -F 172.16.0.201_i
-iptables -F 172.16.0.201_o
-iptables -A FORWARD -s 172.16.0.201 -j 172.16.0.201_o
-iptables -A FORWARD -d 172.16.0.201 -j 172.16.0.201_i
-iptables -A FORWARD -s 172.16.0.201 -m mac --mac-source 00:80:f0:d1:d5:4e -j ACCEPT
-iptables -A FORWARD -d 172.16.0.201 -j ACCEPT
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.201 -p udp --sport 10000:30000 -j MARK --set-mark 40820
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.201 -p udp --sport 10000:30000 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.201 -p udp --dport 10000:30000 -j MARK --set-mark 40830
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.201 -p udp --dport 10000:30000 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.201 -p udp --sport 5060:5082 -j MARK --set-mark 40820
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.201 -p udp --sport 5060:5082 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.201 -p udp --dport 5060:5082 -j MARK --set-mark 40830
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.201 -p udp --dport 5060:5082 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.201 -p udp --sport 53 -j MARK --set-mark 40821
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.201 -p udp --sport 53 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.201 -p udp --dport 53 -j MARK --set-mark 40831
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.201 -p udp --dport 53 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.201 -p tcp --sport 22 -j MARK --set-mark 40822
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.201 -p tcp --sport 22 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.201 -p tcp --dport 22 -j MARK --set-mark 40832
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.201 -p tcp --dport 22 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.201 -p tcp --sport 443 -j MARK --set-mark 40823
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.201 -p tcp --sport 443 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.201 -p tcp --dport 443 -j MARK --set-mark 40833
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.201 -p tcp --dport 443 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.201 -p tcp --sport 80 -j MARK --set-mark 40824
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.201 -p tcp --sport 80 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.201 -p tcp --dport 80 -j MARK --set-mark 40834
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.201 -p tcp --dport 80 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.201 -p tcp --sport 25 -j MARK --set-mark 40826
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.201 -p tcp --sport 25 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.201 -p tcp --dport 25 -j MARK --set-mark 40836
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.201 -p tcp --dport 25 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.201 -p tcp --sport 110 -j MARK --set-mark 40826
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.201 -p tcp --sport 110 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.201 -p tcp --dport 110 -j MARK --set-mark 40836
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.201 -p tcp --dport 110 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.201 -p tcp --sport 143 -j MARK --set-mark 40826
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.201 -p tcp --sport 143 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.201 -p tcp --dport 143 -j MARK --set-mark 40836
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.201 -p tcp --dport 143 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.201 -p tcp --sport 21 -j MARK --set-mark 40827
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.201 -p tcp --sport 21 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.201 -p tcp --dport 21 -j MARK --set-mark 40837
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.201 -p tcp --dport 21 -j RETURN
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.201 -j MARK --set-mark 40827
-iptables -t mangle -A FORWARD -o br2 -d 172.16.0.201 -j RETURN
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.201 -j MARK --set-mark 40837
-iptables -t mangle -A FORWARD -i br2 -s 172.16.0.201 -j RETURN
-iptables -t nat -A PREROUTING -i br2 -p tcp --dport 80 -s 172.16.0.201 -j REDIRECT --to-port 3128
-iptables -t nat -A POSTROUTING -s 172.16.0.201 -o eth0 -j MASQUERADE
-
-
 echo ID: 495	Slofler	IP:50    
 #------------------------------------------------------------------------------
 #Cliente - Slofler	IP:50    ID: 495
@@ -7647,6 +8016,9 @@ iptables -A FORWARD -s 172.16.0.50 -j 172.16.0.50_o
 iptables -A FORWARD -d 172.16.0.50 -j 172.16.0.50_i
 iptables -A FORWARD -s 172.16.0.50 -m mac --mac-source dc:85:de:5b:13:e1 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.50 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.50 -p udp --sport 10000:30000 -j MARK --set-mark 49520
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.50 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.50 -p udp --dport 10000:30000 -j MARK --set-mark 49530
@@ -7709,6 +8081,9 @@ iptables -A FORWARD -s 172.16.0.54 -j 172.16.0.54_o
 iptables -A FORWARD -d 172.16.0.54 -j 172.16.0.54_i
 iptables -A FORWARD -s 172.16.0.54 -m mac --mac-source b8:03:05:4e:e1:43 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.54 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.54 -p udp --sport 10000:30000 -j MARK --set-mark 43420
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.54 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.54 -p udp --dport 10000:30000 -j MARK --set-mark 43430
@@ -7771,6 +8146,9 @@ iptables -A FORWARD -s 172.16.0.100 -j 172.16.0.100_o
 iptables -A FORWARD -d 172.16.0.100 -j 172.16.0.100_i
 iptables -A FORWARD -s 172.16.0.100 -m mac --mac-source 10:78:D2:8A:43:EF -j ACCEPT
 iptables -A FORWARD -d 172.16.0.100 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.100 -p udp --sport 10000:30000 -j MARK --set-mark 18520
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.100 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.100 -p udp --dport 10000:30000 -j MARK --set-mark 18530
@@ -7833,6 +8211,9 @@ iptables -A FORWARD -s 172.16.0.42 -j 172.16.0.42_o
 iptables -A FORWARD -d 172.16.0.42 -j 172.16.0.42_i
 iptables -A FORWARD -s 172.16.0.42 -m mac --mac-source e0:b2:f1:a2:03:40 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.42 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.42 -p udp --sport 10000:30000 -j MARK --set-mark 48720
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.42 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.42 -p udp --dport 10000:30000 -j MARK --set-mark 48730
@@ -7895,6 +8276,9 @@ iptables -A FORWARD -s 172.16.0.53 -j 172.16.0.53_o
 iptables -A FORWARD -d 172.16.0.53 -j 172.16.0.53_i
 iptables -A FORWARD -s 172.16.0.53 -m mac --mac-source 00:80:f0:d1:d1:7b -j ACCEPT
 iptables -A FORWARD -d 172.16.0.53 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.53 -p udp --sport 10000:30000 -j MARK --set-mark 49220
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.53 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.53 -p udp --dport 10000:30000 -j MARK --set-mark 49230
@@ -7957,6 +8341,9 @@ iptables -A FORWARD -s 172.16.0.204 -j 172.16.0.204_o
 iptables -A FORWARD -d 172.16.0.204 -j 172.16.0.204_i
 iptables -A FORWARD -s 172.16.0.204 -m mac --mac-source 00:80:f0:d1:d1:dd -j ACCEPT
 iptables -A FORWARD -d 172.16.0.204 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.204 -p udp --sport 10000:30000 -j MARK --set-mark 41520
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.204 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.204 -p udp --dport 10000:30000 -j MARK --set-mark 41530
@@ -8019,6 +8406,9 @@ iptables -A FORWARD -s 172.16.0.3 -j 172.16.0.3_o
 iptables -A FORWARD -d 172.16.0.3 -j 172.16.0.3_i
 iptables -A FORWARD -s 172.16.0.3 -m mac --mac-source 00:03:7e:00:c4:ae -j ACCEPT
 iptables -A FORWARD -d 172.16.0.3 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.3 -p udp --sport 10000:30000 -j MARK --set-mark 22120
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.3 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.3 -p udp --dport 10000:30000 -j MARK --set-mark 22130
@@ -8081,6 +8471,9 @@ iptables -A FORWARD -s 172.16.0.6 -j 172.16.0.6_o
 iptables -A FORWARD -d 172.16.0.6 -j 172.16.0.6_i
 iptables -A FORWARD -s 172.16.0.6 -m mac --mac-source 00:03:7e:00:7e:38 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.6 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.6 -p udp --sport 10000:30000 -j MARK --set-mark 28220
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.6 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.6 -p udp --dport 10000:30000 -j MARK --set-mark 28230
@@ -8143,6 +8536,9 @@ iptables -A FORWARD -s 172.16.0.51 -j 172.16.0.51_o
 iptables -A FORWARD -d 172.16.0.51 -j 172.16.0.51_i
 iptables -A FORWARD -s 172.16.0.51 -m mac --mac-source 00:26:9e:d9:f6:fc -j ACCEPT
 iptables -A FORWARD -d 172.16.0.51 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.51 -p udp --sport 10000:30000 -j MARK --set-mark 45220
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.51 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.51 -p udp --dport 10000:30000 -j MARK --set-mark 45230
@@ -8205,6 +8601,9 @@ iptables -A FORWARD -s 172.16.0.203 -j 172.16.0.203_o
 iptables -A FORWARD -d 172.16.0.203 -j 172.16.0.203_i
 iptables -A FORWARD -s 172.16.0.203 -m mac --mac-source 00:80:f0:d1:d5:46 -j ACCEPT
 iptables -A FORWARD -d 172.16.0.203 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.203 -p udp --sport 10000:30000 -j MARK --set-mark 40920
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.203 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.203 -p udp --dport 10000:30000 -j MARK --set-mark 40930
@@ -8267,6 +8666,9 @@ iptables -A FORWARD -s 172.16.0.13 -j 172.16.0.13_o
 iptables -A FORWARD -d 172.16.0.13 -j 172.16.0.13_i
 iptables -A FORWARD -s 172.16.0.13 -m mac --mac-source 00:19:21:19:3d:7e -j ACCEPT
 iptables -A FORWARD -d 172.16.0.13 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.13 -p udp --sport 10000:30000 -j MARK --set-mark 37520
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.13 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.13 -p udp --dport 10000:30000 -j MARK --set-mark 37530
@@ -8328,6 +8730,9 @@ iptables -A FORWARD -s 172.16.0.68 -j 172.16.0.68_o
 iptables -A FORWARD -d 172.16.0.68 -j 172.16.0.68_i
 iptables -A FORWARD -s 172.16.0.68 -m mac --mac-source 52:54:00:c3:33:cc -j ACCEPT
 iptables -A FORWARD -d 172.16.0.68 -j ACCEPT
+
+# MARCAJE DE PAQUETES
+
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.68 -p udp --sport 10000:30000 -j MARK --set-mark 50120
 iptables -t mangle -A FORWARD -o br2 -d 172.16.0.68 -p udp --sport 10000:30000 -j RETURN
 iptables -t mangle -A FORWARD -i br2 -s 172.16.0.68 -p udp --dport 10000:30000 -j MARK --set-mark 50130
@@ -8381,6 +8786,9 @@ iptables -t mangle -A PREROUTING -p tcp -j RETURN
 iptables -P INPUT DROP
 iptables -P OUTPUT DROP
 iptables -P FORWARD DROP
+#------------------------------------------------------------------------------
+#Cliente - Alejandro Rogers	IP:19    ID: 478
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:4781 htb rate 256kbit ceil 256kbit burst 15k
@@ -8428,259 +8836,259 @@ tc filter add dev eth0 protocol ip parent 1: handle 47836 fw classid 1:12
 tc filter add dev eth0 protocol ip parent 1: handle 47837 fw classid 1:13
 tc filter add dev eth0 protocol ip parent 1: handle 47838 fw classid 1:14
 
-
-# MARCAJE DE PAQUETES
-
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:3581 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:3581 classid 1:15 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:3581 classid 1:16 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:3581 classid 1:17 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:3581 classid 1:18 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:3581 classid 1:19 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:3581 classid 1:1a htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:3581 classid 1:1b htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:3581 classid 1:1c htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:3581 classid 1:1d htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 35820 fw classid 1:15
-tc filter add dev br2 protocol ip parent 1: handle 35821 fw classid 1:16
-tc filter add dev br2 protocol ip parent 1: handle 35822 fw classid 1:17
-tc filter add dev br2 protocol ip parent 1: handle 35823 fw classid 1:18
-tc filter add dev br2 protocol ip parent 1: handle 35824 fw classid 1:19
-tc filter add dev br2 protocol ip parent 1: handle 35825 fw classid 1:1a
-tc filter add dev br2 protocol ip parent 1: handle 35826 fw classid 1:1b
-tc filter add dev br2 protocol ip parent 1: handle 35827 fw classid 1:1c
-tc filter add dev br2 protocol ip parent 1: handle 35828 fw classid 1:1d
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:3582 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:3582 classid 1:1e htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:3582 classid 1:1f htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:3582 classid 1:20 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:3582 classid 1:21 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:3582 classid 1:22 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:3582 classid 1:23 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:3582 classid 1:24 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:3582 classid 1:25 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:3582 classid 1:26 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 35830 fw classid 1:1e
-tc filter add dev eth0 protocol ip parent 1: handle 35831 fw classid 1:1f
-tc filter add dev eth0 protocol ip parent 1: handle 35832 fw classid 1:20
-tc filter add dev eth0 protocol ip parent 1: handle 35833 fw classid 1:21
-tc filter add dev eth0 protocol ip parent 1: handle 35834 fw classid 1:22
-tc filter add dev eth0 protocol ip parent 1: handle 35835 fw classid 1:23
-tc filter add dev eth0 protocol ip parent 1: handle 35836 fw classid 1:24
-tc filter add dev eth0 protocol ip parent 1: handle 35837 fw classid 1:25
-tc filter add dev eth0 protocol ip parent 1: handle 35838 fw classid 1:26
-
-
-# MARCAJE DE PAQUETES
-
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:4581 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4581 classid 1:27 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4581 classid 1:28 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4581 classid 1:29 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4581 classid 1:2a htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4581 classid 1:2b htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4581 classid 1:2c htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4581 classid 1:2d htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4581 classid 1:2e htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4581 classid 1:2f htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 45820 fw classid 1:27
-tc filter add dev br2 protocol ip parent 1: handle 45821 fw classid 1:28
-tc filter add dev br2 protocol ip parent 1: handle 45822 fw classid 1:29
-tc filter add dev br2 protocol ip parent 1: handle 45823 fw classid 1:2a
-tc filter add dev br2 protocol ip parent 1: handle 45824 fw classid 1:2b
-tc filter add dev br2 protocol ip parent 1: handle 45825 fw classid 1:2c
-tc filter add dev br2 protocol ip parent 1: handle 45826 fw classid 1:2d
-tc filter add dev br2 protocol ip parent 1: handle 45827 fw classid 1:2e
-tc filter add dev br2 protocol ip parent 1: handle 45828 fw classid 1:2f
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:4582 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4582 classid 1:30 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4582 classid 1:31 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4582 classid 1:32 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4582 classid 1:33 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4582 classid 1:34 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4582 classid 1:35 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4582 classid 1:36 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4582 classid 1:37 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4582 classid 1:38 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 45830 fw classid 1:30
-tc filter add dev eth0 protocol ip parent 1: handle 45831 fw classid 1:31
-tc filter add dev eth0 protocol ip parent 1: handle 45832 fw classid 1:32
-tc filter add dev eth0 protocol ip parent 1: handle 45833 fw classid 1:33
-tc filter add dev eth0 protocol ip parent 1: handle 45834 fw classid 1:34
-tc filter add dev eth0 protocol ip parent 1: handle 45835 fw classid 1:35
-tc filter add dev eth0 protocol ip parent 1: handle 45836 fw classid 1:36
-tc filter add dev eth0 protocol ip parent 1: handle 45837 fw classid 1:37
-tc filter add dev eth0 protocol ip parent 1: handle 45838 fw classid 1:38
-
-
-# MARCAJE DE PAQUETES
-
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:4761 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4761 classid 1:39 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4761 classid 1:3a htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4761 classid 1:3b htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4761 classid 1:3c htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4761 classid 1:3d htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4761 classid 1:3e htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4761 classid 1:3f htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4761 classid 1:40 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4761 classid 1:41 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 47620 fw classid 1:39
-tc filter add dev br2 protocol ip parent 1: handle 47621 fw classid 1:3a
-tc filter add dev br2 protocol ip parent 1: handle 47622 fw classid 1:3b
-tc filter add dev br2 protocol ip parent 1: handle 47623 fw classid 1:3c
-tc filter add dev br2 protocol ip parent 1: handle 47624 fw classid 1:3d
-tc filter add dev br2 protocol ip parent 1: handle 47625 fw classid 1:3e
-tc filter add dev br2 protocol ip parent 1: handle 47626 fw classid 1:3f
-tc filter add dev br2 protocol ip parent 1: handle 47627 fw classid 1:40
-tc filter add dev br2 protocol ip parent 1: handle 47628 fw classid 1:41
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:4762 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4762 classid 1:42 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4762 classid 1:43 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4762 classid 1:44 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4762 classid 1:45 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4762 classid 1:46 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4762 classid 1:47 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4762 classid 1:48 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4762 classid 1:49 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4762 classid 1:4a htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 47630 fw classid 1:42
-tc filter add dev eth0 protocol ip parent 1: handle 47631 fw classid 1:43
-tc filter add dev eth0 protocol ip parent 1: handle 47632 fw classid 1:44
-tc filter add dev eth0 protocol ip parent 1: handle 47633 fw classid 1:45
-tc filter add dev eth0 protocol ip parent 1: handle 47634 fw classid 1:46
-tc filter add dev eth0 protocol ip parent 1: handle 47635 fw classid 1:47
-tc filter add dev eth0 protocol ip parent 1: handle 47636 fw classid 1:48
-tc filter add dev eth0 protocol ip parent 1: handle 47637 fw classid 1:49
-tc filter add dev eth0 protocol ip parent 1: handle 47638 fw classid 1:4a
-
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - Alejandro Rogers	IP:15    ID: 454
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:4541 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4541 classid 1:4b htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4541 classid 1:4c htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4541 classid 1:4d htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4541 classid 1:4e htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4541 classid 1:4f htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4541 classid 1:50 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4541 classid 1:51 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4541 classid 1:52 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4541 classid 1:53 htb rate 100kbit ceil 256kbit burst 15k prio 8
+tc class add dev br2 parent 1:4541 classid 1:15 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4541 classid 1:16 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4541 classid 1:17 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4541 classid 1:18 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4541 classid 1:19 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4541 classid 1:1a htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4541 classid 1:1b htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4541 classid 1:1c htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4541 classid 1:1d htb rate 100kbit ceil 256kbit burst 15k prio 8
 
 # HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 45420 fw classid 1:4b
-tc filter add dev br2 protocol ip parent 1: handle 45421 fw classid 1:4c
-tc filter add dev br2 protocol ip parent 1: handle 45422 fw classid 1:4d
-tc filter add dev br2 protocol ip parent 1: handle 45423 fw classid 1:4e
-tc filter add dev br2 protocol ip parent 1: handle 45424 fw classid 1:4f
-tc filter add dev br2 protocol ip parent 1: handle 45425 fw classid 1:50
-tc filter add dev br2 protocol ip parent 1: handle 45426 fw classid 1:51
-tc filter add dev br2 protocol ip parent 1: handle 45427 fw classid 1:52
-tc filter add dev br2 protocol ip parent 1: handle 45428 fw classid 1:53
+tc filter add dev br2 protocol ip parent 1: handle 45420 fw classid 1:15
+tc filter add dev br2 protocol ip parent 1: handle 45421 fw classid 1:16
+tc filter add dev br2 protocol ip parent 1: handle 45422 fw classid 1:17
+tc filter add dev br2 protocol ip parent 1: handle 45423 fw classid 1:18
+tc filter add dev br2 protocol ip parent 1: handle 45424 fw classid 1:19
+tc filter add dev br2 protocol ip parent 1: handle 45425 fw classid 1:1a
+tc filter add dev br2 protocol ip parent 1: handle 45426 fw classid 1:1b
+tc filter add dev br2 protocol ip parent 1: handle 45427 fw classid 1:1c
+tc filter add dev br2 protocol ip parent 1: handle 45428 fw classid 1:1d
 
 # CLASES DE SUBIDA
 tc class add dev eth0 parent 1: classid 1:4542 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4542 classid 1:54 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4542 classid 1:55 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4542 classid 1:56 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4542 classid 1:57 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4542 classid 1:58 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4542 classid 1:59 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4542 classid 1:5a htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4542 classid 1:5b htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4542 classid 1:5c htb rate 100kbit ceil 128kbit burst 15k prio 8
+tc class add dev eth0 parent 1:4542 classid 1:1e htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4542 classid 1:1f htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4542 classid 1:20 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4542 classid 1:21 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4542 classid 1:22 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4542 classid 1:23 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4542 classid 1:24 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4542 classid 1:25 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4542 classid 1:26 htb rate 100kbit ceil 128kbit burst 15k prio 8
 
 # HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 45430 fw classid 1:54
-tc filter add dev eth0 protocol ip parent 1: handle 45431 fw classid 1:55
-tc filter add dev eth0 protocol ip parent 1: handle 45432 fw classid 1:56
-tc filter add dev eth0 protocol ip parent 1: handle 45433 fw classid 1:57
-tc filter add dev eth0 protocol ip parent 1: handle 45434 fw classid 1:58
-tc filter add dev eth0 protocol ip parent 1: handle 45435 fw classid 1:59
-tc filter add dev eth0 protocol ip parent 1: handle 45436 fw classid 1:5a
-tc filter add dev eth0 protocol ip parent 1: handle 45437 fw classid 1:5b
-tc filter add dev eth0 protocol ip parent 1: handle 45438 fw classid 1:5c
+tc filter add dev eth0 protocol ip parent 1: handle 45430 fw classid 1:1e
+tc filter add dev eth0 protocol ip parent 1: handle 45431 fw classid 1:1f
+tc filter add dev eth0 protocol ip parent 1: handle 45432 fw classid 1:20
+tc filter add dev eth0 protocol ip parent 1: handle 45433 fw classid 1:21
+tc filter add dev eth0 protocol ip parent 1: handle 45434 fw classid 1:22
+tc filter add dev eth0 protocol ip parent 1: handle 45435 fw classid 1:23
+tc filter add dev eth0 protocol ip parent 1: handle 45436 fw classid 1:24
+tc filter add dev eth0 protocol ip parent 1: handle 45437 fw classid 1:25
+tc filter add dev eth0 protocol ip parent 1: handle 45438 fw classid 1:26
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - Alejandro Rogers	IP:29    ID: 418
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:4181 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4181 classid 1:5d htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4181 classid 1:5e htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4181 classid 1:5f htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4181 classid 1:60 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4181 classid 1:61 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4181 classid 1:62 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4181 classid 1:63 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4181 classid 1:64 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4181 classid 1:65 htb rate 100kbit ceil 256kbit burst 15k prio 8
+tc class add dev br2 parent 1:4181 classid 1:27 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4181 classid 1:28 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4181 classid 1:29 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4181 classid 1:2a htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4181 classid 1:2b htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4181 classid 1:2c htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4181 classid 1:2d htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4181 classid 1:2e htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4181 classid 1:2f htb rate 100kbit ceil 256kbit burst 15k prio 8
 
 # HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 41820 fw classid 1:5d
-tc filter add dev br2 protocol ip parent 1: handle 41821 fw classid 1:5e
-tc filter add dev br2 protocol ip parent 1: handle 41822 fw classid 1:5f
-tc filter add dev br2 protocol ip parent 1: handle 41823 fw classid 1:60
-tc filter add dev br2 protocol ip parent 1: handle 41824 fw classid 1:61
-tc filter add dev br2 protocol ip parent 1: handle 41825 fw classid 1:62
-tc filter add dev br2 protocol ip parent 1: handle 41826 fw classid 1:63
-tc filter add dev br2 protocol ip parent 1: handle 41827 fw classid 1:64
-tc filter add dev br2 protocol ip parent 1: handle 41828 fw classid 1:65
+tc filter add dev br2 protocol ip parent 1: handle 41820 fw classid 1:27
+tc filter add dev br2 protocol ip parent 1: handle 41821 fw classid 1:28
+tc filter add dev br2 protocol ip parent 1: handle 41822 fw classid 1:29
+tc filter add dev br2 protocol ip parent 1: handle 41823 fw classid 1:2a
+tc filter add dev br2 protocol ip parent 1: handle 41824 fw classid 1:2b
+tc filter add dev br2 protocol ip parent 1: handle 41825 fw classid 1:2c
+tc filter add dev br2 protocol ip parent 1: handle 41826 fw classid 1:2d
+tc filter add dev br2 protocol ip parent 1: handle 41827 fw classid 1:2e
+tc filter add dev br2 protocol ip parent 1: handle 41828 fw classid 1:2f
 
 # CLASES DE SUBIDA
 tc class add dev eth0 parent 1: classid 1:4182 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4182 classid 1:66 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4182 classid 1:67 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4182 classid 1:68 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4182 classid 1:69 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4182 classid 1:6a htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4182 classid 1:6b htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4182 classid 1:6c htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4182 classid 1:6d htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4182 classid 1:6e htb rate 100kbit ceil 128kbit burst 15k prio 8
+tc class add dev eth0 parent 1:4182 classid 1:30 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4182 classid 1:31 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4182 classid 1:32 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4182 classid 1:33 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4182 classid 1:34 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4182 classid 1:35 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4182 classid 1:36 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4182 classid 1:37 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4182 classid 1:38 htb rate 100kbit ceil 128kbit burst 15k prio 8
 
 # HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 41830 fw classid 1:66
-tc filter add dev eth0 protocol ip parent 1: handle 41831 fw classid 1:67
-tc filter add dev eth0 protocol ip parent 1: handle 41832 fw classid 1:68
-tc filter add dev eth0 protocol ip parent 1: handle 41833 fw classid 1:69
-tc filter add dev eth0 protocol ip parent 1: handle 41834 fw classid 1:6a
-tc filter add dev eth0 protocol ip parent 1: handle 41835 fw classid 1:6b
-tc filter add dev eth0 protocol ip parent 1: handle 41836 fw classid 1:6c
-tc filter add dev eth0 protocol ip parent 1: handle 41837 fw classid 1:6d
-tc filter add dev eth0 protocol ip parent 1: handle 41838 fw classid 1:6e
+tc filter add dev eth0 protocol ip parent 1: handle 41830 fw classid 1:30
+tc filter add dev eth0 protocol ip parent 1: handle 41831 fw classid 1:31
+tc filter add dev eth0 protocol ip parent 1: handle 41832 fw classid 1:32
+tc filter add dev eth0 protocol ip parent 1: handle 41833 fw classid 1:33
+tc filter add dev eth0 protocol ip parent 1: handle 41834 fw classid 1:34
+tc filter add dev eth0 protocol ip parent 1: handle 41835 fw classid 1:35
+tc filter add dev eth0 protocol ip parent 1: handle 41836 fw classid 1:36
+tc filter add dev eth0 protocol ip parent 1: handle 41837 fw classid 1:37
+tc filter add dev eth0 protocol ip parent 1: handle 41838 fw classid 1:38
 
+#------------------------------------------------------------------------------
+#Cliente - Alejandro Rogers	IP:62    ID: 358
+#------------------------------------------------------------------------------
 
-# MARCAJE DE PAQUETES
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:3581 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:3581 classid 1:39 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:3581 classid 1:3a htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:3581 classid 1:3b htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:3581 classid 1:3c htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:3581 classid 1:3d htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:3581 classid 1:3e htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:3581 classid 1:3f htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:3581 classid 1:40 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:3581 classid 1:41 htb rate 100kbit ceil 256kbit burst 15k prio 8
 
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 35820 fw classid 1:39
+tc filter add dev br2 protocol ip parent 1: handle 35821 fw classid 1:3a
+tc filter add dev br2 protocol ip parent 1: handle 35822 fw classid 1:3b
+tc filter add dev br2 protocol ip parent 1: handle 35823 fw classid 1:3c
+tc filter add dev br2 protocol ip parent 1: handle 35824 fw classid 1:3d
+tc filter add dev br2 protocol ip parent 1: handle 35825 fw classid 1:3e
+tc filter add dev br2 protocol ip parent 1: handle 35826 fw classid 1:3f
+tc filter add dev br2 protocol ip parent 1: handle 35827 fw classid 1:40
+tc filter add dev br2 protocol ip parent 1: handle 35828 fw classid 1:41
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:3582 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:3582 classid 1:42 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:3582 classid 1:43 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:3582 classid 1:44 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:3582 classid 1:45 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:3582 classid 1:46 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:3582 classid 1:47 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:3582 classid 1:48 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:3582 classid 1:49 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:3582 classid 1:4a htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 35830 fw classid 1:42
+tc filter add dev eth0 protocol ip parent 1: handle 35831 fw classid 1:43
+tc filter add dev eth0 protocol ip parent 1: handle 35832 fw classid 1:44
+tc filter add dev eth0 protocol ip parent 1: handle 35833 fw classid 1:45
+tc filter add dev eth0 protocol ip parent 1: handle 35834 fw classid 1:46
+tc filter add dev eth0 protocol ip parent 1: handle 35835 fw classid 1:47
+tc filter add dev eth0 protocol ip parent 1: handle 35836 fw classid 1:48
+tc filter add dev eth0 protocol ip parent 1: handle 35837 fw classid 1:49
+tc filter add dev eth0 protocol ip parent 1: handle 35838 fw classid 1:4a
+
+#------------------------------------------------------------------------------
+#Cliente - Alejandro Rogers	IP:49    ID: 476
+#------------------------------------------------------------------------------
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:4761 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:4761 classid 1:4b htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4761 classid 1:4c htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4761 classid 1:4d htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4761 classid 1:4e htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4761 classid 1:4f htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4761 classid 1:50 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4761 classid 1:51 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4761 classid 1:52 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4761 classid 1:53 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 47620 fw classid 1:4b
+tc filter add dev br2 protocol ip parent 1: handle 47621 fw classid 1:4c
+tc filter add dev br2 protocol ip parent 1: handle 47622 fw classid 1:4d
+tc filter add dev br2 protocol ip parent 1: handle 47623 fw classid 1:4e
+tc filter add dev br2 protocol ip parent 1: handle 47624 fw classid 1:4f
+tc filter add dev br2 protocol ip parent 1: handle 47625 fw classid 1:50
+tc filter add dev br2 protocol ip parent 1: handle 47626 fw classid 1:51
+tc filter add dev br2 protocol ip parent 1: handle 47627 fw classid 1:52
+tc filter add dev br2 protocol ip parent 1: handle 47628 fw classid 1:53
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:4762 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:4762 classid 1:54 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4762 classid 1:55 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4762 classid 1:56 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4762 classid 1:57 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4762 classid 1:58 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4762 classid 1:59 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4762 classid 1:5a htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4762 classid 1:5b htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4762 classid 1:5c htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 47630 fw classid 1:54
+tc filter add dev eth0 protocol ip parent 1: handle 47631 fw classid 1:55
+tc filter add dev eth0 protocol ip parent 1: handle 47632 fw classid 1:56
+tc filter add dev eth0 protocol ip parent 1: handle 47633 fw classid 1:57
+tc filter add dev eth0 protocol ip parent 1: handle 47634 fw classid 1:58
+tc filter add dev eth0 protocol ip parent 1: handle 47635 fw classid 1:59
+tc filter add dev eth0 protocol ip parent 1: handle 47636 fw classid 1:5a
+tc filter add dev eth0 protocol ip parent 1: handle 47637 fw classid 1:5b
+tc filter add dev eth0 protocol ip parent 1: handle 47638 fw classid 1:5c
+
+#------------------------------------------------------------------------------
+#Cliente - Alejandro Rogers	IP:98    ID: 458
+#------------------------------------------------------------------------------
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:4581 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:4581 classid 1:5d htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4581 classid 1:5e htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4581 classid 1:5f htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4581 classid 1:60 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4581 classid 1:61 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4581 classid 1:62 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4581 classid 1:63 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4581 classid 1:64 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4581 classid 1:65 htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 45820 fw classid 1:5d
+tc filter add dev br2 protocol ip parent 1: handle 45821 fw classid 1:5e
+tc filter add dev br2 protocol ip parent 1: handle 45822 fw classid 1:5f
+tc filter add dev br2 protocol ip parent 1: handle 45823 fw classid 1:60
+tc filter add dev br2 protocol ip parent 1: handle 45824 fw classid 1:61
+tc filter add dev br2 protocol ip parent 1: handle 45825 fw classid 1:62
+tc filter add dev br2 protocol ip parent 1: handle 45826 fw classid 1:63
+tc filter add dev br2 protocol ip parent 1: handle 45827 fw classid 1:64
+tc filter add dev br2 protocol ip parent 1: handle 45828 fw classid 1:65
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:4582 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:4582 classid 1:66 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4582 classid 1:67 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4582 classid 1:68 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4582 classid 1:69 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4582 classid 1:6a htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4582 classid 1:6b htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4582 classid 1:6c htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4582 classid 1:6d htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4582 classid 1:6e htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 45830 fw classid 1:66
+tc filter add dev eth0 protocol ip parent 1: handle 45831 fw classid 1:67
+tc filter add dev eth0 protocol ip parent 1: handle 45832 fw classid 1:68
+tc filter add dev eth0 protocol ip parent 1: handle 45833 fw classid 1:69
+tc filter add dev eth0 protocol ip parent 1: handle 45834 fw classid 1:6a
+tc filter add dev eth0 protocol ip parent 1: handle 45835 fw classid 1:6b
+tc filter add dev eth0 protocol ip parent 1: handle 45836 fw classid 1:6c
+tc filter add dev eth0 protocol ip parent 1: handle 45837 fw classid 1:6d
+tc filter add dev eth0 protocol ip parent 1: handle 45838 fw classid 1:6e
+
+#------------------------------------------------------------------------------
+#Cliente - Android TV	IP:5    ID: 469
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:4691 htb rate 256kbit ceil 256kbit burst 15k
@@ -8728,9 +9136,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 46936 fw classid 1:7e
 tc filter add dev eth0 protocol ip parent 1: handle 46937 fw classid 1:7f
 tc filter add dev eth0 protocol ip parent 1: handle 46938 fw classid 1:80
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - Arogers	IP:52    ID: 491
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:4911 htb rate 256kbit ceil 256kbit burst 15k
@@ -8778,9 +9186,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 49136 fw classid 1:90
 tc filter add dev eth0 protocol ip parent 1: handle 49137 fw classid 1:91
 tc filter add dev eth0 protocol ip parent 1: handle 49138 fw classid 1:92
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - Asesora Lucia Barrios	IP:205    ID: 392
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:3921 htb rate 256kbit ceil 256kbit burst 15k
@@ -8828,9 +9236,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 39236 fw classid 1:a2
 tc filter add dev eth0 protocol ip parent 1: handle 39237 fw classid 1:a3
 tc filter add dev eth0 protocol ip parent 1: handle 39238 fw classid 1:a4
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - Asesora Vicente Lopez	IP:206    ID: 395
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:3951 htb rate 256kbit ceil 256kbit burst 15k
@@ -8878,9 +9286,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 39536 fw classid 1:b4
 tc filter add dev eth0 protocol ip parent 1: handle 39537 fw classid 1:b5
 tc filter add dev eth0 protocol ip parent 1: handle 39538 fw classid 1:b6
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - Asterisk	IP:2    ID: 77
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:771 htb rate 256kbit ceil 256kbit burst 15k
@@ -8928,9 +9336,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 7736 fw classid 1:c6
 tc filter add dev eth0 protocol ip parent 1: handle 7737 fw classid 1:c7
 tc filter add dev eth0 protocol ip parent 1: handle 7738 fw classid 1:c8
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - Backup 1	IP:10    ID: 160
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:1601 htb rate 256kbit ceil 256kbit burst 15k
@@ -8978,9 +9386,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 16036 fw classid 1:d8
 tc filter add dev eth0 protocol ip parent 1: handle 16037 fw classid 1:d9
 tc filter add dev eth0 protocol ip parent 1: handle 16038 fw classid 1:da
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - Carlos	IP:34    ID: 474
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:4741 htb rate 256kbit ceil 256kbit burst 15k
@@ -9028,9 +9436,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 47436 fw classid 1:ea
 tc filter add dev eth0 protocol ip parent 1: handle 47437 fw classid 1:eb
 tc filter add dev eth0 protocol ip parent 1: handle 47438 fw classid 1:ec
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - Carlos Rodriguez	IP:56    ID: 138
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:1381 htb rate 256kbit ceil 256kbit burst 15k
@@ -9078,9 +9486,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 13836 fw classid 1:fc
 tc filter add dev eth0 protocol ip parent 1: handle 13837 fw classid 1:fd
 tc filter add dev eth0 protocol ip parent 1: handle 13838 fw classid 1:fe
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - Celular	IP:12    ID: 472
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:4721 htb rate 256kbit ceil 256kbit burst 15k
@@ -9128,9 +9536,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 47236 fw classid 1:10e
 tc filter add dev eth0 protocol ip parent 1: handle 47237 fw classid 1:10f
 tc filter add dev eth0 protocol ip parent 1: handle 47238 fw classid 1:110
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - Cinthia Cabrino	IP:45    ID: 404
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:4041 htb rate 256kbit ceil 256kbit burst 15k
@@ -9178,9 +9586,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 40436 fw classid 1:120
 tc filter add dev eth0 protocol ip parent 1: handle 40437 fw classid 1:121
 tc filter add dev eth0 protocol ip parent 1: handle 40438 fw classid 1:122
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - Cintia Cabrino	IP:71    ID: 133
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:1331 htb rate 256kbit ceil 256kbit burst 15k
@@ -9228,159 +9636,159 @@ tc filter add dev eth0 protocol ip parent 1: handle 13336 fw classid 1:132
 tc filter add dev eth0 protocol ip parent 1: handle 13337 fw classid 1:133
 tc filter add dev eth0 protocol ip parent 1: handle 13338 fw classid 1:134
 
-
-# MARCAJE DE PAQUETES
-
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:4661 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4661 classid 1:135 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4661 classid 1:136 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4661 classid 1:137 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4661 classid 1:138 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4661 classid 1:139 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4661 classid 1:13a htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4661 classid 1:13b htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4661 classid 1:13c htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4661 classid 1:13d htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 46620 fw classid 1:135
-tc filter add dev br2 protocol ip parent 1: handle 46621 fw classid 1:136
-tc filter add dev br2 protocol ip parent 1: handle 46622 fw classid 1:137
-tc filter add dev br2 protocol ip parent 1: handle 46623 fw classid 1:138
-tc filter add dev br2 protocol ip parent 1: handle 46624 fw classid 1:139
-tc filter add dev br2 protocol ip parent 1: handle 46625 fw classid 1:13a
-tc filter add dev br2 protocol ip parent 1: handle 46626 fw classid 1:13b
-tc filter add dev br2 protocol ip parent 1: handle 46627 fw classid 1:13c
-tc filter add dev br2 protocol ip parent 1: handle 46628 fw classid 1:13d
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:4662 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4662 classid 1:13e htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4662 classid 1:13f htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4662 classid 1:140 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4662 classid 1:141 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4662 classid 1:142 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4662 classid 1:143 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4662 classid 1:144 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4662 classid 1:145 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4662 classid 1:146 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 46630 fw classid 1:13e
-tc filter add dev eth0 protocol ip parent 1: handle 46631 fw classid 1:13f
-tc filter add dev eth0 protocol ip parent 1: handle 46632 fw classid 1:140
-tc filter add dev eth0 protocol ip parent 1: handle 46633 fw classid 1:141
-tc filter add dev eth0 protocol ip parent 1: handle 46634 fw classid 1:142
-tc filter add dev eth0 protocol ip parent 1: handle 46635 fw classid 1:143
-tc filter add dev eth0 protocol ip parent 1: handle 46636 fw classid 1:144
-tc filter add dev eth0 protocol ip parent 1: handle 46637 fw classid 1:145
-tc filter add dev eth0 protocol ip parent 1: handle 46638 fw classid 1:146
-
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - Claudia Mattiussi	IP:90    ID: 463
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:4631 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4631 classid 1:147 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4631 classid 1:148 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4631 classid 1:149 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4631 classid 1:14a htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4631 classid 1:14b htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4631 classid 1:14c htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4631 classid 1:14d htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4631 classid 1:14e htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4631 classid 1:14f htb rate 100kbit ceil 256kbit burst 15k prio 8
+tc class add dev br2 parent 1:4631 classid 1:135 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4631 classid 1:136 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4631 classid 1:137 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4631 classid 1:138 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4631 classid 1:139 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4631 classid 1:13a htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4631 classid 1:13b htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4631 classid 1:13c htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4631 classid 1:13d htb rate 100kbit ceil 256kbit burst 15k prio 8
 
 # HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 46320 fw classid 1:147
-tc filter add dev br2 protocol ip parent 1: handle 46321 fw classid 1:148
-tc filter add dev br2 protocol ip parent 1: handle 46322 fw classid 1:149
-tc filter add dev br2 protocol ip parent 1: handle 46323 fw classid 1:14a
-tc filter add dev br2 protocol ip parent 1: handle 46324 fw classid 1:14b
-tc filter add dev br2 protocol ip parent 1: handle 46325 fw classid 1:14c
-tc filter add dev br2 protocol ip parent 1: handle 46326 fw classid 1:14d
-tc filter add dev br2 protocol ip parent 1: handle 46327 fw classid 1:14e
-tc filter add dev br2 protocol ip parent 1: handle 46328 fw classid 1:14f
+tc filter add dev br2 protocol ip parent 1: handle 46320 fw classid 1:135
+tc filter add dev br2 protocol ip parent 1: handle 46321 fw classid 1:136
+tc filter add dev br2 protocol ip parent 1: handle 46322 fw classid 1:137
+tc filter add dev br2 protocol ip parent 1: handle 46323 fw classid 1:138
+tc filter add dev br2 protocol ip parent 1: handle 46324 fw classid 1:139
+tc filter add dev br2 protocol ip parent 1: handle 46325 fw classid 1:13a
+tc filter add dev br2 protocol ip parent 1: handle 46326 fw classid 1:13b
+tc filter add dev br2 protocol ip parent 1: handle 46327 fw classid 1:13c
+tc filter add dev br2 protocol ip parent 1: handle 46328 fw classid 1:13d
 
 # CLASES DE SUBIDA
 tc class add dev eth0 parent 1: classid 1:4632 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4632 classid 1:150 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4632 classid 1:151 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4632 classid 1:152 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4632 classid 1:153 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4632 classid 1:154 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4632 classid 1:155 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4632 classid 1:156 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4632 classid 1:157 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4632 classid 1:158 htb rate 100kbit ceil 128kbit burst 15k prio 8
+tc class add dev eth0 parent 1:4632 classid 1:13e htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4632 classid 1:13f htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4632 classid 1:140 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4632 classid 1:141 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4632 classid 1:142 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4632 classid 1:143 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4632 classid 1:144 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4632 classid 1:145 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4632 classid 1:146 htb rate 100kbit ceil 128kbit burst 15k prio 8
 
 # HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 46330 fw classid 1:150
-tc filter add dev eth0 protocol ip parent 1: handle 46331 fw classid 1:151
-tc filter add dev eth0 protocol ip parent 1: handle 46332 fw classid 1:152
-tc filter add dev eth0 protocol ip parent 1: handle 46333 fw classid 1:153
-tc filter add dev eth0 protocol ip parent 1: handle 46334 fw classid 1:154
-tc filter add dev eth0 protocol ip parent 1: handle 46335 fw classid 1:155
-tc filter add dev eth0 protocol ip parent 1: handle 46336 fw classid 1:156
-tc filter add dev eth0 protocol ip parent 1: handle 46337 fw classid 1:157
-tc filter add dev eth0 protocol ip parent 1: handle 46338 fw classid 1:158
+tc filter add dev eth0 protocol ip parent 1: handle 46330 fw classid 1:13e
+tc filter add dev eth0 protocol ip parent 1: handle 46331 fw classid 1:13f
+tc filter add dev eth0 protocol ip parent 1: handle 46332 fw classid 1:140
+tc filter add dev eth0 protocol ip parent 1: handle 46333 fw classid 1:141
+tc filter add dev eth0 protocol ip parent 1: handle 46334 fw classid 1:142
+tc filter add dev eth0 protocol ip parent 1: handle 46335 fw classid 1:143
+tc filter add dev eth0 protocol ip parent 1: handle 46336 fw classid 1:144
+tc filter add dev eth0 protocol ip parent 1: handle 46337 fw classid 1:145
+tc filter add dev eth0 protocol ip parent 1: handle 46338 fw classid 1:146
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - Claudia Mattiussi	IP:17    ID: 444
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:4441 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4441 classid 1:159 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4441 classid 1:15a htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4441 classid 1:15b htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4441 classid 1:15c htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4441 classid 1:15d htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4441 classid 1:15e htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4441 classid 1:15f htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4441 classid 1:160 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4441 classid 1:161 htb rate 100kbit ceil 256kbit burst 15k prio 8
+tc class add dev br2 parent 1:4441 classid 1:147 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4441 classid 1:148 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4441 classid 1:149 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4441 classid 1:14a htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4441 classid 1:14b htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4441 classid 1:14c htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4441 classid 1:14d htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4441 classid 1:14e htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4441 classid 1:14f htb rate 100kbit ceil 256kbit burst 15k prio 8
 
 # HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 44420 fw classid 1:159
-tc filter add dev br2 protocol ip parent 1: handle 44421 fw classid 1:15a
-tc filter add dev br2 protocol ip parent 1: handle 44422 fw classid 1:15b
-tc filter add dev br2 protocol ip parent 1: handle 44423 fw classid 1:15c
-tc filter add dev br2 protocol ip parent 1: handle 44424 fw classid 1:15d
-tc filter add dev br2 protocol ip parent 1: handle 44425 fw classid 1:15e
-tc filter add dev br2 protocol ip parent 1: handle 44426 fw classid 1:15f
-tc filter add dev br2 protocol ip parent 1: handle 44427 fw classid 1:160
-tc filter add dev br2 protocol ip parent 1: handle 44428 fw classid 1:161
+tc filter add dev br2 protocol ip parent 1: handle 44420 fw classid 1:147
+tc filter add dev br2 protocol ip parent 1: handle 44421 fw classid 1:148
+tc filter add dev br2 protocol ip parent 1: handle 44422 fw classid 1:149
+tc filter add dev br2 protocol ip parent 1: handle 44423 fw classid 1:14a
+tc filter add dev br2 protocol ip parent 1: handle 44424 fw classid 1:14b
+tc filter add dev br2 protocol ip parent 1: handle 44425 fw classid 1:14c
+tc filter add dev br2 protocol ip parent 1: handle 44426 fw classid 1:14d
+tc filter add dev br2 protocol ip parent 1: handle 44427 fw classid 1:14e
+tc filter add dev br2 protocol ip parent 1: handle 44428 fw classid 1:14f
 
 # CLASES DE SUBIDA
 tc class add dev eth0 parent 1: classid 1:4442 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4442 classid 1:162 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4442 classid 1:163 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4442 classid 1:164 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4442 classid 1:165 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4442 classid 1:166 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4442 classid 1:167 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4442 classid 1:168 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4442 classid 1:169 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4442 classid 1:16a htb rate 100kbit ceil 128kbit burst 15k prio 8
+tc class add dev eth0 parent 1:4442 classid 1:150 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4442 classid 1:151 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4442 classid 1:152 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4442 classid 1:153 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4442 classid 1:154 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4442 classid 1:155 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4442 classid 1:156 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4442 classid 1:157 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4442 classid 1:158 htb rate 100kbit ceil 128kbit burst 15k prio 8
 
 # HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 44430 fw classid 1:162
-tc filter add dev eth0 protocol ip parent 1: handle 44431 fw classid 1:163
-tc filter add dev eth0 protocol ip parent 1: handle 44432 fw classid 1:164
-tc filter add dev eth0 protocol ip parent 1: handle 44433 fw classid 1:165
-tc filter add dev eth0 protocol ip parent 1: handle 44434 fw classid 1:166
-tc filter add dev eth0 protocol ip parent 1: handle 44435 fw classid 1:167
-tc filter add dev eth0 protocol ip parent 1: handle 44436 fw classid 1:168
-tc filter add dev eth0 protocol ip parent 1: handle 44437 fw classid 1:169
-tc filter add dev eth0 protocol ip parent 1: handle 44438 fw classid 1:16a
+tc filter add dev eth0 protocol ip parent 1: handle 44430 fw classid 1:150
+tc filter add dev eth0 protocol ip parent 1: handle 44431 fw classid 1:151
+tc filter add dev eth0 protocol ip parent 1: handle 44432 fw classid 1:152
+tc filter add dev eth0 protocol ip parent 1: handle 44433 fw classid 1:153
+tc filter add dev eth0 protocol ip parent 1: handle 44434 fw classid 1:154
+tc filter add dev eth0 protocol ip parent 1: handle 44435 fw classid 1:155
+tc filter add dev eth0 protocol ip parent 1: handle 44436 fw classid 1:156
+tc filter add dev eth0 protocol ip parent 1: handle 44437 fw classid 1:157
+tc filter add dev eth0 protocol ip parent 1: handle 44438 fw classid 1:158
 
+#------------------------------------------------------------------------------
+#Cliente - Claudia Mattiussi	IP:60    ID: 466
+#------------------------------------------------------------------------------
 
-# MARCAJE DE PAQUETES
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:4661 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:4661 classid 1:159 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4661 classid 1:15a htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4661 classid 1:15b htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4661 classid 1:15c htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4661 classid 1:15d htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4661 classid 1:15e htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4661 classid 1:15f htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4661 classid 1:160 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4661 classid 1:161 htb rate 100kbit ceil 256kbit burst 15k prio 8
 
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 46620 fw classid 1:159
+tc filter add dev br2 protocol ip parent 1: handle 46621 fw classid 1:15a
+tc filter add dev br2 protocol ip parent 1: handle 46622 fw classid 1:15b
+tc filter add dev br2 protocol ip parent 1: handle 46623 fw classid 1:15c
+tc filter add dev br2 protocol ip parent 1: handle 46624 fw classid 1:15d
+tc filter add dev br2 protocol ip parent 1: handle 46625 fw classid 1:15e
+tc filter add dev br2 protocol ip parent 1: handle 46626 fw classid 1:15f
+tc filter add dev br2 protocol ip parent 1: handle 46627 fw classid 1:160
+tc filter add dev br2 protocol ip parent 1: handle 46628 fw classid 1:161
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:4662 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:4662 classid 1:162 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4662 classid 1:163 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4662 classid 1:164 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4662 classid 1:165 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4662 classid 1:166 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4662 classid 1:167 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4662 classid 1:168 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4662 classid 1:169 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4662 classid 1:16a htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 46630 fw classid 1:162
+tc filter add dev eth0 protocol ip parent 1: handle 46631 fw classid 1:163
+tc filter add dev eth0 protocol ip parent 1: handle 46632 fw classid 1:164
+tc filter add dev eth0 protocol ip parent 1: handle 46633 fw classid 1:165
+tc filter add dev eth0 protocol ip parent 1: handle 46634 fw classid 1:166
+tc filter add dev eth0 protocol ip parent 1: handle 46635 fw classid 1:167
+tc filter add dev eth0 protocol ip parent 1: handle 46636 fw classid 1:168
+tc filter add dev eth0 protocol ip parent 1: handle 46637 fw classid 1:169
+tc filter add dev eth0 protocol ip parent 1: handle 46638 fw classid 1:16a
+
+#------------------------------------------------------------------------------
+#Cliente - Controlador Fiscal 1	IP:57    ID: 231
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:2311 htb rate 256kbit ceil 256kbit burst 15k
@@ -9428,9 +9836,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 23136 fw classid 1:17a
 tc filter add dev eth0 protocol ip parent 1: handle 23137 fw classid 1:17b
 tc filter add dev eth0 protocol ip parent 1: handle 23138 fw classid 1:17c
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - Controlador Fiscal 2	IP:67    ID: 330
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:3301 htb rate 256kbit ceil 256kbit burst 15k
@@ -9478,9 +9886,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 33036 fw classid 1:18c
 tc filter add dev eth0 protocol ip parent 1: handle 33037 fw classid 1:18d
 tc filter add dev eth0 protocol ip parent 1: handle 33038 fw classid 1:18e
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - Dan Wyrytowski	IP:26    ID: 414
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:4141 htb rate 256kbit ceil 256kbit burst 15k
@@ -9528,209 +9936,209 @@ tc filter add dev eth0 protocol ip parent 1: handle 41436 fw classid 1:19e
 tc filter add dev eth0 protocol ip parent 1: handle 41437 fw classid 1:19f
 tc filter add dev eth0 protocol ip parent 1: handle 41438 fw classid 1:1a0
 
-
-# MARCAJE DE PAQUETES
-
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:4471 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4471 classid 1:1a1 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4471 classid 1:1a2 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4471 classid 1:1a3 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4471 classid 1:1a4 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4471 classid 1:1a5 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4471 classid 1:1a6 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4471 classid 1:1a7 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4471 classid 1:1a8 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4471 classid 1:1a9 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 44720 fw classid 1:1a1
-tc filter add dev br2 protocol ip parent 1: handle 44721 fw classid 1:1a2
-tc filter add dev br2 protocol ip parent 1: handle 44722 fw classid 1:1a3
-tc filter add dev br2 protocol ip parent 1: handle 44723 fw classid 1:1a4
-tc filter add dev br2 protocol ip parent 1: handle 44724 fw classid 1:1a5
-tc filter add dev br2 protocol ip parent 1: handle 44725 fw classid 1:1a6
-tc filter add dev br2 protocol ip parent 1: handle 44726 fw classid 1:1a7
-tc filter add dev br2 protocol ip parent 1: handle 44727 fw classid 1:1a8
-tc filter add dev br2 protocol ip parent 1: handle 44728 fw classid 1:1a9
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:4472 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4472 classid 1:1aa htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4472 classid 1:1ab htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4472 classid 1:1ac htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4472 classid 1:1ad htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4472 classid 1:1ae htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4472 classid 1:1af htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4472 classid 1:1b0 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4472 classid 1:1b1 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4472 classid 1:1b2 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 44730 fw classid 1:1aa
-tc filter add dev eth0 protocol ip parent 1: handle 44731 fw classid 1:1ab
-tc filter add dev eth0 protocol ip parent 1: handle 44732 fw classid 1:1ac
-tc filter add dev eth0 protocol ip parent 1: handle 44733 fw classid 1:1ad
-tc filter add dev eth0 protocol ip parent 1: handle 44734 fw classid 1:1ae
-tc filter add dev eth0 protocol ip parent 1: handle 44735 fw classid 1:1af
-tc filter add dev eth0 protocol ip parent 1: handle 44736 fw classid 1:1b0
-tc filter add dev eth0 protocol ip parent 1: handle 44737 fw classid 1:1b1
-tc filter add dev eth0 protocol ip parent 1: handle 44738 fw classid 1:1b2
-
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - Dario Juarez	IP:59    ID: 456
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:4561 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4561 classid 1:1b3 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4561 classid 1:1b4 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4561 classid 1:1b5 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4561 classid 1:1b6 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4561 classid 1:1b7 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4561 classid 1:1b8 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4561 classid 1:1b9 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4561 classid 1:1ba htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4561 classid 1:1bb htb rate 100kbit ceil 256kbit burst 15k prio 8
+tc class add dev br2 parent 1:4561 classid 1:1a1 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4561 classid 1:1a2 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4561 classid 1:1a3 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4561 classid 1:1a4 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4561 classid 1:1a5 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4561 classid 1:1a6 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4561 classid 1:1a7 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4561 classid 1:1a8 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4561 classid 1:1a9 htb rate 100kbit ceil 256kbit burst 15k prio 8
 
 # HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 45620 fw classid 1:1b3
-tc filter add dev br2 protocol ip parent 1: handle 45621 fw classid 1:1b4
-tc filter add dev br2 protocol ip parent 1: handle 45622 fw classid 1:1b5
-tc filter add dev br2 protocol ip parent 1: handle 45623 fw classid 1:1b6
-tc filter add dev br2 protocol ip parent 1: handle 45624 fw classid 1:1b7
-tc filter add dev br2 protocol ip parent 1: handle 45625 fw classid 1:1b8
-tc filter add dev br2 protocol ip parent 1: handle 45626 fw classid 1:1b9
-tc filter add dev br2 protocol ip parent 1: handle 45627 fw classid 1:1ba
-tc filter add dev br2 protocol ip parent 1: handle 45628 fw classid 1:1bb
+tc filter add dev br2 protocol ip parent 1: handle 45620 fw classid 1:1a1
+tc filter add dev br2 protocol ip parent 1: handle 45621 fw classid 1:1a2
+tc filter add dev br2 protocol ip parent 1: handle 45622 fw classid 1:1a3
+tc filter add dev br2 protocol ip parent 1: handle 45623 fw classid 1:1a4
+tc filter add dev br2 protocol ip parent 1: handle 45624 fw classid 1:1a5
+tc filter add dev br2 protocol ip parent 1: handle 45625 fw classid 1:1a6
+tc filter add dev br2 protocol ip parent 1: handle 45626 fw classid 1:1a7
+tc filter add dev br2 protocol ip parent 1: handle 45627 fw classid 1:1a8
+tc filter add dev br2 protocol ip parent 1: handle 45628 fw classid 1:1a9
 
 # CLASES DE SUBIDA
 tc class add dev eth0 parent 1: classid 1:4562 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4562 classid 1:1bc htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4562 classid 1:1bd htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4562 classid 1:1be htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4562 classid 1:1bf htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4562 classid 1:1c0 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4562 classid 1:1c1 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4562 classid 1:1c2 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4562 classid 1:1c3 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4562 classid 1:1c4 htb rate 100kbit ceil 128kbit burst 15k prio 8
+tc class add dev eth0 parent 1:4562 classid 1:1aa htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4562 classid 1:1ab htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4562 classid 1:1ac htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4562 classid 1:1ad htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4562 classid 1:1ae htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4562 classid 1:1af htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4562 classid 1:1b0 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4562 classid 1:1b1 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4562 classid 1:1b2 htb rate 100kbit ceil 128kbit burst 15k prio 8
 
 # HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 45630 fw classid 1:1bc
-tc filter add dev eth0 protocol ip parent 1: handle 45631 fw classid 1:1bd
-tc filter add dev eth0 protocol ip parent 1: handle 45632 fw classid 1:1be
-tc filter add dev eth0 protocol ip parent 1: handle 45633 fw classid 1:1bf
-tc filter add dev eth0 protocol ip parent 1: handle 45634 fw classid 1:1c0
-tc filter add dev eth0 protocol ip parent 1: handle 45635 fw classid 1:1c1
-tc filter add dev eth0 protocol ip parent 1: handle 45636 fw classid 1:1c2
-tc filter add dev eth0 protocol ip parent 1: handle 45637 fw classid 1:1c3
-tc filter add dev eth0 protocol ip parent 1: handle 45638 fw classid 1:1c4
+tc filter add dev eth0 protocol ip parent 1: handle 45630 fw classid 1:1aa
+tc filter add dev eth0 protocol ip parent 1: handle 45631 fw classid 1:1ab
+tc filter add dev eth0 protocol ip parent 1: handle 45632 fw classid 1:1ac
+tc filter add dev eth0 protocol ip parent 1: handle 45633 fw classid 1:1ad
+tc filter add dev eth0 protocol ip parent 1: handle 45634 fw classid 1:1ae
+tc filter add dev eth0 protocol ip parent 1: handle 45635 fw classid 1:1af
+tc filter add dev eth0 protocol ip parent 1: handle 45636 fw classid 1:1b0
+tc filter add dev eth0 protocol ip parent 1: handle 45637 fw classid 1:1b1
+tc filter add dev eth0 protocol ip parent 1: handle 45638 fw classid 1:1b2
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - Dario Juarez	IP:43    ID: 445
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:4451 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4451 classid 1:1c5 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4451 classid 1:1c6 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4451 classid 1:1c7 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4451 classid 1:1c8 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4451 classid 1:1c9 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4451 classid 1:1ca htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4451 classid 1:1cb htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4451 classid 1:1cc htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4451 classid 1:1cd htb rate 100kbit ceil 256kbit burst 15k prio 8
+tc class add dev br2 parent 1:4451 classid 1:1b3 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4451 classid 1:1b4 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4451 classid 1:1b5 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4451 classid 1:1b6 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4451 classid 1:1b7 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4451 classid 1:1b8 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4451 classid 1:1b9 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4451 classid 1:1ba htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4451 classid 1:1bb htb rate 100kbit ceil 256kbit burst 15k prio 8
 
 # HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 44520 fw classid 1:1c5
-tc filter add dev br2 protocol ip parent 1: handle 44521 fw classid 1:1c6
-tc filter add dev br2 protocol ip parent 1: handle 44522 fw classid 1:1c7
-tc filter add dev br2 protocol ip parent 1: handle 44523 fw classid 1:1c8
-tc filter add dev br2 protocol ip parent 1: handle 44524 fw classid 1:1c9
-tc filter add dev br2 protocol ip parent 1: handle 44525 fw classid 1:1ca
-tc filter add dev br2 protocol ip parent 1: handle 44526 fw classid 1:1cb
-tc filter add dev br2 protocol ip parent 1: handle 44527 fw classid 1:1cc
-tc filter add dev br2 protocol ip parent 1: handle 44528 fw classid 1:1cd
+tc filter add dev br2 protocol ip parent 1: handle 44520 fw classid 1:1b3
+tc filter add dev br2 protocol ip parent 1: handle 44521 fw classid 1:1b4
+tc filter add dev br2 protocol ip parent 1: handle 44522 fw classid 1:1b5
+tc filter add dev br2 protocol ip parent 1: handle 44523 fw classid 1:1b6
+tc filter add dev br2 protocol ip parent 1: handle 44524 fw classid 1:1b7
+tc filter add dev br2 protocol ip parent 1: handle 44525 fw classid 1:1b8
+tc filter add dev br2 protocol ip parent 1: handle 44526 fw classid 1:1b9
+tc filter add dev br2 protocol ip parent 1: handle 44527 fw classid 1:1ba
+tc filter add dev br2 protocol ip parent 1: handle 44528 fw classid 1:1bb
 
 # CLASES DE SUBIDA
 tc class add dev eth0 parent 1: classid 1:4452 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4452 classid 1:1ce htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4452 classid 1:1cf htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4452 classid 1:1d0 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4452 classid 1:1d1 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4452 classid 1:1d2 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4452 classid 1:1d3 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4452 classid 1:1d4 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4452 classid 1:1d5 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4452 classid 1:1d6 htb rate 100kbit ceil 128kbit burst 15k prio 8
+tc class add dev eth0 parent 1:4452 classid 1:1bc htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4452 classid 1:1bd htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4452 classid 1:1be htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4452 classid 1:1bf htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4452 classid 1:1c0 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4452 classid 1:1c1 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4452 classid 1:1c2 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4452 classid 1:1c3 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4452 classid 1:1c4 htb rate 100kbit ceil 128kbit burst 15k prio 8
 
 # HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 44530 fw classid 1:1ce
-tc filter add dev eth0 protocol ip parent 1: handle 44531 fw classid 1:1cf
-tc filter add dev eth0 protocol ip parent 1: handle 44532 fw classid 1:1d0
-tc filter add dev eth0 protocol ip parent 1: handle 44533 fw classid 1:1d1
-tc filter add dev eth0 protocol ip parent 1: handle 44534 fw classid 1:1d2
-tc filter add dev eth0 protocol ip parent 1: handle 44535 fw classid 1:1d3
-tc filter add dev eth0 protocol ip parent 1: handle 44536 fw classid 1:1d4
-tc filter add dev eth0 protocol ip parent 1: handle 44537 fw classid 1:1d5
-tc filter add dev eth0 protocol ip parent 1: handle 44538 fw classid 1:1d6
+tc filter add dev eth0 protocol ip parent 1: handle 44530 fw classid 1:1bc
+tc filter add dev eth0 protocol ip parent 1: handle 44531 fw classid 1:1bd
+tc filter add dev eth0 protocol ip parent 1: handle 44532 fw classid 1:1be
+tc filter add dev eth0 protocol ip parent 1: handle 44533 fw classid 1:1bf
+tc filter add dev eth0 protocol ip parent 1: handle 44534 fw classid 1:1c0
+tc filter add dev eth0 protocol ip parent 1: handle 44535 fw classid 1:1c1
+tc filter add dev eth0 protocol ip parent 1: handle 44536 fw classid 1:1c2
+tc filter add dev eth0 protocol ip parent 1: handle 44537 fw classid 1:1c3
+tc filter add dev eth0 protocol ip parent 1: handle 44538 fw classid 1:1c4
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - Dario Juarez	IP:202    ID: 406
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:4061 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4061 classid 1:1d7 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4061 classid 1:1d8 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4061 classid 1:1d9 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4061 classid 1:1da htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4061 classid 1:1db htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4061 classid 1:1dc htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4061 classid 1:1dd htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4061 classid 1:1de htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4061 classid 1:1df htb rate 100kbit ceil 256kbit burst 15k prio 8
+tc class add dev br2 parent 1:4061 classid 1:1c5 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4061 classid 1:1c6 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4061 classid 1:1c7 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4061 classid 1:1c8 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4061 classid 1:1c9 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4061 classid 1:1ca htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4061 classid 1:1cb htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4061 classid 1:1cc htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4061 classid 1:1cd htb rate 100kbit ceil 256kbit burst 15k prio 8
 
 # HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 40620 fw classid 1:1d7
-tc filter add dev br2 protocol ip parent 1: handle 40621 fw classid 1:1d8
-tc filter add dev br2 protocol ip parent 1: handle 40622 fw classid 1:1d9
-tc filter add dev br2 protocol ip parent 1: handle 40623 fw classid 1:1da
-tc filter add dev br2 protocol ip parent 1: handle 40624 fw classid 1:1db
-tc filter add dev br2 protocol ip parent 1: handle 40625 fw classid 1:1dc
-tc filter add dev br2 protocol ip parent 1: handle 40626 fw classid 1:1dd
-tc filter add dev br2 protocol ip parent 1: handle 40627 fw classid 1:1de
-tc filter add dev br2 protocol ip parent 1: handle 40628 fw classid 1:1df
+tc filter add dev br2 protocol ip parent 1: handle 40620 fw classid 1:1c5
+tc filter add dev br2 protocol ip parent 1: handle 40621 fw classid 1:1c6
+tc filter add dev br2 protocol ip parent 1: handle 40622 fw classid 1:1c7
+tc filter add dev br2 protocol ip parent 1: handle 40623 fw classid 1:1c8
+tc filter add dev br2 protocol ip parent 1: handle 40624 fw classid 1:1c9
+tc filter add dev br2 protocol ip parent 1: handle 40625 fw classid 1:1ca
+tc filter add dev br2 protocol ip parent 1: handle 40626 fw classid 1:1cb
+tc filter add dev br2 protocol ip parent 1: handle 40627 fw classid 1:1cc
+tc filter add dev br2 protocol ip parent 1: handle 40628 fw classid 1:1cd
 
 # CLASES DE SUBIDA
 tc class add dev eth0 parent 1: classid 1:4062 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4062 classid 1:1e0 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4062 classid 1:1e1 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4062 classid 1:1e2 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4062 classid 1:1e3 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4062 classid 1:1e4 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4062 classid 1:1e5 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4062 classid 1:1e6 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4062 classid 1:1e7 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4062 classid 1:1e8 htb rate 100kbit ceil 128kbit burst 15k prio 8
+tc class add dev eth0 parent 1:4062 classid 1:1ce htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4062 classid 1:1cf htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4062 classid 1:1d0 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4062 classid 1:1d1 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4062 classid 1:1d2 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4062 classid 1:1d3 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4062 classid 1:1d4 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4062 classid 1:1d5 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4062 classid 1:1d6 htb rate 100kbit ceil 128kbit burst 15k prio 8
 
 # HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 40630 fw classid 1:1e0
-tc filter add dev eth0 protocol ip parent 1: handle 40631 fw classid 1:1e1
-tc filter add dev eth0 protocol ip parent 1: handle 40632 fw classid 1:1e2
-tc filter add dev eth0 protocol ip parent 1: handle 40633 fw classid 1:1e3
-tc filter add dev eth0 protocol ip parent 1: handle 40634 fw classid 1:1e4
-tc filter add dev eth0 protocol ip parent 1: handle 40635 fw classid 1:1e5
-tc filter add dev eth0 protocol ip parent 1: handle 40636 fw classid 1:1e6
-tc filter add dev eth0 protocol ip parent 1: handle 40637 fw classid 1:1e7
-tc filter add dev eth0 protocol ip parent 1: handle 40638 fw classid 1:1e8
+tc filter add dev eth0 protocol ip parent 1: handle 40630 fw classid 1:1ce
+tc filter add dev eth0 protocol ip parent 1: handle 40631 fw classid 1:1cf
+tc filter add dev eth0 protocol ip parent 1: handle 40632 fw classid 1:1d0
+tc filter add dev eth0 protocol ip parent 1: handle 40633 fw classid 1:1d1
+tc filter add dev eth0 protocol ip parent 1: handle 40634 fw classid 1:1d2
+tc filter add dev eth0 protocol ip parent 1: handle 40635 fw classid 1:1d3
+tc filter add dev eth0 protocol ip parent 1: handle 40636 fw classid 1:1d4
+tc filter add dev eth0 protocol ip parent 1: handle 40637 fw classid 1:1d5
+tc filter add dev eth0 protocol ip parent 1: handle 40638 fw classid 1:1d6
 
+#------------------------------------------------------------------------------
+#Cliente - Dario Juarez	IP:99    ID: 447
+#------------------------------------------------------------------------------
 
-# MARCAJE DE PAQUETES
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:4471 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:4471 classid 1:1d7 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4471 classid 1:1d8 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4471 classid 1:1d9 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4471 classid 1:1da htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4471 classid 1:1db htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4471 classid 1:1dc htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4471 classid 1:1dd htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4471 classid 1:1de htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4471 classid 1:1df htb rate 100kbit ceil 256kbit burst 15k prio 8
 
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 44720 fw classid 1:1d7
+tc filter add dev br2 protocol ip parent 1: handle 44721 fw classid 1:1d8
+tc filter add dev br2 protocol ip parent 1: handle 44722 fw classid 1:1d9
+tc filter add dev br2 protocol ip parent 1: handle 44723 fw classid 1:1da
+tc filter add dev br2 protocol ip parent 1: handle 44724 fw classid 1:1db
+tc filter add dev br2 protocol ip parent 1: handle 44725 fw classid 1:1dc
+tc filter add dev br2 protocol ip parent 1: handle 44726 fw classid 1:1dd
+tc filter add dev br2 protocol ip parent 1: handle 44727 fw classid 1:1de
+tc filter add dev br2 protocol ip parent 1: handle 44728 fw classid 1:1df
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:4472 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:4472 classid 1:1e0 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4472 classid 1:1e1 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4472 classid 1:1e2 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4472 classid 1:1e3 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4472 classid 1:1e4 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4472 classid 1:1e5 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4472 classid 1:1e6 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4472 classid 1:1e7 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4472 classid 1:1e8 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 44730 fw classid 1:1e0
+tc filter add dev eth0 protocol ip parent 1: handle 44731 fw classid 1:1e1
+tc filter add dev eth0 protocol ip parent 1: handle 44732 fw classid 1:1e2
+tc filter add dev eth0 protocol ip parent 1: handle 44733 fw classid 1:1e3
+tc filter add dev eth0 protocol ip parent 1: handle 44734 fw classid 1:1e4
+tc filter add dev eth0 protocol ip parent 1: handle 44735 fw classid 1:1e5
+tc filter add dev eth0 protocol ip parent 1: handle 44736 fw classid 1:1e6
+tc filter add dev eth0 protocol ip parent 1: handle 44737 fw classid 1:1e7
+tc filter add dev eth0 protocol ip parent 1: handle 44738 fw classid 1:1e8
+
+#------------------------------------------------------------------------------
+#Cliente - Dell	IP:41    ID: 485
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:4851 htb rate 256kbit ceil 256kbit burst 15k
@@ -9778,9 +10186,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 48536 fw classid 1:1f8
 tc filter add dev eth0 protocol ip parent 1: handle 48537 fw classid 1:1f9
 tc filter add dev eth0 protocol ip parent 1: handle 48538 fw classid 1:1fa
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - Depilight TV	IP:16    ID: 438
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:4381 htb rate 256kbit ceil 256kbit burst 15k
@@ -9828,9 +10236,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 43836 fw classid 1:20a
 tc filter add dev eth0 protocol ip parent 1: handle 43837 fw classid 1:20b
 tc filter add dev eth0 protocol ip parent 1: handle 43838 fw classid 1:20c
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - DVR 1	IP:9    ID: 201
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:2011 htb rate 256kbit ceil 256kbit burst 15k
@@ -9878,9 +10286,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 20136 fw classid 1:21c
 tc filter add dev eth0 protocol ip parent 1: handle 20137 fw classid 1:21d
 tc filter add dev eth0 protocol ip parent 1: handle 20138 fw classid 1:21e
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - DVR 2	IP:8    ID: 200
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:2001 htb rate 256kbit ceil 256kbit burst 15k
@@ -9928,109 +10336,109 @@ tc filter add dev eth0 protocol ip parent 1: handle 20036 fw classid 1:22e
 tc filter add dev eth0 protocol ip parent 1: handle 20037 fw classid 1:22f
 tc filter add dev eth0 protocol ip parent 1: handle 20038 fw classid 1:230
 
-
-# MARCAJE DE PAQUETES
-
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:4101 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4101 classid 1:231 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4101 classid 1:232 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4101 classid 1:233 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4101 classid 1:234 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4101 classid 1:235 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4101 classid 1:236 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4101 classid 1:237 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4101 classid 1:238 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4101 classid 1:239 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 41020 fw classid 1:231
-tc filter add dev br2 protocol ip parent 1: handle 41021 fw classid 1:232
-tc filter add dev br2 protocol ip parent 1: handle 41022 fw classid 1:233
-tc filter add dev br2 protocol ip parent 1: handle 41023 fw classid 1:234
-tc filter add dev br2 protocol ip parent 1: handle 41024 fw classid 1:235
-tc filter add dev br2 protocol ip parent 1: handle 41025 fw classid 1:236
-tc filter add dev br2 protocol ip parent 1: handle 41026 fw classid 1:237
-tc filter add dev br2 protocol ip parent 1: handle 41027 fw classid 1:238
-tc filter add dev br2 protocol ip parent 1: handle 41028 fw classid 1:239
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:4102 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4102 classid 1:23a htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4102 classid 1:23b htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4102 classid 1:23c htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4102 classid 1:23d htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4102 classid 1:23e htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4102 classid 1:23f htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4102 classid 1:240 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4102 classid 1:241 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4102 classid 1:242 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 41030 fw classid 1:23a
-tc filter add dev eth0 protocol ip parent 1: handle 41031 fw classid 1:23b
-tc filter add dev eth0 protocol ip parent 1: handle 41032 fw classid 1:23c
-tc filter add dev eth0 protocol ip parent 1: handle 41033 fw classid 1:23d
-tc filter add dev eth0 protocol ip parent 1: handle 41034 fw classid 1:23e
-tc filter add dev eth0 protocol ip parent 1: handle 41035 fw classid 1:23f
-tc filter add dev eth0 protocol ip parent 1: handle 41036 fw classid 1:240
-tc filter add dev eth0 protocol ip parent 1: handle 41037 fw classid 1:241
-tc filter add dev eth0 protocol ip parent 1: handle 41038 fw classid 1:242
-
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - Erica Mirkouski	IP:61    ID: 374
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:3741 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:3741 classid 1:243 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:3741 classid 1:244 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:3741 classid 1:245 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:3741 classid 1:246 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:3741 classid 1:247 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:3741 classid 1:248 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:3741 classid 1:249 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:3741 classid 1:24a htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:3741 classid 1:24b htb rate 100kbit ceil 256kbit burst 15k prio 8
+tc class add dev br2 parent 1:3741 classid 1:231 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:3741 classid 1:232 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:3741 classid 1:233 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:3741 classid 1:234 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:3741 classid 1:235 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:3741 classid 1:236 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:3741 classid 1:237 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:3741 classid 1:238 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:3741 classid 1:239 htb rate 100kbit ceil 256kbit burst 15k prio 8
 
 # HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 37420 fw classid 1:243
-tc filter add dev br2 protocol ip parent 1: handle 37421 fw classid 1:244
-tc filter add dev br2 protocol ip parent 1: handle 37422 fw classid 1:245
-tc filter add dev br2 protocol ip parent 1: handle 37423 fw classid 1:246
-tc filter add dev br2 protocol ip parent 1: handle 37424 fw classid 1:247
-tc filter add dev br2 protocol ip parent 1: handle 37425 fw classid 1:248
-tc filter add dev br2 protocol ip parent 1: handle 37426 fw classid 1:249
-tc filter add dev br2 protocol ip parent 1: handle 37427 fw classid 1:24a
-tc filter add dev br2 protocol ip parent 1: handle 37428 fw classid 1:24b
+tc filter add dev br2 protocol ip parent 1: handle 37420 fw classid 1:231
+tc filter add dev br2 protocol ip parent 1: handle 37421 fw classid 1:232
+tc filter add dev br2 protocol ip parent 1: handle 37422 fw classid 1:233
+tc filter add dev br2 protocol ip parent 1: handle 37423 fw classid 1:234
+tc filter add dev br2 protocol ip parent 1: handle 37424 fw classid 1:235
+tc filter add dev br2 protocol ip parent 1: handle 37425 fw classid 1:236
+tc filter add dev br2 protocol ip parent 1: handle 37426 fw classid 1:237
+tc filter add dev br2 protocol ip parent 1: handle 37427 fw classid 1:238
+tc filter add dev br2 protocol ip parent 1: handle 37428 fw classid 1:239
 
 # CLASES DE SUBIDA
 tc class add dev eth0 parent 1: classid 1:3742 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:3742 classid 1:24c htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:3742 classid 1:24d htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:3742 classid 1:24e htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:3742 classid 1:24f htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:3742 classid 1:250 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:3742 classid 1:251 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:3742 classid 1:252 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:3742 classid 1:253 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:3742 classid 1:254 htb rate 100kbit ceil 128kbit burst 15k prio 8
+tc class add dev eth0 parent 1:3742 classid 1:23a htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:3742 classid 1:23b htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:3742 classid 1:23c htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:3742 classid 1:23d htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:3742 classid 1:23e htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:3742 classid 1:23f htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:3742 classid 1:240 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:3742 classid 1:241 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:3742 classid 1:242 htb rate 100kbit ceil 128kbit burst 15k prio 8
 
 # HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 37430 fw classid 1:24c
-tc filter add dev eth0 protocol ip parent 1: handle 37431 fw classid 1:24d
-tc filter add dev eth0 protocol ip parent 1: handle 37432 fw classid 1:24e
-tc filter add dev eth0 protocol ip parent 1: handle 37433 fw classid 1:24f
-tc filter add dev eth0 protocol ip parent 1: handle 37434 fw classid 1:250
-tc filter add dev eth0 protocol ip parent 1: handle 37435 fw classid 1:251
-tc filter add dev eth0 protocol ip parent 1: handle 37436 fw classid 1:252
-tc filter add dev eth0 protocol ip parent 1: handle 37437 fw classid 1:253
-tc filter add dev eth0 protocol ip parent 1: handle 37438 fw classid 1:254
+tc filter add dev eth0 protocol ip parent 1: handle 37430 fw classid 1:23a
+tc filter add dev eth0 protocol ip parent 1: handle 37431 fw classid 1:23b
+tc filter add dev eth0 protocol ip parent 1: handle 37432 fw classid 1:23c
+tc filter add dev eth0 protocol ip parent 1: handle 37433 fw classid 1:23d
+tc filter add dev eth0 protocol ip parent 1: handle 37434 fw classid 1:23e
+tc filter add dev eth0 protocol ip parent 1: handle 37435 fw classid 1:23f
+tc filter add dev eth0 protocol ip parent 1: handle 37436 fw classid 1:240
+tc filter add dev eth0 protocol ip parent 1: handle 37437 fw classid 1:241
+tc filter add dev eth0 protocol ip parent 1: handle 37438 fw classid 1:242
 
+#------------------------------------------------------------------------------
+#Cliente - Erica Mirkouski	IP:200    ID: 410
+#------------------------------------------------------------------------------
 
-# MARCAJE DE PAQUETES
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:4101 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:4101 classid 1:243 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4101 classid 1:244 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4101 classid 1:245 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4101 classid 1:246 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4101 classid 1:247 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4101 classid 1:248 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4101 classid 1:249 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4101 classid 1:24a htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4101 classid 1:24b htb rate 100kbit ceil 256kbit burst 15k prio 8
 
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 41020 fw classid 1:243
+tc filter add dev br2 protocol ip parent 1: handle 41021 fw classid 1:244
+tc filter add dev br2 protocol ip parent 1: handle 41022 fw classid 1:245
+tc filter add dev br2 protocol ip parent 1: handle 41023 fw classid 1:246
+tc filter add dev br2 protocol ip parent 1: handle 41024 fw classid 1:247
+tc filter add dev br2 protocol ip parent 1: handle 41025 fw classid 1:248
+tc filter add dev br2 protocol ip parent 1: handle 41026 fw classid 1:249
+tc filter add dev br2 protocol ip parent 1: handle 41027 fw classid 1:24a
+tc filter add dev br2 protocol ip parent 1: handle 41028 fw classid 1:24b
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:4102 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:4102 classid 1:24c htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4102 classid 1:24d htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4102 classid 1:24e htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4102 classid 1:24f htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4102 classid 1:250 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4102 classid 1:251 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4102 classid 1:252 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4102 classid 1:253 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4102 classid 1:254 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 41030 fw classid 1:24c
+tc filter add dev eth0 protocol ip parent 1: handle 41031 fw classid 1:24d
+tc filter add dev eth0 protocol ip parent 1: handle 41032 fw classid 1:24e
+tc filter add dev eth0 protocol ip parent 1: handle 41033 fw classid 1:24f
+tc filter add dev eth0 protocol ip parent 1: handle 41034 fw classid 1:250
+tc filter add dev eth0 protocol ip parent 1: handle 41035 fw classid 1:251
+tc filter add dev eth0 protocol ip parent 1: handle 41036 fw classid 1:252
+tc filter add dev eth0 protocol ip parent 1: handle 41037 fw classid 1:253
+tc filter add dev eth0 protocol ip parent 1: handle 41038 fw classid 1:254
+
+#------------------------------------------------------------------------------
+#Cliente - GatewayPrueba	IP:28    ID: 483
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:4831 htb rate 256kbit ceil 256kbit burst 15k
@@ -10078,9 +10486,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 48336 fw classid 1:264
 tc filter add dev eth0 protocol ip parent 1: handle 48337 fw classid 1:265
 tc filter add dev eth0 protocol ip parent 1: handle 48338 fw classid 1:266
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - Gisel DAlfonso	IP:27    ID: 482
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:4821 htb rate 256kbit ceil 256kbit burst 15k
@@ -10128,9 +10536,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 48236 fw classid 1:276
 tc filter add dev eth0 protocol ip parent 1: handle 48237 fw classid 1:277
 tc filter add dev eth0 protocol ip parent 1: handle 48238 fw classid 1:278
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - Gisel DAlfonso	IP:25    ID: 481
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:4811 htb rate 256kbit ceil 256kbit burst 15k
@@ -10178,9 +10586,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 48136 fw classid 1:288
 tc filter add dev eth0 protocol ip parent 1: handle 48137 fw classid 1:289
 tc filter add dev eth0 protocol ip parent 1: handle 48138 fw classid 1:28a
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - HPDESKJET3050	IP:32    ID: 400
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:4001 htb rate 256kbit ceil 256kbit burst 15k
@@ -10228,9 +10636,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 40036 fw classid 1:29a
 tc filter add dev eth0 protocol ip parent 1: handle 40037 fw classid 1:29b
 tc filter add dev eth0 protocol ip parent 1: handle 40038 fw classid 1:29c
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - I-Drive	IP:18    ID: 477
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:4771 htb rate 256kbit ceil 256kbit burst 15k
@@ -10278,9 +10686,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 47736 fw classid 1:2ac
 tc filter add dev eth0 protocol ip parent 1: handle 47737 fw classid 1:2ad
 tc filter add dev eth0 protocol ip parent 1: handle 47738 fw classid 1:2ae
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - ICS-100 Call Center	IP:22    ID: 220
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:2201 htb rate 256kbit ceil 256kbit burst 15k
@@ -10328,9 +10736,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 22036 fw classid 1:2be
 tc filter add dev eth0 protocol ip parent 1: handle 22037 fw classid 1:2bf
 tc filter add dev eth0 protocol ip parent 1: handle 22038 fw classid 1:2c0
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - Impresora Onell	IP:31    ID: 417
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:4171 htb rate 256kbit ceil 256kbit burst 15k
@@ -10378,9 +10786,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 41736 fw classid 1:2d0
 tc filter add dev eth0 protocol ip parent 1: handle 41737 fw classid 1:2d1
 tc filter add dev eth0 protocol ip parent 1: handle 41738 fw classid 1:2d2
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - Impresora Reuniones	IP:30    ID: 390
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:3901 htb rate 256kbit ceil 256kbit burst 15k
@@ -10428,9 +10836,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 39036 fw classid 1:2e2
 tc filter add dev eth0 protocol ip parent 1: handle 39037 fw classid 1:2e3
 tc filter add dev eth0 protocol ip parent 1: handle 39038 fw classid 1:2e4
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - interno	IP:63    ID: 497
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:4971 htb rate 256kbit ceil 256kbit burst 15k
@@ -10478,9 +10886,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 49736 fw classid 1:2f4
 tc filter add dev eth0 protocol ip parent 1: handle 49737 fw classid 1:2f5
 tc filter add dev eth0 protocol ip parent 1: handle 49738 fw classid 1:2f6
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - interno Mariela	IP:64    ID: 498
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:4981 htb rate 256kbit ceil 256kbit burst 15k
@@ -10528,9 +10936,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 49836 fw classid 1:306
 tc filter add dev eth0 protocol ip parent 1: handle 49837 fw classid 1:307
 tc filter add dev eth0 protocol ip parent 1: handle 49838 fw classid 1:308
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - Jose Lopez	IP:58    ID: 496
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:4961 htb rate 256kbit ceil 256kbit burst 15k
@@ -10578,209 +10986,209 @@ tc filter add dev eth0 protocol ip parent 1: handle 49636 fw classid 1:318
 tc filter add dev eth0 protocol ip parent 1: handle 49637 fw classid 1:319
 tc filter add dev eth0 protocol ip parent 1: handle 49638 fw classid 1:31a
 
-
-# MARCAJE DE PAQUETES
-
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:2611 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:2611 classid 1:31b htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:2611 classid 1:31c htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:2611 classid 1:31d htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:2611 classid 1:31e htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:2611 classid 1:31f htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:2611 classid 1:320 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:2611 classid 1:321 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:2611 classid 1:322 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:2611 classid 1:323 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 26120 fw classid 1:31b
-tc filter add dev br2 protocol ip parent 1: handle 26121 fw classid 1:31c
-tc filter add dev br2 protocol ip parent 1: handle 26122 fw classid 1:31d
-tc filter add dev br2 protocol ip parent 1: handle 26123 fw classid 1:31e
-tc filter add dev br2 protocol ip parent 1: handle 26124 fw classid 1:31f
-tc filter add dev br2 protocol ip parent 1: handle 26125 fw classid 1:320
-tc filter add dev br2 protocol ip parent 1: handle 26126 fw classid 1:321
-tc filter add dev br2 protocol ip parent 1: handle 26127 fw classid 1:322
-tc filter add dev br2 protocol ip parent 1: handle 26128 fw classid 1:323
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:2612 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:2612 classid 1:324 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:2612 classid 1:325 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:2612 classid 1:326 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:2612 classid 1:327 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:2612 classid 1:328 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:2612 classid 1:329 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:2612 classid 1:32a htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:2612 classid 1:32b htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:2612 classid 1:32c htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 26130 fw classid 1:324
-tc filter add dev eth0 protocol ip parent 1: handle 26131 fw classid 1:325
-tc filter add dev eth0 protocol ip parent 1: handle 26132 fw classid 1:326
-tc filter add dev eth0 protocol ip parent 1: handle 26133 fw classid 1:327
-tc filter add dev eth0 protocol ip parent 1: handle 26134 fw classid 1:328
-tc filter add dev eth0 protocol ip parent 1: handle 26135 fw classid 1:329
-tc filter add dev eth0 protocol ip parent 1: handle 26136 fw classid 1:32a
-tc filter add dev eth0 protocol ip parent 1: handle 26137 fw classid 1:32b
-tc filter add dev eth0 protocol ip parent 1: handle 26138 fw classid 1:32c
-
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - Jose Lopez	IP:33    ID: 286
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:2861 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:2861 classid 1:32d htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:2861 classid 1:32e htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:2861 classid 1:32f htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:2861 classid 1:330 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:2861 classid 1:331 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:2861 classid 1:332 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:2861 classid 1:333 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:2861 classid 1:334 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:2861 classid 1:335 htb rate 100kbit ceil 256kbit burst 15k prio 8
+tc class add dev br2 parent 1:2861 classid 1:31b htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:2861 classid 1:31c htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:2861 classid 1:31d htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:2861 classid 1:31e htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:2861 classid 1:31f htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:2861 classid 1:320 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:2861 classid 1:321 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:2861 classid 1:322 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:2861 classid 1:323 htb rate 100kbit ceil 256kbit burst 15k prio 8
 
 # HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 28620 fw classid 1:32d
-tc filter add dev br2 protocol ip parent 1: handle 28621 fw classid 1:32e
-tc filter add dev br2 protocol ip parent 1: handle 28622 fw classid 1:32f
-tc filter add dev br2 protocol ip parent 1: handle 28623 fw classid 1:330
-tc filter add dev br2 protocol ip parent 1: handle 28624 fw classid 1:331
-tc filter add dev br2 protocol ip parent 1: handle 28625 fw classid 1:332
-tc filter add dev br2 protocol ip parent 1: handle 28626 fw classid 1:333
-tc filter add dev br2 protocol ip parent 1: handle 28627 fw classid 1:334
-tc filter add dev br2 protocol ip parent 1: handle 28628 fw classid 1:335
+tc filter add dev br2 protocol ip parent 1: handle 28620 fw classid 1:31b
+tc filter add dev br2 protocol ip parent 1: handle 28621 fw classid 1:31c
+tc filter add dev br2 protocol ip parent 1: handle 28622 fw classid 1:31d
+tc filter add dev br2 protocol ip parent 1: handle 28623 fw classid 1:31e
+tc filter add dev br2 protocol ip parent 1: handle 28624 fw classid 1:31f
+tc filter add dev br2 protocol ip parent 1: handle 28625 fw classid 1:320
+tc filter add dev br2 protocol ip parent 1: handle 28626 fw classid 1:321
+tc filter add dev br2 protocol ip parent 1: handle 28627 fw classid 1:322
+tc filter add dev br2 protocol ip parent 1: handle 28628 fw classid 1:323
 
 # CLASES DE SUBIDA
 tc class add dev eth0 parent 1: classid 1:2862 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:2862 classid 1:336 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:2862 classid 1:337 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:2862 classid 1:338 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:2862 classid 1:339 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:2862 classid 1:33a htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:2862 classid 1:33b htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:2862 classid 1:33c htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:2862 classid 1:33d htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:2862 classid 1:33e htb rate 100kbit ceil 128kbit burst 15k prio 8
+tc class add dev eth0 parent 1:2862 classid 1:324 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:2862 classid 1:325 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:2862 classid 1:326 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:2862 classid 1:327 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:2862 classid 1:328 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:2862 classid 1:329 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:2862 classid 1:32a htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:2862 classid 1:32b htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:2862 classid 1:32c htb rate 100kbit ceil 128kbit burst 15k prio 8
 
 # HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 28630 fw classid 1:336
-tc filter add dev eth0 protocol ip parent 1: handle 28631 fw classid 1:337
-tc filter add dev eth0 protocol ip parent 1: handle 28632 fw classid 1:338
-tc filter add dev eth0 protocol ip parent 1: handle 28633 fw classid 1:339
-tc filter add dev eth0 protocol ip parent 1: handle 28634 fw classid 1:33a
-tc filter add dev eth0 protocol ip parent 1: handle 28635 fw classid 1:33b
-tc filter add dev eth0 protocol ip parent 1: handle 28636 fw classid 1:33c
-tc filter add dev eth0 protocol ip parent 1: handle 28637 fw classid 1:33d
-tc filter add dev eth0 protocol ip parent 1: handle 28638 fw classid 1:33e
+tc filter add dev eth0 protocol ip parent 1: handle 28630 fw classid 1:324
+tc filter add dev eth0 protocol ip parent 1: handle 28631 fw classid 1:325
+tc filter add dev eth0 protocol ip parent 1: handle 28632 fw classid 1:326
+tc filter add dev eth0 protocol ip parent 1: handle 28633 fw classid 1:327
+tc filter add dev eth0 protocol ip parent 1: handle 28634 fw classid 1:328
+tc filter add dev eth0 protocol ip parent 1: handle 28635 fw classid 1:329
+tc filter add dev eth0 protocol ip parent 1: handle 28636 fw classid 1:32a
+tc filter add dev eth0 protocol ip parent 1: handle 28637 fw classid 1:32b
+tc filter add dev eth0 protocol ip parent 1: handle 28638 fw classid 1:32c
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - Jose Lopez	IP:37    ID: 486
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:4861 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4861 classid 1:33f htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4861 classid 1:340 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4861 classid 1:341 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4861 classid 1:342 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4861 classid 1:343 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4861 classid 1:344 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4861 classid 1:345 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4861 classid 1:346 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4861 classid 1:347 htb rate 100kbit ceil 256kbit burst 15k prio 8
+tc class add dev br2 parent 1:4861 classid 1:32d htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4861 classid 1:32e htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4861 classid 1:32f htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4861 classid 1:330 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4861 classid 1:331 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4861 classid 1:332 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4861 classid 1:333 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4861 classid 1:334 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4861 classid 1:335 htb rate 100kbit ceil 256kbit burst 15k prio 8
 
 # HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 48620 fw classid 1:33f
-tc filter add dev br2 protocol ip parent 1: handle 48621 fw classid 1:340
-tc filter add dev br2 protocol ip parent 1: handle 48622 fw classid 1:341
-tc filter add dev br2 protocol ip parent 1: handle 48623 fw classid 1:342
-tc filter add dev br2 protocol ip parent 1: handle 48624 fw classid 1:343
-tc filter add dev br2 protocol ip parent 1: handle 48625 fw classid 1:344
-tc filter add dev br2 protocol ip parent 1: handle 48626 fw classid 1:345
-tc filter add dev br2 protocol ip parent 1: handle 48627 fw classid 1:346
-tc filter add dev br2 protocol ip parent 1: handle 48628 fw classid 1:347
+tc filter add dev br2 protocol ip parent 1: handle 48620 fw classid 1:32d
+tc filter add dev br2 protocol ip parent 1: handle 48621 fw classid 1:32e
+tc filter add dev br2 protocol ip parent 1: handle 48622 fw classid 1:32f
+tc filter add dev br2 protocol ip parent 1: handle 48623 fw classid 1:330
+tc filter add dev br2 protocol ip parent 1: handle 48624 fw classid 1:331
+tc filter add dev br2 protocol ip parent 1: handle 48625 fw classid 1:332
+tc filter add dev br2 protocol ip parent 1: handle 48626 fw classid 1:333
+tc filter add dev br2 protocol ip parent 1: handle 48627 fw classid 1:334
+tc filter add dev br2 protocol ip parent 1: handle 48628 fw classid 1:335
 
 # CLASES DE SUBIDA
 tc class add dev eth0 parent 1: classid 1:4862 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4862 classid 1:348 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4862 classid 1:349 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4862 classid 1:34a htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4862 classid 1:34b htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4862 classid 1:34c htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4862 classid 1:34d htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4862 classid 1:34e htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4862 classid 1:34f htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4862 classid 1:350 htb rate 100kbit ceil 128kbit burst 15k prio 8
+tc class add dev eth0 parent 1:4862 classid 1:336 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4862 classid 1:337 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4862 classid 1:338 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4862 classid 1:339 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4862 classid 1:33a htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4862 classid 1:33b htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4862 classid 1:33c htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4862 classid 1:33d htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4862 classid 1:33e htb rate 100kbit ceil 128kbit burst 15k prio 8
 
 # HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 48630 fw classid 1:348
-tc filter add dev eth0 protocol ip parent 1: handle 48631 fw classid 1:349
-tc filter add dev eth0 protocol ip parent 1: handle 48632 fw classid 1:34a
-tc filter add dev eth0 protocol ip parent 1: handle 48633 fw classid 1:34b
-tc filter add dev eth0 protocol ip parent 1: handle 48634 fw classid 1:34c
-tc filter add dev eth0 protocol ip parent 1: handle 48635 fw classid 1:34d
-tc filter add dev eth0 protocol ip parent 1: handle 48636 fw classid 1:34e
-tc filter add dev eth0 protocol ip parent 1: handle 48637 fw classid 1:34f
-tc filter add dev eth0 protocol ip parent 1: handle 48638 fw classid 1:350
+tc filter add dev eth0 protocol ip parent 1: handle 48630 fw classid 1:336
+tc filter add dev eth0 protocol ip parent 1: handle 48631 fw classid 1:337
+tc filter add dev eth0 protocol ip parent 1: handle 48632 fw classid 1:338
+tc filter add dev eth0 protocol ip parent 1: handle 48633 fw classid 1:339
+tc filter add dev eth0 protocol ip parent 1: handle 48634 fw classid 1:33a
+tc filter add dev eth0 protocol ip parent 1: handle 48635 fw classid 1:33b
+tc filter add dev eth0 protocol ip parent 1: handle 48636 fw classid 1:33c
+tc filter add dev eth0 protocol ip parent 1: handle 48637 fw classid 1:33d
+tc filter add dev eth0 protocol ip parent 1: handle 48638 fw classid 1:33e
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - Jose Lopez	IP:55    ID: 493
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:4931 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4931 classid 1:351 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4931 classid 1:352 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4931 classid 1:353 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4931 classid 1:354 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4931 classid 1:355 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4931 classid 1:356 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4931 classid 1:357 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4931 classid 1:358 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4931 classid 1:359 htb rate 100kbit ceil 256kbit burst 15k prio 8
+tc class add dev br2 parent 1:4931 classid 1:33f htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4931 classid 1:340 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4931 classid 1:341 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4931 classid 1:342 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4931 classid 1:343 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4931 classid 1:344 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4931 classid 1:345 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4931 classid 1:346 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4931 classid 1:347 htb rate 100kbit ceil 256kbit burst 15k prio 8
 
 # HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 49320 fw classid 1:351
-tc filter add dev br2 protocol ip parent 1: handle 49321 fw classid 1:352
-tc filter add dev br2 protocol ip parent 1: handle 49322 fw classid 1:353
-tc filter add dev br2 protocol ip parent 1: handle 49323 fw classid 1:354
-tc filter add dev br2 protocol ip parent 1: handle 49324 fw classid 1:355
-tc filter add dev br2 protocol ip parent 1: handle 49325 fw classid 1:356
-tc filter add dev br2 protocol ip parent 1: handle 49326 fw classid 1:357
-tc filter add dev br2 protocol ip parent 1: handle 49327 fw classid 1:358
-tc filter add dev br2 protocol ip parent 1: handle 49328 fw classid 1:359
+tc filter add dev br2 protocol ip parent 1: handle 49320 fw classid 1:33f
+tc filter add dev br2 protocol ip parent 1: handle 49321 fw classid 1:340
+tc filter add dev br2 protocol ip parent 1: handle 49322 fw classid 1:341
+tc filter add dev br2 protocol ip parent 1: handle 49323 fw classid 1:342
+tc filter add dev br2 protocol ip parent 1: handle 49324 fw classid 1:343
+tc filter add dev br2 protocol ip parent 1: handle 49325 fw classid 1:344
+tc filter add dev br2 protocol ip parent 1: handle 49326 fw classid 1:345
+tc filter add dev br2 protocol ip parent 1: handle 49327 fw classid 1:346
+tc filter add dev br2 protocol ip parent 1: handle 49328 fw classid 1:347
 
 # CLASES DE SUBIDA
 tc class add dev eth0 parent 1: classid 1:4932 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4932 classid 1:35a htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4932 classid 1:35b htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4932 classid 1:35c htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4932 classid 1:35d htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4932 classid 1:35e htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4932 classid 1:35f htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4932 classid 1:360 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4932 classid 1:361 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4932 classid 1:362 htb rate 100kbit ceil 128kbit burst 15k prio 8
+tc class add dev eth0 parent 1:4932 classid 1:348 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4932 classid 1:349 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4932 classid 1:34a htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4932 classid 1:34b htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4932 classid 1:34c htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4932 classid 1:34d htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4932 classid 1:34e htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4932 classid 1:34f htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4932 classid 1:350 htb rate 100kbit ceil 128kbit burst 15k prio 8
 
 # HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 49330 fw classid 1:35a
-tc filter add dev eth0 protocol ip parent 1: handle 49331 fw classid 1:35b
-tc filter add dev eth0 protocol ip parent 1: handle 49332 fw classid 1:35c
-tc filter add dev eth0 protocol ip parent 1: handle 49333 fw classid 1:35d
-tc filter add dev eth0 protocol ip parent 1: handle 49334 fw classid 1:35e
-tc filter add dev eth0 protocol ip parent 1: handle 49335 fw classid 1:35f
-tc filter add dev eth0 protocol ip parent 1: handle 49336 fw classid 1:360
-tc filter add dev eth0 protocol ip parent 1: handle 49337 fw classid 1:361
-tc filter add dev eth0 protocol ip parent 1: handle 49338 fw classid 1:362
+tc filter add dev eth0 protocol ip parent 1: handle 49330 fw classid 1:348
+tc filter add dev eth0 protocol ip parent 1: handle 49331 fw classid 1:349
+tc filter add dev eth0 protocol ip parent 1: handle 49332 fw classid 1:34a
+tc filter add dev eth0 protocol ip parent 1: handle 49333 fw classid 1:34b
+tc filter add dev eth0 protocol ip parent 1: handle 49334 fw classid 1:34c
+tc filter add dev eth0 protocol ip parent 1: handle 49335 fw classid 1:34d
+tc filter add dev eth0 protocol ip parent 1: handle 49336 fw classid 1:34e
+tc filter add dev eth0 protocol ip parent 1: handle 49337 fw classid 1:34f
+tc filter add dev eth0 protocol ip parent 1: handle 49338 fw classid 1:350
 
+#------------------------------------------------------------------------------
+#Cliente - Jose Lopez	IP:36    ID: 261
+#------------------------------------------------------------------------------
 
-# MARCAJE DE PAQUETES
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:2611 htb rate 2048kbit ceil 2048kbit burst 15k
+tc class add dev br2 parent 1:2611 classid 1:351 htb rate 819kbit ceil 2048kbit burst 15k prio 0
+tc class add dev br2 parent 1:2611 classid 1:352 htb rate 819kbit ceil 2048kbit burst 15k prio 1
+tc class add dev br2 parent 1:2611 classid 1:353 htb rate 819kbit ceil 2048kbit burst 15k prio 2
+tc class add dev br2 parent 1:2611 classid 1:354 htb rate 819kbit ceil 2048kbit burst 15k prio 3
+tc class add dev br2 parent 1:2611 classid 1:355 htb rate 819kbit ceil 2048kbit burst 15k prio 4
+tc class add dev br2 parent 1:2611 classid 1:356 htb rate 819kbit ceil 2048kbit burst 15k prio 5
+tc class add dev br2 parent 1:2611 classid 1:357 htb rate 100kbit ceil 2048kbit burst 15k prio 6
+tc class add dev br2 parent 1:2611 classid 1:358 htb rate 100kbit ceil 2048kbit burst 15k prio 7
+tc class add dev br2 parent 1:2611 classid 1:359 htb rate 100kbit ceil 2048kbit burst 15k prio 8
 
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 26120 fw classid 1:351
+tc filter add dev br2 protocol ip parent 1: handle 26121 fw classid 1:352
+tc filter add dev br2 protocol ip parent 1: handle 26122 fw classid 1:353
+tc filter add dev br2 protocol ip parent 1: handle 26123 fw classid 1:354
+tc filter add dev br2 protocol ip parent 1: handle 26124 fw classid 1:355
+tc filter add dev br2 protocol ip parent 1: handle 26125 fw classid 1:356
+tc filter add dev br2 protocol ip parent 1: handle 26126 fw classid 1:357
+tc filter add dev br2 protocol ip parent 1: handle 26127 fw classid 1:358
+tc filter add dev br2 protocol ip parent 1: handle 26128 fw classid 1:359
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:2612 htb rate 1024kbit ceil 1024kbit burst 15k
+tc class add dev eth0 parent 1:2612 classid 1:35a htb rate 409kbit ceil 1024kbit burst 15k prio 0
+tc class add dev eth0 parent 1:2612 classid 1:35b htb rate 409kbit ceil 1024kbit burst 15k prio 1
+tc class add dev eth0 parent 1:2612 classid 1:35c htb rate 409kbit ceil 1024kbit burst 15k prio 2
+tc class add dev eth0 parent 1:2612 classid 1:35d htb rate 409kbit ceil 1024kbit burst 15k prio 3
+tc class add dev eth0 parent 1:2612 classid 1:35e htb rate 409kbit ceil 1024kbit burst 15k prio 4
+tc class add dev eth0 parent 1:2612 classid 1:35f htb rate 409kbit ceil 1024kbit burst 15k prio 5
+tc class add dev eth0 parent 1:2612 classid 1:360 htb rate 100kbit ceil 1024kbit burst 15k prio 6
+tc class add dev eth0 parent 1:2612 classid 1:361 htb rate 100kbit ceil 1024kbit burst 15k prio 7
+tc class add dev eth0 parent 1:2612 classid 1:362 htb rate 100kbit ceil 1024kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 26130 fw classid 1:35a
+tc filter add dev eth0 protocol ip parent 1: handle 26131 fw classid 1:35b
+tc filter add dev eth0 protocol ip parent 1: handle 26132 fw classid 1:35c
+tc filter add dev eth0 protocol ip parent 1: handle 26133 fw classid 1:35d
+tc filter add dev eth0 protocol ip parent 1: handle 26134 fw classid 1:35e
+tc filter add dev eth0 protocol ip parent 1: handle 26135 fw classid 1:35f
+tc filter add dev eth0 protocol ip parent 1: handle 26136 fw classid 1:360
+tc filter add dev eth0 protocol ip parent 1: handle 26137 fw classid 1:361
+tc filter add dev eth0 protocol ip parent 1: handle 26138 fw classid 1:362
+
+#------------------------------------------------------------------------------
+#Cliente - Manuela Gaitto	IP:72    ID: 446
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:4461 htb rate 256kbit ceil 256kbit burst 15k
@@ -10828,109 +11236,109 @@ tc filter add dev eth0 protocol ip parent 1: handle 44636 fw classid 1:372
 tc filter add dev eth0 protocol ip parent 1: handle 44637 fw classid 1:373
 tc filter add dev eth0 protocol ip parent 1: handle 44638 fw classid 1:374
 
-
-# MARCAJE DE PAQUETES
-
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:3231 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:3231 classid 1:375 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:3231 classid 1:376 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:3231 classid 1:377 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:3231 classid 1:378 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:3231 classid 1:379 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:3231 classid 1:37a htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:3231 classid 1:37b htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:3231 classid 1:37c htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:3231 classid 1:37d htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 32320 fw classid 1:375
-tc filter add dev br2 protocol ip parent 1: handle 32321 fw classid 1:376
-tc filter add dev br2 protocol ip parent 1: handle 32322 fw classid 1:377
-tc filter add dev br2 protocol ip parent 1: handle 32323 fw classid 1:378
-tc filter add dev br2 protocol ip parent 1: handle 32324 fw classid 1:379
-tc filter add dev br2 protocol ip parent 1: handle 32325 fw classid 1:37a
-tc filter add dev br2 protocol ip parent 1: handle 32326 fw classid 1:37b
-tc filter add dev br2 protocol ip parent 1: handle 32327 fw classid 1:37c
-tc filter add dev br2 protocol ip parent 1: handle 32328 fw classid 1:37d
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:3232 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:3232 classid 1:37e htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:3232 classid 1:37f htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:3232 classid 1:380 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:3232 classid 1:381 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:3232 classid 1:382 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:3232 classid 1:383 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:3232 classid 1:384 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:3232 classid 1:385 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:3232 classid 1:386 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 32330 fw classid 1:37e
-tc filter add dev eth0 protocol ip parent 1: handle 32331 fw classid 1:37f
-tc filter add dev eth0 protocol ip parent 1: handle 32332 fw classid 1:380
-tc filter add dev eth0 protocol ip parent 1: handle 32333 fw classid 1:381
-tc filter add dev eth0 protocol ip parent 1: handle 32334 fw classid 1:382
-tc filter add dev eth0 protocol ip parent 1: handle 32335 fw classid 1:383
-tc filter add dev eth0 protocol ip parent 1: handle 32336 fw classid 1:384
-tc filter add dev eth0 protocol ip parent 1: handle 32337 fw classid 1:385
-tc filter add dev eth0 protocol ip parent 1: handle 32338 fw classid 1:386
-
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - Mariela Rossetti	IP:46    ID: 411
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:4111 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4111 classid 1:387 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4111 classid 1:388 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4111 classid 1:389 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4111 classid 1:38a htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4111 classid 1:38b htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4111 classid 1:38c htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4111 classid 1:38d htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4111 classid 1:38e htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4111 classid 1:38f htb rate 100kbit ceil 256kbit burst 15k prio 8
+tc class add dev br2 parent 1:4111 classid 1:375 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4111 classid 1:376 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4111 classid 1:377 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4111 classid 1:378 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4111 classid 1:379 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4111 classid 1:37a htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4111 classid 1:37b htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4111 classid 1:37c htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4111 classid 1:37d htb rate 100kbit ceil 256kbit burst 15k prio 8
 
 # HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 41120 fw classid 1:387
-tc filter add dev br2 protocol ip parent 1: handle 41121 fw classid 1:388
-tc filter add dev br2 protocol ip parent 1: handle 41122 fw classid 1:389
-tc filter add dev br2 protocol ip parent 1: handle 41123 fw classid 1:38a
-tc filter add dev br2 protocol ip parent 1: handle 41124 fw classid 1:38b
-tc filter add dev br2 protocol ip parent 1: handle 41125 fw classid 1:38c
-tc filter add dev br2 protocol ip parent 1: handle 41126 fw classid 1:38d
-tc filter add dev br2 protocol ip parent 1: handle 41127 fw classid 1:38e
-tc filter add dev br2 protocol ip parent 1: handle 41128 fw classid 1:38f
+tc filter add dev br2 protocol ip parent 1: handle 41120 fw classid 1:375
+tc filter add dev br2 protocol ip parent 1: handle 41121 fw classid 1:376
+tc filter add dev br2 protocol ip parent 1: handle 41122 fw classid 1:377
+tc filter add dev br2 protocol ip parent 1: handle 41123 fw classid 1:378
+tc filter add dev br2 protocol ip parent 1: handle 41124 fw classid 1:379
+tc filter add dev br2 protocol ip parent 1: handle 41125 fw classid 1:37a
+tc filter add dev br2 protocol ip parent 1: handle 41126 fw classid 1:37b
+tc filter add dev br2 protocol ip parent 1: handle 41127 fw classid 1:37c
+tc filter add dev br2 protocol ip parent 1: handle 41128 fw classid 1:37d
 
 # CLASES DE SUBIDA
 tc class add dev eth0 parent 1: classid 1:4112 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4112 classid 1:390 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4112 classid 1:391 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4112 classid 1:392 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4112 classid 1:393 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4112 classid 1:394 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4112 classid 1:395 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4112 classid 1:396 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4112 classid 1:397 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4112 classid 1:398 htb rate 100kbit ceil 128kbit burst 15k prio 8
+tc class add dev eth0 parent 1:4112 classid 1:37e htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4112 classid 1:37f htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4112 classid 1:380 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4112 classid 1:381 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4112 classid 1:382 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4112 classid 1:383 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4112 classid 1:384 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4112 classid 1:385 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4112 classid 1:386 htb rate 100kbit ceil 128kbit burst 15k prio 8
 
 # HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 41130 fw classid 1:390
-tc filter add dev eth0 protocol ip parent 1: handle 41131 fw classid 1:391
-tc filter add dev eth0 protocol ip parent 1: handle 41132 fw classid 1:392
-tc filter add dev eth0 protocol ip parent 1: handle 41133 fw classid 1:393
-tc filter add dev eth0 protocol ip parent 1: handle 41134 fw classid 1:394
-tc filter add dev eth0 protocol ip parent 1: handle 41135 fw classid 1:395
-tc filter add dev eth0 protocol ip parent 1: handle 41136 fw classid 1:396
-tc filter add dev eth0 protocol ip parent 1: handle 41137 fw classid 1:397
-tc filter add dev eth0 protocol ip parent 1: handle 41138 fw classid 1:398
+tc filter add dev eth0 protocol ip parent 1: handle 41130 fw classid 1:37e
+tc filter add dev eth0 protocol ip parent 1: handle 41131 fw classid 1:37f
+tc filter add dev eth0 protocol ip parent 1: handle 41132 fw classid 1:380
+tc filter add dev eth0 protocol ip parent 1: handle 41133 fw classid 1:381
+tc filter add dev eth0 protocol ip parent 1: handle 41134 fw classid 1:382
+tc filter add dev eth0 protocol ip parent 1: handle 41135 fw classid 1:383
+tc filter add dev eth0 protocol ip parent 1: handle 41136 fw classid 1:384
+tc filter add dev eth0 protocol ip parent 1: handle 41137 fw classid 1:385
+tc filter add dev eth0 protocol ip parent 1: handle 41138 fw classid 1:386
 
+#------------------------------------------------------------------------------
+#Cliente - Mariela Rossetti	IP:73    ID: 323
+#------------------------------------------------------------------------------
 
-# MARCAJE DE PAQUETES
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:3231 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:3231 classid 1:387 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:3231 classid 1:388 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:3231 classid 1:389 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:3231 classid 1:38a htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:3231 classid 1:38b htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:3231 classid 1:38c htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:3231 classid 1:38d htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:3231 classid 1:38e htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:3231 classid 1:38f htb rate 100kbit ceil 256kbit burst 15k prio 8
 
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 32320 fw classid 1:387
+tc filter add dev br2 protocol ip parent 1: handle 32321 fw classid 1:388
+tc filter add dev br2 protocol ip parent 1: handle 32322 fw classid 1:389
+tc filter add dev br2 protocol ip parent 1: handle 32323 fw classid 1:38a
+tc filter add dev br2 protocol ip parent 1: handle 32324 fw classid 1:38b
+tc filter add dev br2 protocol ip parent 1: handle 32325 fw classid 1:38c
+tc filter add dev br2 protocol ip parent 1: handle 32326 fw classid 1:38d
+tc filter add dev br2 protocol ip parent 1: handle 32327 fw classid 1:38e
+tc filter add dev br2 protocol ip parent 1: handle 32328 fw classid 1:38f
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:3232 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:3232 classid 1:390 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:3232 classid 1:391 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:3232 classid 1:392 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:3232 classid 1:393 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:3232 classid 1:394 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:3232 classid 1:395 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:3232 classid 1:396 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:3232 classid 1:397 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:3232 classid 1:398 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 32330 fw classid 1:390
+tc filter add dev eth0 protocol ip parent 1: handle 32331 fw classid 1:391
+tc filter add dev eth0 protocol ip parent 1: handle 32332 fw classid 1:392
+tc filter add dev eth0 protocol ip parent 1: handle 32333 fw classid 1:393
+tc filter add dev eth0 protocol ip parent 1: handle 32334 fw classid 1:394
+tc filter add dev eth0 protocol ip parent 1: handle 32335 fw classid 1:395
+tc filter add dev eth0 protocol ip parent 1: handle 32336 fw classid 1:396
+tc filter add dev eth0 protocol ip parent 1: handle 32337 fw classid 1:397
+tc filter add dev eth0 protocol ip parent 1: handle 32338 fw classid 1:398
+
+#------------------------------------------------------------------------------
+#Cliente - Micronet	IP:4    ID: 281
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:2811 htb rate 256kbit ceil 256kbit burst 15k
@@ -10978,9 +11386,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 28136 fw classid 1:3a8
 tc filter add dev eth0 protocol ip parent 1: handle 28137 fw classid 1:3a9
 tc filter add dev eth0 protocol ip parent 1: handle 28138 fw classid 1:3aa
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - Office	IP:40    ID: 224
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:2241 htb rate 256kbit ceil 256kbit burst 15k
@@ -11028,259 +11436,259 @@ tc filter add dev eth0 protocol ip parent 1: handle 22436 fw classid 1:3ba
 tc filter add dev eth0 protocol ip parent 1: handle 22437 fw classid 1:3bb
 tc filter add dev eth0 protocol ip parent 1: handle 22438 fw classid 1:3bc
 
-
-# MARCAJE DE PAQUETES
-
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:4031 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4031 classid 1:3bd htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4031 classid 1:3be htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4031 classid 1:3bf htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4031 classid 1:3c0 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4031 classid 1:3c1 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4031 classid 1:3c2 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4031 classid 1:3c3 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4031 classid 1:3c4 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4031 classid 1:3c5 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 40320 fw classid 1:3bd
-tc filter add dev br2 protocol ip parent 1: handle 40321 fw classid 1:3be
-tc filter add dev br2 protocol ip parent 1: handle 40322 fw classid 1:3bf
-tc filter add dev br2 protocol ip parent 1: handle 40323 fw classid 1:3c0
-tc filter add dev br2 protocol ip parent 1: handle 40324 fw classid 1:3c1
-tc filter add dev br2 protocol ip parent 1: handle 40325 fw classid 1:3c2
-tc filter add dev br2 protocol ip parent 1: handle 40326 fw classid 1:3c3
-tc filter add dev br2 protocol ip parent 1: handle 40327 fw classid 1:3c4
-tc filter add dev br2 protocol ip parent 1: handle 40328 fw classid 1:3c5
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:4032 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4032 classid 1:3c6 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4032 classid 1:3c7 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4032 classid 1:3c8 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4032 classid 1:3c9 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4032 classid 1:3ca htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4032 classid 1:3cb htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4032 classid 1:3cc htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4032 classid 1:3cd htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4032 classid 1:3ce htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 40330 fw classid 1:3c6
-tc filter add dev eth0 protocol ip parent 1: handle 40331 fw classid 1:3c7
-tc filter add dev eth0 protocol ip parent 1: handle 40332 fw classid 1:3c8
-tc filter add dev eth0 protocol ip parent 1: handle 40333 fw classid 1:3c9
-tc filter add dev eth0 protocol ip parent 1: handle 40334 fw classid 1:3ca
-tc filter add dev eth0 protocol ip parent 1: handle 40335 fw classid 1:3cb
-tc filter add dev eth0 protocol ip parent 1: handle 40336 fw classid 1:3cc
-tc filter add dev eth0 protocol ip parent 1: handle 40337 fw classid 1:3cd
-tc filter add dev eth0 protocol ip parent 1: handle 40338 fw classid 1:3ce
-
-
-# MARCAJE DE PAQUETES
-
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:4021 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4021 classid 1:3cf htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4021 classid 1:3d0 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4021 classid 1:3d1 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4021 classid 1:3d2 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4021 classid 1:3d3 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4021 classid 1:3d4 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4021 classid 1:3d5 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4021 classid 1:3d6 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4021 classid 1:3d7 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 40220 fw classid 1:3cf
-tc filter add dev br2 protocol ip parent 1: handle 40221 fw classid 1:3d0
-tc filter add dev br2 protocol ip parent 1: handle 40222 fw classid 1:3d1
-tc filter add dev br2 protocol ip parent 1: handle 40223 fw classid 1:3d2
-tc filter add dev br2 protocol ip parent 1: handle 40224 fw classid 1:3d3
-tc filter add dev br2 protocol ip parent 1: handle 40225 fw classid 1:3d4
-tc filter add dev br2 protocol ip parent 1: handle 40226 fw classid 1:3d5
-tc filter add dev br2 protocol ip parent 1: handle 40227 fw classid 1:3d6
-tc filter add dev br2 protocol ip parent 1: handle 40228 fw classid 1:3d7
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:4022 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4022 classid 1:3d8 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4022 classid 1:3d9 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4022 classid 1:3da htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4022 classid 1:3db htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4022 classid 1:3dc htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4022 classid 1:3dd htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4022 classid 1:3de htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4022 classid 1:3df htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4022 classid 1:3e0 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 40230 fw classid 1:3d8
-tc filter add dev eth0 protocol ip parent 1: handle 40231 fw classid 1:3d9
-tc filter add dev eth0 protocol ip parent 1: handle 40232 fw classid 1:3da
-tc filter add dev eth0 protocol ip parent 1: handle 40233 fw classid 1:3db
-tc filter add dev eth0 protocol ip parent 1: handle 40234 fw classid 1:3dc
-tc filter add dev eth0 protocol ip parent 1: handle 40235 fw classid 1:3dd
-tc filter add dev eth0 protocol ip parent 1: handle 40236 fw classid 1:3de
-tc filter add dev eth0 protocol ip parent 1: handle 40237 fw classid 1:3df
-tc filter add dev eth0 protocol ip parent 1: handle 40238 fw classid 1:3e0
-
-
-# MARCAJE DE PAQUETES
-
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:4801 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4801 classid 1:3e1 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4801 classid 1:3e2 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4801 classid 1:3e3 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4801 classid 1:3e4 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4801 classid 1:3e5 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4801 classid 1:3e6 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4801 classid 1:3e7 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4801 classid 1:3e8 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4801 classid 1:3e9 htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 48020 fw classid 1:3e1
-tc filter add dev br2 protocol ip parent 1: handle 48021 fw classid 1:3e2
-tc filter add dev br2 protocol ip parent 1: handle 48022 fw classid 1:3e3
-tc filter add dev br2 protocol ip parent 1: handle 48023 fw classid 1:3e4
-tc filter add dev br2 protocol ip parent 1: handle 48024 fw classid 1:3e5
-tc filter add dev br2 protocol ip parent 1: handle 48025 fw classid 1:3e6
-tc filter add dev br2 protocol ip parent 1: handle 48026 fw classid 1:3e7
-tc filter add dev br2 protocol ip parent 1: handle 48027 fw classid 1:3e8
-tc filter add dev br2 protocol ip parent 1: handle 48028 fw classid 1:3e9
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:4802 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4802 classid 1:3ea htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4802 classid 1:3eb htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4802 classid 1:3ec htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4802 classid 1:3ed htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4802 classid 1:3ee htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4802 classid 1:3ef htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4802 classid 1:3f0 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4802 classid 1:3f1 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4802 classid 1:3f2 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 48030 fw classid 1:3ea
-tc filter add dev eth0 protocol ip parent 1: handle 48031 fw classid 1:3eb
-tc filter add dev eth0 protocol ip parent 1: handle 48032 fw classid 1:3ec
-tc filter add dev eth0 protocol ip parent 1: handle 48033 fw classid 1:3ed
-tc filter add dev eth0 protocol ip parent 1: handle 48034 fw classid 1:3ee
-tc filter add dev eth0 protocol ip parent 1: handle 48035 fw classid 1:3ef
-tc filter add dev eth0 protocol ip parent 1: handle 48036 fw classid 1:3f0
-tc filter add dev eth0 protocol ip parent 1: handle 48037 fw classid 1:3f1
-tc filter add dev eth0 protocol ip parent 1: handle 48038 fw classid 1:3f2
-
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - Onell Lanfranco	IP:48    ID: 433
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:4331 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4331 classid 1:3f3 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4331 classid 1:3f4 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4331 classid 1:3f5 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4331 classid 1:3f6 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4331 classid 1:3f7 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4331 classid 1:3f8 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4331 classid 1:3f9 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4331 classid 1:3fa htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4331 classid 1:3fb htb rate 100kbit ceil 256kbit burst 15k prio 8
+tc class add dev br2 parent 1:4331 classid 1:3bd htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4331 classid 1:3be htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4331 classid 1:3bf htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4331 classid 1:3c0 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4331 classid 1:3c1 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4331 classid 1:3c2 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4331 classid 1:3c3 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4331 classid 1:3c4 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4331 classid 1:3c5 htb rate 100kbit ceil 256kbit burst 15k prio 8
 
 # HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 43320 fw classid 1:3f3
-tc filter add dev br2 protocol ip parent 1: handle 43321 fw classid 1:3f4
-tc filter add dev br2 protocol ip parent 1: handle 43322 fw classid 1:3f5
-tc filter add dev br2 protocol ip parent 1: handle 43323 fw classid 1:3f6
-tc filter add dev br2 protocol ip parent 1: handle 43324 fw classid 1:3f7
-tc filter add dev br2 protocol ip parent 1: handle 43325 fw classid 1:3f8
-tc filter add dev br2 protocol ip parent 1: handle 43326 fw classid 1:3f9
-tc filter add dev br2 protocol ip parent 1: handle 43327 fw classid 1:3fa
-tc filter add dev br2 protocol ip parent 1: handle 43328 fw classid 1:3fb
+tc filter add dev br2 protocol ip parent 1: handle 43320 fw classid 1:3bd
+tc filter add dev br2 protocol ip parent 1: handle 43321 fw classid 1:3be
+tc filter add dev br2 protocol ip parent 1: handle 43322 fw classid 1:3bf
+tc filter add dev br2 protocol ip parent 1: handle 43323 fw classid 1:3c0
+tc filter add dev br2 protocol ip parent 1: handle 43324 fw classid 1:3c1
+tc filter add dev br2 protocol ip parent 1: handle 43325 fw classid 1:3c2
+tc filter add dev br2 protocol ip parent 1: handle 43326 fw classid 1:3c3
+tc filter add dev br2 protocol ip parent 1: handle 43327 fw classid 1:3c4
+tc filter add dev br2 protocol ip parent 1: handle 43328 fw classid 1:3c5
 
 # CLASES DE SUBIDA
 tc class add dev eth0 parent 1: classid 1:4332 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4332 classid 1:3fc htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4332 classid 1:3fd htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4332 classid 1:3fe htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4332 classid 1:3ff htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4332 classid 1:400 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4332 classid 1:401 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4332 classid 1:402 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4332 classid 1:403 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4332 classid 1:404 htb rate 100kbit ceil 128kbit burst 15k prio 8
+tc class add dev eth0 parent 1:4332 classid 1:3c6 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4332 classid 1:3c7 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4332 classid 1:3c8 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4332 classid 1:3c9 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4332 classid 1:3ca htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4332 classid 1:3cb htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4332 classid 1:3cc htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4332 classid 1:3cd htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4332 classid 1:3ce htb rate 100kbit ceil 128kbit burst 15k prio 8
 
 # HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 43330 fw classid 1:3fc
-tc filter add dev eth0 protocol ip parent 1: handle 43331 fw classid 1:3fd
-tc filter add dev eth0 protocol ip parent 1: handle 43332 fw classid 1:3fe
-tc filter add dev eth0 protocol ip parent 1: handle 43333 fw classid 1:3ff
-tc filter add dev eth0 protocol ip parent 1: handle 43334 fw classid 1:400
-tc filter add dev eth0 protocol ip parent 1: handle 43335 fw classid 1:401
-tc filter add dev eth0 protocol ip parent 1: handle 43336 fw classid 1:402
-tc filter add dev eth0 protocol ip parent 1: handle 43337 fw classid 1:403
-tc filter add dev eth0 protocol ip parent 1: handle 43338 fw classid 1:404
+tc filter add dev eth0 protocol ip parent 1: handle 43330 fw classid 1:3c6
+tc filter add dev eth0 protocol ip parent 1: handle 43331 fw classid 1:3c7
+tc filter add dev eth0 protocol ip parent 1: handle 43332 fw classid 1:3c8
+tc filter add dev eth0 protocol ip parent 1: handle 43333 fw classid 1:3c9
+tc filter add dev eth0 protocol ip parent 1: handle 43334 fw classid 1:3ca
+tc filter add dev eth0 protocol ip parent 1: handle 43335 fw classid 1:3cb
+tc filter add dev eth0 protocol ip parent 1: handle 43336 fw classid 1:3cc
+tc filter add dev eth0 protocol ip parent 1: handle 43337 fw classid 1:3cd
+tc filter add dev eth0 protocol ip parent 1: handle 43338 fw classid 1:3ce
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - Onell Lanfranco	IP:47    ID: 461
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:4611 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4611 classid 1:405 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4611 classid 1:406 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4611 classid 1:407 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4611 classid 1:408 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4611 classid 1:409 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4611 classid 1:40a htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4611 classid 1:40b htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4611 classid 1:40c htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4611 classid 1:40d htb rate 100kbit ceil 256kbit burst 15k prio 8
+tc class add dev br2 parent 1:4611 classid 1:3cf htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4611 classid 1:3d0 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4611 classid 1:3d1 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4611 classid 1:3d2 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4611 classid 1:3d3 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4611 classid 1:3d4 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4611 classid 1:3d5 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4611 classid 1:3d6 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4611 classid 1:3d7 htb rate 100kbit ceil 256kbit burst 15k prio 8
 
 # HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 46120 fw classid 1:405
-tc filter add dev br2 protocol ip parent 1: handle 46121 fw classid 1:406
-tc filter add dev br2 protocol ip parent 1: handle 46122 fw classid 1:407
-tc filter add dev br2 protocol ip parent 1: handle 46123 fw classid 1:408
-tc filter add dev br2 protocol ip parent 1: handle 46124 fw classid 1:409
-tc filter add dev br2 protocol ip parent 1: handle 46125 fw classid 1:40a
-tc filter add dev br2 protocol ip parent 1: handle 46126 fw classid 1:40b
-tc filter add dev br2 protocol ip parent 1: handle 46127 fw classid 1:40c
-tc filter add dev br2 protocol ip parent 1: handle 46128 fw classid 1:40d
+tc filter add dev br2 protocol ip parent 1: handle 46120 fw classid 1:3cf
+tc filter add dev br2 protocol ip parent 1: handle 46121 fw classid 1:3d0
+tc filter add dev br2 protocol ip parent 1: handle 46122 fw classid 1:3d1
+tc filter add dev br2 protocol ip parent 1: handle 46123 fw classid 1:3d2
+tc filter add dev br2 protocol ip parent 1: handle 46124 fw classid 1:3d3
+tc filter add dev br2 protocol ip parent 1: handle 46125 fw classid 1:3d4
+tc filter add dev br2 protocol ip parent 1: handle 46126 fw classid 1:3d5
+tc filter add dev br2 protocol ip parent 1: handle 46127 fw classid 1:3d6
+tc filter add dev br2 protocol ip parent 1: handle 46128 fw classid 1:3d7
 
 # CLASES DE SUBIDA
 tc class add dev eth0 parent 1: classid 1:4612 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4612 classid 1:40e htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4612 classid 1:40f htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4612 classid 1:410 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4612 classid 1:411 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4612 classid 1:412 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4612 classid 1:413 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4612 classid 1:414 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4612 classid 1:415 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4612 classid 1:416 htb rate 100kbit ceil 128kbit burst 15k prio 8
+tc class add dev eth0 parent 1:4612 classid 1:3d8 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4612 classid 1:3d9 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4612 classid 1:3da htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4612 classid 1:3db htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4612 classid 1:3dc htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4612 classid 1:3dd htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4612 classid 1:3de htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4612 classid 1:3df htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4612 classid 1:3e0 htb rate 100kbit ceil 128kbit burst 15k prio 8
 
 # HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 46130 fw classid 1:40e
-tc filter add dev eth0 protocol ip parent 1: handle 46131 fw classid 1:40f
-tc filter add dev eth0 protocol ip parent 1: handle 46132 fw classid 1:410
-tc filter add dev eth0 protocol ip parent 1: handle 46133 fw classid 1:411
-tc filter add dev eth0 protocol ip parent 1: handle 46134 fw classid 1:412
-tc filter add dev eth0 protocol ip parent 1: handle 46135 fw classid 1:413
-tc filter add dev eth0 protocol ip parent 1: handle 46136 fw classid 1:414
-tc filter add dev eth0 protocol ip parent 1: handle 46137 fw classid 1:415
-tc filter add dev eth0 protocol ip parent 1: handle 46138 fw classid 1:416
+tc filter add dev eth0 protocol ip parent 1: handle 46130 fw classid 1:3d8
+tc filter add dev eth0 protocol ip parent 1: handle 46131 fw classid 1:3d9
+tc filter add dev eth0 protocol ip parent 1: handle 46132 fw classid 1:3da
+tc filter add dev eth0 protocol ip parent 1: handle 46133 fw classid 1:3db
+tc filter add dev eth0 protocol ip parent 1: handle 46134 fw classid 1:3dc
+tc filter add dev eth0 protocol ip parent 1: handle 46135 fw classid 1:3dd
+tc filter add dev eth0 protocol ip parent 1: handle 46136 fw classid 1:3de
+tc filter add dev eth0 protocol ip parent 1: handle 46137 fw classid 1:3df
+tc filter add dev eth0 protocol ip parent 1: handle 46138 fw classid 1:3e0
 
+#------------------------------------------------------------------------------
+#Cliente - Onell Lanfranco	IP:44    ID: 405
+#------------------------------------------------------------------------------
 
-# MARCAJE DE PAQUETES
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:4051 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:4051 classid 1:3e1 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4051 classid 1:3e2 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4051 classid 1:3e3 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4051 classid 1:3e4 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4051 classid 1:3e5 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4051 classid 1:3e6 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4051 classid 1:3e7 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4051 classid 1:3e8 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4051 classid 1:3e9 htb rate 100kbit ceil 256kbit burst 15k prio 8
 
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 40520 fw classid 1:3e1
+tc filter add dev br2 protocol ip parent 1: handle 40521 fw classid 1:3e2
+tc filter add dev br2 protocol ip parent 1: handle 40522 fw classid 1:3e3
+tc filter add dev br2 protocol ip parent 1: handle 40523 fw classid 1:3e4
+tc filter add dev br2 protocol ip parent 1: handle 40524 fw classid 1:3e5
+tc filter add dev br2 protocol ip parent 1: handle 40525 fw classid 1:3e6
+tc filter add dev br2 protocol ip parent 1: handle 40526 fw classid 1:3e7
+tc filter add dev br2 protocol ip parent 1: handle 40527 fw classid 1:3e8
+tc filter add dev br2 protocol ip parent 1: handle 40528 fw classid 1:3e9
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:4052 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:4052 classid 1:3ea htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4052 classid 1:3eb htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4052 classid 1:3ec htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4052 classid 1:3ed htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4052 classid 1:3ee htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4052 classid 1:3ef htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4052 classid 1:3f0 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4052 classid 1:3f1 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4052 classid 1:3f2 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 40530 fw classid 1:3ea
+tc filter add dev eth0 protocol ip parent 1: handle 40531 fw classid 1:3eb
+tc filter add dev eth0 protocol ip parent 1: handle 40532 fw classid 1:3ec
+tc filter add dev eth0 protocol ip parent 1: handle 40533 fw classid 1:3ed
+tc filter add dev eth0 protocol ip parent 1: handle 40534 fw classid 1:3ee
+tc filter add dev eth0 protocol ip parent 1: handle 40535 fw classid 1:3ef
+tc filter add dev eth0 protocol ip parent 1: handle 40536 fw classid 1:3f0
+tc filter add dev eth0 protocol ip parent 1: handle 40537 fw classid 1:3f1
+tc filter add dev eth0 protocol ip parent 1: handle 40538 fw classid 1:3f2
+
+#------------------------------------------------------------------------------
+#Cliente - Onell Lanfranco	IP:39    ID: 403
+#------------------------------------------------------------------------------
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:4031 htb rate 2048kbit ceil 2048kbit burst 15k
+tc class add dev br2 parent 1:4031 classid 1:3f3 htb rate 819kbit ceil 2048kbit burst 15k prio 0
+tc class add dev br2 parent 1:4031 classid 1:3f4 htb rate 819kbit ceil 2048kbit burst 15k prio 1
+tc class add dev br2 parent 1:4031 classid 1:3f5 htb rate 819kbit ceil 2048kbit burst 15k prio 2
+tc class add dev br2 parent 1:4031 classid 1:3f6 htb rate 819kbit ceil 2048kbit burst 15k prio 3
+tc class add dev br2 parent 1:4031 classid 1:3f7 htb rate 819kbit ceil 2048kbit burst 15k prio 4
+tc class add dev br2 parent 1:4031 classid 1:3f8 htb rate 819kbit ceil 2048kbit burst 15k prio 5
+tc class add dev br2 parent 1:4031 classid 1:3f9 htb rate 100kbit ceil 2048kbit burst 15k prio 6
+tc class add dev br2 parent 1:4031 classid 1:3fa htb rate 100kbit ceil 2048kbit burst 15k prio 7
+tc class add dev br2 parent 1:4031 classid 1:3fb htb rate 100kbit ceil 2048kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 40320 fw classid 1:3f3
+tc filter add dev br2 protocol ip parent 1: handle 40321 fw classid 1:3f4
+tc filter add dev br2 protocol ip parent 1: handle 40322 fw classid 1:3f5
+tc filter add dev br2 protocol ip parent 1: handle 40323 fw classid 1:3f6
+tc filter add dev br2 protocol ip parent 1: handle 40324 fw classid 1:3f7
+tc filter add dev br2 protocol ip parent 1: handle 40325 fw classid 1:3f8
+tc filter add dev br2 protocol ip parent 1: handle 40326 fw classid 1:3f9
+tc filter add dev br2 protocol ip parent 1: handle 40327 fw classid 1:3fa
+tc filter add dev br2 protocol ip parent 1: handle 40328 fw classid 1:3fb
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:4032 htb rate 1024kbit ceil 1024kbit burst 15k
+tc class add dev eth0 parent 1:4032 classid 1:3fc htb rate 409kbit ceil 1024kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4032 classid 1:3fd htb rate 409kbit ceil 1024kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4032 classid 1:3fe htb rate 409kbit ceil 1024kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4032 classid 1:3ff htb rate 409kbit ceil 1024kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4032 classid 1:400 htb rate 409kbit ceil 1024kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4032 classid 1:401 htb rate 409kbit ceil 1024kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4032 classid 1:402 htb rate 100kbit ceil 1024kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4032 classid 1:403 htb rate 100kbit ceil 1024kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4032 classid 1:404 htb rate 100kbit ceil 1024kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 40330 fw classid 1:3fc
+tc filter add dev eth0 protocol ip parent 1: handle 40331 fw classid 1:3fd
+tc filter add dev eth0 protocol ip parent 1: handle 40332 fw classid 1:3fe
+tc filter add dev eth0 protocol ip parent 1: handle 40333 fw classid 1:3ff
+tc filter add dev eth0 protocol ip parent 1: handle 40334 fw classid 1:400
+tc filter add dev eth0 protocol ip parent 1: handle 40335 fw classid 1:401
+tc filter add dev eth0 protocol ip parent 1: handle 40336 fw classid 1:402
+tc filter add dev eth0 protocol ip parent 1: handle 40337 fw classid 1:403
+tc filter add dev eth0 protocol ip parent 1: handle 40338 fw classid 1:404
+
+#------------------------------------------------------------------------------
+#Cliente - Onell Lanfranco	IP:23    ID: 480
+#------------------------------------------------------------------------------
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:4801 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:4801 classid 1:405 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4801 classid 1:406 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4801 classid 1:407 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4801 classid 1:408 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4801 classid 1:409 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4801 classid 1:40a htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4801 classid 1:40b htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4801 classid 1:40c htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4801 classid 1:40d htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 48020 fw classid 1:405
+tc filter add dev br2 protocol ip parent 1: handle 48021 fw classid 1:406
+tc filter add dev br2 protocol ip parent 1: handle 48022 fw classid 1:407
+tc filter add dev br2 protocol ip parent 1: handle 48023 fw classid 1:408
+tc filter add dev br2 protocol ip parent 1: handle 48024 fw classid 1:409
+tc filter add dev br2 protocol ip parent 1: handle 48025 fw classid 1:40a
+tc filter add dev br2 protocol ip parent 1: handle 48026 fw classid 1:40b
+tc filter add dev br2 protocol ip parent 1: handle 48027 fw classid 1:40c
+tc filter add dev br2 protocol ip parent 1: handle 48028 fw classid 1:40d
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:4802 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:4802 classid 1:40e htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4802 classid 1:40f htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4802 classid 1:410 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4802 classid 1:411 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4802 classid 1:412 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4802 classid 1:413 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4802 classid 1:414 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4802 classid 1:415 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4802 classid 1:416 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 48030 fw classid 1:40e
+tc filter add dev eth0 protocol ip parent 1: handle 48031 fw classid 1:40f
+tc filter add dev eth0 protocol ip parent 1: handle 48032 fw classid 1:410
+tc filter add dev eth0 protocol ip parent 1: handle 48033 fw classid 1:411
+tc filter add dev eth0 protocol ip parent 1: handle 48034 fw classid 1:412
+tc filter add dev eth0 protocol ip parent 1: handle 48035 fw classid 1:413
+tc filter add dev eth0 protocol ip parent 1: handle 48036 fw classid 1:414
+tc filter add dev eth0 protocol ip parent 1: handle 48037 fw classid 1:415
+tc filter add dev eth0 protocol ip parent 1: handle 48038 fw classid 1:416
+
+#------------------------------------------------------------------------------
+#Cliente - Onell Lanfranco	IP:20    ID: 479
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:4791 htb rate 256kbit ceil 256kbit burst 15k
@@ -11328,59 +11736,59 @@ tc filter add dev eth0 protocol ip parent 1: handle 47936 fw classid 1:426
 tc filter add dev eth0 protocol ip parent 1: handle 47937 fw classid 1:427
 tc filter add dev eth0 protocol ip parent 1: handle 47938 fw classid 1:428
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - Onell Lanfranco	IP:35    ID: 402
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:4051 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4051 classid 1:429 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4051 classid 1:42a htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4051 classid 1:42b htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4051 classid 1:42c htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4051 classid 1:42d htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4051 classid 1:42e htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4051 classid 1:42f htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4051 classid 1:430 htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4051 classid 1:431 htb rate 100kbit ceil 256kbit burst 15k prio 8
+tc class add dev br2 parent 1: classid 1:4021 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:4021 classid 1:429 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4021 classid 1:42a htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4021 classid 1:42b htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4021 classid 1:42c htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4021 classid 1:42d htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4021 classid 1:42e htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4021 classid 1:42f htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4021 classid 1:430 htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4021 classid 1:431 htb rate 100kbit ceil 256kbit burst 15k prio 8
 
 # HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 40520 fw classid 1:429
-tc filter add dev br2 protocol ip parent 1: handle 40521 fw classid 1:42a
-tc filter add dev br2 protocol ip parent 1: handle 40522 fw classid 1:42b
-tc filter add dev br2 protocol ip parent 1: handle 40523 fw classid 1:42c
-tc filter add dev br2 protocol ip parent 1: handle 40524 fw classid 1:42d
-tc filter add dev br2 protocol ip parent 1: handle 40525 fw classid 1:42e
-tc filter add dev br2 protocol ip parent 1: handle 40526 fw classid 1:42f
-tc filter add dev br2 protocol ip parent 1: handle 40527 fw classid 1:430
-tc filter add dev br2 protocol ip parent 1: handle 40528 fw classid 1:431
+tc filter add dev br2 protocol ip parent 1: handle 40220 fw classid 1:429
+tc filter add dev br2 protocol ip parent 1: handle 40221 fw classid 1:42a
+tc filter add dev br2 protocol ip parent 1: handle 40222 fw classid 1:42b
+tc filter add dev br2 protocol ip parent 1: handle 40223 fw classid 1:42c
+tc filter add dev br2 protocol ip parent 1: handle 40224 fw classid 1:42d
+tc filter add dev br2 protocol ip parent 1: handle 40225 fw classid 1:42e
+tc filter add dev br2 protocol ip parent 1: handle 40226 fw classid 1:42f
+tc filter add dev br2 protocol ip parent 1: handle 40227 fw classid 1:430
+tc filter add dev br2 protocol ip parent 1: handle 40228 fw classid 1:431
 
 # CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:4052 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4052 classid 1:432 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4052 classid 1:433 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4052 classid 1:434 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4052 classid 1:435 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4052 classid 1:436 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4052 classid 1:437 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4052 classid 1:438 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4052 classid 1:439 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4052 classid 1:43a htb rate 100kbit ceil 128kbit burst 15k prio 8
+tc class add dev eth0 parent 1: classid 1:4022 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:4022 classid 1:432 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4022 classid 1:433 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4022 classid 1:434 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4022 classid 1:435 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4022 classid 1:436 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4022 classid 1:437 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4022 classid 1:438 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4022 classid 1:439 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4022 classid 1:43a htb rate 100kbit ceil 128kbit burst 15k prio 8
 
 # HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 40530 fw classid 1:432
-tc filter add dev eth0 protocol ip parent 1: handle 40531 fw classid 1:433
-tc filter add dev eth0 protocol ip parent 1: handle 40532 fw classid 1:434
-tc filter add dev eth0 protocol ip parent 1: handle 40533 fw classid 1:435
-tc filter add dev eth0 protocol ip parent 1: handle 40534 fw classid 1:436
-tc filter add dev eth0 protocol ip parent 1: handle 40535 fw classid 1:437
-tc filter add dev eth0 protocol ip parent 1: handle 40536 fw classid 1:438
-tc filter add dev eth0 protocol ip parent 1: handle 40537 fw classid 1:439
-tc filter add dev eth0 protocol ip parent 1: handle 40538 fw classid 1:43a
+tc filter add dev eth0 protocol ip parent 1: handle 40230 fw classid 1:432
+tc filter add dev eth0 protocol ip parent 1: handle 40231 fw classid 1:433
+tc filter add dev eth0 protocol ip parent 1: handle 40232 fw classid 1:434
+tc filter add dev eth0 protocol ip parent 1: handle 40233 fw classid 1:435
+tc filter add dev eth0 protocol ip parent 1: handle 40234 fw classid 1:436
+tc filter add dev eth0 protocol ip parent 1: handle 40235 fw classid 1:437
+tc filter add dev eth0 protocol ip parent 1: handle 40236 fw classid 1:438
+tc filter add dev eth0 protocol ip parent 1: handle 40237 fw classid 1:439
+tc filter add dev eth0 protocol ip parent 1: handle 40238 fw classid 1:43a
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - Paytoo	IP:65    ID: 499
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:4991 htb rate 256kbit ceil 256kbit burst 15k
@@ -11428,9 +11836,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 49936 fw classid 1:44a
 tc filter add dev eth0 protocol ip parent 1: handle 49937 fw classid 1:44b
 tc filter add dev eth0 protocol ip parent 1: handle 49938 fw classid 1:44c
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - PC01	IP:101    ID: 170
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:1701 htb rate 256kbit ceil 256kbit burst 15k
@@ -11478,9 +11886,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 17036 fw classid 1:45c
 tc filter add dev eth0 protocol ip parent 1: handle 17037 fw classid 1:45d
 tc filter add dev eth0 protocol ip parent 1: handle 17038 fw classid 1:45e
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - PC02	IP:102    ID: 168
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:1681 htb rate 256kbit ceil 256kbit burst 15k
@@ -11528,9 +11936,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 16836 fw classid 1:46e
 tc filter add dev eth0 protocol ip parent 1: handle 16837 fw classid 1:46f
 tc filter add dev eth0 protocol ip parent 1: handle 16838 fw classid 1:470
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - PC03	IP:103    ID: 124
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:1241 htb rate 256kbit ceil 256kbit burst 15k
@@ -11578,9 +11986,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 12436 fw classid 1:480
 tc filter add dev eth0 protocol ip parent 1: handle 12437 fw classid 1:481
 tc filter add dev eth0 protocol ip parent 1: handle 12438 fw classid 1:482
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - PC04	IP:104    ID: 141
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:1411 htb rate 256kbit ceil 256kbit burst 15k
@@ -11628,9 +12036,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 14136 fw classid 1:492
 tc filter add dev eth0 protocol ip parent 1: handle 14137 fw classid 1:493
 tc filter add dev eth0 protocol ip parent 1: handle 14138 fw classid 1:494
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - PC05	IP:105    ID: 116
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:1161 htb rate 256kbit ceil 256kbit burst 15k
@@ -11678,9 +12086,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 11636 fw classid 1:4a4
 tc filter add dev eth0 protocol ip parent 1: handle 11637 fw classid 1:4a5
 tc filter add dev eth0 protocol ip parent 1: handle 11638 fw classid 1:4a6
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - PC06	IP:106    ID: 169
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:1691 htb rate 256kbit ceil 256kbit burst 15k
@@ -11728,9 +12136,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 16936 fw classid 1:4b6
 tc filter add dev eth0 protocol ip parent 1: handle 16937 fw classid 1:4b7
 tc filter add dev eth0 protocol ip parent 1: handle 16938 fw classid 1:4b8
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - PC07	IP:107    ID: 3
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:31 htb rate 256kbit ceil 256kbit burst 15k
@@ -11778,9 +12186,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 336 fw classid 1:4c8
 tc filter add dev eth0 protocol ip parent 1: handle 337 fw classid 1:4c9
 tc filter add dev eth0 protocol ip parent 1: handle 338 fw classid 1:4ca
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - PC08	IP:108    ID: 123
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:1231 htb rate 256kbit ceil 256kbit burst 15k
@@ -11828,9 +12236,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 12336 fw classid 1:4da
 tc filter add dev eth0 protocol ip parent 1: handle 12337 fw classid 1:4db
 tc filter add dev eth0 protocol ip parent 1: handle 12338 fw classid 1:4dc
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - PC09	IP:109    ID: 159
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:1591 htb rate 256kbit ceil 256kbit burst 15k
@@ -11878,9 +12286,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 15936 fw classid 1:4ec
 tc filter add dev eth0 protocol ip parent 1: handle 15937 fw classid 1:4ed
 tc filter add dev eth0 protocol ip parent 1: handle 15938 fw classid 1:4ee
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - PC10	IP:110    ID: 207
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:2071 htb rate 256kbit ceil 256kbit burst 15k
@@ -11928,9 +12336,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 20736 fw classid 1:4fe
 tc filter add dev eth0 protocol ip parent 1: handle 20737 fw classid 1:4ff
 tc filter add dev eth0 protocol ip parent 1: handle 20738 fw classid 1:500
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - PC11	IP:111    ID: 223
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:2231 htb rate 256kbit ceil 256kbit burst 15k
@@ -11978,9 +12386,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 22336 fw classid 1:510
 tc filter add dev eth0 protocol ip parent 1: handle 22337 fw classid 1:511
 tc filter add dev eth0 protocol ip parent 1: handle 22338 fw classid 1:512
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - PC12	IP:112    ID: 136
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:1361 htb rate 256kbit ceil 256kbit burst 15k
@@ -12028,9 +12436,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 13636 fw classid 1:522
 tc filter add dev eth0 protocol ip parent 1: handle 13637 fw classid 1:523
 tc filter add dev eth0 protocol ip parent 1: handle 13638 fw classid 1:524
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - PC13	IP:113    ID: 161
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:1611 htb rate 256kbit ceil 256kbit burst 15k
@@ -12078,9 +12486,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 16136 fw classid 1:534
 tc filter add dev eth0 protocol ip parent 1: handle 16137 fw classid 1:535
 tc filter add dev eth0 protocol ip parent 1: handle 16138 fw classid 1:536
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - PC14	IP:114    ID: 156
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:1561 htb rate 256kbit ceil 256kbit burst 15k
@@ -12128,9 +12536,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 15636 fw classid 1:546
 tc filter add dev eth0 protocol ip parent 1: handle 15637 fw classid 1:547
 tc filter add dev eth0 protocol ip parent 1: handle 15638 fw classid 1:548
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - PC15	IP:115    ID: 153
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:1531 htb rate 256kbit ceil 256kbit burst 15k
@@ -12178,9 +12586,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 15336 fw classid 1:558
 tc filter add dev eth0 protocol ip parent 1: handle 15337 fw classid 1:559
 tc filter add dev eth0 protocol ip parent 1: handle 15338 fw classid 1:55a
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - PC16	IP:116    ID: 164
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:1641 htb rate 256kbit ceil 256kbit burst 15k
@@ -12228,9 +12636,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 16436 fw classid 1:56a
 tc filter add dev eth0 protocol ip parent 1: handle 16437 fw classid 1:56b
 tc filter add dev eth0 protocol ip parent 1: handle 16438 fw classid 1:56c
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - PC17	IP:117    ID: 167
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:1671 htb rate 256kbit ceil 256kbit burst 15k
@@ -12278,9 +12686,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 16736 fw classid 1:57c
 tc filter add dev eth0 protocol ip parent 1: handle 16737 fw classid 1:57d
 tc filter add dev eth0 protocol ip parent 1: handle 16738 fw classid 1:57e
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - PC18	IP:118    ID: 252
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:2521 htb rate 256kbit ceil 256kbit burst 15k
@@ -12328,9 +12736,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 25236 fw classid 1:58e
 tc filter add dev eth0 protocol ip parent 1: handle 25237 fw classid 1:58f
 tc filter add dev eth0 protocol ip parent 1: handle 25238 fw classid 1:590
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - PC19	IP:119    ID: 206
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:2061 htb rate 256kbit ceil 256kbit burst 15k
@@ -12378,9 +12786,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 20636 fw classid 1:5a0
 tc filter add dev eth0 protocol ip parent 1: handle 20637 fw classid 1:5a1
 tc filter add dev eth0 protocol ip parent 1: handle 20638 fw classid 1:5a2
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - PC20	IP:120    ID: 210
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:2101 htb rate 256kbit ceil 256kbit burst 15k
@@ -12428,9 +12836,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 21036 fw classid 1:5b2
 tc filter add dev eth0 protocol ip parent 1: handle 21037 fw classid 1:5b3
 tc filter add dev eth0 protocol ip parent 1: handle 21038 fw classid 1:5b4
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - PC21	IP:121    ID: 219
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:2191 htb rate 256kbit ceil 256kbit burst 15k
@@ -12478,9 +12886,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 21936 fw classid 1:5c4
 tc filter add dev eth0 protocol ip parent 1: handle 21937 fw classid 1:5c5
 tc filter add dev eth0 protocol ip parent 1: handle 21938 fw classid 1:5c6
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - PC22	IP:122    ID: 177
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:1771 htb rate 256kbit ceil 256kbit burst 15k
@@ -12528,9 +12936,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 17736 fw classid 1:5d6
 tc filter add dev eth0 protocol ip parent 1: handle 17737 fw classid 1:5d7
 tc filter add dev eth0 protocol ip parent 1: handle 17738 fw classid 1:5d8
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - PC23	IP:123    ID: 209
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:2091 htb rate 256kbit ceil 256kbit burst 15k
@@ -12578,9 +12986,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 20936 fw classid 1:5e8
 tc filter add dev eth0 protocol ip parent 1: handle 20937 fw classid 1:5e9
 tc filter add dev eth0 protocol ip parent 1: handle 20938 fw classid 1:5ea
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - PC24	IP:124    ID: 398
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:3981 htb rate 256kbit ceil 256kbit burst 15k
@@ -12628,9 +13036,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 39836 fw classid 1:5fa
 tc filter add dev eth0 protocol ip parent 1: handle 39837 fw classid 1:5fb
 tc filter add dev eth0 protocol ip parent 1: handle 39838 fw classid 1:5fc
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - PC25	IP:125    ID: 196
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:1961 htb rate 256kbit ceil 256kbit burst 15k
@@ -12678,9 +13086,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 19636 fw classid 1:60c
 tc filter add dev eth0 protocol ip parent 1: handle 19637 fw classid 1:60d
 tc filter add dev eth0 protocol ip parent 1: handle 19638 fw classid 1:60e
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - PC27	IP:127    ID: 244
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:2441 htb rate 256kbit ceil 256kbit burst 15k
@@ -12728,9 +13136,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 24436 fw classid 1:61e
 tc filter add dev eth0 protocol ip parent 1: handle 24437 fw classid 1:61f
 tc filter add dev eth0 protocol ip parent 1: handle 24438 fw classid 1:620
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - PC28	IP:128    ID: 246
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:2461 htb rate 256kbit ceil 256kbit burst 15k
@@ -12778,9 +13186,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 24636 fw classid 1:630
 tc filter add dev eth0 protocol ip parent 1: handle 24637 fw classid 1:631
 tc filter add dev eth0 protocol ip parent 1: handle 24638 fw classid 1:632
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - PC29	IP:129    ID: 250
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:2501 htb rate 256kbit ceil 256kbit burst 15k
@@ -12828,9 +13236,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 25036 fw classid 1:642
 tc filter add dev eth0 protocol ip parent 1: handle 25037 fw classid 1:643
 tc filter add dev eth0 protocol ip parent 1: handle 25038 fw classid 1:644
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - PC30	IP:130    ID: 248
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:2481 htb rate 256kbit ceil 256kbit burst 15k
@@ -12878,9 +13286,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 24836 fw classid 1:654
 tc filter add dev eth0 protocol ip parent 1: handle 24837 fw classid 1:655
 tc filter add dev eth0 protocol ip parent 1: handle 24838 fw classid 1:656
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - PC31	IP:131    ID: 243
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:2431 htb rate 256kbit ceil 256kbit burst 15k
@@ -12928,9 +13336,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 24336 fw classid 1:666
 tc filter add dev eth0 protocol ip parent 1: handle 24337 fw classid 1:667
 tc filter add dev eth0 protocol ip parent 1: handle 24338 fw classid 1:668
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - PC32	IP:132    ID: 251
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:2511 htb rate 256kbit ceil 256kbit burst 15k
@@ -12978,9 +13386,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 25136 fw classid 1:678
 tc filter add dev eth0 protocol ip parent 1: handle 25137 fw classid 1:679
 tc filter add dev eth0 protocol ip parent 1: handle 25138 fw classid 1:67a
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - PC33	IP:133    ID: 247
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:2471 htb rate 256kbit ceil 256kbit burst 15k
@@ -13028,9 +13436,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 24736 fw classid 1:68a
 tc filter add dev eth0 protocol ip parent 1: handle 24737 fw classid 1:68b
 tc filter add dev eth0 protocol ip parent 1: handle 24738 fw classid 1:68c
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - PC34	IP:134    ID: 265
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:2651 htb rate 256kbit ceil 256kbit burst 15k
@@ -13078,9 +13486,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 26536 fw classid 1:69c
 tc filter add dev eth0 protocol ip parent 1: handle 26537 fw classid 1:69d
 tc filter add dev eth0 protocol ip parent 1: handle 26538 fw classid 1:69e
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - PC35	IP:135    ID: 272
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:2721 htb rate 256kbit ceil 256kbit burst 15k
@@ -13128,9 +13536,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 27236 fw classid 1:6ae
 tc filter add dev eth0 protocol ip parent 1: handle 27237 fw classid 1:6af
 tc filter add dev eth0 protocol ip parent 1: handle 27238 fw classid 1:6b0
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - PC36	IP:136    ID: 274
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:2741 htb rate 256kbit ceil 256kbit burst 15k
@@ -13178,9 +13586,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 27436 fw classid 1:6c0
 tc filter add dev eth0 protocol ip parent 1: handle 27437 fw classid 1:6c1
 tc filter add dev eth0 protocol ip parent 1: handle 27438 fw classid 1:6c2
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - PC37	IP:137    ID: 273
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:2731 htb rate 256kbit ceil 256kbit burst 15k
@@ -13228,9 +13636,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 27336 fw classid 1:6d2
 tc filter add dev eth0 protocol ip parent 1: handle 27337 fw classid 1:6d3
 tc filter add dev eth0 protocol ip parent 1: handle 27338 fw classid 1:6d4
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - PC38	IP:138    ID: 271
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:2711 htb rate 256kbit ceil 256kbit burst 15k
@@ -13278,9 +13686,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 27136 fw classid 1:6e4
 tc filter add dev eth0 protocol ip parent 1: handle 27137 fw classid 1:6e5
 tc filter add dev eth0 protocol ip parent 1: handle 27138 fw classid 1:6e6
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - PC39	IP:139    ID: 269
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:2691 htb rate 256kbit ceil 256kbit burst 15k
@@ -13328,9 +13736,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 26936 fw classid 1:6f6
 tc filter add dev eth0 protocol ip parent 1: handle 26937 fw classid 1:6f7
 tc filter add dev eth0 protocol ip parent 1: handle 26938 fw classid 1:6f8
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - PC40	IP:140    ID: 245
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:2451 htb rate 256kbit ceil 256kbit burst 15k
@@ -13378,9 +13786,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 24536 fw classid 1:708
 tc filter add dev eth0 protocol ip parent 1: handle 24537 fw classid 1:709
 tc filter add dev eth0 protocol ip parent 1: handle 24538 fw classid 1:70a
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - PC41	IP:141    ID: 295
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:2951 htb rate 256kbit ceil 256kbit burst 15k
@@ -13428,9 +13836,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 29536 fw classid 1:71a
 tc filter add dev eth0 protocol ip parent 1: handle 29537 fw classid 1:71b
 tc filter add dev eth0 protocol ip parent 1: handle 29538 fw classid 1:71c
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - PC42	IP:142    ID: 394
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:3941 htb rate 256kbit ceil 256kbit burst 15k
@@ -13478,9 +13886,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 39436 fw classid 1:72c
 tc filter add dev eth0 protocol ip parent 1: handle 39437 fw classid 1:72d
 tc filter add dev eth0 protocol ip parent 1: handle 39438 fw classid 1:72e
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - PC43	IP:143    ID: 343
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:3431 htb rate 256kbit ceil 256kbit burst 15k
@@ -13528,9 +13936,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 34336 fw classid 1:73e
 tc filter add dev eth0 protocol ip parent 1: handle 34337 fw classid 1:73f
 tc filter add dev eth0 protocol ip parent 1: handle 34338 fw classid 1:740
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - PC44	IP:144    ID: 226
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:2261 htb rate 256kbit ceil 256kbit burst 15k
@@ -13578,9 +13986,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 22636 fw classid 1:750
 tc filter add dev eth0 protocol ip parent 1: handle 22637 fw classid 1:751
 tc filter add dev eth0 protocol ip parent 1: handle 22638 fw classid 1:752
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - PC45	IP:145    ID: 365
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:3651 htb rate 256kbit ceil 256kbit burst 15k
@@ -13628,9 +14036,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 36536 fw classid 1:762
 tc filter add dev eth0 protocol ip parent 1: handle 36537 fw classid 1:763
 tc filter add dev eth0 protocol ip parent 1: handle 36538 fw classid 1:764
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - PC46	IP:146    ID: 384
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:3841 htb rate 256kbit ceil 256kbit burst 15k
@@ -13678,9 +14086,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 38436 fw classid 1:774
 tc filter add dev eth0 protocol ip parent 1: handle 38437 fw classid 1:775
 tc filter add dev eth0 protocol ip parent 1: handle 38438 fw classid 1:776
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - PC47	IP:147    ID: 353
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:3531 htb rate 256kbit ceil 256kbit burst 15k
@@ -13728,9 +14136,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 35336 fw classid 1:786
 tc filter add dev eth0 protocol ip parent 1: handle 35337 fw classid 1:787
 tc filter add dev eth0 protocol ip parent 1: handle 35338 fw classid 1:788
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - PC48	IP:148    ID: 341
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:3411 htb rate 256kbit ceil 256kbit burst 15k
@@ -13778,9 +14186,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 34136 fw classid 1:798
 tc filter add dev eth0 protocol ip parent 1: handle 34137 fw classid 1:799
 tc filter add dev eth0 protocol ip parent 1: handle 34138 fw classid 1:79a
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - PC49	IP:149    ID: 435
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:4351 htb rate 256kbit ceil 256kbit burst 15k
@@ -13828,9 +14236,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 43536 fw classid 1:7aa
 tc filter add dev eth0 protocol ip parent 1: handle 43537 fw classid 1:7ab
 tc filter add dev eth0 protocol ip parent 1: handle 43538 fw classid 1:7ac
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - PC50	IP:150    ID: 225
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:2251 htb rate 256kbit ceil 256kbit burst 15k
@@ -13878,9 +14286,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 22536 fw classid 1:7bc
 tc filter add dev eth0 protocol ip parent 1: handle 22537 fw classid 1:7bd
 tc filter add dev eth0 protocol ip parent 1: handle 22538 fw classid 1:7be
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - PC51	IP:151    ID: 180
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:1801 htb rate 256kbit ceil 256kbit burst 15k
@@ -13928,9 +14336,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 18036 fw classid 1:7ce
 tc filter add dev eth0 protocol ip parent 1: handle 18037 fw classid 1:7cf
 tc filter add dev eth0 protocol ip parent 1: handle 18038 fw classid 1:7d0
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - PC52	IP:152    ID: 298
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:2981 htb rate 256kbit ceil 256kbit burst 15k
@@ -13978,109 +14386,109 @@ tc filter add dev eth0 protocol ip parent 1: handle 29836 fw classid 1:7e0
 tc filter add dev eth0 protocol ip parent 1: handle 29837 fw classid 1:7e1
 tc filter add dev eth0 protocol ip parent 1: handle 29838 fw classid 1:7e2
 
-
-# MARCAJE DE PAQUETES
-
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:5001 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:5001 classid 1:7e3 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:5001 classid 1:7e4 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:5001 classid 1:7e5 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:5001 classid 1:7e6 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:5001 classid 1:7e7 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:5001 classid 1:7e8 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:5001 classid 1:7e9 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:5001 classid 1:7ea htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:5001 classid 1:7eb htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 50020 fw classid 1:7e3
-tc filter add dev br2 protocol ip parent 1: handle 50021 fw classid 1:7e4
-tc filter add dev br2 protocol ip parent 1: handle 50022 fw classid 1:7e5
-tc filter add dev br2 protocol ip parent 1: handle 50023 fw classid 1:7e6
-tc filter add dev br2 protocol ip parent 1: handle 50024 fw classid 1:7e7
-tc filter add dev br2 protocol ip parent 1: handle 50025 fw classid 1:7e8
-tc filter add dev br2 protocol ip parent 1: handle 50026 fw classid 1:7e9
-tc filter add dev br2 protocol ip parent 1: handle 50027 fw classid 1:7ea
-tc filter add dev br2 protocol ip parent 1: handle 50028 fw classid 1:7eb
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:5002 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:5002 classid 1:7ec htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:5002 classid 1:7ed htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:5002 classid 1:7ee htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:5002 classid 1:7ef htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:5002 classid 1:7f0 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:5002 classid 1:7f1 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:5002 classid 1:7f2 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:5002 classid 1:7f3 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:5002 classid 1:7f4 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 50030 fw classid 1:7ec
-tc filter add dev eth0 protocol ip parent 1: handle 50031 fw classid 1:7ed
-tc filter add dev eth0 protocol ip parent 1: handle 50032 fw classid 1:7ee
-tc filter add dev eth0 protocol ip parent 1: handle 50033 fw classid 1:7ef
-tc filter add dev eth0 protocol ip parent 1: handle 50034 fw classid 1:7f0
-tc filter add dev eth0 protocol ip parent 1: handle 50035 fw classid 1:7f1
-tc filter add dev eth0 protocol ip parent 1: handle 50036 fw classid 1:7f2
-tc filter add dev eth0 protocol ip parent 1: handle 50037 fw classid 1:7f3
-tc filter add dev eth0 protocol ip parent 1: handle 50038 fw classid 1:7f4
-
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - PC53	IP:153    ID: 464
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:4641 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4641 classid 1:7f5 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4641 classid 1:7f6 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4641 classid 1:7f7 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4641 classid 1:7f8 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4641 classid 1:7f9 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4641 classid 1:7fa htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4641 classid 1:7fb htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4641 classid 1:7fc htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4641 classid 1:7fd htb rate 100kbit ceil 256kbit burst 15k prio 8
+tc class add dev br2 parent 1:4641 classid 1:7e3 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4641 classid 1:7e4 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4641 classid 1:7e5 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4641 classid 1:7e6 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4641 classid 1:7e7 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4641 classid 1:7e8 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4641 classid 1:7e9 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4641 classid 1:7ea htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4641 classid 1:7eb htb rate 100kbit ceil 256kbit burst 15k prio 8
 
 # HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 46420 fw classid 1:7f5
-tc filter add dev br2 protocol ip parent 1: handle 46421 fw classid 1:7f6
-tc filter add dev br2 protocol ip parent 1: handle 46422 fw classid 1:7f7
-tc filter add dev br2 protocol ip parent 1: handle 46423 fw classid 1:7f8
-tc filter add dev br2 protocol ip parent 1: handle 46424 fw classid 1:7f9
-tc filter add dev br2 protocol ip parent 1: handle 46425 fw classid 1:7fa
-tc filter add dev br2 protocol ip parent 1: handle 46426 fw classid 1:7fb
-tc filter add dev br2 protocol ip parent 1: handle 46427 fw classid 1:7fc
-tc filter add dev br2 protocol ip parent 1: handle 46428 fw classid 1:7fd
+tc filter add dev br2 protocol ip parent 1: handle 46420 fw classid 1:7e3
+tc filter add dev br2 protocol ip parent 1: handle 46421 fw classid 1:7e4
+tc filter add dev br2 protocol ip parent 1: handle 46422 fw classid 1:7e5
+tc filter add dev br2 protocol ip parent 1: handle 46423 fw classid 1:7e6
+tc filter add dev br2 protocol ip parent 1: handle 46424 fw classid 1:7e7
+tc filter add dev br2 protocol ip parent 1: handle 46425 fw classid 1:7e8
+tc filter add dev br2 protocol ip parent 1: handle 46426 fw classid 1:7e9
+tc filter add dev br2 protocol ip parent 1: handle 46427 fw classid 1:7ea
+tc filter add dev br2 protocol ip parent 1: handle 46428 fw classid 1:7eb
 
 # CLASES DE SUBIDA
 tc class add dev eth0 parent 1: classid 1:4642 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4642 classid 1:7fe htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4642 classid 1:7ff htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4642 classid 1:800 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4642 classid 1:801 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4642 classid 1:802 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4642 classid 1:803 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4642 classid 1:804 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4642 classid 1:805 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4642 classid 1:806 htb rate 100kbit ceil 128kbit burst 15k prio 8
+tc class add dev eth0 parent 1:4642 classid 1:7ec htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4642 classid 1:7ed htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4642 classid 1:7ee htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4642 classid 1:7ef htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4642 classid 1:7f0 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4642 classid 1:7f1 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4642 classid 1:7f2 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4642 classid 1:7f3 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4642 classid 1:7f4 htb rate 100kbit ceil 128kbit burst 15k prio 8
 
 # HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 46430 fw classid 1:7fe
-tc filter add dev eth0 protocol ip parent 1: handle 46431 fw classid 1:7ff
-tc filter add dev eth0 protocol ip parent 1: handle 46432 fw classid 1:800
-tc filter add dev eth0 protocol ip parent 1: handle 46433 fw classid 1:801
-tc filter add dev eth0 protocol ip parent 1: handle 46434 fw classid 1:802
-tc filter add dev eth0 protocol ip parent 1: handle 46435 fw classid 1:803
-tc filter add dev eth0 protocol ip parent 1: handle 46436 fw classid 1:804
-tc filter add dev eth0 protocol ip parent 1: handle 46437 fw classid 1:805
-tc filter add dev eth0 protocol ip parent 1: handle 46438 fw classid 1:806
+tc filter add dev eth0 protocol ip parent 1: handle 46430 fw classid 1:7ec
+tc filter add dev eth0 protocol ip parent 1: handle 46431 fw classid 1:7ed
+tc filter add dev eth0 protocol ip parent 1: handle 46432 fw classid 1:7ee
+tc filter add dev eth0 protocol ip parent 1: handle 46433 fw classid 1:7ef
+tc filter add dev eth0 protocol ip parent 1: handle 46434 fw classid 1:7f0
+tc filter add dev eth0 protocol ip parent 1: handle 46435 fw classid 1:7f1
+tc filter add dev eth0 protocol ip parent 1: handle 46436 fw classid 1:7f2
+tc filter add dev eth0 protocol ip parent 1: handle 46437 fw classid 1:7f3
+tc filter add dev eth0 protocol ip parent 1: handle 46438 fw classid 1:7f4
 
+#------------------------------------------------------------------------------
+#Cliente - pc53	IP:66    ID: 500
+#------------------------------------------------------------------------------
 
-# MARCAJE DE PAQUETES
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:5001 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:5001 classid 1:7f5 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:5001 classid 1:7f6 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:5001 classid 1:7f7 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:5001 classid 1:7f8 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:5001 classid 1:7f9 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:5001 classid 1:7fa htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:5001 classid 1:7fb htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:5001 classid 1:7fc htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:5001 classid 1:7fd htb rate 100kbit ceil 256kbit burst 15k prio 8
 
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 50020 fw classid 1:7f5
+tc filter add dev br2 protocol ip parent 1: handle 50021 fw classid 1:7f6
+tc filter add dev br2 protocol ip parent 1: handle 50022 fw classid 1:7f7
+tc filter add dev br2 protocol ip parent 1: handle 50023 fw classid 1:7f8
+tc filter add dev br2 protocol ip parent 1: handle 50024 fw classid 1:7f9
+tc filter add dev br2 protocol ip parent 1: handle 50025 fw classid 1:7fa
+tc filter add dev br2 protocol ip parent 1: handle 50026 fw classid 1:7fb
+tc filter add dev br2 protocol ip parent 1: handle 50027 fw classid 1:7fc
+tc filter add dev br2 protocol ip parent 1: handle 50028 fw classid 1:7fd
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:5002 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:5002 classid 1:7fe htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:5002 classid 1:7ff htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:5002 classid 1:800 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:5002 classid 1:801 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:5002 classid 1:802 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:5002 classid 1:803 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:5002 classid 1:804 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:5002 classid 1:805 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:5002 classid 1:806 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 50030 fw classid 1:7fe
+tc filter add dev eth0 protocol ip parent 1: handle 50031 fw classid 1:7ff
+tc filter add dev eth0 protocol ip parent 1: handle 50032 fw classid 1:800
+tc filter add dev eth0 protocol ip parent 1: handle 50033 fw classid 1:801
+tc filter add dev eth0 protocol ip parent 1: handle 50034 fw classid 1:802
+tc filter add dev eth0 protocol ip parent 1: handle 50035 fw classid 1:803
+tc filter add dev eth0 protocol ip parent 1: handle 50036 fw classid 1:804
+tc filter add dev eth0 protocol ip parent 1: handle 50037 fw classid 1:805
+tc filter add dev eth0 protocol ip parent 1: handle 50038 fw classid 1:806
+
+#------------------------------------------------------------------------------
+#Cliente - PC54	IP:154    ID: 460
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:4601 htb rate 256kbit ceil 256kbit burst 15k
@@ -14128,9 +14536,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 46036 fw classid 1:816
 tc filter add dev eth0 protocol ip parent 1: handle 46037 fw classid 1:817
 tc filter add dev eth0 protocol ip parent 1: handle 46038 fw classid 1:818
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - Recepcion	IP:11    ID: 494
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:4941 htb rate 256kbit ceil 256kbit burst 15k
@@ -14178,9 +14586,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 49436 fw classid 1:828
 tc filter add dev eth0 protocol ip parent 1: handle 49437 fw classid 1:829
 tc filter add dev eth0 protocol ip parent 1: handle 49438 fw classid 1:82a
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - Sala de Reuniones	IP:80    ID: 348
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:3481 htb rate 256kbit ceil 256kbit burst 15k
@@ -14228,9 +14636,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 34836 fw classid 1:83a
 tc filter add dev eth0 protocol ip parent 1: handle 34837 fw classid 1:83b
 tc filter add dev eth0 protocol ip parent 1: handle 34838 fw classid 1:83c
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - SERVER MASTER	IP:7    ID: 470
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:4701 htb rate 256kbit ceil 256kbit burst 15k
@@ -14278,9 +14686,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 47036 fw classid 1:84c
 tc filter add dev eth0 protocol ip parent 1: handle 47037 fw classid 1:84d
 tc filter add dev eth0 protocol ip parent 1: handle 47038 fw classid 1:84e
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - Servidor temporal	IP:21    ID: 468
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:4681 htb rate 256kbit ceil 256kbit burst 15k
@@ -14328,9 +14736,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 46836 fw classid 1:85e
 tc filter add dev eth0 protocol ip parent 1: handle 46837 fw classid 1:85f
 tc filter add dev eth0 protocol ip parent 1: handle 46838 fw classid 1:860
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - Servidor virtualizado	IP:14    ID: 475
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:4751 htb rate 256kbit ceil 256kbit burst 15k
@@ -14378,159 +14786,159 @@ tc filter add dev eth0 protocol ip parent 1: handle 47536 fw classid 1:870
 tc filter add dev eth0 protocol ip parent 1: handle 47537 fw classid 1:871
 tc filter add dev eth0 protocol ip parent 1: handle 47538 fw classid 1:872
 
-
-# MARCAJE DE PAQUETES
-
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:4671 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4671 classid 1:873 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4671 classid 1:874 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4671 classid 1:875 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4671 classid 1:876 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4671 classid 1:877 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4671 classid 1:878 htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4671 classid 1:879 htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4671 classid 1:87a htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4671 classid 1:87b htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 46720 fw classid 1:873
-tc filter add dev br2 protocol ip parent 1: handle 46721 fw classid 1:874
-tc filter add dev br2 protocol ip parent 1: handle 46722 fw classid 1:875
-tc filter add dev br2 protocol ip parent 1: handle 46723 fw classid 1:876
-tc filter add dev br2 protocol ip parent 1: handle 46724 fw classid 1:877
-tc filter add dev br2 protocol ip parent 1: handle 46725 fw classid 1:878
-tc filter add dev br2 protocol ip parent 1: handle 46726 fw classid 1:879
-tc filter add dev br2 protocol ip parent 1: handle 46727 fw classid 1:87a
-tc filter add dev br2 protocol ip parent 1: handle 46728 fw classid 1:87b
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:4672 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4672 classid 1:87c htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4672 classid 1:87d htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4672 classid 1:87e htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4672 classid 1:87f htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4672 classid 1:880 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4672 classid 1:881 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4672 classid 1:882 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4672 classid 1:883 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4672 classid 1:884 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 46730 fw classid 1:87c
-tc filter add dev eth0 protocol ip parent 1: handle 46731 fw classid 1:87d
-tc filter add dev eth0 protocol ip parent 1: handle 46732 fw classid 1:87e
-tc filter add dev eth0 protocol ip parent 1: handle 46733 fw classid 1:87f
-tc filter add dev eth0 protocol ip parent 1: handle 46734 fw classid 1:880
-tc filter add dev eth0 protocol ip parent 1: handle 46735 fw classid 1:881
-tc filter add dev eth0 protocol ip parent 1: handle 46736 fw classid 1:882
-tc filter add dev eth0 protocol ip parent 1: handle 46737 fw classid 1:883
-tc filter add dev eth0 protocol ip parent 1: handle 46738 fw classid 1:884
-
-
-# MARCAJE DE PAQUETES
-
-
-# CLASES DE BAJADA
-tc class add dev br2 parent 1: classid 1:3961 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:3961 classid 1:885 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:3961 classid 1:886 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:3961 classid 1:887 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:3961 classid 1:888 htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:3961 classid 1:889 htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:3961 classid 1:88a htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:3961 classid 1:88b htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:3961 classid 1:88c htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:3961 classid 1:88d htb rate 100kbit ceil 256kbit burst 15k prio 8
-
-# HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 39620 fw classid 1:885
-tc filter add dev br2 protocol ip parent 1: handle 39621 fw classid 1:886
-tc filter add dev br2 protocol ip parent 1: handle 39622 fw classid 1:887
-tc filter add dev br2 protocol ip parent 1: handle 39623 fw classid 1:888
-tc filter add dev br2 protocol ip parent 1: handle 39624 fw classid 1:889
-tc filter add dev br2 protocol ip parent 1: handle 39625 fw classid 1:88a
-tc filter add dev br2 protocol ip parent 1: handle 39626 fw classid 1:88b
-tc filter add dev br2 protocol ip parent 1: handle 39627 fw classid 1:88c
-tc filter add dev br2 protocol ip parent 1: handle 39628 fw classid 1:88d
-
-# CLASES DE SUBIDA
-tc class add dev eth0 parent 1: classid 1:3962 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:3962 classid 1:88e htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:3962 classid 1:88f htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:3962 classid 1:890 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:3962 classid 1:891 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:3962 classid 1:892 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:3962 classid 1:893 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:3962 classid 1:894 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:3962 classid 1:895 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:3962 classid 1:896 htb rate 100kbit ceil 128kbit burst 15k prio 8
-
-# HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 39630 fw classid 1:88e
-tc filter add dev eth0 protocol ip parent 1: handle 39631 fw classid 1:88f
-tc filter add dev eth0 protocol ip parent 1: handle 39632 fw classid 1:890
-tc filter add dev eth0 protocol ip parent 1: handle 39633 fw classid 1:891
-tc filter add dev eth0 protocol ip parent 1: handle 39634 fw classid 1:892
-tc filter add dev eth0 protocol ip parent 1: handle 39635 fw classid 1:893
-tc filter add dev eth0 protocol ip parent 1: handle 39636 fw classid 1:894
-tc filter add dev eth0 protocol ip parent 1: handle 39637 fw classid 1:895
-tc filter add dev eth0 protocol ip parent 1: handle 39638 fw classid 1:896
-
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - Sistemas	IP:201    ID: 408
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:4081 htb rate 256kbit ceil 256kbit burst 15k
-tc class add dev br2 parent 1:4081 classid 1:897 htb rate 102kbit ceil 256kbit burst 15k prio 0
-tc class add dev br2 parent 1:4081 classid 1:898 htb rate 102kbit ceil 256kbit burst 15k prio 1
-tc class add dev br2 parent 1:4081 classid 1:899 htb rate 102kbit ceil 256kbit burst 15k prio 2
-tc class add dev br2 parent 1:4081 classid 1:89a htb rate 102kbit ceil 256kbit burst 15k prio 3
-tc class add dev br2 parent 1:4081 classid 1:89b htb rate 102kbit ceil 256kbit burst 15k prio 4
-tc class add dev br2 parent 1:4081 classid 1:89c htb rate 102kbit ceil 256kbit burst 15k prio 5
-tc class add dev br2 parent 1:4081 classid 1:89d htb rate 100kbit ceil 256kbit burst 15k prio 6
-tc class add dev br2 parent 1:4081 classid 1:89e htb rate 100kbit ceil 256kbit burst 15k prio 7
-tc class add dev br2 parent 1:4081 classid 1:89f htb rate 100kbit ceil 256kbit burst 15k prio 8
+tc class add dev br2 parent 1:4081 classid 1:873 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4081 classid 1:874 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4081 classid 1:875 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4081 classid 1:876 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4081 classid 1:877 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4081 classid 1:878 htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4081 classid 1:879 htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4081 classid 1:87a htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4081 classid 1:87b htb rate 100kbit ceil 256kbit burst 15k prio 8
 
 # HANDLERS DE BAJADA
-tc filter add dev br2 protocol ip parent 1: handle 40820 fw classid 1:897
-tc filter add dev br2 protocol ip parent 1: handle 40821 fw classid 1:898
-tc filter add dev br2 protocol ip parent 1: handle 40822 fw classid 1:899
-tc filter add dev br2 protocol ip parent 1: handle 40823 fw classid 1:89a
-tc filter add dev br2 protocol ip parent 1: handle 40824 fw classid 1:89b
-tc filter add dev br2 protocol ip parent 1: handle 40825 fw classid 1:89c
-tc filter add dev br2 protocol ip parent 1: handle 40826 fw classid 1:89d
-tc filter add dev br2 protocol ip parent 1: handle 40827 fw classid 1:89e
-tc filter add dev br2 protocol ip parent 1: handle 40828 fw classid 1:89f
+tc filter add dev br2 protocol ip parent 1: handle 40820 fw classid 1:873
+tc filter add dev br2 protocol ip parent 1: handle 40821 fw classid 1:874
+tc filter add dev br2 protocol ip parent 1: handle 40822 fw classid 1:875
+tc filter add dev br2 protocol ip parent 1: handle 40823 fw classid 1:876
+tc filter add dev br2 protocol ip parent 1: handle 40824 fw classid 1:877
+tc filter add dev br2 protocol ip parent 1: handle 40825 fw classid 1:878
+tc filter add dev br2 protocol ip parent 1: handle 40826 fw classid 1:879
+tc filter add dev br2 protocol ip parent 1: handle 40827 fw classid 1:87a
+tc filter add dev br2 protocol ip parent 1: handle 40828 fw classid 1:87b
 
 # CLASES DE SUBIDA
 tc class add dev eth0 parent 1: classid 1:4082 htb rate 128kbit ceil 128kbit burst 15k
-tc class add dev eth0 parent 1:4082 classid 1:8a0 htb rate 51kbit ceil 128kbit burst 15k prio 0
-tc class add dev eth0 parent 1:4082 classid 1:8a1 htb rate 51kbit ceil 128kbit burst 15k prio 1
-tc class add dev eth0 parent 1:4082 classid 1:8a2 htb rate 51kbit ceil 128kbit burst 15k prio 2
-tc class add dev eth0 parent 1:4082 classid 1:8a3 htb rate 51kbit ceil 128kbit burst 15k prio 3
-tc class add dev eth0 parent 1:4082 classid 1:8a4 htb rate 51kbit ceil 128kbit burst 15k prio 4
-tc class add dev eth0 parent 1:4082 classid 1:8a5 htb rate 51kbit ceil 128kbit burst 15k prio 5
-tc class add dev eth0 parent 1:4082 classid 1:8a6 htb rate 100kbit ceil 128kbit burst 15k prio 6
-tc class add dev eth0 parent 1:4082 classid 1:8a7 htb rate 100kbit ceil 128kbit burst 15k prio 7
-tc class add dev eth0 parent 1:4082 classid 1:8a8 htb rate 100kbit ceil 128kbit burst 15k prio 8
+tc class add dev eth0 parent 1:4082 classid 1:87c htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4082 classid 1:87d htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4082 classid 1:87e htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4082 classid 1:87f htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4082 classid 1:880 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4082 classid 1:881 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4082 classid 1:882 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4082 classid 1:883 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4082 classid 1:884 htb rate 100kbit ceil 128kbit burst 15k prio 8
 
 # HANDLERS DE SUBIDA
-tc filter add dev eth0 protocol ip parent 1: handle 40830 fw classid 1:8a0
-tc filter add dev eth0 protocol ip parent 1: handle 40831 fw classid 1:8a1
-tc filter add dev eth0 protocol ip parent 1: handle 40832 fw classid 1:8a2
-tc filter add dev eth0 protocol ip parent 1: handle 40833 fw classid 1:8a3
-tc filter add dev eth0 protocol ip parent 1: handle 40834 fw classid 1:8a4
-tc filter add dev eth0 protocol ip parent 1: handle 40835 fw classid 1:8a5
-tc filter add dev eth0 protocol ip parent 1: handle 40836 fw classid 1:8a6
-tc filter add dev eth0 protocol ip parent 1: handle 40837 fw classid 1:8a7
-tc filter add dev eth0 protocol ip parent 1: handle 40838 fw classid 1:8a8
+tc filter add dev eth0 protocol ip parent 1: handle 40830 fw classid 1:87c
+tc filter add dev eth0 protocol ip parent 1: handle 40831 fw classid 1:87d
+tc filter add dev eth0 protocol ip parent 1: handle 40832 fw classid 1:87e
+tc filter add dev eth0 protocol ip parent 1: handle 40833 fw classid 1:87f
+tc filter add dev eth0 protocol ip parent 1: handle 40834 fw classid 1:880
+tc filter add dev eth0 protocol ip parent 1: handle 40835 fw classid 1:881
+tc filter add dev eth0 protocol ip parent 1: handle 40836 fw classid 1:882
+tc filter add dev eth0 protocol ip parent 1: handle 40837 fw classid 1:883
+tc filter add dev eth0 protocol ip parent 1: handle 40838 fw classid 1:884
 
+#------------------------------------------------------------------------------
+#Cliente - Sistemas	IP:24    ID: 467
+#------------------------------------------------------------------------------
 
-# MARCAJE DE PAQUETES
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:4671 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:4671 classid 1:885 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:4671 classid 1:886 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:4671 classid 1:887 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:4671 classid 1:888 htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:4671 classid 1:889 htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:4671 classid 1:88a htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:4671 classid 1:88b htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:4671 classid 1:88c htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:4671 classid 1:88d htb rate 100kbit ceil 256kbit burst 15k prio 8
 
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 46720 fw classid 1:885
+tc filter add dev br2 protocol ip parent 1: handle 46721 fw classid 1:886
+tc filter add dev br2 protocol ip parent 1: handle 46722 fw classid 1:887
+tc filter add dev br2 protocol ip parent 1: handle 46723 fw classid 1:888
+tc filter add dev br2 protocol ip parent 1: handle 46724 fw classid 1:889
+tc filter add dev br2 protocol ip parent 1: handle 46725 fw classid 1:88a
+tc filter add dev br2 protocol ip parent 1: handle 46726 fw classid 1:88b
+tc filter add dev br2 protocol ip parent 1: handle 46727 fw classid 1:88c
+tc filter add dev br2 protocol ip parent 1: handle 46728 fw classid 1:88d
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:4672 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:4672 classid 1:88e htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:4672 classid 1:88f htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:4672 classid 1:890 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:4672 classid 1:891 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:4672 classid 1:892 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:4672 classid 1:893 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:4672 classid 1:894 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:4672 classid 1:895 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:4672 classid 1:896 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 46730 fw classid 1:88e
+tc filter add dev eth0 protocol ip parent 1: handle 46731 fw classid 1:88f
+tc filter add dev eth0 protocol ip parent 1: handle 46732 fw classid 1:890
+tc filter add dev eth0 protocol ip parent 1: handle 46733 fw classid 1:891
+tc filter add dev eth0 protocol ip parent 1: handle 46734 fw classid 1:892
+tc filter add dev eth0 protocol ip parent 1: handle 46735 fw classid 1:893
+tc filter add dev eth0 protocol ip parent 1: handle 46736 fw classid 1:894
+tc filter add dev eth0 protocol ip parent 1: handle 46737 fw classid 1:895
+tc filter add dev eth0 protocol ip parent 1: handle 46738 fw classid 1:896
+
+#------------------------------------------------------------------------------
+#Cliente - Sistemas	IP:38    ID: 396
+#------------------------------------------------------------------------------
+
+# CLASES DE BAJADA
+tc class add dev br2 parent 1: classid 1:3961 htb rate 256kbit ceil 256kbit burst 15k
+tc class add dev br2 parent 1:3961 classid 1:897 htb rate 102kbit ceil 256kbit burst 15k prio 0
+tc class add dev br2 parent 1:3961 classid 1:898 htb rate 102kbit ceil 256kbit burst 15k prio 1
+tc class add dev br2 parent 1:3961 classid 1:899 htb rate 102kbit ceil 256kbit burst 15k prio 2
+tc class add dev br2 parent 1:3961 classid 1:89a htb rate 102kbit ceil 256kbit burst 15k prio 3
+tc class add dev br2 parent 1:3961 classid 1:89b htb rate 102kbit ceil 256kbit burst 15k prio 4
+tc class add dev br2 parent 1:3961 classid 1:89c htb rate 102kbit ceil 256kbit burst 15k prio 5
+tc class add dev br2 parent 1:3961 classid 1:89d htb rate 100kbit ceil 256kbit burst 15k prio 6
+tc class add dev br2 parent 1:3961 classid 1:89e htb rate 100kbit ceil 256kbit burst 15k prio 7
+tc class add dev br2 parent 1:3961 classid 1:89f htb rate 100kbit ceil 256kbit burst 15k prio 8
+
+# HANDLERS DE BAJADA
+tc filter add dev br2 protocol ip parent 1: handle 39620 fw classid 1:897
+tc filter add dev br2 protocol ip parent 1: handle 39621 fw classid 1:898
+tc filter add dev br2 protocol ip parent 1: handle 39622 fw classid 1:899
+tc filter add dev br2 protocol ip parent 1: handle 39623 fw classid 1:89a
+tc filter add dev br2 protocol ip parent 1: handle 39624 fw classid 1:89b
+tc filter add dev br2 protocol ip parent 1: handle 39625 fw classid 1:89c
+tc filter add dev br2 protocol ip parent 1: handle 39626 fw classid 1:89d
+tc filter add dev br2 protocol ip parent 1: handle 39627 fw classid 1:89e
+tc filter add dev br2 protocol ip parent 1: handle 39628 fw classid 1:89f
+
+# CLASES DE SUBIDA
+tc class add dev eth0 parent 1: classid 1:3962 htb rate 128kbit ceil 128kbit burst 15k
+tc class add dev eth0 parent 1:3962 classid 1:8a0 htb rate 51kbit ceil 128kbit burst 15k prio 0
+tc class add dev eth0 parent 1:3962 classid 1:8a1 htb rate 51kbit ceil 128kbit burst 15k prio 1
+tc class add dev eth0 parent 1:3962 classid 1:8a2 htb rate 51kbit ceil 128kbit burst 15k prio 2
+tc class add dev eth0 parent 1:3962 classid 1:8a3 htb rate 51kbit ceil 128kbit burst 15k prio 3
+tc class add dev eth0 parent 1:3962 classid 1:8a4 htb rate 51kbit ceil 128kbit burst 15k prio 4
+tc class add dev eth0 parent 1:3962 classid 1:8a5 htb rate 51kbit ceil 128kbit burst 15k prio 5
+tc class add dev eth0 parent 1:3962 classid 1:8a6 htb rate 100kbit ceil 128kbit burst 15k prio 6
+tc class add dev eth0 parent 1:3962 classid 1:8a7 htb rate 100kbit ceil 128kbit burst 15k prio 7
+tc class add dev eth0 parent 1:3962 classid 1:8a8 htb rate 100kbit ceil 128kbit burst 15k prio 8
+
+# HANDLERS DE SUBIDA
+tc filter add dev eth0 protocol ip parent 1: handle 39630 fw classid 1:8a0
+tc filter add dev eth0 protocol ip parent 1: handle 39631 fw classid 1:8a1
+tc filter add dev eth0 protocol ip parent 1: handle 39632 fw classid 1:8a2
+tc filter add dev eth0 protocol ip parent 1: handle 39633 fw classid 1:8a3
+tc filter add dev eth0 protocol ip parent 1: handle 39634 fw classid 1:8a4
+tc filter add dev eth0 protocol ip parent 1: handle 39635 fw classid 1:8a5
+tc filter add dev eth0 protocol ip parent 1: handle 39636 fw classid 1:8a6
+tc filter add dev eth0 protocol ip parent 1: handle 39637 fw classid 1:8a7
+tc filter add dev eth0 protocol ip parent 1: handle 39638 fw classid 1:8a8
+
+#------------------------------------------------------------------------------
+#Cliente - Slofler	IP:50    ID: 495
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:4951 htb rate 256kbit ceil 256kbit burst 15k
@@ -14578,9 +14986,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 49536 fw classid 1:8b8
 tc filter add dev eth0 protocol ip parent 1: handle 49537 fw classid 1:8b9
 tc filter add dev eth0 protocol ip parent 1: handle 49538 fw classid 1:8ba
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - Sonia Toconas	IP:54    ID: 434
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:4341 htb rate 256kbit ceil 256kbit burst 15k
@@ -14628,9 +15036,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 43436 fw classid 1:8ca
 tc filter add dev eth0 protocol ip parent 1: handle 43437 fw classid 1:8cb
 tc filter add dev eth0 protocol ip parent 1: handle 43438 fw classid 1:8cc
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - Sonia Toconas	IP:100    ID: 185
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:1851 htb rate 256kbit ceil 256kbit burst 15k
@@ -14678,9 +15086,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 18536 fw classid 1:8dc
 tc filter add dev eth0 protocol ip parent 1: handle 18537 fw classid 1:8dd
 tc filter add dev eth0 protocol ip parent 1: handle 18538 fw classid 1:8de
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - Tablet sistemas	IP:42    ID: 487
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:4871 htb rate 256kbit ceil 256kbit burst 15k
@@ -14728,9 +15136,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 48736 fw classid 1:8ee
 tc filter add dev eth0 protocol ip parent 1: handle 48737 fw classid 1:8ef
 tc filter add dev eth0 protocol ip parent 1: handle 48738 fw classid 1:8f0
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - telefono 	IP:53    ID: 492
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:4921 htb rate 256kbit ceil 256kbit burst 15k
@@ -14778,9 +15186,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 49236 fw classid 1:900
 tc filter add dev eth0 protocol ip parent 1: handle 49237 fw classid 1:901
 tc filter add dev eth0 protocol ip parent 1: handle 49238 fw classid 1:902
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - Telefono IP Panasonic	IP:204    ID: 415
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:4151 htb rate 256kbit ceil 256kbit burst 15k
@@ -14828,9 +15236,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 41536 fw classid 1:912
 tc filter add dev eth0 protocol ip parent 1: handle 41537 fw classid 1:913
 tc filter add dev eth0 protocol ip parent 1: handle 41538 fw classid 1:914
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - Telular 1	IP:3    ID: 221
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:2211 htb rate 256kbit ceil 256kbit burst 15k
@@ -14878,9 +15286,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 22136 fw classid 1:924
 tc filter add dev eth0 protocol ip parent 1: handle 22137 fw classid 1:925
 tc filter add dev eth0 protocol ip parent 1: handle 22138 fw classid 1:926
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - Telular 2	IP:6    ID: 282
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:2821 htb rate 256kbit ceil 256kbit burst 15k
@@ -14928,9 +15336,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 28236 fw classid 1:936
 tc filter add dev eth0 protocol ip parent 1: handle 28237 fw classid 1:937
 tc filter add dev eth0 protocol ip parent 1: handle 28238 fw classid 1:938
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - Toshiba Satellite	IP:51    ID: 452
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:4521 htb rate 256kbit ceil 256kbit burst 15k
@@ -14978,9 +15386,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 45236 fw classid 1:948
 tc filter add dev eth0 protocol ip parent 1: handle 45237 fw classid 1:949
 tc filter add dev eth0 protocol ip parent 1: handle 45238 fw classid 1:94a
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - Vicente López Recepción	IP:203    ID: 409
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:4091 htb rate 256kbit ceil 256kbit burst 15k
@@ -15028,9 +15436,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 40936 fw classid 1:95a
 tc filter add dev eth0 protocol ip parent 1: handle 40937 fw classid 1:95b
 tc filter add dev eth0 protocol ip parent 1: handle 40938 fw classid 1:95c
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - Zafiro Backup	IP:13    ID: 375
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:3751 htb rate 256kbit ceil 256kbit burst 15k
@@ -15078,9 +15486,9 @@ tc filter add dev eth0 protocol ip parent 1: handle 37536 fw classid 1:96c
 tc filter add dev eth0 protocol ip parent 1: handle 37537 fw classid 1:96d
 tc filter add dev eth0 protocol ip parent 1: handle 37538 fw classid 1:96e
 
-
-# MARCAJE DE PAQUETES
-
+#------------------------------------------------------------------------------
+#Cliente - Zafiro TEST	IP:68    ID: 501
+#------------------------------------------------------------------------------
 
 # CLASES DE BAJADA
 tc class add dev br2 parent 1: classid 1:5011 htb rate 256kbit ceil 256kbit burst 15k
@@ -15127,7 +15535,4 @@ tc filter add dev eth0 protocol ip parent 1: handle 50135 fw classid 1:97d
 tc filter add dev eth0 protocol ip parent 1: handle 50136 fw classid 1:97e
 tc filter add dev eth0 protocol ip parent 1: handle 50137 fw classid 1:97f
 tc filter add dev eth0 protocol ip parent 1: handle 50138 fw classid 1:980
-
-
-# MARCAJE DE PAQUETES
 

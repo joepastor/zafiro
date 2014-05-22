@@ -54,9 +54,8 @@ if dns3_force!="":
 if dns3_force=="-":
 	dns3=""
 
-print "hola"
 # Obteniendo datos de ip
-curs.execute("""select id,ip,device from interfaces where device='eth0' and enabled=true""")
+curs.execute("""select id,ip,device from interfaces where device='br2' and enabled=true""")
 rs=curs.fetchall()
 for id,ip,device in rs:
 	gwcliente=ip

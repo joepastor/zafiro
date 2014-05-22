@@ -277,6 +277,9 @@ try:
 				# 10000:30000,22,445,139,80,443
 				# OTROS
 				# 25,143,110
+				shaping+="#------------------------------------------------------------------------------\n"
+				shaping+="#Cliente - %s	IP:%s    ID: %s\n" % (clientesnom,clientesip,clientesid)
+				shaping+="#------------------------------------------------------------------------------\n"
 
 				shaping+="\n# CLASES DE BAJADA\n"
 				shaping+="tc class add dev %s parent 1: classid 1:%s htb rate %skbit ceil %skbit burst 15k\n" % (devpri,clasebajada,bkbits,bkbits)
@@ -324,8 +327,9 @@ try:
 				shaping+="tc filter add dev %s protocol ip parent 1: handle %s fw classid 1:%s\n" % (devenm,UH8,UC8)
 				shaping+="tc filter add dev %s protocol ip parent 1: handle %s fw classid 1:%s\n" % (devenm,UH9,UC9)
 				shaping+="\n"
-				shaping+="\n# MARCAJE DE PAQUETES\n"
-				shaping+="\n"
+				
+				iptables+="\n# MARCAJE DE PAQUETES\n"
+				iptables+="\n"
 				# SACADO VERLO LUEGO iptables+="iptables -t mangle -A FORWARD -j MARK -i %s -s %s -p ICMP --set-mark %s\n" % (devpri,ip,markh4)
 				# SACADO VERLO LUEGO iptables+="iptables -t mangle -A FORWARD -j MARK -i %s -d %s -p ICMP --set-mark %s\n" % (devenm,ip,markh1)
 

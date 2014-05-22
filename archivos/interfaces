@@ -2,8 +2,17 @@
 auto lo
 iface lo inet loopback
 
-# LAN
+# WAN-Telmex
 auto eth0
+iface 190.221.138.58 inet static
+	address 190.221.138.58
+	netmask 255.255.255.248
+	broadcast 190.221.138.63
+	network 190.221.138.56
+	gateway 190.221.138.57
+
+# LAN-Virtualizada
+auto br2
 iface 172.16.0.1 inet static
 	address 172.16.0.1
 	netmask 255.255.255.0
