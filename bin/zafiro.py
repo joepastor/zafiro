@@ -131,10 +131,10 @@ try:
 		# Configuracion de limitacion de clientes
 		iptables+="# DEFINICION DE COLAS BASICAS\n"
 		iptables+=divisor
-		iptables+="tc qdisc del dev eth0 root\n"
-		iptables+="tc qdisc add dev eth0 root handle 1: htb\n"
-		iptables+="tc qdisc del dev eth1 root\n"
-		iptables+="tc qdisc add dev eth1 root handle 1: htb\n"
+		shaping+="tc qdisc del dev eth0 root\n"
+		shaping+="tc qdisc add dev eth0 root handle 1: htb\n"
+		shaping+="tc qdisc del dev eth1 root\n"
+		shaping+="tc qdisc add dev eth1 root handle 1: htb\n"
 		
 		# Crea la configuracion de limitacion de cada cliente
 		ipfijastr=""
@@ -456,7 +456,8 @@ try:
 		iptables+="iptables -P FORWARD DROP\n"
 
 		#Agrego el shaping al final del archivo
-		iptables += shaping
+		#iptables += shaping
+		
 		################################################# Escritura de archivos ##############################################################
 		sasa+="E:/usr/sasacct-1.0.2/lang/\n"
 		sasa+="U:en_UK\n"
@@ -472,6 +473,11 @@ try:
 		f.write(dhcpd)
 		f.close()
 
+		print "Escribiendo Shaping File"			
+		f=open("%s/shaping.sh" % archivosdir,"w")
+		f.write(shaping)
+		f.close()
+		
 		print "Escribiendo Firewall"			
 		f=open("%s/iptables.sh" % archivosdir,"w")
 		f.write(iptables)
