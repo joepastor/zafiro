@@ -8,7 +8,7 @@ hora=strftime("%H",localtime())
 
 try:
 	#db = MySQLdb.connect(host='localhost',user='zafiro',passwd='j483nd8-34/23f--ds',db='zafiro')
-	db = MySQLdb.connect(host='localhost',user='root',passwd='t0r0nj4',db='zafiro')
+	db = MySQLdb.connect(host='localhost',user='root',passwd='t0r0nj4',db='zafiro2')
 	curs = db.cursor()
 except MySQLdb.Error, e:
 	print e
