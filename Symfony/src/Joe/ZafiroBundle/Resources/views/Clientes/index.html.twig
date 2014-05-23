@@ -52,9 +52,9 @@
                 <td>
                 <a href="{{ path('clientes_toggle_proxy', { 'id': entity.id }) }}">
 	                {% if entity.enrutaProxy == false %}
-	                	Proxy
+	                	Directo
 	               	{% else %}
-	               		Directo
+	               		Via Proxy
 	                {% endif %}
 	                </a>
 	                <a href="{{ path('clientes_toggle_salida', { 'id': entity.id }) }}">
