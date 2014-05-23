@@ -37,6 +37,7 @@ openvpndir="%s/openvpn" % archivosdir
 scriptsdir="%s/scripts" % archivosdir
 symfonydir="%s/Symfony" % zafirodir
 mrtgdir="%s/web/bundles/joezafiro/mrtg" % symfonydir 
+
 #!vpnclidir="/zafiro/vpnclientes"
 
 # Archivos de lectura
