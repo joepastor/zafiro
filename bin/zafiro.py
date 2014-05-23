@@ -49,7 +49,7 @@ try:
 		mrtg=""
 		mrtg+="BodyTag[_]:<BODY bgcolor=#333333 text=#cccccc>\n"
 		mrtg+="Background[_]:#333333\n"
-		mrtg+="WorkDir: %s/www/mrtg\nWriteExpires: Yes\nTitle[^]: Traffic Analysis for\nOptions[_]: growright\n\n" % (zafirodir)
+		mrtg+="WorkDir: %s\nWriteExpires: Yes\nTitle[^]: Traffic Analysis for\nOptions[_]: growright\n\n" % (mrtgdir)
 
 		mrtg+=getMRTG("eth0")
 		mrtg+=getMRTG("eth1")
@@ -131,10 +131,16 @@ try:
 		# Configuracion de limitacion de clientes
 		iptables+="# DEFINICION DE COLAS BASICAS\n"
 		iptables+=divisor
-		shaping+="tc qdisc del dev eth0 root\n"
-		shaping+="tc qdisc add dev eth0 root handle 1: htb\n"
-		shaping+="tc qdisc del dev eth1 root\n"
-		shaping+="tc qdisc add dev eth1 root handle 1: htb\n"
+		curs.execute("select device from interfaces where enabled=1")
+		interfaces=curs.fetchall()
+		for iface in interfaces:
+			shaping+="tc qdisc del dev %s root\n" % iface
+			shaping+="tc qdisc add dev %s root handle 1: htb\n" % iface
+
+		#shaping+="tc qdisc del dev eth0 root\n"
+		#shaping+="tc qdisc add dev eth0 root handle 1: htb\n"
+		#shaping+="tc qdisc del dev eth1 root\n"
+		#shaping+="tc qdisc add dev eth1 root handle 1: htb\n"
 		
 		# Crea la configuracion de limitacion de cada cliente
 		ipfijastr=""

@@ -32,10 +32,11 @@ devenm="eth0"
 # Directorios
 zafirodir="/Users/Joe/git/zafiro"
 zafirodir="/home/joe/git/zafiro"
-archivosdir="%s/archivos" % zafirodir 
+archivosdir="%s/archivos" % zafirodir
 openvpndir="%s/openvpn" % archivosdir
 scriptsdir="%s/scripts" % archivosdir
-
+symfonydir="%s/Symfony" % zafirodir
+mrtgdir="%s/web/bundles/joezafiro/mrtg" % symfonydir 
 #!vpnclidir="/zafiro/vpnclientes"
 
 # Archivos de lectura
