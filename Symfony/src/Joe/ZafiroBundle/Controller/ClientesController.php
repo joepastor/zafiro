@@ -23,11 +23,29 @@ class ClientesController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('JoeZafiroBundle:Clientes')->findAll();
+        //$entities = $em->getRepository('JoeZafiroBundle:Clientes')->findAll();
 
-        return $this->render('JoeZafiroBundle:Clientes:index.html.twig', array(
+        $query = $em->createQueryBuilder()
+        			->select('c')
+        			->from('JoeZafiroBundle:Clientes','c')
+        			->getQuery();
+        
+        $paginator  = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+        		$query,
+        		$this->get('request')->query->get('page', 1)/*page number*/,
+        		999/*limit per page*/
+        );
+        
+        
+        
+        //JOE
+        /*return $this->render('JoeZafiroBundle:Clientes:index.html.twig', array(
             'entities' => $entities,
-        ));
+        ));*/
+        
+        return $this->render('JoeZafiroBundle:Clientes:index.html.twig', array('entities' => $pagination));
+        
     }
     /**
      * Creates a new Clientes entity.
@@ -251,5 +269,19 @@ class ClientesController extends Controller
 		$em->flush();    	
         
 		return $this->forward("JoeZafiroBundle:Clientes:index");
+    }
+    
+    public function toggle_estadoAction($id)
+    {
+    	/*
+    	 * JOE
+    	* */
+    	 
+    	$em = $this->getDoctrine()->getManager();
+    	$cliente = $em->getRepository('JoeZafiroBundle:Clientes')->find($id);
+    	$cliente->toggle_estado();
+    	$em->flush();
+    
+    	return $this->forward("JoeZafiroBundle:Clientes:index");
     }
 }

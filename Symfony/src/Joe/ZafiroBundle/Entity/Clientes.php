@@ -488,6 +488,13 @@ class Clientes
     
     }
 
+    public function toggle_estado()
+    {
+    	$valor=0;
+    	$valor=($this->getEstado()) ? 0 : 1;
+    	$this->setEstado($valor);
+    
+    }
     /**
      * Set clientes_plan
      *
