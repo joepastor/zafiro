@@ -509,8 +509,8 @@ try:
 		print "Cambiando permisos de la carpeta scripts necesario para mrtg"
 		os.system("chmod +x %s/*.sh" % (scriptsdir))
 		
-		print "Ejecutando MRTG"
-		os.system("env LANG=C mrtg\n")
+		#print "Ejecutando MRTG"
+		#os.system("env LANG=C mrtg\n")
 		
 		print "Seteando salida"
 		setSalida()

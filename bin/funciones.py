@@ -231,6 +231,7 @@ def getAcciones():
 		if comando:
 			os.system(comando)
 		curs.execute("""update acciones set valor=0 where id=%s""" % id)
+		db.commit()
 
 def getEjecutar():
 	
@@ -244,7 +245,7 @@ def getEjecutar():
 		if valor == 1:
 			ejecutar = valor
 			curs.execute("""update acciones set valor=0 where id = 6""")
-	
+			db.commit()
 	# Si ha pasado una hora, ejecutar
 	if strftime("%M",localtime()) == 46 and strftime("%S",localtime()) == 0:
 		print "Ejecuto" 
