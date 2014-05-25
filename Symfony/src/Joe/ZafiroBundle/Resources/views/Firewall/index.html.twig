@@ -10,8 +10,8 @@
                 <th>ID</th>
                 <th>Comentario</th>
                 <th>Comando</th>
-                <th>Orden</th>
-                <th>Estado</th>
+                <th{% if entities.isSorted('c.orden') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(entities, 'Orden', 'c.orden') }}</th>
+                <th{% if entities.isSorted('c.estado') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(entities, 'Estado', 'c.estado') }}</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -22,7 +22,11 @@
                 <td>{{ entity.comentario }}</td>
                 <td>iptables {{ entity.comando }}</td>
                 <td>{{ entity.orden }}</td>
-                <td>{{ entity.nombreestado }}</td>
+                <td>
+                	<a href="{{ path('firewall_toggle_estado', { 'id': entity.id }) }}">
+                		{{ entity.nombreestado }}
+                	</a>
+                </td>
                 <td>
                     <a href="{{ path('firewall_show', { 'id': entity.id }) }}">show</a>
                     <a href="{{ path('firewall_edit', { 'id': entity.id }) }}">edit</a>

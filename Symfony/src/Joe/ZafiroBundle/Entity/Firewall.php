@@ -162,4 +162,11 @@ class Firewall
     	$a = $this->estados();
     	return $a[$this->estado];
     }
+    public function toggle_estado()
+    {
+    	$valor=0;
+    	$valor=($this->getEstado()) ? 0 : 1;
+    	$this->setEstado($valor);
+    
+    }
 }

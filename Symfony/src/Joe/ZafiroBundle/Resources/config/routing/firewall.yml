@@ -28,3 +28,6 @@ firewall_delete:
     pattern:  /{id}/delete
     defaults: { _controller: "JoeZafiroBundle:Firewall:delete" }
     requirements: { _method: post|delete }
+firewall_toggle_estado:
+    pattern:  /{id}/toggle_estado
+    defaults: { _controller: "JoeZafiroBundle:Firewall:toggle_estado" }    

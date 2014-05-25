@@ -38,4 +38,4 @@ clientes_toggle_proxy:
     defaults: { _controller: "JoeZafiroBundle:Clientes:toggle_proxy" }    
 clientes_toggle_estado:
     pattern:  /{id}/toggle_estado
-    defaults: { _controller: "JoeZafiroBundle:Clientes:toggle_estado" }    
+    defaults: { _controller: "JoeZafiroBundle:Clientes:toggle_estado" }

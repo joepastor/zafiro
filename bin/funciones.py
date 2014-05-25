@@ -280,12 +280,20 @@ def getMRTG(dev):
 	
 def getNateos():
 	nateos=""
-	curs.execute("""select puesrc,puedst,ipdst,ipsrc from forwardeos where estado=1""")
+	curs.execute("""select puesrc,puedst,ipdst,ipsrc,tipo from forwardeos where estado=1""")
 	nat=curs.fetchall()
-	for forwardeospuesrc,forwardeospuedst,forwardeosipdst,forwardeosipsrc in nat:
+	for forwardeospuesrc,forwardeospuedst,forwardeosipdst,forwardeosipsrc,tipo in nat:
+		if forwardeosipsrc=='':
+			forwardeosipsrc='0.0.0.0'
+			
 		if forwardeosipsrc=='0.0.0.0':
 			forwardeosipsrc+='/0'
-		nateos+="iptables -t nat -A PREROUTING -i %s -p tcp -s %s --dport %s -j DNAT --to %s:%s\n" % (devpub,forwardeosipsrc,forwardeospuesrc,forwardeosipdst,forwardeospuedst)
+		
+		if tipo=='tcp/udp':
+			nateos+="iptables -t nat -A PREROUTING -i %s -p tcp -s %s --dport %s -j DNAT --to %s:%s\n" % (devpub,forwardeosipsrc,forwardeospuesrc,forwardeosipdst,forwardeospuedst)
+			nateos+="iptables -t nat -A PREROUTING -i %s -p udp -s %s --dport %s -j DNAT --to %s:%s\n" % (devpub,forwardeosipsrc,forwardeospuesrc,forwardeosipdst,forwardeospuedst)
+		else:
+			nateos+="iptables -t nat -A PREROUTING -i %s -p %s -s %s --dport %s -j DNAT --to %s:%s\n" % (devpub,tipo,forwardeosipsrc,forwardeospuesrc,forwardeosipdst,forwardeospuedst)
 	return nateos
 
 def setSalida():

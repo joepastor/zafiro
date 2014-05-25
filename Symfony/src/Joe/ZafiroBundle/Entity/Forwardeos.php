@@ -56,6 +56,12 @@ class Forwardeos
      */
     private $ipsrc;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="tipo", type="string", length=45, nullable=false)
+     */
+    private $tipo;
 
 
     /**
@@ -182,14 +188,48 @@ class Forwardeos
     {
         return $this->ipsrc;
     }
+
+    /**
+     * Set tipo
+     *
+     * @param string $tipo
+     * @return Forwardeos
+     */
+    public function setTipo($tipo)
+    {
+    	$this->tipo = $tipo;
+    
+    	return $this;
+    }
+    
+    /**
+     * Get tipo
+     *
+     * @return string
+     */
+    public function getTipo()
+    {
+    	return $this->tipo;
+    }
+    
     public static function estados(){
     	return array(
     			'1' => 'Activo',
     			'0' => 'Inactivo',
     	);
     }
+    
     public function getNombreEstado(){
     	$a = $this->estados();
     	return $a[$this->estado];
+    }
+    
+    public static function tipos(){
+    	return array(
+    			'tcp' => 'TCP',
+    			'udp' => 'UDP',
+    			'tcp/udp' => 'TCP/UDP',
+    			'icmp' => 'ICMP',
+    	);
     }
 }
