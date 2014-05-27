@@ -60,6 +60,7 @@
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Acciones <b class="caret"></b></a>
 						<ul class="dropdown-menu">
 							<li><a href="{{ path('actions', { 'name': 'aplicar' }) }}"><img src="{{ asset('bundles/joezafiro/images/ok2.png') }}" width="16px"> Aplicar cambios</a></li>
+							<li><a href="{{ path('actions', { 'name': 'shape' }) }}"><img src="{{ asset('bundles/joezafiro/images/ok2.png') }}" width="16px"> Aplicar shaping</a></li>
 							<li><a href="#" onclick="if(confirm('Desea reinciar el servicio VPN?')){location='{{ path('actions', { 'name': 'reiniciar_vpn' }) }}';}"><img src="{{ asset('bundles/joezafiro/images/vpn.png') }}" width="16px"> Reiniciar VPN</a></li>
 							<li><a href="#" onclick="if(confirm('Desea reiniciar servicio DHCP?')){location='{{ path('actions', { 'name': 'reiniciar_dhcp' }) }}';}"><img src="{{ asset('bundles/joezafiro/images/dhcp.png') }}" width="16px"> Reiniciar DHCP</a></li>
 							<li><a href="#" onclick="if(confirm('Desea reiniciar el servicio de red?')){location='{{ path('actions', { 'name': 'reiniciar_red' }) }}';}" ><img src="{{ asset('bundles/joezafiro/images/network.png') }}" width="16px"> Reiniciar Network</a></li>

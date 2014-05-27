@@ -153,6 +153,10 @@ class ServerController extends Controller
 				$msg="El servidor está reiniciando el servicio de asignación automática de IP (DHCP)";
 				$id=5;
 				break;
+			case "shaping":
+				$msg="El servidor está aplicando nuevos seteos de ancho de banda";
+				$id=7;
+				break;
 		}
     	if($id<>0){
     		$em = $this->getDoctrine()->getEntityManager();
