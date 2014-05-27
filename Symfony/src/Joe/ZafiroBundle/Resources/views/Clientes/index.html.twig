@@ -2,20 +2,25 @@
 
 {% block body -%}
     <h1>Clientes list</h1>
-
+<div class="count">
+    {{ entities.getTotalItemCount }}
+</div>
     <table class="records_list">
         <thead>
             <tr>
+	            <th{% if entities.isSorted('c.nombre') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(entities, 'Nombre', 'c.nombre') }}</th>
+                <th{% if entities.isSorted('c.ip') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(entities, 'IP', 'c.ip') }}</th>
+                <th{% if entities.isSorted('c.plan') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(entities, 'Plan', 'c.plan') }}</th>
+                <th{% if entities.isSorted('c.estado') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(entities, 'Estado', 'c.estado') }}</th>
+                <th{% if entities.isSorted('c.enutaProxy') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(entities, 'Proxy', 'c.enrutaProxy') }}</th>
+                <th{% if entities.isSorted('c.salidaHabilitada') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(entities, 'Salida', 'c.salidaHabilitada') }}</th>
                 <!--<th>Id</th>-->
-                <th>Cliente</th>
+                <!--<th>Cliente</th>-->
                 <!--<th>Descripcion</th>-->
                 <!--<th>Macaddress</th>-->
-                <th>Ip</th>
-                <th>Plan</th>
+                <!--<th>Plan</th>-->
                 <!--<th>Clientesper</th>-->
-                <th>Estado</th>
-                
-                <!--
+                <!--<th>Estado</th>
                 <th>Fechaalta</th>
                 <th>Fechabaja</th>
                 <th>Direccion</th>
@@ -24,8 +29,9 @@
                 <th>Email</th>
                 <th>Enrutaproxy</th>
                 <th>Salidahabilitada</th>
-                -->
-                <th>Configuracion</th>
+                
+                <th>Proxy</th>
+                <th>Salida</th>-->
                 <th>Actividad</th>
                 <!--<th>Actions</th>-->
             </tr>
@@ -39,7 +45,7 @@
                 <!--<td>{{ entity.macaddress }}</td>-->
                 <td><a href="http://{{ entity.ip }}">172.16.0.{{ entity.ip }}</a><br>({{ entity.macaddress }})</td>
                 <td>{{ entity.clientesplan }}</td>
-                <td>{{ entity.nombreestado }}</td>
+                <td><a href="{{ path('clientes_toggle_estado', { 'id': entity.id }) }}">{{ entity.nombreestado }} </a> </td>
                 
                 <!--
                 <td>{{ entity.fechaAlta }}</td>
@@ -50,19 +56,21 @@
                 <td>{{ entity.email }}</td>
                 -->
                 <td>
-                <a href="{{ path('clientes_toggle_proxy', { 'id': entity.id }) }}">
-	                {% if entity.enrutaProxy == false %}
-	                	Directo
-	               	{% else %}
-	               		Via Proxy
-	                {% endif %}
-	                </a>
+               		<a href="{{ path('clientes_toggle_proxy', { 'id': entity.id }) }}">
+		                {% if entity.enrutaProxy == 1 %}
+		                	Si
+		               	{% else %}
+		               		No
+		                {% endif %}
+	             	</a>
+	             </td>
+	             <td>
 	                <a href="{{ path('clientes_toggle_salida', { 'id': entity.id }) }}">
-	                {% if entity.salidaHabilitada == false %}
-	                	No Sale
-	               	{% else %}
-	               		Sale
-	                {% endif %}
+		                {% if entity.salidaHabilitada == false %}
+		                	No
+		               	{% else %}
+		               		Si
+		                {% endif %}
 	                </a>
                 </td>
                 <td><a href="{{ asset('bundles/joezafiro/mrtg/172.16.0.') }}{{ entity.ip }}.html" target=_blank><img src="{{ asset('bundles/joezafiro/mrtg/172.16.0.') }}{{ entity.ip }}-day.png" width="150px"></a></td>
@@ -76,7 +84,9 @@
         {% endfor %}
         </tbody>
     </table>
-
+<div class="navigation">
+    {{ knp_pagination_render(entities) }}
+</div>
         <ul>
         <li>
             <a href="{{ path('clientes_new') }}">

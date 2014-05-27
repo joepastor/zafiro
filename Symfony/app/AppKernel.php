@@ -19,7 +19,7 @@ class AppKernel extends Kernel
             new Joe\ZafiroBundle\JoeZafiroBundle(),
         	new FOS\UserBundle\FOSUserBundle(),
         	new \Joe\UserBundle\UserBundle(),
-
+        	new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

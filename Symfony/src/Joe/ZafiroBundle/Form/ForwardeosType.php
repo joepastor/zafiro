@@ -17,9 +17,13 @@ class ForwardeosType extends AbstractType
         $builder
             ->add('puesrc')
             ->add('puedst')
+            ->add('tipo','choice', array(
+            		'choices' => \Joe\ZafiroBundle\Entity\Forwardeos::tipos()
+            ))
             ->add('ipdst')
             ->add('ipsrc')
             ->add('estado')
+            
         ;
     }
     
