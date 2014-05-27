@@ -153,7 +153,7 @@ class ServerController extends Controller
 				$msg="El servidor está reiniciando el servicio de asignación automática de IP (DHCP)";
 				$id=5;
 				break;
-			case "shaping":
+			case "shape":
 				$msg="El servidor está aplicando nuevos seteos de ancho de banda";
 				$id=7;
 				break;

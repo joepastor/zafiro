@@ -147,17 +147,17 @@ try:
 		sql="""select clientes.id,clientes.ip,macaddress,plan,nombre,ipsfijas.ip,ipsfijas.interface,ipsfijas.estado,enruta_proxy,salida_habilitada,descripcion from clientes left join ipsfijas on ipsfijas.cliente=clientes.id where clientes.estado=0 order by nombre"""
 
 		sql="""select a.id,a.ip,macaddress,plan,a.nombre,b.ip,b.interface,
-		b.estado,enruta_proxy,salida_habilitada,descripcion,d.subida,d.bajada
+		b.estado,enruta_proxy,salida_habilitada,a.descripcion,d.subida,d.bajada,e.device
 		from clientes a
 		left join ipsfijas b  on b.cliente=a.id
 		inner join planes c on a.plan=c.id
 		inner join canales d on c.d%sh%s=d.id
+		left join interfaces e on a.interface=e.id
 		where a.estado=1 order by a.nombre""" % (dia,hora)
-
 		curs.execute(sql)
 		clientes=curs.fetchall()
 		hosts="127.0.0.1        localhost\n"
-		for clientesid,clientesip,clientesmac,clientespla,clientesnom,ipsfijasip,ipsfijasint,ipsfijasest,clientespro,clientessal,clientesdes,canalessub,canalesbaj in clientes:
+		for clientesid,clientesip,clientesmac,clientespla,clientesnom,ipsfijasip,ipsfijasint,ipsfijasest,clientespro,clientessal,clientesdes,canalessub,canalesbaj,device in clientes:
 			iptables+="\n\n"
 			iptables+="echo ID: %s	%s	IP:%s    \n" % (clientesid,clientesnom,clientesip)
 			iptables+="#------------------------------------------------------------------------------\n"
@@ -403,7 +403,10 @@ try:
 				iptables+="iptables -t nat -A POSTROUTING -s %s -j SNAT --to %s\n" % (ip,ipsfijasip)
 				iptables+="iptables -t nat -A PREROUTING -d %s -j DNAT --to %s\n" % (ipsfijasip,ip)
 			else:
-				iptables+="iptables -t nat -A POSTROUTING -s %s -o %s -j MASQUERADE\n" % (ip,devenm)
+				if device  and device != "":
+					iptables+="iptables -t nat -A POSTROUTING -s %s -o %s -j MASQUERADE\n" % (ip,device)
+				else:
+					iptables+="iptables -t nat -A POSTROUTING -s %s -o %s -j MASQUERADE\n" % (ip,devenm)
 
 			# Agrega el bloque para asignacion de IP por dhcp
 			dhcpd+="\nhost %s {\n" % clientesid
