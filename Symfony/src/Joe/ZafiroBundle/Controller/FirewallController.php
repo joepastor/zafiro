@@ -22,12 +22,28 @@ class FirewallController extends Controller
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
+        
+        $query = $em->createQueryBuilder()
+        ->select('c')
+        ->from('JoeZafiroBundle:Firewall','c')
+        ->getQuery();
+        
+        $paginator  = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+        		$query,
+        		$this->get('request')->query->get('page', 1)/*page number*/,
+        		999/*limit per page*/
+        );
+        
+        return $this->render('JoeZafiroBundle:Firewall:index.html.twig', array('entities' => $pagination));
+        		
+        //$entities = $em->getRepository('JoeZafiroBundle:Firewall')->findAll();
 
-        $entities = $em->getRepository('JoeZafiroBundle:Firewall')->findAll();
-
-        return $this->render('JoeZafiroBundle:Firewall:index.html.twig', array(
-            'entities' => $entities,
-        ));
+        //return $this->render('JoeZafiroBundle:Firewall:index.html.twig', array(
+        //    'entities' => $entities,
+        //));
+		
+        		
     }
     /**
      * Creates a new Firewall entity.
@@ -219,5 +235,19 @@ class FirewallController extends Controller
             ->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()
         ;
+    }
+    
+    public function toggle_estadoAction($id)
+    {
+    	/*
+    	 * JOE
+    	* */
+    
+    	$em = $this->getDoctrine()->getManager();
+    	$firewall = $em->getRepository('JoeZafiroBundle:Firewall')->find($id);
+    	$firewall->toggle_estado();
+    	$em->flush();
+    
+    	return $this->forward("JoeZafiroBundle:Firewall:index");
     }
 }
