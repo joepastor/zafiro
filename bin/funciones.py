@@ -318,7 +318,7 @@ def createInterfaces():
 		interfaces+="# %s\n" % descripcion
 		interfaces+="auto %s\n" % device
 		if ip:
-			interfaces+="iface %s inet static\n" % ip
+			interfaces+="iface %s inet static\n" % device
 			interfaces+="\taddress %s\n" % ip
 			interfaces+="\tnetmask %s\n" % netmask
 			interfaces+="\tbroadcast %s\n" % broadcast
