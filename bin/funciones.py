@@ -6,6 +6,13 @@ from time import strftime,localtime
 dia=int(strftime("%w",localtime()))+1
 hora=strftime("%H",localtime())
 
+def getValueSettings(value):
+	sql="""select valor from settings where llave='%s'""" % value
+	curs.execute(sql)
+	rs=curs.fetchall()
+	for valor in rs:
+		return valor[0]
+
 try:
 	#db = MySQLdb.connect(host='localhost',user='zafiro',passwd='j483nd8-34/23f--ds',db='zafiro')
 	db = MySQLdb.connect(host='localhost',user='root',passwd='t0r0nj4',db='zafiro2')
@@ -33,26 +40,36 @@ for linea in inp.readlines():
 			dns3=linea.split(" ")[1][:-1]
 inp.close()
 
-#TODO 20131022 - Aca hay un problema, con el tema de las dnss forzadas para dhcpd
-# la logica siguiente no tiene sentido, pero ahora no tenemos tiempo de repararla.
-# deberia funcionar asi: si esta seteada dnsX_force con alguna ip, entonces poner esa
-# si esta vacia o con algun codigo, entonces deberia VACIARLA para que no exista
-# y si no, deberia seguir la logica y tomar la configurada normal.
-# ahora no hace eso, asi que tenemos que corregirlo
-if dns1_force!="":
+# DNSs forzadas
+#dns1=getValueSettings("dns_force_1")
+#dns2=getValueSettings("dns_force_2")
+#dns3=getValueSettings("dns_force_3")
+if getValueSettings("dns_force_1")!="":
 	dns1=dns1_force
-if dns1_force=="-":
-	dns1=""
-
-if dns2_force!="":
+if getValueSettings("dns_force_2")!="":
 	dns2=dns2_force
-if dns2_force=="-":
-	dns2=""
-
-if dns3_force!="":
+if getValueSettings("dns_force_3")!="":
 	dns3=dns3_force
-if dns3_force=="-":
-	dns3=""
+	
+#if dns1_force!="":
+#	dns1=dns1_force
+#if dns1_force=="-":
+#	dns1=""
+
+#if dns2_force!="":
+#	dns2=dns2_force
+#if dns2_force=="-":
+#	dns2=""
+
+#if dns3_force!="":
+#	dns3=dns3_force
+#if dns3_force=="-":
+#	dns3=""
+
+# Devices
+devenm=getValueSettings("dev_enm")
+devpri=getValueSettings("dev_pri")
+devpub=getValueSettings("dev_pub")
 
 # Obteniendo datos de ip
 curs.execute("""select id,ip,device from interfaces where device='br2' and enabled=true""")
@@ -65,7 +82,7 @@ for id,ip,device in rs:
 	cuaoctpri=ip.split(".")[3]
 	ipprefijopri="%s.%s.%s." % (prioctpri,segoctpri,teroctpri)
 
-print ipprefijopri
+
 ###### FUNCIONES ################################################################
 
 
@@ -253,13 +270,6 @@ def getEjecutar():
 
 	return ejecutar		
 
-def getValueSettings(value):
-	sql="""select valor from settings where llave='%s'""" % value
-	curs.execute(sql)
-	rs=curs.fetchall()
-	for valor in rs:
-		return valor[0]
-	
 def getLimitacion():
 	# Si esta liberado en ancho de banda
 	return getValueSettings("limitacion")
@@ -298,13 +308,19 @@ def getNateos():
 	return nateos
 
 def setSalida():
-	f=open("%s/ip_forward" % archivosdir,"w")
-	if getValueSettings("salida")==1:
-		valor="1"
+	if os.path.exists(ip_forward):
+		f=open(ip_forward,"w")
+		print getValueSettings("salida")
+		if getValueSettings("salida")=="1":
+			print "Saliendo a internet"
+			valor="1"
+		else:
+			print "SIN SALIDA a internet"
+			valor="0"
+		f.write(valor)
+		f.close()
 	else:
-		valor="0"
-	f.write(valor)
-	f.close()
+		print "!!!! NO SE PUDO SETEAR LA SALIDA !!!!"
 	
 def createInterfaces():
 	interfaces=""

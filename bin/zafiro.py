@@ -37,6 +37,9 @@ try:
 		iptables=""
 		shaping=""
 
+		print dns1
+		print dns2
+		print dns3
 		# Firewall basico
 		iptables+="iptables -F\n"
 		iptables+="iptables -t nat -F\n"
@@ -104,7 +107,6 @@ try:
 			iptables+="iptables -A FORWARD -i %s -d %s -p udp --dport 53 -j ACCEPT\n" % (devpri,dns3)
 		iptables+=divisor
 
-
 		# Forwarding y Nateos
 		iptables+="# FORWARDING DE PUERTOS\n"
 		iptables+=divisor
@@ -137,10 +139,6 @@ try:
 			shaping+="tc qdisc del dev %s root\n" % iface
 			shaping+="tc qdisc add dev %s root handle 1: htb\n" % iface
 
-		#shaping+="tc qdisc del dev eth0 root\n"
-		#shaping+="tc qdisc add dev eth0 root handle 1: htb\n"
-		#shaping+="tc qdisc del dev eth1 root\n"
-		#shaping+="tc qdisc add dev eth1 root handle 1: htb\n"
 		
 		# Crea la configuracion de limitacion de cada cliente
 		ipfijastr=""

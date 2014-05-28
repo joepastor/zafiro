@@ -23,11 +23,11 @@ dns3_force="-"
 
 # Interfaces
 # WAN
-devpub="eth0"
+#devpub="eth0"
 # LAN
-devpri="br2"
+#devpri="br2"
 # Enmascaramiento (salida)
-devenm="eth0"
+#devenm="eth0"
 
 # Directorios
 zafirodir="/Users/Joe/git/zafiro"
@@ -47,5 +47,5 @@ interfacesfile="/etc/network/interfaces"
 dyndnsfile="/etc/ddclient.conf"
 hostnamefile="/etc/hostname"
 resolvfile="/etc/resolv.conf"
-ip_forward="%s/ip_forward" % archivosdir
-pingignore="%s/icmp_echo_ignore_all" % archivosdir
+ip_forward="/proc/sys/net/ipv4/ip_forward"
+pingignore="/proc/sys/net/ipv4/icmp_echo_ignore_all"
