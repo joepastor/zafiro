@@ -24,32 +24,33 @@ except MySQLdb.Error, e:
 from configuracion import *
 
 ###### TOMA DE VARIABLES GLOBALES ###############################################
-inp=open("%s" % resolvfile,"r")
-count=0
-dns1=""
-dns2=""
-dns3=""
-for linea in inp.readlines():
-	count=count+1
-	if linea.split(" ")[0]=="nameserver":
-		if count==1:
-			dns1=linea.split(" ")[1][:-1]
-		elif count==2:
-			dns2=linea.split(" ")[1][:-1]
-		elif count==3:
-			dns3=linea.split(" ")[1][:-1]
-inp.close()
+
+#inp=open("%s" % resolvfile,"r")
+#count=0
+#dns1=""
+#dns2=""
+#dns3=""
+#for linea in inp.readlines():
+#	count=count+1
+#	if linea.split(" ")[0]=="nameserver":
+#		if count==1:
+#			dns1=linea.split(" ")[1][:-1]
+#		elif count==2:
+#			dns2=linea.split(" ")[1][:-1]
+#		elif count==3:
+#			dns3=linea.split(" ")[1][:-1]
+#inp.close()
 
 # DNSs forzadas
 #dns1=getValueSettings("dns_force_1")
 #dns2=getValueSettings("dns_force_2")
 #dns3=getValueSettings("dns_force_3")
-if getValueSettings("dns_force_1")!="":
-	dns1=dns1_force
-if getValueSettings("dns_force_2")!="":
-	dns2=dns2_force
-if getValueSettings("dns_force_3")!="":
-	dns3=dns3_force
+#if getValueSettings("dns_force_1")!="":
+#	dns1=dns1_force
+#if getValueSettings("dns_force_2")!="":
+#	dns2=dns2_force
+#if getValueSettings("dns_force_3")!="":
+#	dns3=dns3_force
 	
 #if dns1_force!="":
 #	dns1=dns1_force

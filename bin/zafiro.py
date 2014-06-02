@@ -44,6 +44,7 @@ try:
 		iptables+=getFwPersonalizado()
 		iptables+=getFiltros()
 		iptables+=getFirewall()
+		shaping+="iptables -t mangle -F\n"
 		
 	    # ARMADO DEL ARCHIVO MRTG.CONF
 		mrtg=""
@@ -89,29 +90,33 @@ try:
 		
 		iptables+="# FIREWALL PARA DNSS\n"
 		iptables+=divisor
+		
+		print "Armando archivo resolv.conf"
+		resolv=""
 		dnss=""
-		if dns1:
-			dnss=dns1
-			iptables+="iptables -t nat -A POSTROUTING -o %s -d %s -p udp --dport 53 -j MASQUERADE\n" % (devpub,dns1)
-			iptables+="iptables -A FORWARD -i %s -d %s -p udp --dport 53 -j ACCEPT\n" % (devpri,dns1)
-		if dns2:
-			dnss+=",%s" % dns2
-			iptables+="iptables -t nat -A POSTROUTING -o %s -d %s -p udp --dport 53 -j MASQUERADE\n" % (devpub,dns2)
-			iptables+="iptables -A FORWARD -i %s -d %s -p udp --dport 53 -j ACCEPT\n" % (devpri,dns2)
-		if dns3:
-			dnss+=",%s" % dns3
-			iptables+="iptables -t nat -A POSTROUTING -o %s -d %s -p udp --dport 53 -j MASQUERADE\n" % (devpub,dns3)
-			iptables+="iptables -A FORWARD -i %s -d %s -p udp --dport 53 -j ACCEPT\n" % (devpri,dns3)
-		iptables+=divisor
+		sql="""select valor from settings where llave like 'dns_standard%' order by llave"""
+		curs.execute(sql)
+		dns_recordset=curs.fetchall()
+		for valor in dns_recordset:
+			resolv+="nameserver %s\n" % valor[0]
+			iptables+="iptables -t nat -A POSTROUTING -o %s -d %s -p udp --dport 53 -j MASQUERADE\n" % (devpub,valor[0])
+			iptables+="iptables -A FORWARD -i %s -d %s -p udp --dport 53 -j ACCEPT\n" % (devpri,valor[0])
+			dnss+=valor[0]+","
+		f=open("%s/resolv.conf" % archivosdir,"w")
+		f.write(resolv)
+		f.close()
 
-		# Forwarding y Nateos
-		iptables+="# FORWARDING DE PUERTOS\n"
-		iptables+=divisor
-		iptables+=getNateos()
-		iptables+=divisor
-
-
-        # Armado del archivo dhcpd.conf
+		print "Armado de DNS Forzadas"
+		dnsforce=""
+		sql="""select valor from settings where llave like 'dns_force%' order by llave"""
+		curs.execute(sql)
+		dns_recordset=curs.fetchall()
+		for valor in dns_recordset:
+			dnsforce+=valor[0]+","
+		if dnsforce:
+			dnss=dnsforce+dnss
+		
+		# Armado del archivo dhcpd.conf
 		dhcpd=""
 		dhcpd+="default-lease-time 86400;\n"
 		dhcpd+="max-lease-time 86400;\n"
@@ -121,6 +126,12 @@ try:
 		dhcpd+="\trange %s251 %s254;\n" % (ipprefijopri,ipprefijopri)
 		dhcpd+="}";
 
+		# Forwarding y Nateos
+		iptables+=divisor
+		iptables+="# FORWARDING DE PUERTOS\n"
+		iptables+=divisor
+		iptables+=getNateos()
+
 		# Armado del archivo dhcp 
 		etcdhcp="INTERFACES=\"%s\"\n" % devpri
 		f=open("%s/dhcp" % archivosdir,"w")
@@ -128,16 +139,19 @@ try:
 		f.close()
 		
 		# Configuracion de limitacion de clientes
-		iptables+="# DEFINICION DE COLAS BASICAS\n"
-		iptables+=divisor
+		shaping+=divisor
+		shaping+="# DEFINICION DE COLAS BASICAS\n"
+		shaping+=divisor
 		curs.execute("select device from interfaces where enabled=1")
 		interfaces=curs.fetchall()
 		for iface in interfaces:
 			shaping+="tc qdisc del dev %s root\n" % iface
 			shaping+="tc qdisc add dev %s root handle 1: htb\n" % iface
 
-		
-		# Crea la configuracion de limitacion de cada cliente
+		# Crea la configuracion de limitacion de cada cliente		
+		iptables+=divisor
+		iptables+="# IPTABLES DE CLIENTES\n"
+		iptables+=divisor
 		ipfijastr=""
 		sql="""select clientes.id,clientes.ip,macaddress,plan,nombre,ipsfijas.ip,ipsfijas.interface,ipsfijas.estado,enruta_proxy,salida_habilitada,descripcion from clientes left join ipsfijas on ipsfijas.cliente=clientes.id where clientes.estado=0 order by nombre"""
 
@@ -153,7 +167,7 @@ try:
 		clientes=curs.fetchall()
 		hosts="127.0.0.1        localhost\n"
 		for clientesid,clientesip,clientesmac,clientespla,clientesnom,ipsfijasip,ipsfijasint,ipsfijasest,clientespro,clientessal,clientesdes,canalessub,canalesbaj,device in clientes:
-			iptables+="\n\n"
+			iptables+="\n"
 			iptables+="echo ID: %s	%s	IP:%s    \n" % (clientesid,clientesnom,clientesip)
 			iptables+="#------------------------------------------------------------------------------\n"
 			iptables+="#Cliente - %s	IP:%s    ID: %s\n" % (clientesnom,clientesip,clientesid)
@@ -329,8 +343,8 @@ try:
 				shaping+="tc filter add dev %s protocol ip parent 1: handle %s fw classid 1:%s\n" % (devenm,UH9,UC9)
 				shaping+="\n"
 				
-				iptables+="\n# MARCAJE DE PAQUETES\n"
-				iptables+="\n"
+				shaping+="\n# MARCAJE DE PAQUETES\n"
+				shaping+="\n"
 
 				# SACADO VERLO LUEGO iptables+="iptables -t mangle -A FORWARD -j MARK -i %s -s %s -p ICMP --set-mark %s\n" % (devpri,ip,markh4)
 				# SACADO VERLO LUEGO iptables+="iptables -t mangle -A FORWARD -j MARK -i %s -d %s -p ICMP --set-mark %s\n" % (devenm,ip,markh1)
@@ -520,6 +534,8 @@ try:
 		
 		print "Creando interfaces"
 		createInterfaces()
+		
+		
 
 except ValueError,NameError:
 	print ValueError,NameError
