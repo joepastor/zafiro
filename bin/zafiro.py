@@ -331,6 +331,7 @@ try:
 				
 				iptables+="\n# MARCAJE DE PAQUETES\n"
 				iptables+="\n"
+
 				# SACADO VERLO LUEGO iptables+="iptables -t mangle -A FORWARD -j MARK -i %s -s %s -p ICMP --set-mark %s\n" % (devpri,ip,markh4)
 				# SACADO VERLO LUEGO iptables+="iptables -t mangle -A FORWARD -j MARK -i %s -d %s -p ICMP --set-mark %s\n" % (devenm,ip,markh1)
 
