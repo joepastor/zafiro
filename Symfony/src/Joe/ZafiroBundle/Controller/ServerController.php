@@ -84,9 +84,11 @@ class ServerController extends Controller
     public function networkinfo_comandoAction(Request $r)
     {	
     	if($r->get("info")!=""){
+    		$resultado="";
     		switch($r->get("info")){
     			case "arp":
-    				$comando=$r->get("info")." -n";
+    				echo $this->getarp();
+    				$resultado = $this->getarp();
     				break;
     			case "ifconfig":
     				$comando=$r->get("info");
@@ -98,24 +100,25 @@ class ServerController extends Controller
     				$comando=$r->get("info");
     				break;
 				case "syslog":
-    				$comando="tail /var/log/system.log";
+    				//$comando="tail /var/log/syslog";
+    				$resultado = $this->getsyslog();
     				break;
-    				
     			default:
     				$comando="";
     				break;
     		}
-    		$process = new Process($comando);
-    		$process->run(function ($type, $buffer) {
-    			if (Process::ERR === $type) {
-    				$res='ERR > '.$buffer;
-    			} else {
-    				$res='OUT > '.$buffer;
-    			}
-    		});
-    		$resultado = $process->getOutput();
+    		if(!$resultado){
+	    		$process = new Process($comando);
+	    		$process->run(function ($type, $buffer) {
+	    			if (Process::ERR === $type) {
+	    				$res='ERR > '.$buffer;
+	    			} else {
+	    				$res='OUT > '.$buffer;
+	    			}
+	    		});
+	    		$resultado = $process->getOutput();
+    		}
     	}
-    	
     		
 	   	return $this->render('JoeZafiroBundle:Server:networkinfo_comando.html.twig', array(
 	   		'resultado'=>$resultado,
@@ -168,5 +171,61 @@ class ServerController extends Controller
     			'servicio' => $name,
     			'mensaje' => $msg,
     	));
+    }
+    
+    public function getarp() {
+    	$resultado="";
+        $resultado.="<table align=center>";
+        $resultado.="<tr><th>IP</th><th>HW Tipo</th><th>Flags</th><th>MAC</th><th>Mask</th><th>Dispositivo</th></tr>";
+		$fd = fopen("/proc/net/arp", "r");
+		$erra = 0;
+		while (!feof($fd)) {
+			$caca = trim(fgets($fd, 1024));
+			if ($erra == 1) {
+				$resultado.="<tr>";
+				$trozos = explode(" ", $caca);
+				$c = 0;
+				$incompleto = 0;
+				foreach ($trozos as $pis => $valor) {
+					if ($valor != "") {
+						if ($valor == "(incomplete)") {
+							$resultado.="<td>&nbsp;</td>";
+							$resultado.="<td>".$valor."</td>";
+							$resultado.="<td>&nbsp;</td>";
+							$incompleto = 1;
+						} else {
+							if ($c == 3) {
+								if (!$incompleto) {
+									$resultado.="<td><a href=abmcliente.php?mac=".$valor."&clientesid=0>".$valor."</a></td>";
+								} else {
+									$resultado.="<td>" . $valor . "</td>";
+								}
+							} else {
+								$resultado.="<td>" . $valor . "</td>";
+							}
+						}
+						$c++;
+					}
+				}
+				$resultado.="</tr>";
+			}
+			$erra = 1;
+		}
+		$resultado.="</table>";
+		return $resultado;
+    }
+    public function getsyslog() {
+    	$syslog = "";
+    	try {
+    		$fd = fopen("/var/log/syslog", "r");
+    		if ($fd) {
+    			while (!feof($fd)) {
+    				$syslog = trim(fgets($fd, 1024)) . "\n" . $syslog;
+    			}
+    		}
+    	} catch (Exception $e) {
+    		echo 'Excepción capturada: ', $e->getMessage(), "\n";
+    	}
+    	return $syslog;
     }
 }
