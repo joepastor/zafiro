@@ -87,6 +87,7 @@ class ServerController extends Controller
     		$resultado="";
     		switch($r->get("info")){
     			case "arp":
+    				echo $this->getarp();
     				$resultado = $this->getarp();
     				break;
     			case "ifconfig":
@@ -174,7 +175,6 @@ class ServerController extends Controller
     
     public function getarp() {
     	$resultado="";
-    	$resultado.="<h1>Tabla ARP del sistema</h1>";
         $resultado.="<table align=center>";
         $resultado.="<tr><th>IP</th><th>HW Tipo</th><th>Flags</th><th>MAC</th><th>Mask</th><th>Dispositivo</th></tr>";
 		$fd = fopen("/proc/net/arp", "r");
