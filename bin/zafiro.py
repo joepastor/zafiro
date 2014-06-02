@@ -37,9 +37,6 @@ try:
 		iptables=""
 		shaping=""
 
-		print dns1
-		print dns2
-		print dns3
 		# Firewall basico
 		iptables+="iptables -F\n"
 		iptables+="iptables -t nat -F\n"
@@ -340,57 +337,60 @@ try:
 				#iptables+="tc filter add dev %s protocol ip parent 1:%s prio 1 u32 match ip dst %s flowid 1:%s\n" % (devpri,clasebajada,ip,DC1)
 				#iptables+="tc filter add dev %s protocol ip parent 1:%s prio 1 u32 match ip src %s flowid 1:%s\n" % (devenm,clasesubida,ip,UC1)
 
-				iptables+="iptables -t mangle -A FORWARD -o %s -d %s -p udp --sport 10000:30000 -j MARK --set-mark %s\n" % (devpri,ip,DH1)
-				iptables+="iptables -t mangle -A FORWARD -o %s -d %s -p udp --sport 10000:30000 -j RETURN\n" % (devpri,ip)
-				iptables+="iptables -t mangle -A FORWARD -i %s -s %s -p udp --dport 10000:30000 -j MARK --set-mark %s\n" % (devpri,ip,UH1)
-				iptables+="iptables -t mangle -A FORWARD -i %s -s %s -p udp --dport 10000:30000 -j RETURN\n" % (devpri,ip)
+				# VOIP
+				shaping+="iptables -t mangle -A FORWARD -o %s -d %s -p udp --sport 10000:30000 -j MARK --set-mark %s\n" % (devpri,ip,DH1)
+				shaping+="iptables -t mangle -A FORWARD -o %s -d %s -p udp --sport 10000:30000 -j RETURN\n" % (devpri,ip)
+				shaping+="iptables -t mangle -A FORWARD -i %s -s %s -p udp --dport 10000:30000 -j MARK --set-mark %s\n" % (devpri,ip,UH1)
+				shaping+="iptables -t mangle -A FORWARD -i %s -s %s -p udp --dport 10000:30000 -j RETURN\n" % (devpri,ip)
 
-				iptables+="iptables -t mangle -A FORWARD -o %s -d %s -p udp --sport 5060:5082 -j MARK --set-mark %s\n" % (devpri,ip,DH1)
-				iptables+="iptables -t mangle -A FORWARD -o %s -d %s -p udp --sport 5060:5082 -j RETURN\n" % (devpri,ip)
-				iptables+="iptables -t mangle -A FORWARD -i %s -s %s -p udp --dport 5060:5082 -j MARK --set-mark %s\n" % (devpri,ip,UH1)
-				iptables+="iptables -t mangle -A FORWARD -i %s -s %s -p udp --dport 5060:5082 -j RETURN\n" % (devpri,ip)
-
-				iptables+="iptables -t mangle -A FORWARD -o %s -d %s -p udp --sport 53 -j MARK --set-mark %s\n" % (devpri,ip,DH2)
-				iptables+="iptables -t mangle -A FORWARD -o %s -d %s -p udp --sport 53 -j RETURN\n" % (devpri,ip)
-				iptables+="iptables -t mangle -A FORWARD -i %s -s %s -p udp --dport 53 -j MARK --set-mark %s\n" % (devpri,ip,UH2)
-				iptables+="iptables -t mangle -A FORWARD -i %s -s %s -p udp --dport 53 -j RETURN\n" % (devpri,ip)
-
-				iptables+="iptables -t mangle -A FORWARD -o %s -d %s -p tcp --sport 22 -j MARK --set-mark %s\n" % (devpri,ip,DH3)
-				iptables+="iptables -t mangle -A FORWARD -o %s -d %s -p tcp --sport 22 -j RETURN\n" % (devpri,ip)
-				iptables+="iptables -t mangle -A FORWARD -i %s -s %s -p tcp --dport 22 -j MARK --set-mark %s\n" % (devpri,ip,UH3)
-				iptables+="iptables -t mangle -A FORWARD -i %s -s %s -p tcp --dport 22 -j RETURN\n" % (devpri,ip)
-
-				iptables+="iptables -t mangle -A FORWARD -o %s -d %s -p tcp --sport 443 -j MARK --set-mark %s\n" % (devpri,ip,DH4)
-				iptables+="iptables -t mangle -A FORWARD -o %s -d %s -p tcp --sport 443 -j RETURN\n" % (devpri,ip)
-				iptables+="iptables -t mangle -A FORWARD -i %s -s %s -p tcp --dport 443 -j MARK --set-mark %s\n" % (devpri,ip,UH4)
-				iptables+="iptables -t mangle -A FORWARD -i %s -s %s -p tcp --dport 443 -j RETURN\n" % (devpri,ip)
-
-				iptables+="iptables -t mangle -A FORWARD -o %s -d %s -p tcp --sport 80 -j MARK --set-mark %s\n" % (devpri,ip,DH5)
-				iptables+="iptables -t mangle -A FORWARD -o %s -d %s -p tcp --sport 80 -j RETURN\n" % (devpri,ip)
-				iptables+="iptables -t mangle -A FORWARD -i %s -s %s -p tcp --dport 80 -j MARK --set-mark %s\n" % (devpri,ip,UH5)
-				iptables+="iptables -t mangle -A FORWARD -i %s -s %s -p tcp --dport 80 -j RETURN\n" % (devpri,ip)
+				shaping+="iptables -t mangle -A FORWARD -o %s -d %s -p udp --sport 5060:5082 -j MARK --set-mark %s\n" % (devpri,ip,DH2)
+				shaping+="iptables -t mangle -A FORWARD -o %s -d %s -p udp --sport 5060:5082 -j RETURN\n" % (devpri,ip)
+				shaping+="iptables -t mangle -A FORWARD -i %s -s %s -p udp --dport 5060:5082 -j MARK --set-mark %s\n" % (devpri,ip,UH2)
+				shaping+="iptables -t mangle -A FORWARD -i %s -s %s -p udp --dport 5060:5082 -j RETURN\n" % (devpri,ip)
 				
-				iptables+="iptables -t mangle -A FORWARD -o %s -d %s -p tcp --sport 25 -j MARK --set-mark %s\n" % (devpri,ip,DH7)
-				iptables+="iptables -t mangle -A FORWARD -o %s -d %s -p tcp --sport 25 -j RETURN\n" % (devpri,ip)
-				iptables+="iptables -t mangle -A FORWARD -i %s -s %s -p tcp --dport 25 -j MARK --set-mark %s\n" % (devpri,ip,UH7)
-				iptables+="iptables -t mangle -A FORWARD -i %s -s %s -p tcp --dport 25 -j RETURN\n" % (devpri,ip)
-				iptables+="iptables -t mangle -A FORWARD -o %s -d %s -p tcp --sport 110 -j MARK --set-mark %s\n" % (devpri,ip,DH7)
-				iptables+="iptables -t mangle -A FORWARD -o %s -d %s -p tcp --sport 110 -j RETURN\n" % (devpri,ip)
-				iptables+="iptables -t mangle -A FORWARD -i %s -s %s -p tcp --dport 110 -j MARK --set-mark %s\n" % (devpri,ip,UH7)
-				iptables+="iptables -t mangle -A FORWARD -i %s -s %s -p tcp --dport 110 -j RETURN\n" % (devpri,ip)
-				iptables+="iptables -t mangle -A FORWARD -o %s -d %s -p tcp --sport 143 -j MARK --set-mark %s\n" % (devpri,ip,DH7)
-				iptables+="iptables -t mangle -A FORWARD -o %s -d %s -p tcp --sport 143 -j RETURN\n" % (devpri,ip)
-				iptables+="iptables -t mangle -A FORWARD -i %s -s %s -p tcp --dport 143 -j MARK --set-mark %s\n" % (devpri,ip,UH7)
-				iptables+="iptables -t mangle -A FORWARD -i %s -s %s -p tcp --dport 143 -j RETURN\n" % (devpri,ip)
-				iptables+="iptables -t mangle -A FORWARD -o %s -d %s -p tcp --sport 21 -j MARK --set-mark %s\n" % (devpri,ip,DH8)
-				iptables+="iptables -t mangle -A FORWARD -o %s -d %s -p tcp --sport 21 -j RETURN\n" % (devpri,ip)
-				iptables+="iptables -t mangle -A FORWARD -i %s -s %s -p tcp --dport 21 -j MARK --set-mark %s\n" % (devpri,ip,UH8)
-				iptables+="iptables -t mangle -A FORWARD -i %s -s %s -p tcp --dport 21 -j RETURN\n" % (devpri,ip)
+				# DNS
+				shaping+="iptables -t mangle -A FORWARD -o %s -d %s -p udp --sport 53 -j MARK --set-mark %s\n" % (devpri,ip,DH1)
+				shaping+="iptables -t mangle -A FORWARD -o %s -d %s -p udp --sport 53 -j RETURN\n" % (devpri,ip)
+				shaping+="iptables -t mangle -A FORWARD -i %s -s %s -p udp --dport 53 -j MARK --set-mark %s\n" % (devpri,ip,UH1)
+				shaping+="iptables -t mangle -A FORWARD -i %s -s %s -p udp --dport 53 -j RETURN\n" % (devpri,ip)
 
-				iptables+="iptables -t mangle -A FORWARD -o %s -d %s -j MARK --set-mark %s\n" % (devpri,ip,DH8)
-				iptables+="iptables -t mangle -A FORWARD -o %s -d %s -j RETURN\n" % (devpri,ip)
-				iptables+="iptables -t mangle -A FORWARD -i %s -s %s -j MARK --set-mark %s\n" % (devpri,ip,UH8)
-				iptables+="iptables -t mangle -A FORWARD -i %s -s %s -j RETURN\n" % (devpri,ip)
+				# SSH
+				shaping+="iptables -t mangle -A FORWARD -o %s -d %s -p tcp --sport 22 -j MARK --set-mark %s\n" % (devpri,ip,DH3)
+				shaping+="iptables -t mangle -A FORWARD -o %s -d %s -p tcp --sport 22 -j RETURN\n" % (devpri,ip)
+				shaping+="iptables -t mangle -A FORWARD -i %s -s %s -p tcp --dport 22 -j MARK --set-mark %s\n" % (devpri,ip,UH3)
+				shaping+="iptables -t mangle -A FORWARD -i %s -s %s -p tcp --dport 22 -j RETURN\n" % (devpri,ip)
+
+				shaping+="iptables -t mangle -A FORWARD -o %s -d %s -p tcp --sport 443 -j MARK --set-mark %s\n" % (devpri,ip,DH4)
+				shaping+="iptables -t mangle -A FORWARD -o %s -d %s -p tcp --sport 443 -j RETURN\n" % (devpri,ip)
+				shaping+="iptables -t mangle -A FORWARD -i %s -s %s -p tcp --dport 443 -j MARK --set-mark %s\n" % (devpri,ip,UH4)
+				shaping+="iptables -t mangle -A FORWARD -i %s -s %s -p tcp --dport 443 -j RETURN\n" % (devpri,ip)
+
+				shaping+="iptables -t mangle -A FORWARD -o %s -d %s -p tcp --sport 80 -j MARK --set-mark %s\n" % (devpri,ip,DH5)
+				shaping+="iptables -t mangle -A FORWARD -o %s -d %s -p tcp --sport 80 -j RETURN\n" % (devpri,ip)
+				shaping+="iptables -t mangle -A FORWARD -i %s -s %s -p tcp --dport 80 -j MARK --set-mark %s\n" % (devpri,ip,UH5)
+				shaping+="iptables -t mangle -A FORWARD -i %s -s %s -p tcp --dport 80 -j RETURN\n" % (devpri,ip)
+				
+				shaping+="iptables -t mangle -A FORWARD -o %s -d %s -p tcp --sport 25 -j MARK --set-mark %s\n" % (devpri,ip,DH7)
+				shaping+="iptables -t mangle -A FORWARD -o %s -d %s -p tcp --sport 25 -j RETURN\n" % (devpri,ip)
+				shaping+="iptables -t mangle -A FORWARD -i %s -s %s -p tcp --dport 25 -j MARK --set-mark %s\n" % (devpri,ip,UH7)
+				shaping+="iptables -t mangle -A FORWARD -i %s -s %s -p tcp --dport 25 -j RETURN\n" % (devpri,ip)
+				shaping+="iptables -t mangle -A FORWARD -o %s -d %s -p tcp --sport 110 -j MARK --set-mark %s\n" % (devpri,ip,DH7)
+				shaping+="iptables -t mangle -A FORWARD -o %s -d %s -p tcp --sport 110 -j RETURN\n" % (devpri,ip)
+				shaping+="iptables -t mangle -A FORWARD -i %s -s %s -p tcp --dport 110 -j MARK --set-mark %s\n" % (devpri,ip,UH7)
+				shaping+="iptables -t mangle -A FORWARD -i %s -s %s -p tcp --dport 110 -j RETURN\n" % (devpri,ip)
+				shaping+="iptables -t mangle -A FORWARD -o %s -d %s -p tcp --sport 143 -j MARK --set-mark %s\n" % (devpri,ip,DH7)
+				shaping+="iptables -t mangle -A FORWARD -o %s -d %s -p tcp --sport 143 -j RETURN\n" % (devpri,ip)
+				shaping+="iptables -t mangle -A FORWARD -i %s -s %s -p tcp --dport 143 -j MARK --set-mark %s\n" % (devpri,ip,UH7)
+				shaping+="iptables -t mangle -A FORWARD -i %s -s %s -p tcp --dport 143 -j RETURN\n" % (devpri,ip)
+				shaping+="iptables -t mangle -A FORWARD -o %s -d %s -p tcp --sport 21 -j MARK --set-mark %s\n" % (devpri,ip,DH8)
+				shaping+="iptables -t mangle -A FORWARD -o %s -d %s -p tcp --sport 21 -j RETURN\n" % (devpri,ip)
+				shaping+="iptables -t mangle -A FORWARD -i %s -s %s -p tcp --dport 21 -j MARK --set-mark %s\n" % (devpri,ip,UH8)
+				shaping+="iptables -t mangle -A FORWARD -i %s -s %s -p tcp --dport 21 -j RETURN\n" % (devpri,ip)
+
+				shaping+="iptables -t mangle -A FORWARD -o %s -d %s -j MARK --set-mark %s\n" % (devpri,ip,DH8)
+				shaping+="iptables -t mangle -A FORWARD -o %s -d %s -j RETURN\n" % (devpri,ip)
+				shaping+="iptables -t mangle -A FORWARD -i %s -s %s -j MARK --set-mark %s\n" % (devpri,ip,UH8)
+				shaping+="iptables -t mangle -A FORWARD -i %s -s %s -j RETURN\n" % (devpri,ip)
 
             # Enrutamiento al proxy
 			if clientespro:
