@@ -102,6 +102,7 @@ try:
 			iptables+="iptables -t nat -A POSTROUTING -o %s -d %s -p udp --dport 53 -j MASQUERADE\n" % (devpub,valor[0])
 			iptables+="iptables -A FORWARD -i %s -d %s -p udp --dport 53 -j ACCEPT\n" % (devpri,valor[0])
 			dnss+=valor[0]+","
+		dnss=dnss[:-1] # POPEO la coma final
 		f=open("%s/resolv.conf" % archivosdir,"w")
 		f.write(resolv)
 		f.close()
