@@ -86,6 +86,7 @@ class ServerController extends Controller
     	if($r->get("info")!=""){
     		switch($r->get("info")){
     			case "arp":
+    				echo $this->getarp();
     				$comando=$r->get("info")." -n";
     				break;
     			case "ifconfig":
@@ -113,7 +114,9 @@ class ServerController extends Controller
     				$res='OUT > '.$buffer;
     			}
     		});
+    		echo $comando;
     		$resultado = $process->getOutput();
+    		echo system($comando);
     	}
     	
     		
@@ -168,5 +171,48 @@ class ServerController extends Controller
     			'servicio' => $name,
     			'mensaje' => $msg,
     	));
+    }
+    
+    public function getarp() {
+    	$resultado="";
+    	$resultado.="<h1>Tabla ARP del sistema</h1>";
+        $resultado.="<table align=center>";
+        $resultado.="<tr><th>IP</th><th>HW Tipo</th><th>Flags</th><th>MAC</th><th>Mask</th><th>Dispositivo</th></tr>";
+		$fd = fopen("/proc/net/arp", "r");
+		$erra = 0;
+		while (!feof($fd)) {
+			$caca = trim(fgets($fd, 1024));
+			if ($erra == 1) {
+				$resultado.="<tr>";
+				$trozos = explode(" ", $caca);
+				$c = 0;
+				$incompleto = 0;
+				foreach ($trozos as $pis => $valor) {
+					if ($valor != "") {
+						if ($valor == "(incomplete)") {
+							$resultado.="<td>&nbsp;</td>";
+							$resultado.="<td>".$valor."</td>";
+							$resultado.="<td>&nbsp;</td>";
+							$incompleto = 1;
+						} else {
+							if ($c == 3) {
+								if (!$incompleto) {
+									$resultado.="<td><a href=abmcliente.php?mac=".$valor."&clientesid=0>".$valor."</a></td>";
+								} else {
+									$resultado.="<td>" . $valor . "</td>";
+								}
+							} else {
+								$resultado.="<td>" . $valor . "</td>";
+							}
+						}
+						$c++;
+					}
+				}
+				$resultado.="</tr>";
+			}
+			$erra = 1;
+		}
+		$resultado.="</table>";
+		return $resultado;
     }
 }
