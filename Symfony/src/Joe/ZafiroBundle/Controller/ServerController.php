@@ -99,7 +99,8 @@ class ServerController extends Controller
     				$comando=$r->get("info");
     				break;
 				case "syslog":
-    				$comando="tail /var/log/system.log";
+    				$comando="tail /var/log/syslog";
+    				echo $this->getsyslog();
     				break;
     				
     			default:
@@ -214,5 +215,22 @@ class ServerController extends Controller
 		}
 		$resultado.="</table>";
 		return $resultado;
+    }
+    public function getsyslog() {
+    	$resultado="<h1>Log del sistema</h1>";
+    	$syslog = "";
+    	try {
+    		$fd = fopen("/var/log/syslog", "r");
+    		if ($fd) {
+    			while (!feof($fd)) {
+    				$syslog = trim(fgets($fd, 1024)) . "<br>" . $syslog;
+    			}
+    			//echo "<pre>" . $syslog . "</pre>";
+    		}
+    	} catch (Exception $e) {
+    		echo 'Excepción capturada: ', $e->getMessage(), "\n";
+    	}
+    	$resultado.=$syslog;
+    	return $resultado;
     }
 }
