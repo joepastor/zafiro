@@ -84,10 +84,10 @@ class ServerController extends Controller
     public function networkinfo_comandoAction(Request $r)
     {	
     	if($r->get("info")!=""){
+    		$resultado="";
     		switch($r->get("info")){
     			case "arp":
-    				echo $this->getarp();
-    				$comando=$r->get("info")." -n";
+    				$resultado = $this->getarp();
     				break;
     			case "ifconfig":
     				$comando=$r->get("info");
@@ -99,27 +99,25 @@ class ServerController extends Controller
     				$comando=$r->get("info");
     				break;
 				case "syslog":
-    				$comando="tail /var/log/syslog";
-    				echo $this->getsyslog();
+    				//$comando="tail /var/log/syslog";
+    				$resultado = $this->getsyslog();
     				break;
-    				
     			default:
     				$comando="";
     				break;
     		}
-    		$process = new Process($comando);
-    		$process->run(function ($type, $buffer) {
-    			if (Process::ERR === $type) {
-    				$res='ERR > '.$buffer;
-    			} else {
-    				$res='OUT > '.$buffer;
-    			}
-    		});
-    		echo $comando;
-    		$resultado = $process->getOutput();
-    		echo system($comando);
+    		if(!$resultado){
+	    		$process = new Process($comando);
+	    		$process->run(function ($type, $buffer) {
+	    			if (Process::ERR === $type) {
+	    				$res='ERR > '.$buffer;
+	    			} else {
+	    				$res='OUT > '.$buffer;
+	    			}
+	    		});
+	    		$resultado = $process->getOutput();
+    		}
     	}
-    	
     		
 	   	return $this->render('JoeZafiroBundle:Server:networkinfo_comando.html.twig', array(
 	   		'resultado'=>$resultado,
