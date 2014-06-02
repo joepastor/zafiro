@@ -220,7 +220,7 @@ class ServerController extends Controller
     		$fd = fopen("/var/log/syslog", "r");
     		if ($fd) {
     			while (!feof($fd)) {
-    				$syslog = trim(fgets($fd, 1024)) . "<br>" . $syslog;
+    				$syslog = trim(fgets($fd, 1024)) . "\n" . $syslog;
     			}
     		}
     	} catch (Exception $e) {
