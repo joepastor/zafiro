@@ -215,7 +215,6 @@ class ServerController extends Controller
 		return $resultado;
     }
     public function getsyslog() {
-    	$resultado="<h1>Log del sistema</h1>";
     	$syslog = "";
     	try {
     		$fd = fopen("/var/log/syslog", "r");
@@ -223,12 +222,10 @@ class ServerController extends Controller
     			while (!feof($fd)) {
     				$syslog = trim(fgets($fd, 1024)) . "<br>" . $syslog;
     			}
-    			//echo "<pre>" . $syslog . "</pre>";
     		}
     	} catch (Exception $e) {
     		echo 'Excepción capturada: ', $e->getMessage(), "\n";
     	}
-    	$resultado.=$syslog;
-    	return $resultado;
+    	return $syslog;
     }
 }
